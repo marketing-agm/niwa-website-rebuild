@@ -6,6 +6,6 @@
 #
 # The build output directory is pinned here so it cannot be lost or reset in the
 # dashboard. The build command (`npm run build`) still lives in the dashboard.
-name = "niwa-apartments-agm"
+name = "niwa-website-rebuild"
 pages_build_output_dir = "./dist"
 compatibility_date = "2024-11-01"

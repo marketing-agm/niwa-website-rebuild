@@ -72,7 +72,7 @@ Cloudflare Pages, one project:
 | Setting | Value |
 |---|---|
 | Repository | `marketing-agm/niwa-website-rebuild` |
-| Project name | `niwa-apartments-agm` — must match `wrangler.toml` |
+| Project name | `niwa-website-rebuild` — must match `wrangler.toml` |
 | Production branch | `main` |
 | Build command | `npm run build` |
 | Output directory | `dist` (also pinned in `wrangler.toml`) |
@@ -87,7 +87,7 @@ No `SITE` variable — that was the multi-site template's, and it's gone.
 robots and `llms.txt`. Never hardcode the host anywhere else — in `public/`,
 write `{{SITE_DOMAIN}}` and the build substitutes it.
 
-Currently `https://niwa-apartments-agm.pages.dev` with **`seo.noindex: true`**,
+Currently `https://niwa-website-rebuild.pages.dev` with **`seo.noindex: true`**,
 which emits `noindex, nofollow` and a `Disallow: /` robots.txt. That is
 deliberate: the site is live and shareable but invisible to search, so it
 doesn't accumulate SEO history on a hostname you intend to throw away.
