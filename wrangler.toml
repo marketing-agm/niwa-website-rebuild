@@ -15,5 +15,9 @@
 name = "niwa-website-rebuild"
 compatibility_date = "2024-11-01"
 
+# Explicit rather than defaulted: the workers.dev hostname is currently this
+# site's only public URL, so it should not depend on a default that could change.
+workers_dev = true
+
 [assets]
 directory = "./dist"
