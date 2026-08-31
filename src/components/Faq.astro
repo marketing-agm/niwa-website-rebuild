@@ -1,0 +1,48 @@
+---
+// FAQ — presented as a sheet modal rather than a full page section, opened from
+// any link pointing at #faq. Content comes from src/site/faq.json, so it
+// stays per-property while the markup/behaviour is shared. Renders nothing when
+// a site has no FAQ entries.
+//
+// The markup stays in the document (hidden, not injected on open) so it remains
+// crawlable, and the matching FAQPage JSON-LD is emitted in BaseLayout.
+import { formatPhone } from '../lib/site';
+
+const { site } = Astro.props as { site: { config: any; faq: { q: string; a: string }[] } };
+const c = site.config;
+const items = site.faq || [];
+const phoneLabel = formatPhone(c.contact?.phone);
+---
+{items.length > 0 && (
+  <div class="ct-overlay sheet-overlay" id="faq-overlay" role="dialog" aria-modal="true" aria-labelledby="faq-overlay-title" aria-hidden="true">
+    <div class="ct-backdrop" data-ct-close></div>
+    <div class="ct-panel ct-panel--sheet">
+      <header class="cw-head">
+        <div class="cw-head-text">
+          <span class="cw-head-eyebrow">Questions, answered</span>
+          <h3 class="cw-head-title" id="faq-overlay-title">Frequently asked</h3>
+        </div>
+        <div class="cw-head-actions">
+          <button class="cw-icon-btn" type="button" aria-label="Close" data-ct-close>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+          </button>
+        </div>
+      </header>
+      <div class="ct-body">
+        <p class="ud-intro">
+          Renting in {c.address.addressLocality}, in plain terms. Still curious?{' '}
+          <a href={c.contact.phoneHref} class="faq-inline-link">Call {phoneLabel}</a>{' '}
+          or <a href="#tour" class="faq-inline-link">schedule a tour</a>.
+        </p>
+        <div class="faq-list">
+          {items.map((item) => (
+            <details class="faq-item" name="faq">
+              <summary>{item.q}</summary>
+              <div class="faq-answer" set:html={item.a} />
+            </details>
+          ))}
+        </div>
+      </div>
+    </div>
+  </div>
+)}

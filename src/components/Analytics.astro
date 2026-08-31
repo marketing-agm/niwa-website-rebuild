@@ -1,0 +1,154 @@
+---
+// Analytics layer — wired once in the template, inherited by every site.
+// Per-site IDs come from site.config.json -> analytics.{posthog,clarity}.
+// No IDs set => nothing loads (safe no-op), so the live site is unaffected
+// until you drop real keys in.
+const { site } = Astro.props as { site: { id: string; config: any } };
+const ph = site.config.analytics?.posthog ?? {};
+const clarity = site.config.analytics?.clarity ?? {};
+const google = site.config.analytics?.google ?? {};
+const siteId = site.id;
+const propertyName = site.config.name;
+
+// Google tag: GA4 and/or Google Ads. Either can be set alone. The tag only
+// loads when at least one ID is present, so an un-configured site stays clean.
+const ga4Id = google.ga4Id || '';
+const adsId = google.adsId || '';
+const googleTagId = ga4Id || adsId;
+// event name -> Google Ads conversion label (the part after the slash in
+// "AW-123456789/AbC-D_efGh"). Only labelled events are sent to Ads.
+const conversionLabels = google.conversionLabels ?? {};
+// event name -> value passed to Ads/GA4. Relative worth of each action, used
+// by Smart Bidding to prefer leads over low-intent micro-conversions.
+const conversionValues = google.conversionValues ?? {};
+---
+
+{ph.key && (
+  <script is:inline define:vars={{ phKey: ph.key, phHost: ph.host || 'https://us.i.posthog.com', siteId, propertyName }}>
+    !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.async=!0,p.src=s.api_host+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="init capture register register_once register_for_session unregister unregister_for_session getFeatureFlag getFeatureFlagPayload isFeatureEnabled reloadFeatureFlags updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures on onFeatureFlags onSessionId getSurveys getActiveMatchingSurveys renderSurvey canRenderSurvey getNextSurveyStep identify setPersonProperties group resetGroups setPersonPropertiesForFlags resetPersonPropertiesForFlags setGroupPropertiesForFlags resetGroupPropertiesForFlags reset get_distinct_id getGroups get_session_id get_session_replay_url alias set_config startSessionRecording stopSessionRecording sessionRecordingStarted captureException loadToolbar get_property getSessionProperty createPersonProfile opt_in_capturing opt_out_capturing has_opted_in_capturing has_opted_out_capturing clear_opt_in_out_capturing debug".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
+    posthog.init(phKey, {
+      api_host: phHost,
+      person_profiles: 'identified_only',
+      autocapture: true,
+      capture_pageview: true,
+      capture_pageleave: true,
+      session_recording: { maskAllInputs: true },
+    });
+    // Portfolio rollup: every event is tagged with which property it came from.
+    posthog.register({ site_id: siteId, property_name: propertyName });
+  </script>
+)}
+
+{clarity.id && (
+  <script is:inline define:vars={{ clarityId: clarity.id }}>
+    (function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window,document,"clarity","script",clarityId);
+  </script>
+)}
+
+{googleTagId && (
+  <script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${googleTagId}`}></script>
+)}
+{googleTagId && (
+  <script is:inline define:vars={{ ga4Id, adsId, siteId, propertyName }}>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){ dataLayer.push(arguments); }
+    window.gtag = gtag;
+    gtag('js', new Date());
+    // Ads conversions are attributed across the landing page and any guide page
+    // the visitor moves to, so the click ID has to survive navigation.
+    gtag('set', 'linker', { accept_incoming: true });
+    if (ga4Id) gtag('config', ga4Id, { site_id: siteId, property_name: propertyName });
+    if (adsId) gtag('config', adsId);
+  </script>
+)}
+
+<!-- Conversion event taxonomy. Fires named events when a tracker is loaded;
+     no-op otherwise. Delegated listeners so template markup needs no edits. -->
+<script is:inline define:vars={{ adsId, conversionLabels, conversionValues }}>
+  (function () {
+    // --- Paid-click attribution -------------------------------------------
+    // Google stamps the landing URL with gclid (or wbraid/gbraid when the user
+    // can't be cookied). We stash it for 90 days — the Ads offline-conversion
+    // import window — so a lead that emails in today can still be tied back to
+    // the click that produced it, and a tour that turns into a signed lease
+    // weeks later can be uploaded as a conversion against the right keyword.
+    var STORE = 'ad_attribution';
+    var TTL = 90 * 24 * 60 * 60 * 1000;
+
+    function readStored() {
+      try {
+        var raw = window.localStorage.getItem(STORE);
+        if (!raw) return null;
+        var saved = JSON.parse(raw);
+        if (!saved || !saved.ts || Date.now() - saved.ts > TTL) return null;
+        return saved;
+      } catch (err) { return null; }
+    }
+
+    function captureAttribution() {
+      var params = new URLSearchParams(window.location.search);
+      var found = {};
+      ['gclid', 'wbraid', 'gbraid', 'utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content']
+        .forEach(function (k) { if (params.get(k)) found[k] = params.get(k); });
+      // First touch wins only when there's no newer click; a fresh gclid always
+      // overwrites, otherwise every later visit would be credited to the first ad.
+      if (!Object.keys(found).length) return readStored();
+      found.ts = Date.now();
+      found.landing_page = window.location.pathname;
+      try { window.localStorage.setItem(STORE, JSON.stringify(found)); } catch (err) { /* private mode */ }
+      return found;
+    }
+
+    var attribution = captureAttribution();
+    window.getAdAttribution = function () { return attribution || readStored() || {}; };
+
+    // --- Event fan-out ------------------------------------------------------
+    function track(name, props) {
+      if (window.posthog && window.posthog.capture) window.posthog.capture(name, props || {});
+      if (window.clarity) window.clarity('event', name);
+
+      if (window.gtag) {
+        var value = conversionValues[name];
+        // GA4 gets everything, so the funnel stays visible even for actions we
+        // deliberately keep out of bidding.
+        window.gtag('event', name, Object.assign({}, props || {}, {
+          value: value || 0,
+          currency: 'USD',
+        }));
+        // Ads gets only the actions that have a conversion label configured.
+        var label = conversionLabels[name];
+        if (adsId && label) {
+          window.gtag('event', 'conversion', {
+            send_to: adsId + '/' + label,
+            value: value || 0,
+            currency: 'USD',
+          });
+        }
+      }
+    }
+    window.trackEvent = track;
+
+    document.addEventListener('click', function (e) {
+      var a = e.target.closest('a[href^="tel:"]');
+      if (a) return track('phone_click', { href: a.getAttribute('href') });
+      var m = e.target.closest('a[href^="mailto:"]');
+      if (m) return track('email_click', { href: m.getAttribute('href') });
+      var fav = e.target.closest('.unit-fav, [data-fav]');
+      if (fav) return track('unit_favorited', { unit: fav.getAttribute('data-fav') || null });
+      var tab = e.target.closest('.plan-tab');
+      if (tab) return track('floor_plan_viewed', { plan: (tab.textContent || '').trim() });
+      var tour3d = e.target.closest('a[href*="matterport"], a[href*="my.matterport"], [data-3d-tour]');
+      if (tour3d) return track('tour_3d_opened', {});
+      var gal = e.target.closest('#gallery [data-photo], #gallery-strip [data-photo], #gallery figure, #gallery .gallery-item');
+      if (gal) return track('gallery_opened', {});
+    }, true);
+
+    document.addEventListener('submit', function (e) {
+      var f = e.target;
+      if (!f || f.tagName !== 'FORM') return;
+      if (f.id === 'commute-form') return track('commute_estimated', {});
+      if (f.matches('[data-cw-form="leasing"]') || f.id === 'tour-wizard') return track('tour_requested', {});
+      if (f.matches('[data-cw-form="maintenance"]')) return track('maintenance_request', {});
+    }, true);
+  })();
+</script>

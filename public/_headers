@@ -1,0 +1,34 @@
+# Security headers applied to every response
+/*
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), interest-cohort=()
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
+
+# HTML: short cache so content updates propagate quickly
+/index.html
+  Cache-Control: public, max-age=300, must-revalidate
+
+/*.html
+  Cache-Control: public, max-age=300, must-revalidate
+
+# App logic: short cache so template updates reach visitors quickly
+/app.js
+  Cache-Control: public, max-age=300, must-revalidate
+
+# SEO + icon assets: cacheable, but short enough to update easily
+/favicon.svg
+  Cache-Control: public, max-age=86400
+/site.webmanifest
+  Cache-Control: public, max-age=86400
+/robots.txt
+  Cache-Control: public, max-age=3600
+/sitemap.xml
+  Cache-Control: public, max-age=3600
+/llms.txt
+  Cache-Control: public, max-age=3600
+
+# Guide/static assets (per-site public/): long cache, versioned by content
+/assets/*
+  Cache-Control: public, max-age=604800

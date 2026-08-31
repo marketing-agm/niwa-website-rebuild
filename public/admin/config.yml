@@ -1,0 +1,220 @@
+# Sveltia CMS configuration.
+# Editors get forms; saving writes back to the JSON files in this repo as a
+# git commit, which triggers the normal build/deploy. Every field below is
+# represented so saves never drop data.
+#
+# SETUP (see README "Admin portal"): create a GitHub OAuth app + deploy the
+# sveltia-cms-auth Cloudflare Worker, then put its URL in `base_url` below.
+backend:
+  name: github
+  repo: marketing-agm/niwa-website-rebuild
+  branch: main
+  base_url: https://REPLACE-WITH-YOUR-AUTH-WORKER.workers.dev
+
+# Uploaded photos / floor plans. For production at 45-site scale, switch this
+# to external storage (Cloudflare R2 / Cloudinary) to keep the repo lean.
+media_folder: public/uploads
+public_folder: /uploads
+
+# When true, edits become pull requests for review instead of publishing
+# straight to the live site. Uncomment to add an approval gate.
+# publish_mode: editorial_workflow
+
+collections:
+  # ---------------------------------------------------------------------------
+  - name: property
+    label: Property settings
+    label_singular: Property
+    files:
+      - name: niwa
+        label: Niwa Apartments
+        file: src/site/site.config.json
+        fields:
+          - { name: name, label: Property name, widget: string }
+          - { name: shortName, label: Short name, widget: string }
+          - { name: domain, label: Live domain (https://…), widget: string }
+
+          - name: contact
+            label: Contact
+            widget: object
+            fields:
+              - { name: phone, label: Phone (display), widget: string }
+              - { name: phoneHref, label: Phone link (tel:…), widget: string }
+              - { name: email, label: Email, widget: string }
+
+          - name: address
+            label: Address
+            widget: object
+            fields:
+              - { name: streetAddress, label: Street, widget: string }
+              - { name: addressLocality, label: City, widget: string }
+              - { name: addressRegion, label: State, widget: string }
+              - { name: postalCode, label: ZIP, widget: string }
+              - { name: addressCountry, label: Country, widget: string, default: US }
+              - { name: placename, label: Place name (for SEO), widget: string }
+              - { name: geoRegion, label: Geo region (e.g. US-WA), widget: string }
+
+          - name: geo
+            label: Map coordinates
+            widget: object
+            fields:
+              - { name: latitude, label: Latitude, widget: number, value_type: float }
+              - { name: longitude, label: Longitude, widget: number, value_type: float }
+
+          - name: seo
+            label: SEO & sharing
+            widget: object
+            fields:
+              - { name: title, label: Page title, widget: string }
+              - { name: description, label: Meta description, widget: text }
+              - { name: keywords, label: Keywords (comma-separated), widget: text }
+              - { name: author, label: Author, widget: string }
+              - { name: ogImage, label: Social share image, widget: image, required: false }
+              - { name: twitterDescription, label: Twitter description, widget: text, required: false }
+
+          - name: floorPlans
+            label: Floor plans & 3D tours
+            widget: object
+            fields:
+              - name: 1br
+                label: 1 Bedroom
+                widget: object
+                fields:
+                  - { name: image, label: Floor plan image, widget: image, required: false }
+                  - { name: tourUrl, label: 3D tour link (Matterport embed URL), widget: string, required: false }
+              - name: 2br
+                label: 2 Bedroom
+                widget: object
+                fields:
+                  - { name: image, label: Floor plan image, widget: image, required: false }
+                  - { name: tourUrl, label: 3D tour link (Matterport embed URL), widget: string, required: false }
+
+          - name: schema
+            label: Structured data (Google / AI)
+            widget: object
+            collapsed: true
+            fields:
+              - { name: type, label: Schema types, widget: list, field: { name: t, label: Type, widget: string } }
+              - { name: description, label: Description, widget: text }
+              - { name: priceRange, label: Price range, widget: string }
+              - { name: numberOfBedrooms, label: Bedrooms (e.g. 1-2), widget: string }
+              - { name: petsAllowed, label: Pets allowed, widget: boolean, default: true }
+              - { name: areaServed, label: Areas served, widget: list, field: { name: area, label: Area, widget: string } }
+              - { name: containedInPlace, label: Neighborhood, widget: string }
+              - { name: amenityFeature, label: Highlighted amenities, widget: list, field: { name: amenity, label: Amenity, widget: string } }
+
+          - name: theme
+            label: Theme
+            widget: object
+            collapsed: true
+            fields:
+              - { name: colors, label: Colors (CSS variable → value), widget: keyvalue }
+              - { name: themeColor, label: Browser theme color, widget: string }
+              - { name: backgroundColor, label: Background color, widget: string }
+
+          - name: manifest
+            label: App manifest
+            widget: object
+            collapsed: true
+            fields:
+              - { name: description, label: Install description, widget: text }
+
+          - name: analytics
+            label: Analytics keys
+            widget: object
+            collapsed: true
+            fields:
+              - name: posthog
+                label: PostHog
+                widget: object
+                fields:
+                  - { name: key, label: Project API key, widget: string, required: false }
+                  - { name: host, label: Host, widget: string, default: "https://us.i.posthog.com" }
+              - name: clarity
+                label: Microsoft Clarity
+                widget: object
+                fields:
+                  - { name: id, label: Clarity ID, widget: string, required: false }
+
+          - name: integrations
+            label: Integrations
+            widget: object
+            collapsed: true
+            fields:
+              - { name: orsApiKey, label: OpenRouteService key (commute estimator), widget: string, required: false }
+
+          # Technical — leave as-is.
+          - { name: id, label: Site ID (folder name — do not change), widget: string }
+          - { name: lang, label: Language, widget: string, default: en }
+          - { name: locale, label: Locale, widget: string, default: en_US }
+
+  # ---------------------------------------------------------------------------
+  - name: units
+    label: Units & availability
+    files:
+      - name: niwa
+        label: Niwa Apartments
+        file: src/site/units.json
+        fields:
+          - name: units
+            label: Units
+            widget: list
+            label_singular: Unit
+            summary: "{{fields.id}} — {{fields.beds}}BR · ${{fields.rent}}/mo"
+            fields:
+              - { name: id, label: Unit number, widget: string }
+              - { name: beds, label: Bedrooms, widget: number, value_type: int }
+              - { name: baths, label: Bathrooms, widget: number, value_type: int }
+              - { name: sqft, label: Square feet, widget: number, value_type: int }
+              - { name: rent, label: Rent ($/mo), widget: number, value_type: int }
+              - { name: floor, label: Floor (display), widget: string }
+              - { name: floorNum, label: Floor number, widget: number, value_type: int }
+              - { name: available, label: Availability (display), widget: string }
+              - { name: availType, label: Availability type, widget: select, options: [now, soon], default: now }
+              - { name: plan, label: Floor plan, widget: select, options: [1br, 2br] }
+              - { name: features, label: Features, widget: list, field: { name: feature, label: Feature, widget: string } }
+              - { name: featured, label: Featured, widget: boolean, required: false, default: false }
+
+  # ---------------------------------------------------------------------------
+  - name: photos
+    label: Photo gallery
+    files:
+      - name: niwa
+        label: Niwa Apartments
+        file: src/site/photos.json
+        fields:
+          - name: photos
+            label: Photos
+            widget: list
+            label_singular: Photo
+            summary: "{{fields.title}} ({{fields.cat}})"
+            fields:
+              - { name: src, label: Photo, widget: image, required: false }
+              - { name: id, label: ID, widget: number, value_type: int }
+              - { name: cat, label: Category, widget: select, options: [interior, exterior, units, neighborhood] }
+              - { name: size, label: Display size, widget: select, options: [hero, wide, tall, square], default: square }
+              - { name: title, label: Title, widget: string }
+              - { name: desc, label: Caption, widget: text }
+              - { name: imgId, label: "Unsplash ID (legacy fallback)", widget: string, required: false }
+              - { name: seed, label: "Picsum seed (legacy fallback)", widget: string, required: false }
+
+  # ---------------------------------------------------------------------------
+  - name: neighborhood
+    label: Neighborhood places
+    files:
+      - name: niwa
+        label: Niwa Apartments
+        file: src/site/places.json
+        fields:
+          - name: places
+            label: Places
+            widget: list
+            label_singular: Place
+            summary: "{{fields.name}} ({{fields.cat}})"
+            fields:
+              - { name: id, label: ID, widget: number, value_type: int }
+              - { name: name, label: Name, widget: string }
+              - { name: cat, label: Category, widget: select, options: [parks, food, shopping, transit, schools] }
+              - { name: desc, label: Description, widget: string }
+              - { name: lat, label: Latitude, widget: number, value_type: float }
+              - { name: lng, label: Longitude, widget: number, value_type: float }

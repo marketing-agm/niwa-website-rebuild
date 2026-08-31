@@ -1,0 +1,174 @@
+{
+  "id": "niwa",
+  "name": "Niwa Apartments",
+  "shortName": "Niwa",
+  "domain": "https://niwa-apartments-agm.pages.dev",
+  "locale": "en_US",
+  "lang": "en",
+  "contact": {
+    "phone": "+1-206-694-1713",
+    "phoneHref": "tel:2066941713",
+    "email": "leasing@agmrealestategroup.com",
+    "officeHours": [
+      {
+        "days": [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday"
+        ],
+        "opens": "09:00",
+        "closes": "17:00"
+      }
+    ]
+  },
+  "address": {
+    "streetAddress": "513 1st Ave N",
+    "addressLocality": "Seattle",
+    "addressRegion": "WA",
+    "postalCode": "98109",
+    "addressCountry": "US",
+    "placename": "Lower Queen Anne, Seattle, Washington",
+    "geoRegion": "US-WA"
+  },
+  "seo": {
+    "title": "Niwa Apartments · Studio, 1BR & 2BR in Lower Queen Anne, Seattle",
+    "description": "Studio, 1BR and 2BR apartments at Niwa Apartments, 513 1st Ave N in Lower Queen Anne, Seattle. On-site laundry, walkable to Seattle Center.",
+    "keywords": "Niwa Apartments, Niwa Apartments Seattle, apartments Lower Queen Anne, apartments Uptown Seattle, studio apartment Seattle 98109, 513 1st Ave N",
+    "author": "Niwa Apartments",
+    "ogImage": "",
+    "twitterDescription": "Studio, 1BR and 2BR apartments in Lower Queen Anne, Seattle. On-site laundry, walkable to Seattle Center.",
+    "verification": {
+      "google": "",
+      "bing": ""
+    },
+    "alternateNames": [
+      "Niwa",
+      "Niwa Seattle"
+    ],
+    "sameAs": [],
+    "noindex": true
+  },
+  "schema": {
+    "type": [
+      "ApartmentComplex",
+      "LocalBusiness"
+    ],
+    "description": "Studio, one- and two-bedroom apartments for rent in Lower Queen Anne, Seattle. On-site laundry, walking distance to Seattle Center.",
+    "priceRange": "$1,569–$3,195/mo",
+    "numberOfBedrooms": "0-2",
+    "petsAllowed": true,
+    "areaServed": [
+      "Lower Queen Anne, Seattle",
+      "Queen Anne, Seattle",
+      "Seattle, WA"
+    ],
+    "containedInPlace": "Lower Queen Anne, Seattle, WA",
+    "amenityFeature": [
+      "On-site laundry",
+      "Walk to Seattle Center"
+    ]
+  },
+  "theme": {
+    "colors": {
+      "--bg": "#ffffff",
+      "--bg-2": "#f5f5f3",
+      "--paper": "#ffffff",
+      "--paper-2": "#ffffff",
+      "--ink": "#0a0a0a",
+      "--ink-2": "#3a3733",
+      "--ink-3": "#6e6a63",
+      "--rule": "#ececea",
+      "--rule-2": "#f4f4f2",
+      "--accent": "#129AE5",
+      "--accent-2": "#129AE5",
+      "--warm": "#d4ad7a"
+    },
+    "themeColor": "#129AE5",
+    "backgroundColor": "#ffffff"
+  },
+  "manifest": {
+    "description": "Studio, 1BR & 2BR apartments in Lower Queen Anne, Seattle."
+  },
+  "sitemap": {
+    "pages": []
+  },
+  "hero": {
+    "image": "",
+    "alt": "",
+    "title": "Studios to two bedrooms,",
+    "titleItalic": "in Lower Queen Anne.",
+    "offer": "",
+    "intro": "Studio, one- and two-bedroom apartments at 513 1st Ave N, with on-site laundry — in the middle of Lower Queen Anne, walking distance to Seattle Center."
+  },
+  "floorPlans": {},
+  "integrations": {
+    "orsApiKey": "",
+    "emailjs": {
+      "publicKey": "",
+      "serviceId": "",
+      "templateId": "",
+      "toEmail": "leasing@agmrealestategroup.com"
+    }
+  },
+  "analytics": {
+    "posthog": {
+      "key": "",
+      "host": "https://us.i.posthog.com"
+    },
+    "clarity": {
+      "id": ""
+    },
+    "google": {
+      "ga4Id": "",
+      "adsId": "",
+      "conversionLabels": {
+        "tour_requested": "",
+        "phone_click": "",
+        "email_click": "",
+        "tour_3d_opened": "",
+        "floor_plan_viewed": ""
+      },
+      "conversionValues": {
+        "tour_requested": 150,
+        "phone_click": 100,
+        "email_click": 40,
+        "tour_3d_opened": 10,
+        "floor_plan_viewed": 5,
+        "unit_favorited": 5,
+        "commute_estimated": 5,
+        "gallery_opened": 2
+      }
+    }
+  },
+  "availability": {
+    "source": "https://raw.githubusercontent.com/marketing-agm/agm-availabilities/main/listings.json",
+    "appfolioProperty": "Niwa Apartments"
+  },
+  "wordmark": {
+    "lead": "Niwa",
+    "emph": "Apartments"
+  },
+  "neighborhood": {
+    "title": "Lower Queen Anne, in the middle of it",
+    "intro": "An Uptown block walking distance to Seattle Center, with quick bus access to downtown and South Lake Union."
+  },
+  "features": [
+    {
+      "icon": "closets",
+      "title": "On-site laundry",
+      "body": "Shared laundry in the building — no trips to a laundromat, no quarters."
+    },
+    {
+      "icon": "bedrooms",
+      "title": "Studios to two bedrooms",
+      "body": "A range of layouts in one building, so you can size up or down without leaving the neighborhood."
+    },
+    {
+      "icon": "views",
+      "title": "Lower Queen Anne",
+      "body": "Walking distance to Seattle Center, with quick bus access to downtown and South Lake Union."
+    }
+  ]
+}

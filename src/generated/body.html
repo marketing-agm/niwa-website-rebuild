@@ -1,0 +1,1270 @@
+
+<!-- ================= NAV ================= -->
+<header class="nav" id="nav">
+  <div class="container nav-inner">
+    <a href="#top" class="brand">
+      <span>{{SITE_NAME_LEAD}} <em style="font-style: italic; font-variation-settings: 'opsz' 144, 'SOFT' 100;">{{SITE_NAME_EMPH}}</em></span>
+    </a>
+    <nav class="nav-links" aria-label="Primary">
+      <a href="#floor-plans">Floor plans</a>
+      <a href="#availability">Availability</a>
+      <a href="#gallery">Gallery</a>
+      <a href="#neighborhood">Neighborhood</a>
+    </nav>
+    <div class="nav-actions">
+      <a href="https://account.appfolio.com/realms/foliospace/protocol/openid-connect/auth?activation_state&client_id=client-2b6a90b2e2ee157bf0b2f7736a3c1ed5d64fa984&portfolio_uuid&redirect_uri=https%3A%2F%2Fagmrealestategroup.appfolio.com%2Fconnect%2Fusers%2Foauth%2Fcallback&response_type=code&scope=openid+offline_access&session_timed_out=false&state" class="nav-login" target="_blank" rel="noopener noreferrer">Resident Login</a>
+      <a href="#tour" class="nav-cta">Schedule a tour</a>
+    </div>
+    <button class="nav-toggle" id="nav-toggle" type="button" aria-label="Open menu" aria-controls="nav-mobile" aria-expanded="false">
+      <span class="nav-toggle-bars" aria-hidden="true"></span>
+    </button>
+    <nav class="nav-mobile" id="nav-mobile" aria-label="Mobile menu">
+      <a href="#floor-plans">Floor plans</a>
+      <a href="#availability">Availability</a>
+      <a href="#gallery">Gallery</a>
+      <a href="#neighborhood">Neighborhood</a>
+      <a href="#tour" class="nav-mobile-cta">Schedule a tour</a>
+      <a href="https://account.appfolio.com/realms/foliospace/protocol/openid-connect/auth?activation_state&client_id=client-2b6a90b2e2ee157bf0b2f7736a3c1ed5d64fa984&portfolio_uuid&redirect_uri=https%3A%2F%2Fagmrealestategroup.appfolio.com%2Fconnect%2Fusers%2Foauth%2Fcallback&response_type=code&scope=openid+offline_access&session_timed_out=false&state" class="nav-mobile-cta is-secondary" target="_blank" rel="noopener noreferrer">Resident Login</a>
+    </nav>
+  </div>
+</header>
+
+<!-- ================= HERO ================= -->
+<section class="hero" id="top">
+  <div class="container">
+    <div class="hero-grid">
+      <div>
+        <div class="hero-meta reveal">
+          <span class="pill pill--accent">{{HERO_OFFER}}</span>
+        </div>
+
+        <h1 class="display reveal" data-delay="1">
+          <span class="line">{{HERO_TITLE}} <span class="italic">{{HERO_TITLE_ITALIC}}</span></span>
+        </h1>
+
+        <div class="hero-sub reveal" data-delay="2">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-7.5-7-12a7 7 0 1 1 14 0c0 4.5-7 12-7 12z"/><circle cx="12" cy="9" r="2.5"/></svg>
+          <a href="{{SITE_MAP_HREF}}" target="_blank" rel="noopener">{{SITE_STREET}} · {{SITE_CITYSTATE}}</a>
+        </div>
+
+        <p class="hero-intro reveal" data-delay="3">{{HERO_INTRO}}</p>
+
+        <div class="cta-row reveal" data-delay="4">
+          <a href="#tour" class="btn btn-primary">
+            Schedule a tour
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </a>
+          <a href="#availability" class="btn btn-ghost">
+            See What's Available
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><polyline points="19 12 12 19 5 12"/></svg>
+          </a>
+          <a href="{{SITE_PHONE_HREF}}" class="btn btn-ghost">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.91.32 1.8.57 2.66a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.42-1.13a2 2 0 0 1 2.11-.45c.86.25 1.75.44 2.66.57a2 2 0 0 1 1.72 2z"/></svg>
+            {{SITE_PHONE}}
+          </a>
+        </div>
+      </div>
+
+      <!-- Hero visual: stylized Seattle view -->
+      <div class="hero-visual reveal" data-delay="2" aria-hidden="true">
+        <svg class="skyline" viewBox="0 0 400 500" preserveAspectRatio="xMidYMid slice">
+          <defs>
+            <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#e8d4a8"/>
+              <stop offset="55%" stop-color="#c89d72"/>
+              <stop offset="100%" stop-color="#6b563f"/>
+            </linearGradient>
+            <linearGradient id="mtn" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#9d8665" stop-opacity="0.9"/>
+              <stop offset="100%" stop-color="#5a4a36" stop-opacity="1"/>
+            </linearGradient>
+            <linearGradient id="city" x1="0" y1="0" x2="0" y2="1">
+              <stop offset="0%" stop-color="#2d2418"/>
+              <stop offset="100%" stop-color="#1a1410"/>
+            </linearGradient>
+          </defs>
+          <rect width="400" height="500" fill="url(#sky)"/>
+          <!-- Sun -->
+          <circle cx="290" cy="180" r="42" fill="#f0d9a8" opacity="0.85"/>
+          <circle cx="290" cy="180" r="60" fill="#f0d9a8" opacity="0.18"/>
+          <!-- Distant mountains -->
+          <path d="M0 280 L40 245 L80 265 L130 220 L180 250 L240 215 L290 245 L340 225 L400 250 L400 320 L0 320 Z" fill="url(#mtn)" opacity="0.55"/>
+          <!-- Mid mountains -->
+          <path d="M0 310 L50 285 L110 305 L170 275 L230 300 L290 280 L360 305 L400 290 L400 340 L0 340 Z" fill="url(#mtn)" opacity="0.75"/>
+          <!-- City silhouette -->
+          <g fill="url(#city)">
+            <rect x="0" y="340" width="400" height="160"/>
+            <rect x="40" y="295" width="20" height="55"/>
+            <rect x="68" y="280" width="18" height="70"/>
+            <rect x="92" y="265" width="22" height="85"/>
+            <rect x="120" y="240" width="16" height="110"/>
+            <rect x="142" y="225" width="24" height="125"/>
+            <rect x="172" y="200" width="20" height="150"/>
+            <polygon points="192,200 202,180 212,200"/>
+            <rect x="200" y="245" width="16" height="105"/>
+            <rect x="222" y="220" width="22" height="130"/>
+            <rect x="250" y="260" width="18" height="90"/>
+            <rect x="274" y="285" width="20" height="65"/>
+            <rect x="300" y="270" width="16" height="80"/>
+            <rect x="322" y="300" width="22" height="50"/>
+            <rect x="350" y="285" width="18" height="65"/>
+            <rect x="375" y="305" width="25" height="45"/>
+          </g>
+          <!-- Window lights -->
+          <g fill="#f4d99a" opacity="0.7">
+            <rect x="125" y="260" width="3" height="3"/>
+            <rect x="130" y="275" width="3" height="3"/>
+            <rect x="125" y="295" width="3" height="3"/>
+            <rect x="150" y="245" width="3" height="3"/>
+            <rect x="155" y="270" width="3" height="3"/>
+            <rect x="150" y="295" width="3" height="3"/>
+            <rect x="178" y="220" width="3" height="3"/>
+            <rect x="183" y="240" width="3" height="3"/>
+            <rect x="178" y="265" width="3" height="3"/>
+            <rect x="183" y="290" width="3" height="3"/>
+            <rect x="228" y="240" width="3" height="3"/>
+            <rect x="233" y="265" width="3" height="3"/>
+            <rect x="228" y="290" width="3" height="3"/>
+            <rect x="305" y="290" width="3" height="3"/>
+            <rect x="310" y="310" width="3" height="3"/>
+            <rect x="278" y="305" width="3" height="3"/>
+          </g>
+          <!-- Foreground deck rail -->
+          <rect x="0" y="445" width="400" height="3" fill="#1a1410"/>
+          <rect x="0" y="465" width="400" height="2" fill="#1a1410" opacity="0.6"/>
+          <g fill="#1a1410">
+            <rect x="30" y="448" width="2" height="50"/>
+            <rect x="80" y="448" width="2" height="50"/>
+            <rect x="130" y="448" width="2" height="50"/>
+            <rect x="180" y="448" width="2" height="50"/>
+            <rect x="230" y="448" width="2" height="50"/>
+            <rect x="280" y="448" width="2" height="50"/>
+            <rect x="330" y="448" width="2" height="50"/>
+            <rect x="380" y="448" width="2" height="50"/>
+          </g>
+        </svg>
+        <div class="frame-overlay"></div>
+        <div class="visual-tag"><span class="dot"></span>View from upper-floor deck</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Marquee -->
+  <div class="marquee" aria-hidden="true">
+    <div class="marquee-track">
+      <span>One month free · 12-month lease</span>
+      <span>Ask your leasing agent for details</span>
+      <span>Limited availability</span>
+      <span>Smoke-free building</span>
+      <span>One month free · 12-month lease</span>
+      <span>Ask your leasing agent for details</span>
+      <span>Limited availability</span>
+      <span>Smoke-free building</span>
+    </div>
+  </div>
+</section>
+
+<!-- ================= ABOUT ================= -->
+
+
+<!-- ================= GALLERY ================= -->
+<section id="gallery" class="gallery-section">
+  <div class="container">
+    <div class="section-head">
+      <div class="reveal">
+        <div class="eyebrow">Gallery</div>
+        <h2 class="display">See it for <span class="italic">yourself.</span></h2>
+      </div>
+      <p class="lede reveal" data-delay="1">A look inside the building, around the homes, and through the neighborhood. Professional photography is on the way — schedule a tour to see it in person.</p>
+    </div>
+
+    <div class="gallery-tabs reveal">
+      <button class="gallery-tab is-active" data-cat="all">
+        All <span class="g-count">—</span>
+      </button>
+      <button class="gallery-tab" data-cat="interior">
+        Interior <span class="g-count">—</span>
+      </button>
+      <button class="gallery-tab" data-cat="exterior">
+        Exterior <span class="g-count">—</span>
+      </button>
+      <button class="gallery-tab" data-cat="units">
+        Units <span class="g-count">—</span>
+      </button>
+      <button class="gallery-tab" data-cat="neighborhood">
+        Neighborhood <span class="g-count">—</span>
+      </button>
+    </div>
+
+    <div class="gallery-strip-wrap is-at-start">
+      <button class="strip-nav strip-prev" aria-label="Scroll left" type="button">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <button class="strip-nav strip-next" aria-label="Scroll right" type="button">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+      <div class="gallery-strip" id="gallery-strip"></div>
+    </div>
+
+    <p class="gallery-note reveal" data-delay="1">Photography coming soon — actual unit photos available on request.</p>
+  </div>
+</section>
+
+<!-- ================= FLOOR PLANS ================= -->
+
+<!-- ================= AVAILABLE UNITS ================= -->
+<section id="availability">
+  <div class="container">
+    <div class="section-head">
+      <div class="reveal">
+        <div class="eyebrow">Available homes</div>
+        <h2 class="display">Find Your <span class="italic">New Home</span></h2>
+      </div>
+      <p class="lede reveal" data-delay="1">Bright one-bedrooms and spacious two-bedroom, two-bath homes — every unit with a private deck. Filter by what matters to you — bedrooms, availability, price.</p>
+    </div>
+
+    <!-- Filter bar -->
+    <div class="filter-bar reveal">
+      <div class="filter-group">
+        <span class="filter-label">Bedrooms</span>
+        <div class="pill-toggle" role="tablist" aria-label="Filter by bedrooms">
+          <button class="pill-tab is-active" data-filter="beds" data-value="all">All</button>
+          <button class="pill-tab" data-filter="beds" data-value="1">1 BR</button>
+          <button class="pill-tab" data-filter="beds" data-value="2">2 BR</button>
+        </div>
+      </div>
+      <div class="filter-group">
+        <span class="filter-label">Availability</span>
+        <div class="pill-toggle" role="tablist" aria-label="Filter by availability">
+          <button class="pill-tab is-active" data-filter="avail" data-value="all">All</button>
+          <button class="pill-tab" data-filter="avail" data-value="now">Now</button>
+          <button class="pill-tab" data-filter="avail" data-value="soon">Coming soon</button>
+        </div>
+      </div>
+      <div class="filter-group filter-afford">
+        <span class="filter-label">Your budget</span>
+        <div class="afford-input-wrap">
+          <span class="afford-prefix">$</span>
+          <input id="afford-income" type="number" inputmode="numeric" min="0" step="1000" placeholder="Annual income" aria-label="Your annual income" />
+        </div>
+        <span class="afford-result" id="afford-result" aria-live="polite"></span>
+      </div>
+      <div class="filter-group filter-sort">
+        <span class="filter-label">Sort by</span>
+        <div class="select-wrap">
+          <select id="sort-units" aria-label="Sort units">
+            <option value="price-asc">Price · low to high</option>
+            <option value="price-desc">Price · high to low</option>
+            <option value="size-desc">Size · largest first</option>
+            <option value="beds-asc">Bedrooms · fewest first</option>
+          </select>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+      </div>
+      <div class="filter-meta">
+        Showing <span id="results-count">9</span> of <span data-unit-total>9</span> homes
+      </div>
+    </div>
+
+    <div class="unit-rail-wrap is-at-start" id="unit-rail-wrap">
+      <button class="strip-nav unit-prev" aria-label="Scroll to previous homes" type="button">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+      </button>
+      <button class="strip-nav unit-next" aria-label="Scroll to more homes" type="button">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+      </button>
+      <div class="unit-grid" id="unit-grid"></div>
+      <p class="unit-rail-hint" id="unit-rail-hint" aria-hidden="true">Scroll for more homes →</p>
+    </div>
+
+    <div class="empty-state" id="empty-state" hidden>
+      <div class="empty-icon">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+      </div>
+      <h4>No homes match those filters</h4>
+      <p>Try adjusting your selection — or call <a href="{{SITE_PHONE_HREF}}">{{SITE_PHONE}}</a> to be notified when something opens up.</p>
+      <button class="btn btn-ghost" id="reset-filters">Reset filters</button>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FEATURES ================= -->
+
+
+<!-- ================= NEIGHBORHOOD ================= -->
+
+
+<!-- ================= PRICING ================= -->
+
+
+<!-- ================= POLICIES / APPLICATION ================= -->
+
+
+<!-- ================= CONTACT / TOUR ================= -->
+
+
+<!-- ================= LIGHTBOX ================= -->
+<div class="lightbox" id="lightbox" aria-hidden="true" role="dialog" aria-modal="true">
+  <div class="lightbox-backdrop" data-lb-close></div>
+  <button class="lightbox-btn lightbox-close" aria-label="Close gallery">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+      <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+    </svg>
+  </button>
+  <button class="lightbox-btn lightbox-prev" aria-label="Previous image">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="15 18 9 12 15 6"/>
+    </svg>
+  </button>
+  <button class="lightbox-btn lightbox-next" aria-label="Next image">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+      <polyline points="9 18 15 12 9 6"/>
+    </svg>
+  </button>
+  <div class="lightbox-stage">
+    <div class="lightbox-img-wrap">
+      <img class="lightbox-photo" id="lightbox-photo" alt="" hidden />
+      <div class="lightbox-placeholder" id="lightbox-img">
+        <span class="ph-eyebrow">Photography</span>
+        <p class="ph-title">Coming <em>soon.</em></p>
+        <p class="ph-meta">Professional photos of the building, the homes, and the neighborhood are on the way — schedule a tour to see it in person.</p>
+      </div>
+    </div>
+    <div class="lightbox-meta">
+      <div class="lightbox-text">
+        <span class="lightbox-cat" id="lightbox-cat"></span>
+        <h4 class="lightbox-title" id="lightbox-title"></h4>
+        <p class="lightbox-desc" id="lightbox-desc"></p>
+      </div>
+      <span class="lightbox-counter" id="lightbox-counter"></span>
+    </div>
+  </div>
+</div>
+
+<!-- ================= FLOATING CONTACT WIDGET ================= -->
+<button class="fab-contact" id="fab-contact" type="button" aria-haspopup="dialog" aria-controls="contact-widget" aria-expanded="false">
+  <span class="fab-ic" aria-hidden="true">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+  </span>
+  <span class="fab-label">Contact us</span>
+</button>
+
+<div class="cw-overlay" id="contact-widget" role="dialog" aria-modal="true" aria-labelledby="cw-title" aria-hidden="true">
+  <div class="cw-backdrop" data-cw-close></div>
+  <div class="cw-panel" data-step="choose">
+    <header class="cw-head">
+      <div class="cw-head-text">
+        <span class="cw-head-eyebrow" data-cw-eyebrow>Get in touch</span>
+        <h3 class="cw-head-title" id="cw-title" data-cw-title>How can we help?</h3>
+      </div>
+      <div class="cw-head-actions">
+        <button class="cw-icon-btn cw-back" type="button" aria-label="Back" data-cw-back>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <button class="cw-icon-btn" type="button" aria-label="Close" data-cw-close>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+    </header>
+
+    <div class="cw-body">
+      <!-- Step 1: choose -->
+      <div class="cw-step" data-step="choose">
+        <p class="cw-intro">Tell us a little about why you're reaching out and we'll route you to the right team.</p>
+        <div class="cw-grid">
+          <button class="cw-card" type="button" data-cw-go="leasing">
+            <span class="cw-card-ic" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M10 20v-6h4v6"/></svg>
+            </span>
+            <span class="cw-card-text">
+              <span class="cw-card-title">I'm interested in leasing</span>
+              <span class="cw-card-meta">New prospect · tour, pricing, availability</span>
+            </span>
+            <span class="cw-card-arrow" aria-hidden="true">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </span>
+          </button>
+          <button class="cw-card is-maintenance" type="button" data-cw-go="maintenance">
+            <span class="cw-card-ic" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 0-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 0 0 5.4-5.4l-2.3 2.3-2.4-.6-.6-2.4 2.3-2.3z"/></svg>
+            </span>
+            <span class="cw-card-text">
+              <span class="cw-card-title">I'm a current resident</span>
+              <span class="cw-card-meta">Maintenance request or issue in your home</span>
+            </span>
+            <span class="cw-card-arrow" aria-hidden="true">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Step 2a: leasing -->
+      <div class="cw-step" data-step="leasing">
+        <form class="cw-form" data-cw-form="leasing" onsubmit="handleWidgetSubmit(event)">
+          <div class="form-row">
+            <div class="field">
+              <label for="cw-l-fname">First name</label>
+              <input id="cw-l-fname" name="fname" type="text" required />
+            </div>
+            <div class="field">
+              <label for="cw-l-lname">Last name</label>
+              <input id="cw-l-lname" name="lname" type="text" required />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="field">
+              <label for="cw-l-email">Email</label>
+              <input id="cw-l-email" name="email" type="email" required />
+            </div>
+            <div class="field">
+              <label for="cw-l-phone">Phone</label>
+              <input id="cw-l-phone" name="phone" type="tel" />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="field">
+              <label for="cw-l-beds">Bedrooms</label>
+              <select id="cw-l-beds" name="beds">
+                <option value="1">1 Bedroom</option>
+                <option value="2">2 Bedroom</option>
+                <option value="either">Either</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="cw-l-movein">Target move-in</label>
+              <input id="cw-l-movein" name="movein" type="text" placeholder="e.g., June 1" />
+            </div>
+          </div>
+          <div class="field">
+            <label for="cw-l-time">Preferred tour time</label>
+            <select id="cw-l-time" name="tour-time">
+              <option>No preference</option>
+              <option>Weekday morning</option>
+              <option>Weekday afternoon</option>
+              <option>Weekday evening</option>
+              <option>Saturday</option>
+              <option>Sunday</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="cw-l-msg">Anything we should know?</label>
+            <textarea id="cw-l-msg" name="msg" placeholder="Number of occupants, must-haves, questions about the unit, etc."></textarea>
+          </div>
+          <button class="form-submit" type="submit">
+            Send to leasing
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </button>
+          <p class="form-note">By submitting, you agree to be contacted by AGM Real Estate Group regarding this listing.</p>
+        </form>
+      </div>
+
+      <!-- Step 2b: maintenance -->
+      <div class="cw-step" data-step="maintenance">
+        <form class="cw-form is-maintenance" data-cw-form="maintenance" onsubmit="handleWidgetSubmit(event)">
+          <div class="form-row">
+            <div class="field">
+              <label for="cw-m-name">Name</label>
+              <input id="cw-m-name" name="name" type="text" required />
+            </div>
+            <div class="field">
+              <label for="cw-m-unit">Unit #</label>
+              <input id="cw-m-unit" name="unit" type="text" placeholder="e.g., 204" required />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="field">
+              <label for="cw-m-email">Email</label>
+              <input id="cw-m-email" name="email" type="email" required />
+            </div>
+            <div class="field">
+              <label for="cw-m-phone">Phone</label>
+              <input id="cw-m-phone" name="phone" type="tel" />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="field">
+              <label for="cw-m-cat">Issue type</label>
+              <select id="cw-m-cat" name="category" required>
+                <option value="">Select…</option>
+                <option>Plumbing / leak</option>
+                <option>Appliance</option>
+                <option>Electrical</option>
+                <option>Heating / cooling</option>
+                <option>Lock / key / door</option>
+                <option>Window / screen</option>
+                <option>Pest control</option>
+                <option>Common area</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="cw-m-urgency">Urgency</label>
+              <select id="cw-m-urgency" name="urgency" required>
+                <option value="routine">Routine · a few days</option>
+                <option value="urgent">Urgent · 24 hours</option>
+                <option value="emergency">Emergency · call now</option>
+              </select>
+            </div>
+          </div>
+          <div class="field">
+            <label for="cw-m-loc">Where in the unit?</label>
+            <input id="cw-m-loc" name="location" type="text" placeholder="e.g., kitchen sink, primary bathroom" />
+          </div>
+          <div class="field">
+            <label for="cw-m-desc">Describe the issue</label>
+            <textarea id="cw-m-desc" name="description" placeholder="What's happening, when it started, anything you've tried…" required></textarea>
+          </div>
+          <div class="field">
+            <label for="cw-m-best">Best time to access the unit</label>
+            <input id="cw-m-best" name="best-time" type="text" placeholder="e.g., weekdays after 3pm" />
+          </div>
+          <label class="checkbox-row">
+            <input type="checkbox" name="permission" />
+            <span>Permission to enter when I'm not home (a {{SITE_NAME}} team member will leave a notice).</span>
+          </label>
+          <label class="checkbox-row">
+            <input type="checkbox" name="pets" />
+            <span>Pets in the unit — please be aware on entry.</span>
+          </label>
+          <button class="form-submit" type="submit">
+            Submit maintenance request
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </button>
+          <p class="form-note">For after-hours emergencies (active leak, no heat, lockout), please call <a href="{{SITE_PHONE_HREF}}" style="color:var(--accent);">{{SITE_PHONE}}</a>.</p>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ================= SHORTLIST BAR + OVERLAYS ================= -->
+<div class="shortlist-bar" id="shortlist-bar" role="region" aria-label="Saved homes">
+  <div class="sl-summary">
+    <span id="sl-fav-summary"><span class="sl-count" id="sl-fav-count">0</span> saved</span>
+    <span id="sl-cmp-summary" hidden><span class="sl-count" id="sl-cmp-count">0</span> to compare</span>
+  </div>
+  <div class="sl-actions">
+    <button class="sl-btn sl-btn-ghost" id="sl-compare-btn" type="button" disabled>Compare</button>
+    <button class="sl-btn sl-btn-primary" id="sl-view-btn" type="button">View shortlist</button>
+  </div>
+</div>
+
+<div class="ct-overlay" id="shortlist-overlay" role="dialog" aria-modal="true" aria-labelledby="sl-drawer-title" aria-hidden="true">
+  <div class="ct-backdrop" data-ct-close></div>
+  <div class="ct-panel is-narrow">
+    <header class="cw-head">
+      <div class="cw-head-text">
+        <span class="cw-head-eyebrow">Your shortlist</span>
+        <h3 class="cw-head-title" id="sl-drawer-title">Saved homes</h3>
+      </div>
+      <div class="cw-head-actions">
+        <button class="cw-icon-btn" type="button" aria-label="Close" data-ct-close>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+    </header>
+    <div class="ct-body" id="sl-drawer-body"></div>
+  </div>
+</div>
+
+<div class="ct-overlay" id="compare-overlay" role="dialog" aria-modal="true" aria-labelledby="cmp-title" aria-hidden="true">
+  <div class="ct-backdrop" data-ct-close></div>
+  <div class="ct-panel">
+    <header class="cw-head">
+      <div class="cw-head-text">
+        <span class="cw-head-eyebrow">Side by side</span>
+        <h3 class="cw-head-title" id="cmp-title">Compare homes</h3>
+      </div>
+      <div class="cw-head-actions">
+        <button class="cw-icon-btn" type="button" aria-label="Close" data-ct-close>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+    </header>
+    <div class="ct-body" id="cmp-body"></div>
+  </div>
+</div>
+
+<!-- ================= FOOTER ================= -->
+
+
+<div class="ct-overlay sheet-overlay" id="neighborhood-overlay" role="dialog" aria-modal="true" aria-labelledby="neighborhood-overlay-title" aria-hidden="true">
+  <div class="ct-backdrop" data-ct-close></div>
+  <div class="ct-panel ct-panel--sheet">
+    <header class="cw-head">
+      <div class="cw-head-text">
+        <span class="cw-head-eyebrow">The neighborhood</span>
+        <h3 class="cw-head-title" id="neighborhood-overlay-title">{{NEIGHBORHOOD_TITLE}}</h3>
+      </div>
+      <div class="cw-head-actions">
+        <button class="cw-icon-btn" type="button" aria-label="Close" data-ct-close>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+    </header>
+    <div class="ct-body">
+
+  <div class="ud-inner">
+    <p class="ud-intro">{{NEIGHBORHOOD_INTRO}} Filter by category — or just explore the map.</p>
+
+    <!-- Category filter chips -->
+    <div class="nb-filters">
+      <div class="nb-filter-pills">
+        <button class="nb-pill is-active" data-cat="all">
+          <span class="nb-pill-dot nb-pill-dot--all"></span>
+          All places <span class="nb-pill-count" data-count="all">—</span>
+        </button>
+        <button class="nb-pill" data-cat="parks">
+          <span class="nb-pill-dot" style="background:#129AE5"></span>
+          Parks & outdoors <span class="nb-pill-count" data-count="parks">—</span>
+        </button>
+        <button class="nb-pill" data-cat="food">
+          <span class="nb-pill-dot" style="background:#129AE5"></span>
+          Food & drink <span class="nb-pill-count" data-count="food">—</span>
+        </button>
+        <button class="nb-pill" data-cat="shopping">
+          <span class="nb-pill-dot" style="background:#8b6f47"></span>
+          Shopping & grocery <span class="nb-pill-count" data-count="shopping">—</span>
+        </button>
+        <button class="nb-pill" data-cat="transit">
+          <span class="nb-pill-dot" style="background:#3d5a6c"></span>
+          Transit <span class="nb-pill-count" data-count="transit">—</span>
+        </button>
+        <button class="nb-pill" data-cat="schools">
+          <span class="nb-pill-dot" style="background:#6b4a7a"></span>
+          Schools <span class="nb-pill-count" data-count="schools">—</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- List + Map -->
+    <div class="nb-main">
+      <aside class="nb-list-panel">
+        <div class="nb-list-head">
+          <span><strong id="visible-count">—</strong> places nearby</span>
+          <span class="nb-list-sort">Sorted by distance</span>
+        </div>
+        <ul class="nb-place-list" id="nb-place-list"></ul>
+      </aside>
+
+      <div class="nb-map-panel">
+        <div id="leaflet-map" aria-label="Interactive neighborhood map"></div>
+        <div class="nb-map-overlay-legend">
+          <span class="legend-home"></span>
+          {{SITE_NAME}}
+          <span class="legend-sep"></span>
+          <span class="legend-route"></span> Route 33
+          <span class="legend-route legend-route-dashed"></span> Route 24
+        </div>
+        <div class="nb-map-foot">
+          <div class="addr">
+            <strong>{{SITE_STREET}}</strong>
+            {{SITE_CITYSTATE}}
+          </div>
+          <a href="{{SITE_MAP_HREF}}" target="_blank" rel="noopener" class="openmap">Get directions →</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Commute estimator -->
+    <div class="commute">
+      <div class="commute-head">
+        <div>
+          <h3>How far is your <span style="font-style:italic;font-variation-settings:'opsz' 144,'SOFT' 100;">commute?</span></h3>
+          <p>Enter where you work or study — we'll estimate travel time from the front door.</p>
+        </div>
+      </div>
+      <form class="commute-form" id="commute-form">
+        <input id="commute-dest" type="text" placeholder="e.g., Amazon Spheres, Seattle" aria-label="Destination address" autocomplete="off" />
+        <button type="submit" id="commute-submit">Estimate</button>
+      </form>
+      <div class="commute-result" id="commute-result" aria-live="polite">
+        <div class="commute-dest" id="commute-dest-label"></div>
+        <div class="commute-modes">
+          <div class="commute-mode">
+            <span class="cm-ic" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24"><path d="M5 17h14M6 17l1.5-5.5A2 2 0 0 1 9.4 10h5.2a2 2 0 0 1 1.9 1.5L18 17M7.5 17v2M16.5 17v2M3 13h2M19 13h2"/></svg></span>
+            <div><div class="cm-time" data-mode="driving-car">—</div><div class="cm-label">Drive</div><div class="cm-dist" data-dist="driving-car"></div></div>
+          </div>
+          <div class="commute-mode">
+            <span class="cm-ic" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24"><circle cx="6" cy="17" r="3"/><circle cx="18" cy="17" r="3"/><path d="M6 17l4-8h4l2 4M10 9h5M14 9l-2 8"/></svg></span>
+            <div><div class="cm-time" data-mode="cycling-regular">—</div><div class="cm-label">Bike</div><div class="cm-dist" data-dist="cycling-regular"></div></div>
+          </div>
+          <div class="commute-mode">
+            <span class="cm-ic" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24"><circle cx="12" cy="4" r="2"/><path d="M12 6v6m0 0l-3 7m3-7l3 7M8 9l4 2 4-2"/></svg></span>
+            <div><div class="cm-time" data-mode="foot-walking">—</div><div class="cm-label">Walk</div><div class="cm-dist" data-dist="foot-walking"></div></div>
+          </div>
+        </div>
+        <p class="commute-attrib" id="commute-attrib"></p>
+      </div>
+      <p class="commute-error" id="commute-error" hidden></p>
+    </div>
+  </div>
+
+    </div>
+  </div>
+</div>
+
+<div class="ct-overlay sheet-overlay" id="tour-overlay" role="dialog" aria-modal="true" aria-labelledby="tour-overlay-title" aria-hidden="true">
+  <div class="ct-backdrop" data-ct-close></div>
+  <div class="ct-panel ct-panel--sheet">
+    <header class="cw-head">
+      <div class="cw-head-text">
+        <span class="cw-head-eyebrow">Schedule a tour</span>
+        <h3 class="cw-head-title" id="tour-overlay-title">Let's get you in the door</h3>
+      </div>
+      <div class="cw-head-actions">
+        <button class="cw-icon-btn" type="button" aria-label="Close" data-ct-close>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+    </header>
+    <div class="ct-body">
+
+  <div class="ud-inner">
+    <p class="ud-intro">Reach out by phone or email, or send us a few details and we'll get back to you within one business day.</p>
+
+    <div class="contact-grid">
+      <div class="contact-card">
+        <div class="contact-method">
+          <div class="ic">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.91.32 1.8.57 2.66a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.42-1.13a2 2 0 0 1 2.11-.45c.86.25 1.75.44 2.66.57a2 2 0 0 1 1.72 2z"/></svg>
+          </div>
+          <div class="ml">
+            <small>Call us</small>
+            <a href="{{SITE_PHONE_HREF}}">{{SITE_PHONE}}</a>
+          </div>
+        </div>
+        <div class="contact-method">
+          <div class="ic">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 6-10 7L2 6"/></svg>
+          </div>
+          <div class="ml">
+            <small>Email us</small>
+            <a href="mailto:leasing@agmrealestategroup.com">leasing@agmrealestategroup.com</a>
+          </div>
+        </div>
+        <div class="contact-method">
+          <div class="ic">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-7.5-7-12a7 7 0 1 1 14 0c0 4.5-7 12-7 12z"/><circle cx="12" cy="9" r="2.5"/></svg>
+          </div>
+          <div class="ml">
+            <small>Visit</small>
+            <a href="{{SITE_MAP_HREF}}" target="_blank" rel="noopener">{{SITE_STREET}}, {{SITE_LOCALITY}}</a>
+          </div>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding-top:12px;border-top:1px solid var(--rule);">
+          <span style="font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:0.12em;color:var(--ink-3);">Managed by</span>
+          <span style="font-family:var(--serif);font-weight:400;color:var(--ink);">AGM Real Estate Group</span>
+        </div>
+      </div>
+
+      <div class="tw" id="tour-wizard" data-tw-step="1">
+        <div class="tw-head">
+          <div class="tw-dots" role="tablist" aria-label="Tour booking steps">
+            <button class="tw-dot is-active" type="button" data-tw-goto="1" aria-label="Step 1: Date and time">
+              <span class="tw-dot-num">1</span>
+              <svg class="tw-dot-check" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </button>
+            <span class="tw-dot-sep" data-tw-sep="1-2"></span>
+            <button class="tw-dot" type="button" data-tw-goto="2" disabled aria-label="Step 2: About you">
+              <span class="tw-dot-num">2</span>
+              <svg class="tw-dot-check" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </button>
+            <span class="tw-dot-sep" data-tw-sep="2-3"></span>
+            <button class="tw-dot" type="button" data-tw-goto="3" disabled aria-label="Step 3: Message">
+              <span class="tw-dot-num">3</span>
+              <svg class="tw-dot-check" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </button>
+          </div>
+          <div class="tw-eyebrow" data-tw-eyebrow>Step 1 of 3</div>
+          <h3 class="tw-title" data-tw-title>Pick a date that <span class="italic">works for you.</span></h3>
+        </div>
+
+        <!-- STEP 1: Calendar + slots -->
+        <div class="tw-panel" data-tw-step="1">
+          <div class="tw-cal">
+            <div class="tw-cal-head">
+              <button class="tw-cal-nav" type="button" data-tw-nav="prev" aria-label="Previous month">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+              </button>
+              <div class="tw-cal-month" data-tw-month>—</div>
+              <button class="tw-cal-nav" type="button" data-tw-nav="next" aria-label="Next month">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+              </button>
+            </div>
+            <div class="tw-cal-dows">
+              <div class="tw-cal-dow">Mon</div>
+              <div class="tw-cal-dow">Tue</div>
+              <div class="tw-cal-dow">Wed</div>
+              <div class="tw-cal-dow">Thu</div>
+              <div class="tw-cal-dow">Fri</div>
+              <div class="tw-cal-dow">Sat</div>
+              <div class="tw-cal-dow">Sun</div>
+            </div>
+            <div class="tw-cal-grid" data-tw-grid></div>
+          </div>
+
+          <div class="tw-slots" data-tw-slots>
+            <div class="tw-slots-label">Available tour times <strong data-tw-slots-date></strong></div>
+            <div class="tw-slots-grid" data-tw-slots-grid></div>
+          </div>
+
+          <div class="tw-nudge">
+            <span class="tw-nudge-item"><span class="tw-nudge-dot"></span><span data-tw-tour-count>12 tours scheduled this week</span></span>
+            <span class="tw-nudge-item">Most tours take 20 minutes</span>
+            <span class="tw-nudge-item">Available through <span data-tw-max-date>—</span></span>
+          </div>
+
+          <div class="tw-row">
+            <button class="tw-continue" type="button" data-tw-next="2" disabled>
+              Continue
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- STEP 2: Qualifying chips + contact -->
+        <div class="tw-panel" data-tw-step="2">
+          <div class="tw-chipset" data-tw-group="stage">
+            <div class="tw-chipset-label">I'm…</div>
+            <div class="tw-chipset-row">
+              <button class="tw-chip tw-chip-small" type="button" data-tw-chip="exploring">Just exploring</button>
+              <button class="tw-chip tw-chip-small" type="button" data-tw-chip="touring">Actively touring</button>
+              <button class="tw-chip tw-chip-small" type="button" data-tw-chip="ready">Ready to apply this month</button>
+            </div>
+          </div>
+          <div class="tw-chipset" data-tw-group="beds">
+            <div class="tw-chipset-label">Looking for</div>
+            <div class="tw-chipset-row">
+              <button class="tw-chip tw-chip-small" type="button" data-tw-chip="1br">1 BR</button>
+              <button class="tw-chip tw-chip-small" type="button" data-tw-chip="2br">2 BR / 2 BA</button>
+              <button class="tw-chip tw-chip-small" type="button" data-tw-chip="either">Either works</button>
+            </div>
+          </div>
+          <div class="tw-chipset" data-tw-group="window">
+            <div class="tw-chipset-label">Move-in window</div>
+            <div class="tw-chipset-row">
+              <button class="tw-chip tw-chip-small" type="button" data-tw-chip="asap">ASAP</button>
+              <button class="tw-chip tw-chip-small" type="button" data-tw-chip="30d">Next 30 days</button>
+              <button class="tw-chip tw-chip-small" type="button" data-tw-chip="60d">1–2 months out</button>
+              <button class="tw-chip tw-chip-small" type="button" data-tw-chip="flex">Flexible</button>
+            </div>
+          </div>
+          <div class="tw-chipset" data-tw-group="household">
+            <div class="tw-chipset-label">Household</div>
+            <div class="tw-chipset-row">
+              <button class="tw-chip tw-chip-small" type="button" data-tw-chip="solo">Just me</button>
+              <button class="tw-chip tw-chip-small" type="button" data-tw-chip="couple">Couple</button>
+              <button class="tw-chip tw-chip-small" type="button" data-tw-chip="roommates">Roommates</button>
+              <button class="tw-chip tw-chip-small" type="button" data-tw-chip="family">Family</button>
+            </div>
+          </div>
+
+          <div class="form-row" style="margin-top:8px;">
+            <div class="field">
+              <label for="tw-fname">First name</label>
+              <input id="tw-fname" type="text" data-tw-input="first" required />
+            </div>
+            <div class="field">
+              <label for="tw-lname">Last name</label>
+              <input id="tw-lname" type="text" data-tw-input="last" required />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="field">
+              <label for="tw-email">Email</label>
+              <input id="tw-email" type="email" data-tw-input="email" required />
+            </div>
+            <div class="field">
+              <label for="tw-phone">Phone <span style="text-transform:none;letter-spacing:0;color:var(--ink-3);">(optional)</span></label>
+              <input id="tw-phone" type="tel" data-tw-input="phone" />
+            </div>
+          </div>
+
+          <div class="tw-row">
+            <button class="tw-back" type="button" data-tw-prev="1">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+              Back
+            </button>
+            <button class="tw-continue" type="button" data-tw-next="3">
+              Continue
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- STEP 3: Message + template chips -->
+        <div class="tw-panel" data-tw-step="3">
+          <div class="tw-chipset" data-tw-group="q">
+            <div class="tw-chipset-label">Questions about</div>
+            <div class="tw-chipset-row">
+              <button class="tw-chip tw-chip-small" type="button" data-tw-msg="parking">Parking</button>
+              <button class="tw-chip tw-chip-small" type="button" data-tw-msg="pets">Pets / pet rent</button>
+              <button class="tw-chip tw-chip-small" type="button" data-tw-msg="storage">Storage</button>
+              <button class="tw-chip tw-chip-small" type="button" data-tw-msg="laundry">Laundry</button>
+              <button class="tw-chip tw-chip-small" type="button" data-tw-msg="lease">Lease length</button>
+              <button class="tw-chip tw-chip-small" type="button" data-tw-msg="utilities">Utilities included</button>
+              <button class="tw-chip tw-chip-small" type="button" data-tw-msg="application">Application process</button>
+            </div>
+          </div>
+          <div class="tw-chipset" data-tw-group="m">
+            <div class="tw-chipset-label">I'd like to mention</div>
+            <div class="tw-chipset-row">
+              <button class="tw-chip tw-chip-small" type="button" data-tw-msg="pet">I have a pet</button>
+              <button class="tw-chip tw-chip-small" type="button" data-tw-msg="needparking">Need parking</button>
+              <button class="tw-chip tw-chip-small" type="button" data-tw-msg="bike">Bringing a bike</button>
+              <button class="tw-chip tw-chip-small" type="button" data-tw-msg="wfh">Work from home</button>
+              <button class="tw-chip tw-chip-small" type="button" data-tw-msg="cosigner">Have a co-signer</button>
+              <button class="tw-chip tw-chip-small" type="button" data-tw-msg="oos">Moving from out of state</button>
+            </div>
+          </div>
+
+          <div class="field" style="margin-bottom:0;">
+            <label for="tw-msg">Your message</label>
+            <textarea id="tw-msg" class="tw-textarea" data-tw-textarea placeholder="Tap chips above to add common questions, or write your own."></textarea>
+          </div>
+
+          <div class="tw-reassure">
+            <div class="tw-reassure-item">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              We reply within one business day
+            </div>
+            <div class="tw-reassure-item">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              Tour confirmations include a Google Maps link
+            </div>
+            <div class="tw-reassure-item">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+              Free to reschedule any time
+            </div>
+          </div>
+
+          <div class="tw-row">
+            <button class="tw-back" type="button" data-tw-prev="2">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+              Back
+            </button>
+            <button class="tw-submit" type="button" data-tw-submit>
+              <span data-tw-submit-label>Confirm tour</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- DONE: Confirmation -->
+        <div class="tw-panel" data-tw-step="done">
+          <div class="tw-success">
+            <div class="tw-success-mark">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            </div>
+            <h3>You're <span class="italic">on the books.</span></h3>
+            <p class="tw-success-sub" data-tw-success-sub>We'll be in touch within one business day to confirm.</p>
+
+            <div class="tw-summary" data-tw-summary></div>
+
+            <div class="tw-actions">
+              <a class="tw-action" data-tw-gcal target="_blank" rel="noopener">
+                <span class="tw-action-ic">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                </span>
+                Add to Google Calendar
+                <svg class="tw-action-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+              </a>
+              <a class="tw-action" href="{{SITE_MAP_HREF}}" target="_blank" rel="noopener">
+                <span class="tw-action-ic">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-7.5-7-12a7 7 0 1 1 14 0c0 4.5-7 12-7 12z"/><circle cx="12" cy="9" r="2.5"/></svg>
+                </span>
+                Get directions to {{SITE_STREET}}
+                <svg class="tw-action-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+              </a>
+              <a class="tw-action" href="{{SITE_PHONE_SMS}}">
+                <span class="tw-action-ic">
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                </span>
+                Text the leasing office
+                <svg class="tw-action-arrow" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <p class="tw-fineprint">By submitting, you agree to be contacted by AGM Real Estate Group regarding this listing.</p>
+      </div>
+    </div>
+  </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ================= UNIT DETAIL MODAL =================
+     Inside-the-home, rental terms and application criteria live here instead of
+     as three full-width sections. Opened by clicking an available-home card.
+     Content stays in the DOM so it remains crawlable. -->
+<div class="ct-overlay ud-overlay" id="unit-overlay" role="dialog" aria-modal="true" aria-labelledby="ud-title" aria-hidden="true">
+  <div class="ct-backdrop" data-ct-close></div>
+  <div class="ct-panel ct-panel--wide">
+    <header class="cw-head">
+      <div class="cw-head-text">
+        <span class="cw-head-eyebrow" id="ud-eyebrow">Available home</span>
+        <h3 class="cw-head-title" id="ud-title">Home details</h3>
+      </div>
+      <div class="cw-head-actions">
+        <button class="cw-icon-btn" type="button" aria-label="Close" data-ct-close>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+    </header>
+    <div class="ct-body">
+      <div class="ud-media" id="ud-media"></div>
+      <div id="ud-summary"></div>
+
+      <div class="ud-tabs" role="tablist" aria-label="Home details">
+        <button class="ud-tab is-active" type="button" role="tab" id="ud-tab-features" data-ud-tab="features" aria-selected="true">Inside the home</button>
+        <button class="ud-tab" type="button" role="tab" id="ud-tab-terms" data-ud-tab="terms" aria-selected="false">Rental terms</button>
+        <button class="ud-tab" type="button" role="tab" id="ud-tab-criteria" data-ud-tab="criteria" aria-selected="false">Application</button>
+      </div>
+      <div class="ud-panels">
+        <div class="ud-panel" data-ud-panel="features" role="tabpanel" aria-labelledby="ud-tab-features">
+<p class="ud-intro">A practical, considered layout with the everyday details that matter — and the views that don't hurt either.</p><div class="ud-inner">
+    
+
+    <div class="features-grid">
+      {{FEATURE_CARDS}}
+    </div>
+
+    <!-- Lists -->
+    <div class="lists-grid">
+      <div class="list-block">
+        <h5>Amenities</h5>
+        <ul>
+          <li>Electric heat</li>
+          <li>Private balcony</li>
+          <li>Large closets</li>
+          <li>Cascade Mountain views <span class="badge">Select units</span></li>
+          <li>On-site laundry</li>
+          <li>Smoke-free building</li>
+        </ul>
+      </div>
+      <div class="list-block">
+        <h5>Appliances</h5>
+        <ul>
+          <li>Stove / oven</li>
+          <li>Full-size dishwasher</li>
+          <li>Refrigerator / freezer</li>
+          <li>Modern fixtures</li>
+        </ul>
+      </div>
+      <div class="list-block">
+        <h5>Parking</h5>
+        <ul>
+          <li>Covered parking <span class="badge">$75/mo</span></li>
+          <li>Uncovered parking <span class="badge">$50/mo</span></li>
+          <li>Free residential street parking nearby</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+        </div>
+        <div class="ud-panel" data-ud-panel="terms" role="tabpanel" aria-labelledby="ud-tab-terms" hidden>
+<p class="ud-intro">Everything you need to know before applying — laid out plainly, with no surprises at signing.</p><div class="ud-inner">
+    
+
+    <div class="pricing-grid">
+      <div class="ledger">
+        <div class="ledger-row">
+          <div class="label">Monthly rent
+            <small>Varies by home · 12-month lease</small>
+          </div>
+          <div class="value" data-terms-rent-range>$1,395 – $2,095</div>
+        </div>
+        <div class="ledger-row">
+          <div class="label">Refundable security deposit
+            <small>Equal to one month's rent · due prior to move in</small>
+          </div>
+          <div class="value">1 mo. rent</div>
+        </div>
+        <div class="ledger-row">
+          <div class="label">Non-refundable screening fee
+            <small>Per adult applicant</small>
+          </div>
+          <div class="value">$50</div>
+        </div>
+        <div class="ledger-row">
+          <div class="label">Water / sewer / garbage
+            <small>Flat rate · +$50 per additional occupant</small>
+          </div>
+          <div class="value">$100<span style="font-size:14px;color:rgba(255,255,255,0.5);font-family:var(--mono);"> /mo</span></div>
+        </div>
+        <div class="ledger-row">
+          <div class="label">Electricity
+            <small>Tenant sets up Seattle City Light</small>
+          </div>
+          <div class="value muted">Tenant</div>
+        </div>
+        <div class="ledger-row total">
+          <div class="label">Move-in special
+            <small>1 month free on 12-month lease · ask for details</small>
+          </div>
+          <div class="value">−1 mo</div>
+        </div>
+      </div>
+
+      <aside class="summary-card">
+        <h3>What's due at move-in</h3>
+        <ul class="summary-list">
+          <li><span>First 30 days base rent</span><strong>1 mo. rent</strong></li>
+          <li><span>Refundable security deposit</span><strong>1 mo. rent</strong></li>
+          <li><span>Screening fee (per adult)</span><strong>$50</strong></li>
+        </ul>
+        <div class="move-in-cost">
+          <span class="lbl">Estimated due at signing</span>
+          <span class="val" data-terms-due-range>$2,840 – $4,240</span>
+        </div>
+        <ul class="summary-list" style="margin-top:8px;">
+          <li><span>Lease term</span><strong>12 months</strong></li>
+          <li><span>Smoking</span><strong>Not permitted</strong></li>
+          <li><span>Renters insurance</span><strong>Required</strong></li>
+        </ul>
+      </aside>
+    </div>
+
+    <!-- Move-in cost calculator -->
+    <div class="movein-calc" id="movein-calc">
+      <div class="mc-controls-wrap">
+        <h3>Estimate your <span style="font-style:italic;font-variation-settings:'opsz' 144,'SOFT' 100;">move-in cost.</span></h3>
+        <p class="mc-sub">Pick a home and household size for an exact figure due at signing.</p>
+        <div class="mc-controls">
+          <div class="mc-field">
+            <label for="mc-unit">Choose a home</label>
+            <select id="mc-unit"></select>
+          </div>
+          <div class="mc-field">
+            <label for="mc-adults">Adults on the lease</label>
+            <div class="mc-stepper" data-mc-stepper="adults">
+              <button type="button" data-mc-step="-1" aria-label="Fewer adults">−</button>
+              <span class="mc-val" id="mc-adults" aria-live="polite">1</span>
+              <button type="button" data-mc-step="1" aria-label="More adults">+</button>
+            </div>
+          </div>
+          <label class="mc-toggle">
+            <input type="checkbox" id="mc-special" checked />
+            <span>Apply 1-month-free move-in special (12-mo lease)</span>
+          </label>
+        </div>
+      </div>
+      <div class="mc-summary" aria-live="polite">
+        <div class="mc-sum-head">Due at signing</div>
+        <div id="mc-lines"></div>
+        <div class="mc-total">
+          <span class="mc-total-lbl">Estimated total</span>
+          <span class="mc-total-val" id="mc-total">—</span>
+        </div>
+        <p class="mc-foot-note" id="mc-foot"></p>
+      </div>
+    </div>
+  </div>
+        </div>
+        <div class="ud-panel" data-ud-panel="criteria" role="tabpanel" aria-labelledby="ud-tab-criteria" hidden>
+<p class="ud-intro">We process applications transparently and in compliance with all applicable Seattle and Washington state regulations.</p><div class="ud-inner">
+    
+
+    <div class="reqs">
+      <div class="req">
+        <span class="req-num">01</span>
+        <div class="req-val">650<span class="sub"> credit score</span></div>
+        <div class="req-desc">Minimum credit score, with minimal negative reporting on file.</div>
+      </div>
+      <div class="req">
+        <span class="req-num">02</span>
+        <div class="req-val">1–2<span class="sub"> years</span></div>
+        <div class="req-desc">Of positive rental history from prior landlords.</div>
+      </div>
+      <div class="req">
+        <span class="req-num">03</span>
+        <div class="req-val">3×<span class="sub"> rent</span></div>
+        <div class="req-desc">Collective monthly income of three times the rent.</div>
+      </div>
+      <div class="req">
+        <span class="req-num">04</span>
+        <div class="req-val">$50<span class="sub"> /adult</span></div>
+        <div class="req-desc">Non-refundable screening fee per adult applicant.</div>
+      </div>
+    </div>
+
+    <div class="lists-grid" style="margin-top: 64px;">
+      <div class="list-block">
+        <h5>Pet policy</h5>
+        <ul>
+          <li>No pets allowed</li>
+          <li>ESA & service animals accepted</li>
+          <li>Proper documentation required</li>
+        </ul>
+      </div>
+      <div class="list-block">
+        <h5>Building policy</h5>
+        <ul>
+          <li>Smoke-free building</li>
+          <li>Renters insurance required</li>
+          <li>12-month lease</li>
+        </ul>
+      </div>
+      <div class="list-block">
+        <h5>Process</h5>
+        <ul>
+          <li>SMC 14.08 First-in-Time (Seattle)</li>
+          <li>RCW 59.18.257 compliant</li>
+          <li>Reusable screening reports not accepted</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer>
+  <div class="container">
+    <div class="top">
+      <div class="col">
+        <div class="brand" style="margin-bottom:14px;">
+          <span class="brand-mark" aria-hidden="true"></span>
+          <span>{{SITE_NAME_LEAD}} <em style="font-style:italic;font-variation-settings:'opsz' 144, 'SOFT' 100;">{{SITE_NAME_EMPH}}</em></span>
+        </div>
+        <p style="max-width:48ch;">One and two-bedroom apartments in one of Seattle's most livable neighborhoods, professionally managed by AGM Real Estate Group, LLC.</p>
+      </div>
+      <div class="col">
+        <h6>Property</h6>
+        <p><a href="#floor-plans">Floor plans</a></p>
+        <p><a href="#availability">Availability</a></p>
+        <p><a href="#gallery">Gallery</a></p>
+        <p><a href="#neighborhood">Neighborhood</a></p>
+      </div>
+      <div class="col">
+        <h6>Contact</h6>
+        <p><a href="{{SITE_PHONE_HREF}}">{{SITE_PHONE}}</a></p>
+        <p><a href="mailto:leasing@agmrealestategroup.com">leasing@agmrealestategroup.com</a></p>
+        <p>{{SITE_STREET}}<br/>{{SITE_CITYSTATE}}</p>
+      </div>
+      <div class="col">
+{{FOOTER_GUIDES}}
+        <p><a href="#faq">FAQ</a></p>
+      </div>
+    </div>
+
+    <details class="disclaimer">
+      <summary>Pricing, screening &amp; legal disclosures</summary>
+      <p>All pricing, availability, fees, and lease terms are subject to change prior to the execution of a lease agreement. Photographs, renderings, and floor plans are for illustrative purposes and may vary by unit. Information is provided in good faith and is subject to verification.</p>
+      <p>For Seattle properties, applications are processed in accordance with Seattle Municipal Code (SMC) 14.08 (First-in-Time Ordinance). For non-Seattle Washington properties, applications are processed in the order received, and all Washington properties comply with RCW 59.18.257 regarding tenant screening disclosures, including notice that comprehensive reusable tenant screening reports are not accepted, as applicable based on the property's jurisdiction and governing municipal regulations.</p>
+      <p>Applicants are screened for a credit score of 650 or higher with minimal negative reporting, 1–2 years of positive rental history, and a collective income of 3× the monthly rent. Consider this statement as notification that we do not accept a comprehensive reusable tenant screening report, as defined by RCW 59.18.257.</p>
+    </details>
+
+    <div class="bottom">
+      <span>© <span id="yr"></span> AGM Real Estate Group, LLC. All rights reserved.</span>
+      <span class="eho"><span class="eho-mark"></span>Equal Housing Opportunity</span>
+    </div>
+  </div>
+</footer>

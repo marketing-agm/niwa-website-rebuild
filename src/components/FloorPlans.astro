@@ -1,0 +1,171 @@
+---
+// Floor plans — one tab and one detail panel per layout the property actually
+// has. Previously this section was hardcoded in body.html as exactly two plans
+// ("1 Bedroom" / "2 Bedroom") with hand-written copy, so a property with a
+// studio, a 3BR, or a single layout could not be represented without forking
+// the shared markup.
+//
+// Plans are the union of the keys in site.config.json -> floorPlans and the
+// plan keys present in units.json, so a layout shows up whether it is
+// configured, currently rentable, or both. Facts (beds, baths, sqft, starting
+// price) are derived from live units where they exist and fall back to values
+// declared on the plan, which is what lets a fully-leased layout still render.
+//
+// Rendered server-side, like Faq.astro: this is primary marketing content and
+// needs to be in the HTML source for crawlers, not injected after hydration.
+const { site } = Astro.props as { site: { config: any; data: any } };
+const c = site.config;
+const units: any[] = site.data?.units ?? [];
+const fp: Record<string, any> = c.floorPlans ?? {};
+
+// Units carry a more specific key than the plan tabs do ("2br2ba" vs "2br"),
+// so reduce to the bedroom-count prefix — same rule as planConfig() in app.js.
+const planKeyOf = (plan: string) => {
+  const m = String(plan || '').match(/^(studio|\d+br)/);
+  return m ? m[1] : String(plan || '');
+};
+const bedsOfKey = (key: string) => (key === 'studio' ? 0 : parseInt(key, 10) || 0);
+
+const allKeys = Array.from(new Set([...Object.keys(fp), ...units.map((u) => planKeyOf(u.plan))]))
+  .filter(Boolean)
+  .sort((a, b) => bedsOfKey(a) - bedsOfKey(b));
+
+const fmtInt = (n: number) => Number(n).toLocaleString('en-US');
+const fmtMoney = (n: number) => '$' + Number(n).toLocaleString('en-US');
+// Most common value wins — one oddly-sized unit shouldn't redefine the layout.
+const mode = (vals: any[]) => {
+  const counts = new Map<any, number>();
+  vals.forEach((v) => counts.set(v, (counts.get(v) || 0) + 1));
+  let best = null, bestN = 0;
+  counts.forEach((n, v) => { if (n > bestN) { bestN = n; best = v; } });
+  return best;
+};
+
+const plans = allKeys.map((key) => {
+  const cfg = fp[key] ?? {};
+  const copy = cfg.copy ?? {};
+  const mine = units.filter((u) => planKeyOf(u.plan) === key);
+  // "Available now" is what the price and CTA should speak to; a coming-soon
+  // unit shouldn't set the advertised rate.
+  const now = mine.filter((u) => u.availType === 'now');
+  const priceScope = now.length ? now : mine;
+  const rents = priceScope.map((u) => Number(u.rent)).filter((n) => Number.isFinite(n) && n > 0);
+
+  // Describe the same homes the price describes. Using every unit here while
+  // scoping the price to available-now let a plan advertise a coming-soon
+  // unit's square footage beside an available unit's rent.
+  const beds = priceScope.length ? Number(mode(priceScope.map((u) => Number(u.beds)))) : Number(cfg.beds ?? bedsOfKey(key));
+  const baths = priceScope.length ? Number(mode(priceScope.map((u) => Number(u.baths)))) : Number(cfg.baths ?? 0);
+  const sqftVals = priceScope.map((u) => Number(u.sqft)).filter((n) => Number.isFinite(n) && n > 0);
+  const sqft = sqftVals.length ? Number(mode(sqftVals)) : Number(cfg.sqft ?? 0);
+
+  const bedLabel = beds === 0 ? 'Studio' : `${beds} Bedroom`;
+  const bathLabel = baths ? `${baths % 1 === 0 ? baths : baths.toFixed(1)} Bath` : '';
+  const bathValue = baths ? `${baths % 1 === 0 ? baths : baths.toFixed(1)} full` : '—';
+  const ctaLabel = beds === 0 ? 'See available studios' : `See available ${beds} BRs`;
+
+  return {
+    key,
+    bedLabel,
+    eyebrow: copy.eyebrow || [bedLabel, bathLabel].filter(Boolean).join(' · '),
+    title: copy.title || `${bedLabel},`,
+    titleItalic: copy.titleItalic || 'designed to live in.',
+    description: copy.description || '',
+    sqft,
+    bathValue,
+    // Extra rows the property wants to advertise (Outdoor, Views, Kitchen…).
+    extraStats: Array.isArray(copy.stats) ? copy.stats : [],
+    // Static text is the no-JS fallback; syncPlanPricing() refreshes both from
+    // live units on load so they can't drift from the feed.
+    fromLabel: rents.length ? `from ${fmtMoney(Math.min(...rents))}` : 'none available now',
+    rateLabel: rents.length ? `${fmtMoney(Math.min(...rents))} / mo` : 'None available now',
+    ctaLabel,
+  };
+});
+
+const COUNT_WORDS = ['No', 'One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight'];
+const sec = c.floorPlansSection ?? {};
+const countWord = COUNT_WORDS[plans.length] ?? String(plans.length);
+const defaultTitle = `${countWord} layout${plans.length === 1 ? '' : 's'},`;
+const heading = sec.title || defaultTitle;
+const headingItalic = sec.titleItalic || 'designed for living.';
+const lede = sec.lede || '';
+// Drawings are per-plan, not per-unit: a renter comparing the drawing to the
+// home they tour will find differences, and saying so up front is both fairer
+// and safer than letting them discover it at signing.
+const disclaimer = sec.disclaimer ??
+  'Floor plans are representative of each layout. Dimensions, finishes and features vary by home — square footage is approximate.';
+---
+{plans.length > 0 && (
+<section class="floor-plans" id="floor-plans">
+  <div class="container">
+    <div class="section-head">
+      <div class="reveal">
+        <div class="eyebrow">{sec.eyebrow || 'Floor plans'}</div>
+        <h2 class="display">{heading} <span class="italic">{headingItalic}</span></h2>
+      </div>
+      {lede && <p class="lede reveal" data-delay="1">{lede}</p>}
+    </div>
+
+    <div class="plan-switcher reveal" role="tablist" aria-label="Floor plan selector">
+      {plans.map((p, i) => (
+        <button class={`plan-tab${i === 0 ? ' is-active' : ''}`} data-plan={p.key} role="tab">
+          <span class="tab-title">{p.bedLabel}</span>
+          <span class="tab-meta">
+            {p.sqft ? `${fmtInt(p.sqft)} sqft · ` : ''}<span data-plan-from={p.key}>{p.fromLabel}</span>
+          </span>
+        </button>
+      ))}
+    </div>
+
+    <div class="plan-display reveal" data-delay="1">
+      <div class="plan-svg-wrap">
+        <div class="plan-view-toggle" role="tablist" aria-label="Floor plan view">
+          <button class="plan-view-tab is-active" data-view="2d" role="tab" aria-selected="true">Floor plan</button>
+          <button class="plan-view-tab" data-view="3d" role="tab" aria-selected="false">3D tour</button>
+        </div>
+
+        <div class="plan-view plan-view-2d is-active" data-view="2d">
+          <div class="plan-placeholder">
+            <span class="placeholder-eyebrow">Floor plan</span>
+            <p class="placeholder-title">Floor Plans <span class="italic">Coming Soon</span></p>
+            <p class="placeholder-meta">Detailed drawings will be available shortly — schedule a tour to walk the layout in person.</p>
+          </div>
+        </div>
+
+        <div class="plan-view plan-view-3d" data-view="3d">
+          <div class="plan-tour-frame">
+            <iframe class="plan-tour-iframe" title="3D walkthrough tour" allow="xr-spatial-tracking; fullscreen" allowfullscreen loading="lazy" hidden></iframe>
+            <div class="plan-tour-placeholder">
+              <span class="placeholder-eyebrow">3D tour</span>
+              <p class="placeholder-title">3D Tour <span class="italic">Coming Soon</span></p>
+              <p class="placeholder-meta">Walkthroughs for each layout are on the way — schedule a tour to walk the home in person.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <aside class="plan-details">
+        {plans.map((p, i) => (
+          <div class={`plan-content${i === 0 ? ' is-active' : ''}`} data-plan={p.key}>
+            <span class="eyebrow">{p.eyebrow}</span>
+            <h3 class="display">{p.title} <span class="italic">{p.titleItalic}</span></h3>
+            {p.description && <p>{p.description}</p>}
+            <ul class="plan-stats">
+              {p.sqft > 0 && <li><span>Square feet</span><strong>{fmtInt(p.sqft)}</strong></li>}
+              {p.bathValue !== '—' && <li><span>{p.bathValue.startsWith('1 ') ? 'Bathroom' : 'Bathrooms'}</span><strong>{p.bathValue}</strong></li>}
+              {p.extraStats.map((s: any) => (
+                <li><span>{s.label}</span><strong>{s.value}</strong></li>
+              ))}
+              <li><span>Starting at</span><strong data-plan-rate={p.key}>{p.rateLabel}</strong></li>
+            </ul>
+            <a href="#availability" class="btn btn-ghost">{p.ctaLabel} →</a>
+          </div>
+        ))}
+      </aside>
+    </div>
+
+    {disclaimer && <p class="plan-disclaimer reveal">{disclaimer}</p>}
+  </div>
+</section>
+)}

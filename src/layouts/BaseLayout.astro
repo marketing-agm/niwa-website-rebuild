@@ -1,0 +1,226 @@
+---
+import Analytics from '../components/Analytics.astro';
+import StickyCta from '../components/StickyCta.astro';
+import '../styles/global.css';
+
+const { site } = Astro.props as { site: { id: string; config: any; data: any; faq?: { q: string; a: string }[] } };
+const c = site.config;
+const url = c.domain.replace(/\/$/, '') + '/';
+
+// Price range is derived from live availability, not hand-maintained. units.json
+// is refreshed from the AppFolio feed on a schedule, so a static
+// schema.priceRange silently drifts out of date the moment rents move — which is
+// exactly how this file ended up advertising a range no unit was renting at.
+// Falls back to the configured string when a site has no units loaded yet.
+// Scoped to move-in-ready homes, matching the hero figure and the plan tabs.
+// Spanning every unit made the structured data quote a floor price that nothing
+// on the page listed, because a cheaper home was still weeks from available.
+const allUnits: any[] = site.data?.units ?? [];
+const rentScope = allUnits.filter((u: any) => u.availType === 'now').length
+  ? allUnits.filter((u: any) => u.availType === 'now')
+  : allUnits;
+const liveRents: number[] = rentScope
+  .map((u: any) => Number(u.rent))
+  .filter((n: number) => Number.isFinite(n) && n > 0);
+const money = (n: number) => '$' + n.toLocaleString('en-US');
+const priceRange = liveRents.length
+  ? (Math.min(...liveRents) === Math.max(...liveRents)
+      ? `${money(Math.min(...liveRents))}/mo`
+      : `${money(Math.min(...liveRents))}–${money(Math.max(...liveRents))}/mo`)
+  : c.schema.priceRange;
+
+// A site can market a property made of several buildings (Magnolia lists
+// Crestview, Vista and Manor). config.address/geo stay the leasing anchor —
+// where a renter actually goes to tour — and `buildings` describes the rest.
+// Absent or single-entry `buildings` leaves the structured data exactly as it
+// was, so single-building sites are unaffected.
+const buildings: any[] = Array.isArray(c.buildings) ? c.buildings : [];
+const postal = (a: any) => ({
+  '@type': 'PostalAddress',
+  streetAddress: a.streetAddress,
+  addressLocality: a.addressLocality,
+  addressRegion: a.addressRegion,
+  postalCode: a.postalCode,
+  addressCountry: a.addressCountry,
+});
+// Only buildings with real coordinates get a geo block — a guessed lat/lng in
+// structured data is worse than none, since search engines will place a pin on it.
+const containsPlace = buildings.map((b) => {
+  const place: any = {
+    '@type': 'ApartmentComplex',
+    name: b.name,
+    address: postal(b.address || {}),
+  };
+  if (b.geo && b.geo.latitude != null && b.geo.longitude != null) {
+    place.geo = { '@type': 'GeoCoordinates', latitude: b.geo.latitude, longitude: b.geo.longitude };
+  }
+  return place;
+});
+
+// Ranking for your own property name is an entity problem, not a keyword one:
+// Google has to be confident this site IS the business being searched for.
+// - @id gives the entity a stable identifier to attach those signals to.
+// - alternateName covers the names renters actually type. This property is
+//   "Magnolia Apartments" but people search the buildings by name, and without
+//   this Google has no reason to treat them as the same thing.
+// - sameAs reconciles the site with the Google Business Profile and socials,
+//   which is the strongest signal that a website and a real business are one.
+const alternateName: string[] = c.seo.alternateNames ?? [];
+const sameAs: string[] = c.seo.sameAs ?? [];
+const officeHours: any[] = c.contact.officeHours ?? [];
+
+const jsonLd: any = {
+  '@context': 'https://schema.org',
+  '@type': c.schema.type,
+  '@id': url + '#property',
+  name: c.name,
+  description: c.schema.description,
+  url,
+  telephone: c.contact.phone,
+  priceRange,
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: c.address.streetAddress,
+    addressLocality: c.address.addressLocality,
+    addressRegion: c.address.addressRegion,
+    postalCode: c.address.postalCode,
+    addressCountry: c.address.addressCountry,
+  },
+  areaServed: (c.schema.areaServed || []).map((name: string) => ({ '@type': 'Place', name })),
+  containedInPlace: { '@type': 'Place', name: c.schema.containedInPlace },
+  numberOfBedrooms: c.schema.numberOfBedrooms,
+  petsAllowed: c.schema.petsAllowed,
+  amenityFeature: (c.schema.amenityFeature || []).map((name: string) => ({
+    '@type': 'LocationFeatureSpecification',
+    name,
+    value: true,
+  })),
+};
+// Declaring the buildings tells search engines the listing spans several
+// addresses. Without it the markup asserts every home is at the anchor address,
+// which is simply untrue once a second building is listed.
+// Coordinates are optional: a site can launch before anyone has looked up its
+// lat/lng, and asserting a guessed point in structured data would place the
+// property somewhere it isn't.
+if (c.geo && c.geo.latitude != null && c.geo.longitude != null) {
+  jsonLd.geo = { '@type': 'GeoCoordinates', latitude: c.geo.latitude, longitude: c.geo.longitude };
+}
+if (containsPlace.length > 1) jsonLd.containsPlace = containsPlace;
+if (alternateName.length) jsonLd.alternateName = alternateName;
+if (sameAs.length) jsonLd.sameAs = sameAs;
+if (c.contact.email) jsonLd.email = c.contact.email;
+if (officeHours.length) {
+  jsonLd.openingHoursSpecification = officeHours.map((h: any) => ({
+    '@type': 'OpeningHoursSpecification',
+    dayOfWeek: h.days,
+    opens: h.opens,
+    closes: h.closes,
+  }));
+}
+
+// FAQPage structured data, built from the same per-site faq.json the FAQ section
+// renders. Wins rich results in search and gives AI answer engines clean Q&A.
+const faqItems = site.faq || [];
+const stripTags = (s: string) =>
+  s.replace(/<[^>]+>/g, ' ').replace(/&nbsp;/g, ' ').replace(/&amp;/g, '&').replace(/\s+/g, ' ').trim();
+const faqJsonLd = faqItems.length
+  ? {
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: faqItems.map((f) => ({
+        '@type': 'Question',
+        name: f.q,
+        acceptedAnswer: { '@type': 'Answer', text: stripTags(f.a) },
+      })),
+    }
+  : null;
+
+const themeVars = Object.entries(c.theme.colors)
+  .map(([k, v]) => `${k}: ${v};`)
+  .join(' ');
+
+// expose config + data to the legacy app script
+const siteRuntime = {
+  id: site.id,
+  config: {
+    name: c.name,
+    address: c.address,
+    integrations: c.integrations,
+    contact: c.contact,
+    geo: c.geo,
+    hero: c.hero || {},
+    floorPlans: c.floorPlans || {},
+    buildings: c.buildings || [],
+  },
+  data: site.data,
+};
+
+const emailjsConfigured = !!(c.integrations?.emailjs?.publicKey
+  && c.integrations.emailjs.serviceId
+  && c.integrations.emailjs.templateId);
+---
+<!DOCTYPE html>
+<html lang={c.lang}>
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>{c.seo.title}</title>
+<meta name="description" content={c.seo.description} />
+<meta name="keywords" content={c.seo.keywords} />
+<meta name="robots" content={c.seo.noindex
+  ? 'noindex, nofollow'
+  : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'} />
+<meta name="author" content={c.seo.author} />
+
+<link rel="canonical" href={url} />
+
+{/* Search Console / Bing Webmaster ownership. Verifying is what lets you
+    submit the sitemap and request indexing — the fastest route from "site is
+    live" to "site is in the index". Empty values emit nothing. */}
+{c.seo.verification?.google && <meta name="google-site-verification" content={c.seo.verification.google} />}
+{c.seo.verification?.bing && <meta name="msvalidate.01" content={c.seo.verification.bing} />}
+
+<meta name="geo.region" content={c.address.geoRegion} />
+<meta name="geo.placename" content={c.address.placename} />
+{c.geo?.latitude != null && <meta name="geo.position" content={`${c.geo.latitude};${c.geo.longitude}`} />}
+{c.geo?.latitude != null && <meta name="ICBM" content={`${c.geo.latitude}, ${c.geo.longitude}`} />}
+
+<meta property="og:type" content="website" />
+<meta property="og:site_name" content={c.name} />
+<meta property="og:title" content={c.seo.title} />
+<meta property="og:description" content={c.seo.description} />
+<meta property="og:url" content={url} />
+<meta property="og:locale" content={c.locale} />
+{c.seo.ogImage && <meta property="og:image" content={c.seo.ogImage} />}
+{c.seo.ogImage && <meta property="og:image:alt" content={`${c.name} apartments`} />}
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content={c.seo.title} />
+<meta name="twitter:description" content={c.seo.twitterDescription || c.seo.description} />
+
+<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="manifest" href="/site.webmanifest" />
+<meta name="theme-color" content={c.theme.themeColor} />
+
+<script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd)} />
+{faqJsonLd && <script type="application/ld+json" is:inline set:html={JSON.stringify(faqJsonLd)} />}
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,300..700,30..100,0..1;1,9..144,300..700,30..100,0..1&family=Geist:wght@300..700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" media="print" onload="this.media='all'" />
+<noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" /></noscript>
+
+<style is:inline set:html={`:root{${themeVars}}`} />
+
+<Analytics site={site} />
+</head>
+<body>
+<slot />
+<StickyCta site={site} />
+<script is:inline set:html={`window.__SITE__=${JSON.stringify(siteRuntime)};`} />
+<script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+{emailjsConfigured && <script is:inline src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>}
+<script is:inline src="/app.js"></script>
+</body>
+</html>

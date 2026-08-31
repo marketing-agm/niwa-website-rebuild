@@ -1,0 +1,11 @@
+# Cloudflare Pages project configuration (config as code).
+#
+# `name` MUST match the Pages project name exactly. Cloudflare reads this file
+# during the build, and a mismatch between it and the dashboard project name is
+# one of the most common causes of a failed Pages build.
+#
+# The build output directory is pinned here so it cannot be lost or reset in the
+# dashboard. The build command (`npm run build`) still lives in the dashboard.
+name = "niwa-apartments-agm"
+pages_build_output_dir = "./dist"
+compatibility_date = "2024-11-01"

@@ -1,0 +1,311 @@
+{
+  "units": [
+    {
+      "uid": "niwa-apartments-204",
+      "id": "204",
+      "property": "Niwa Apartments",
+      "address": "513 1st Ave N",
+      "beds": 0,
+      "baths": 1,
+      "sqft": 367,
+      "rent": 1569,
+      "floor": "Second floor",
+      "floorNum": 2,
+      "available": "Sep 1, 2026",
+      "availType": "soon",
+      "features": [
+        "On-site laundry",
+        "Income-restricted (MFTE) — income limits apply"
+      ],
+      "plan": "studio"
+    },
+    {
+      "uid": "niwa-apartments-207",
+      "id": "207",
+      "property": "Niwa Apartments",
+      "address": "513 1st Ave N",
+      "beds": 0,
+      "baths": 1,
+      "sqft": 367,
+      "rent": 1675,
+      "floor": "Second floor",
+      "floorNum": 2,
+      "available": "Now",
+      "availType": "now",
+      "features": [
+        "On-site laundry"
+      ],
+      "plan": "studio"
+    },
+    {
+      "uid": "niwa-apartments-214",
+      "id": "214",
+      "property": "Niwa Apartments",
+      "address": "513 1st Ave N",
+      "beds": 0,
+      "baths": 1,
+      "sqft": 349,
+      "rent": 1675,
+      "floor": "Second floor",
+      "floorNum": 2,
+      "available": "Oct 8, 2026",
+      "availType": "soon",
+      "features": [
+        "On-site laundry"
+      ],
+      "plan": "studio"
+    },
+    {
+      "uid": "niwa-apartments-217",
+      "id": "217",
+      "property": "Niwa Apartments",
+      "address": "513 1st Ave N",
+      "beds": 0,
+      "baths": 1,
+      "sqft": 349,
+      "rent": 1675,
+      "floor": "Second floor",
+      "floorNum": 2,
+      "available": "Sep 9, 2026",
+      "availType": "soon",
+      "features": [
+        "On-site laundry"
+      ],
+      "plan": "studio"
+    },
+    {
+      "uid": "niwa-apartments-308",
+      "id": "308",
+      "property": "Niwa Apartments",
+      "address": "513 1st Ave N",
+      "beds": 2,
+      "baths": 1,
+      "sqft": 661,
+      "rent": 2700,
+      "floor": "Third floor",
+      "floorNum": 3,
+      "available": "Now",
+      "availType": "now",
+      "features": [
+        "On-site laundry"
+      ],
+      "plan": "2br1ba"
+    },
+    {
+      "uid": "niwa-apartments-320",
+      "id": "320",
+      "property": "Niwa Apartments",
+      "address": "513 1st Ave N",
+      "beds": 1,
+      "baths": 1,
+      "sqft": 703,
+      "rent": 2820,
+      "floor": "Third floor",
+      "floorNum": 3,
+      "available": "Sep 5, 2026",
+      "availType": "soon",
+      "features": [
+        "On-site laundry"
+      ],
+      "plan": "1br"
+    },
+    {
+      "uid": "niwa-apartments-509",
+      "id": "509",
+      "property": "Niwa Apartments",
+      "address": "513 1st Ave N",
+      "beds": 0,
+      "baths": 1,
+      "sqft": 388,
+      "rent": 1700,
+      "floor": "Fifth floor",
+      "floorNum": 5,
+      "available": "Now",
+      "availType": "now",
+      "features": [
+        "On-site laundry"
+      ],
+      "plan": "studio"
+    },
+    {
+      "uid": "niwa-apartments-519",
+      "id": "519",
+      "property": "Niwa Apartments",
+      "address": "513 1st Ave N",
+      "beds": 2,
+      "baths": 1,
+      "sqft": 730,
+      "rent": 2945,
+      "floor": "Fifth floor",
+      "floorNum": 5,
+      "available": "Now",
+      "availType": "now",
+      "features": [
+        "On-site laundry"
+      ],
+      "plan": "2br1ba"
+    },
+    {
+      "uid": "niwa-apartments-603",
+      "id": "603",
+      "property": "Niwa Apartments",
+      "address": "513 1st Ave N",
+      "beds": 0,
+      "baths": 1,
+      "sqft": 369,
+      "rent": 1600,
+      "floor": "Sixth floor",
+      "floorNum": 6,
+      "available": "Sep 21, 2026",
+      "availType": "soon",
+      "features": [
+        "On-site laundry"
+      ],
+      "plan": "studio"
+    },
+    {
+      "uid": "niwa-apartments-606",
+      "id": "606",
+      "property": "Niwa Apartments",
+      "address": "513 1st Ave N",
+      "beds": 0,
+      "baths": 1,
+      "sqft": 361,
+      "rent": 1700,
+      "floor": "Sixth floor",
+      "floorNum": 6,
+      "available": "Sep 15, 2026",
+      "availType": "soon",
+      "features": [
+        "On-site laundry"
+      ],
+      "plan": "studio"
+    },
+    {
+      "uid": "niwa-apartments-704",
+      "id": "704",
+      "property": "Niwa Apartments",
+      "address": "513 1st Ave N",
+      "beds": 0,
+      "baths": 1,
+      "sqft": 360,
+      "rent": 1725,
+      "floor": "Seventh floor",
+      "floorNum": 7,
+      "available": "Now",
+      "availType": "now",
+      "features": [
+        "On-site laundry"
+      ],
+      "plan": "studio"
+    },
+    {
+      "uid": "niwa-apartments-711",
+      "id": "711",
+      "property": "Niwa Apartments",
+      "address": "513 1st Ave N",
+      "beds": 2,
+      "baths": 1,
+      "sqft": 745,
+      "rent": 3195,
+      "floor": "Seventh floor",
+      "floorNum": 7,
+      "available": "Now",
+      "availType": "now",
+      "features": [
+        "On-site laundry"
+      ],
+      "plan": "2br1ba"
+    },
+    {
+      "uid": "niwa-apartments-803",
+      "id": "803",
+      "property": "Niwa Apartments",
+      "address": "513 1st Ave N",
+      "beds": 0,
+      "baths": 1,
+      "sqft": 360,
+      "rent": 1755,
+      "floor": "Eighth floor",
+      "floorNum": 8,
+      "available": "Sep 15, 2026",
+      "availType": "soon",
+      "features": [
+        "On-site laundry"
+      ],
+      "plan": "studio"
+    },
+    {
+      "uid": "niwa-apartments-805",
+      "id": "805",
+      "property": "Niwa Apartments",
+      "address": "513 1st Ave N",
+      "beds": 0,
+      "baths": 1,
+      "sqft": 360,
+      "rent": 1755,
+      "floor": "Eighth floor",
+      "floorNum": 8,
+      "available": "Now",
+      "availType": "now",
+      "features": [
+        "On-site laundry"
+      ],
+      "plan": "studio"
+    },
+    {
+      "uid": "niwa-apartments-807",
+      "id": "807",
+      "property": "Niwa Apartments",
+      "address": "513 1st Ave N",
+      "beds": 0,
+      "baths": 1,
+      "sqft": 360,
+      "rent": 1755,
+      "floor": "Eighth floor",
+      "floorNum": 8,
+      "available": "Now",
+      "availType": "now",
+      "features": [
+        "On-site laundry"
+      ],
+      "plan": "studio"
+    },
+    {
+      "uid": "niwa-apartments-808",
+      "id": "808",
+      "property": "Niwa Apartments",
+      "address": "513 1st Ave N",
+      "beds": 2,
+      "baths": 1,
+      "sqft": 715,
+      "rent": 3195,
+      "floor": "Eighth floor",
+      "floorNum": 8,
+      "available": "Sep 1, 2026",
+      "availType": "soon",
+      "features": [
+        "On-site laundry"
+      ],
+      "plan": "2br1ba"
+    },
+    {
+      "uid": "niwa-apartments-811",
+      "id": "811",
+      "property": "Niwa Apartments",
+      "address": "513 1st Ave N",
+      "beds": 1,
+      "baths": 1,
+      "sqft": 717,
+      "rent": 2945,
+      "floor": "Eighth floor",
+      "floorNum": 8,
+      "available": "Now",
+      "availType": "now",
+      "features": [
+        "On-site laundry"
+      ],
+      "plan": "1br"
+    }
+  ]
+}

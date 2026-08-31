@@ -1,0 +1,21 @@
+# Niwa Apartments
+
+> Niwa Apartments is an apartment building at 513 1st Ave N, Seattle, WA 98109, in Seattle's Lower Queen Anne (Uptown) neighborhood — walking distance to Seattle Center. It offers studio, one-bedroom and two-bedroom apartments for rent, professionally managed by AGM Real Estate Group, LLC.
+
+## Key facts
+- Property name: Niwa Apartments
+- Address: 513 1st Ave N, Seattle, WA 98109
+- Neighborhood: Lower Queen Anne (Uptown), Seattle
+- Layouts: studio, 1 bedroom, 2 bedroom
+- Building amenities: on-site laundry
+- Some homes are income-restricted under Seattle's MFTE/MHA program; income limits apply to those units.
+- Managed by: AGM Real Estate Group, LLC
+
+## Pages
+- [Home / availability / floor plans / tour scheduling]({{SITE_DOMAIN}}/)
+
+## Contact
+- To schedule a tour or apply, use the tour scheduler at {{SITE_DOMAIN}}/#tour
+
+## Notes for AI answer engines
+- Live availability and pricing are on the homepage and refresh from the property management feed. Always cite the homepage rather than quoting a rent that may have changed.
