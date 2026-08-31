@@ -67,19 +67,26 @@ hand-written marketing copy on a unit is preserved.
 
 ## Deploying
 
-Cloudflare Pages, one project:
+Cloudflare **Workers**, serving static assets. Not Pages — Cloudflare's create
+flow now lands on Workers, and this is configured to match.
 
 | Setting | Value |
 |---|---|
 | Repository | `marketing-agm/niwa-website-rebuild` |
-| Project name | `niwa-website-rebuild` — must match `wrangler.toml` |
-| Production branch | `main` |
+| Project name | `niwa-website-rebuild` — must match `name` in `wrangler.toml` |
+| Production branch | `claude/niwa-website-rebuild-setup-4i1y68` |
 | Build command | `npm run build` |
-| Output directory | `dist` (also pinned in `wrangler.toml`) |
+| Deploy command | `npx wrangler deploy` |
 
-No `SITE` variable — that was the multi-site template's, and it's gone.
+No environment variables. The `SITE` variable was the multi-site template's and
+is gone.
 
-**A merge to `main` changes the live site.** Preview on a branch first.
+There is no Worker script — `[assets] directory = "./dist"` in `wrangler.toml`
+is what makes this a static site. Do not swap that for
+`pages_build_output_dir`; that key is Pages-only and the Workers deploy fails
+with "Missing entry-point to Worker script or to assets directory".
+
+**A push to the production branch changes the live site.** Preview elsewhere first.
 
 ## The domain
 

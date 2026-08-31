@@ -1,11 +1,19 @@
-# Cloudflare Pages project configuration (config as code).
+# Cloudflare Workers configuration (config as code).
 #
-# `name` MUST match the Pages project name exactly. Cloudflare reads this file
-# during the build, and a mismatch between it and the dashboard project name is
-# one of the most common causes of a failed Pages build.
+# This project deploys as a Worker serving static assets — Cloudflare's current
+# default for new projects, and where the dashboard's "create an app" flow
+# lands. There is no Worker script: `[assets]` alone makes this a static site,
+# and Cloudflare serves the files in ./dist straight from its edge.
 #
-# The build output directory is pinned here so it cannot be lost or reset in the
-# dashboard. The build command (`npm run build`) still lives in the dashboard.
+# `name` MUST match the project name in the dashboard exactly. A mismatch is one
+# of the most common causes of a failed build.
+#
+# NOTE: this replaced `pages_build_output_dir`, which is Pages-only. The build
+# ran `npx wrangler deploy` (the Workers command) and failed with "Missing
+# entry-point to Worker script or to assets directory" because that key means
+# nothing to Workers.
 name = "niwa-website-rebuild"
-pages_build_output_dir = "./dist"
 compatibility_date = "2024-11-01"
+
+[assets]
+directory = "./dist"
