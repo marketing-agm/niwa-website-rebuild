@@ -67,8 +67,7 @@ hand-written marketing copy on a unit is preserved.
 
 ## Deploying
 
-Cloudflare **Workers**, serving static assets. Not Pages — Cloudflare's create
-flow now lands on Workers, and this is configured to match.
+Cloudflare **Pages**, one project.
 
 | Setting | Value |
 |---|---|
@@ -76,15 +75,19 @@ flow now lands on Workers, and this is configured to match.
 | Project name | `niwa-website-rebuild` — must match `name` in `wrangler.toml` |
 | Production branch | `claude/niwa-website-rebuild-setup-4i1y68` |
 | Build command | `npm run build` |
-| Deploy command | `npx wrangler deploy` |
+| Output directory | `dist` (also pinned in `wrangler.toml`) |
+| Environment variables | none |
 
-No environment variables. The `SITE` variable was the multi-site template's and
-is gone.
+Pages deploys the built output itself, so there is **no deploy command**.
 
-There is no Worker script — `[assets] directory = "./dist"` in `wrangler.toml`
-is what makes this a static site. Do not swap that for
-`pages_build_output_dir`; that key is Pages-only and the Workers deploy fails
-with "Missing entry-point to Worker script or to assets directory".
+Cloudflare's "create an app" flow now produces a *Worker* instead. To get a
+Pages project, use the **"Continue to Pages"** link at the bottom of that
+screen, or go straight to `/pages/new` in the dashboard.
+
+⚠️ `wrangler.toml` must stay in its Pages form (`pages_build_output_dir`). The
+Workers form (`[assets] directory`, `workers_dev`) belongs to a different kind
+of project — a Worker deploy against Pages config fails with "Missing
+entry-point to Worker script or to assets directory".
 
 **A push to the production branch changes the live site.** Preview elsewhere first.
 

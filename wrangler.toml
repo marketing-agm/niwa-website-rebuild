@@ -1,23 +1,15 @@
-# Cloudflare Workers configuration (config as code).
+# Cloudflare Pages project configuration (config as code).
 #
-# This project deploys as a Worker serving static assets — Cloudflare's current
-# default for new projects, and where the dashboard's "create an app" flow
-# lands. There is no Worker script: `[assets]` alone makes this a static site,
-# and Cloudflare serves the files in ./dist straight from its edge.
+# `name` MUST match the Pages project name exactly. Cloudflare reads this file
+# during the build, and a mismatch between it and the dashboard project name is
+# one of the most common causes of a failed Pages build.
 #
-# `name` MUST match the project name in the dashboard exactly. A mismatch is one
-# of the most common causes of a failed build.
+# The build output directory is pinned here so it cannot be lost or reset in the
+# dashboard. The build command (`npm run build`) still lives in the dashboard.
 #
-# NOTE: this replaced `pages_build_output_dir`, which is Pages-only. The build
-# ran `npx wrangler deploy` (the Workers command) and failed with "Missing
-# entry-point to Worker script or to assets directory" because that key means
-# nothing to Workers.
+# Pages deploys the output directory itself — there is no deploy command. Do NOT
+# use the Workers form of this file (`[assets] directory`, `workers_dev`); on a
+# Pages project those keys are ignored and the build output has nowhere to go.
 name = "niwa-website-rebuild"
+pages_build_output_dir = "./dist"
 compatibility_date = "2024-11-01"
-
-# Explicit rather than defaulted: the workers.dev hostname is currently this
-# site's only public URL, so it should not depend on a default that could change.
-workers_dev = true
-
-[assets]
-directory = "./dist"
