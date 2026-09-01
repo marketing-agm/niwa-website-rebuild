@@ -1,3 +1,12 @@
 {
-  "photos": []
+  "photos": [
+    {
+      "id": 1,
+      "cat": "exterior",
+      "src": "/images/gallery/exterior-building-facade.jpg",
+      "size": "hero",
+      "title": "Building facade",
+      "desc": "The yellow cladding on 1st Ave N, with the Space Needle behind"
+    }
+  ]
 }

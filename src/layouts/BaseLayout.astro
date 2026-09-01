@@ -191,8 +191,13 @@ const emailjsConfigured = !!(c.integrations?.emailjs?.publicKey
 <meta property="og:description" content={c.seo.description} />
 <meta property="og:url" content={url} />
 <meta property="og:locale" content={c.locale} />
-{c.seo.ogImage && <meta property="og:image" content={c.seo.ogImage} />}
-{c.seo.ogImage && <meta property="og:image:alt" content={`${c.name} apartments`} />}
+{/* og:image MUST be absolute. Facebook, LinkedIn, Slack and iMessage all
+    refuse a relative path and render the link with no picture at all — which
+    looks like a broken site in exactly the place a link gets shared. A path
+    starting "/" is resolved against the site's domain; anything already
+    absolute is passed through untouched. */}
+{c.seo.ogImage && <meta property="og:image" content={new URL(c.seo.ogImage, c.domain).href} />}
+{c.seo.ogImage && <meta property="og:image:alt" content={c.hero?.alt || `${c.name} apartments`} />}
 
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content={c.seo.title} />

@@ -37,7 +37,7 @@
     "description": "Studio, 1BR and 2BR apartments at Niwa Apartments, 513 1st Ave N in Queen Anne, Seattle. Rooftop terrace, 24-hour fitness center, walk to Seattle Center.",
     "keywords": "Niwa Apartments, Niwa Apartments Seattle, apartments Queen Anne Seattle, apartments Lower Queen Anne, apartments Uptown Seattle, apartments near Space Needle, studio apartment Seattle 98109, 513 1st Ave N",
     "author": "Niwa Apartments",
-    "ogImage": "",
+    "ogImage": "/images/og.jpg",
     "twitterDescription": "Studio, 1BR and 2BR apartments in Queen Anne, Seattle. Rooftop terrace, 24-hour fitness center, walk to Seattle Center.",
     "verification": {
       "google": "",
@@ -87,7 +87,7 @@
       "--rule-2": "#f4f4f2",
       "--accent": "#E4EA26",
       "--accent-2": "#E4EA26",
-      "--warm": "#d4ad7a"
+      "--warm": "#F2DD62"
     },
     "themeColor": "#E4EA26",
     "backgroundColor": "#ffffff"
@@ -99,8 +99,8 @@
     "pages": []
   },
   "hero": {
-    "image": "",
-    "alt": "",
+    "image": "/images/hero.jpg",
+    "alt": "Niwa Apartments at 513 1st Ave N — the yellow and grey facade in Queen Anne, with the Space Needle and the downtown Seattle skyline behind it",
     "title": "Iconically,",
     "titleItalic": "Seattle.",
     "offer": "Up to 4 Weeks Free · On Select Units",
