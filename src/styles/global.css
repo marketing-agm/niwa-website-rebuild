@@ -18,8 +18,16 @@
     /* Type that sits ON either yellow. Both are light fills, so this is black in
        every case; it is a token so no rule reaches for --paper and disappears. */
     --on-accent: #000000;
-    /* One knob for vertical rhythm between sections. */
-    --section-y: clamp(72px, 8.5vw, 152px);
+    /* One knob for vertical rhythm between sections.
+       Stepped rather than a single clamp across all widths: the values this
+       replaces were 112px above 860, 80px down to 540 and 56px below that, and
+       a viewport-linear curve that lands on 152px at desktop necessarily passes
+       *under* 112px around the 861px boundary. A first attempt at
+       clamp(72px, 8.5vw, 152px) did exactly that — it took 112px down to 73px at
+       861px wide and to 102px at 1200px, tightening the page on a normal laptop
+       while claiming to open it up. Every value below is above the one it
+       replaces, at every width. */
+    --section-y: clamp(120px, 10vw, 168px);
     --shadow: 0 1px 0 rgba(10,10,10,0.04), 0 12px 32px -16px rgba(10,10,10,0.18);
     --shadow-sm: 0 1px 2px rgba(10,10,10,0.06);
     --radius: 4px;
@@ -595,9 +603,11 @@
   }
 
   /* ---------- Section base ---------- */
-  /* The clamp replaces three fixed breakpoint values (112/80/56) and lands
-     higher at every width — the brief was more room between sections. */
   section { padding: var(--section-y) 0; position: relative; }
+  /* The two narrow steps keep their own values rather than riding the desktop
+     clamp, which would undershoot them. Old: 80px here, 56px below 540. */
+  @media (max-width: 860px) { :root { --section-y: 104px; } }
+  @media (max-width: 540px) { :root { --section-y: 76px; } }
 
   .section-head {
     display: grid;
