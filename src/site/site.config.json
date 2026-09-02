@@ -324,5 +324,9 @@
     ],
     "pending": "Security deposit, screening fee and utility charges are set by the leasing team — ask when you tour, and they will be confirmed in writing before you sign."
   },
-  "footerBlurb": "Studio, one- and two-bedroom apartments in Queen Anne, steps from Seattle Center. Professionally managed by AGM Real Estate Group, LLC."
+  "footerBlurb": "Studio, one- and two-bedroom apartments in Queen Anne, steps from Seattle Center. Professionally managed by AGM Real Estate Group, LLC.",
+  "geo": {
+    "latitude": 47.623974,
+    "longitude": -122.355881
+  }
 }
