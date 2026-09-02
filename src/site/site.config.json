@@ -8,20 +8,12 @@
   "contact": {
     "phone": "+1-206-622-9991",
     "phoneHref": "tel:2066229991",
-    "email": "leasing@agmrealestategroup.com",
-    "officeHours": [
-      {
-        "days": [
-          "Monday",
-          "Tuesday",
-          "Wednesday",
-          "Thursday",
-          "Friday"
-        ],
-        "opens": "09:00",
-        "closes": "17:00"
-      }
-    ]
+    "email": "leasing@niwaapartments.com",
+    "afterHours": {
+      "phone": "+1-206-622-8600",
+      "phoneHref": "tel:2066228600",
+      "note": "Calls are routed to an answering service after 5pm on weekdays and all day at weekends, and answered by the Facilities Team."
+    }
   },
   "address": {
     "streetAddress": "513 1st Ave N",
@@ -68,10 +60,17 @@
     "amenityFeature": [
       "Rooftop terrace",
       "24-hour fitness center",
+      "In-unit washer and dryer",
       "Dishwasher",
       "Stainless steel appliances",
       "Pet friendly",
-      "Walk to Seattle Center"
+      "Off-street parking",
+      "Bike storage",
+      "Package service",
+      "Elevator",
+      "Controlled access",
+      "High-speed internet",
+      "Extra storage"
     ]
   },
   "theme": {
@@ -105,12 +104,18 @@
     "title": "Iconically,",
     "titleItalic": "Seattle.",
     "offer": "",
-    "intro": "Modern design meets city zen living, next to the iconic Space Needle. Studio, one- and two-bedroom homes at 513 1st Ave N, with a rooftop terrace and a 24-hour fitness center.",
+    "intro": "Modern design meets city zen living — next to the iconic Space Needle.",
     "video": {
       "mode": "background",
       "loop": [
-        { "src": "/video/niwa-hero-loop.webm", "type": "video/webm" },
-        { "src": "/video/niwa-hero-loop.mp4", "type": "video/mp4" }
+        {
+          "src": "/video/niwa-hero-loop.webm",
+          "type": "video/webm"
+        },
+        {
+          "src": "/video/niwa-hero-loop.mp4",
+          "type": "video/mp4"
+        }
       ],
       "full": "/video/niwa-hero-film.mp4",
       "poster": "/images/hero-poster.jpg",
@@ -125,7 +130,7 @@
       "publicKey": "",
       "serviceId": "",
       "templateId": "",
-      "toEmail": "leasing@agmrealestategroup.com"
+      "toEmail": "leasing@niwaapartments.com"
     }
   },
   "analytics": {
@@ -207,5 +212,117 @@
     "24-hour fitness center",
     "Walk to Seattle Center",
     "Studio · 1 bed · 2 bed"
-  ]
+  ],
+  "featureLists": [
+    {
+      "heading": "Community",
+      "items": [
+        "24-hour building amenity access",
+        "Rooftop clubroom and outdoor patio grill with seating",
+        "Fitness center with cardio machines, weights and equipment",
+        "Views of Lake Union and downtown Seattle",
+        "Controlled building access and key fob entry",
+        "Package service",
+        "Standing pet washing station",
+        "Elevator access to all floors",
+        "On-site manager"
+      ]
+    },
+    {
+      "heading": "In the home",
+      "items": [
+        "In-unit washer and dryer",
+        "Stainless steel refrigerator, dishwasher, microwave, range and oven",
+        "Balcony patio decks",
+        "Vinyl flooring",
+        "High-speed internet access",
+        "Kitchen islands · select homes",
+        "Vaulted ceilings · select homes",
+        "Panoramic city views · select homes"
+      ]
+    },
+    {
+      "heading": "Parking & storage",
+      "items": [
+        "Off-street parking",
+        "Extra storage space for rent",
+        "Bike storage"
+      ]
+    }
+  ],
+  "pets": {
+    "allowed": true,
+    "maxPerHome": 2,
+    "deposit": "$500 refundable pet deposit",
+    "depositNote": "Deposit and rent are charged per pet.",
+    "types": [
+      {
+        "name": "Cats",
+        "limit": "20 lb weight limit",
+        "rent": "$50 / month"
+      },
+      {
+        "name": "Dogs",
+        "limit": "75 lb weight limit — two dogs must not exceed 75 lb combined",
+        "rent": "$50 / month",
+        "note": "Interview required"
+      }
+    ],
+    "breedRestrictions": [
+      "Pit Bull Terrier",
+      "Staffordshire Terrier",
+      "Doberman Pinscher",
+      "Rottweiler",
+      "Presa Canario",
+      "Akita",
+      "Alaskan Malamute",
+      "Wolf-hybrid",
+      "Mastiff",
+      "Chow Chow",
+      "Great Dane",
+      "German Shepherd",
+      "Husky",
+      "Boxer",
+      "Saint Bernard",
+      "Cane Corso"
+    ]
+  },
+  "walkScores": {
+    "walk": 92,
+    "bike": 76,
+    "transit": 69
+  },
+  "amenityServices": {
+    "heading": "Elevate your urban lifestyle",
+    "intro": "A community and lifestyle amenity program with services and exclusive resident discounts.",
+    "items": [
+      "Housekeeping and cleaning services",
+      "Home management and in-unit services",
+      "Move-in and move-out services"
+    ]
+  },
+  "housingPrograms": {
+    "note": "MFTE/MHA and ADA homes available. Income limits apply to income-restricted homes and are set by the City; ask the leasing team for current figures."
+  },
+  "rentalTerms": {
+    "rows": [
+      {
+        "label": "Monthly rent",
+        "note": "Varies by home",
+        "live": "rent-range"
+      },
+      {
+        "label": "Refundable pet deposit",
+        "note": "Per pet · refundable",
+        "value": "$500"
+      },
+      {
+        "label": "Pet rent",
+        "note": "Per pet, per month",
+        "value": "$50"
+      }
+    ],
+    "pending": "Security deposit, screening fee and utility charges are set by the leasing team — ask when you tour, and they will be confirmed in writing before you sign."
+  },
+  "footerBlurb": "Studio, one- and two-bedroom apartments in Queen Anne, steps from Seattle Center. Professionally managed by AGM Real Estate Group, LLC."
 }

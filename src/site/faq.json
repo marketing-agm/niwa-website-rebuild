@@ -1,3 +1,41 @@
 {
-  "faq": []
+  "_note": "Every answer is grounded in units.json (the AppFolio feed), site.config.json, or copy confirmed by marketing as current on niwaseattle.com. Deliberately absent, because no verified source exists yet: office hours, parking cost, storage cost, security deposit, screening fee and utilities (the figures the template shipped are Magnolia's — see issues #17 and #8). Rents and dates are kept out on purpose: this file is hand-written and would go stale the next time `npm run refresh` runs, so price questions point at the live Availability section.",
+  "faq": [
+    {
+      "q": "What kinds of homes does Niwa have?",
+      "a": "Studios, one-bedrooms and two-bedrooms across floors two through eight, in nineteen distinct layouts. Studios run 349–388 square feet, one-bedrooms around 703–717, and two-bedrooms 661–745. Every layout with a home currently available is listed under <a href=\"#floor-plans\">Floor plans</a>."
+    },
+    {
+      "q": "What does a home cost, and what's available right now?",
+      "a": "Rent varies by layout, floor and move-in date, so rather than quote a figure that ages, the <a href=\"#availability\">Availability</a> section shows every home currently listed with its actual rent and date. That list is refreshed from the leasing system rather than maintained by hand, so what you see there is what is genuinely available."
+    },
+    {
+      "q": "When can I move in?",
+      "a": "Some homes are ready now and others open up over the following weeks. Each listing in <a href=\"#availability\">Availability</a> carries its own date — filter by \"Now\" to see only what you could move into immediately."
+    },
+    {
+      "q": "Is Niwa pet friendly?",
+      "a": "Yes — up to two pets per home. There is a $500 refundable pet deposit and $50 per month, both charged per pet. Cats have a 20 lb weight limit; dogs have a 75 lb limit, and two dogs must not exceed 75 lb combined. Dogs require an interview, and some breeds are restricted — ask the leasing team for the current list. There is a standing pet washing station in the building."
+    },
+    {
+      "q": "What comes with the apartment?",
+      "a": "In-unit washer and dryer, and a stainless steel refrigerator, dishwasher, microwave, range and oven. Vinyl flooring throughout, and high-speed internet access. Select homes add kitchen islands, vaulted ceilings, panoramic city views and balcony patio decks."
+    },
+    {
+      "q": "What does \"income-restricted (MFTE)\" mean on a listing?",
+      "a": "Niwa takes part in Seattle's MFTE and MHA programmes, which set aside homes at reduced rent for households under a defined income limit. Homes taking part are marked on their listing, and ADA homes are available too. Limits are set by the City and change year to year, so ask the leasing team for the current figures and what you'd need to apply."
+    },
+    {
+      "q": "What's in the building?",
+      "a": "A rooftop clubroom and outdoor patio with a grill and seating, looking out over Lake Union and downtown Seattle. A fitness center with cardio machines, weights and equipment, open 24 hours along with the rest of the building's amenities. Package service, extra storage for rent, bike storage, a pet washing station, elevator access to every floor, controlled entry with key fobs, and an on-site manager."
+    },
+    {
+      "q": "Where is Niwa, and what's nearby?",
+      "a": "513 1st Ave N, in Lower Queen Anne — walking distance to Seattle Center and the Space Needle, and a short walk to the shops and restaurants along Queen Anne Avenue."
+    },
+    {
+      "q": "How do I see a home in person?",
+      "a": "Use the <a href=\"#tour\">tour request form</a> and the leasing team will follow up to arrange a time, or call <a href=\"tel:2066229991\">(206) 622-9991</a> during office hours."
+    }
+  ]
 }

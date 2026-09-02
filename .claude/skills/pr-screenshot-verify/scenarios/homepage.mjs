@@ -5,7 +5,7 @@
 // twelve is scrolled past.
 
 import {
-  goToSection, settleReveals, heroReady, freezeMotion, dismissOverlays, selectPlan,
+  goToSection, settleReveals, heroReady, freezeMotion, dismissOverlays, selectPlan, openSheet,
 } from "./_common.mjs";
 
 const prep = async (page) => {
@@ -45,7 +45,7 @@ export default {
     {
       name: "06-tour-form",
       caption: "Tour request form",
-      action: async (page) => { await prep(page); await goToSection(page, "tour"); },
+      action: async (page) => { await prep(page); await openSheet(page, "tour"); },
     },
     {
       name: "07-full-page",
