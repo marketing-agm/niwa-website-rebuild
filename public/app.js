@@ -824,7 +824,19 @@
     const loopSources = Array.isArray(vid.loop) ? vid.loop : (vid.loop ? [{ src: vid.loop }] : []);
     if (!visual || !loopSources.length) return;
 
-    const override = new URLSearchParams(location.search).get('video');
+    // Hero layout. `cinematic` is the full-bleed film with the copy over it —
+    // the treatment the stakeholder asked for, pointing at vibrantcities.com.
+    // `split` is the original right-hand panel. `?hero=` overrides the config so
+    // both can be compared on one deploy rather than two.
+    const params = new URLSearchParams(location.search);
+    const layoutOverride = params.get('hero');
+    const layout = ['cinematic', 'split'].includes(layoutOverride)
+      ? layoutOverride
+      : (hero.layout || 'split');
+    const heroSection = document.querySelector('.hero');
+    if (layout === 'cinematic') heroSection?.classList.add('is-cinematic');
+
+    const override = params.get('video');
     const mode = ['background', 'modal', 'off'].includes(override) ? override : (vid.mode || 'off');
     if (mode === 'off') return;
 

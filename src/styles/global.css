@@ -3993,6 +3993,113 @@
     /* The grid column is now empty but must still reserve its width. */
     .hero-grid > div:first-child { position: relative; z-index: 1; }
   }
+  /* ================= CINEMATIC HERO =================
+     Full-bleed film with the copy over it, per the Vibrant Cities reference.
+     Applied by app.js as `.hero.is-cinematic`, so `?hero=split` still gets the
+     panel layout for comparison without a second deploy.
+
+     85vh, not 100vh, deliberately. A full-viewport hero pushes the headline,
+     the tour CTA and any signal of what the page is below the fold — on a
+     leasing site that is the whole conversion path. 85 keeps the CTA on screen
+     and lets the next section peek, which is also what tells a visitor to
+     scroll. And 100vh on a phone is a moving target: browser chrome shows and
+     hides, so the hero either clips or jumps. `dvh` fixes that where supported,
+     with vh as the fallback. */
+  .hero.is-cinematic {
+    padding: 0;
+    min-height: 85vh;
+    min-height: 85dvh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    isolation: isolate;
+  }
+  /* The visual leaves the grid entirely and becomes the section's background,
+     running up behind the sticky nav so the film starts at the very top edge. */
+  .hero.is-cinematic .hero-visual {
+    position: absolute;
+    inset: calc(-1 * var(--nav-h, 64px)) 0 0 0;
+    width: auto;
+    aspect-ratio: auto;
+    border-radius: 0;
+    box-shadow: none;
+    z-index: -1;
+  }
+  /* Type over moving footage needs its own ground: the loop runs from a bright
+     living room to a dark gym, so a scrim that works on one frame fails on the
+     next. This one is anchored to the bottom where the copy sits and is heavy
+     enough for white text on the brightest frame in the loop. */
+  .hero.is-cinematic .hero-visual::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background:
+      linear-gradient(to top, rgba(8,8,6,0.88) 0%, rgba(8,8,6,0.78) 22%, rgba(8,8,6,0.52) 46%, rgba(8,8,6,0.16) 72%, rgba(8,8,6,0.38) 100%);
+  }
+  .hero.is-cinematic .hero-grid {
+    grid-template-columns: 1fr;
+    gap: 0;
+    padding-bottom: clamp(36px, 6vw, 76px);
+    padding-top: clamp(120px, 22vh, 260px);
+  }
+  /* 640px, not a ch value: `ch` resolves against this element's own 16px font,
+     so 22ch came out ~190px and crushed the headline into a narrow centre
+     column with the buttons stacked underneath. */
+  /* .container carries `margin: 0 auto` for centring in normal flow. Inside a
+     column flex container those become CROSS-axis auto margins, which absorb
+     free space instead of stretching: the container collapsed from 1280px to
+     its 609px fit-content width and centred that, dragging the headline, the
+     address and the CTA row to 31% across. width:100% leaves the auto margins
+     no free space to take. The flex is still wanted — it is what holds the
+     marquee to the bottom of the section at any height. */
+  .hero.is-cinematic > .container { width: 100%; }
+  .hero.is-cinematic .hero-grid > div:first-child {
+    max-width: 640px;
+    justify-self: start;
+  }
+  .hero.is-cinematic .cta-row { flex-wrap: wrap; }
+  .hero.is-cinematic .display,
+  .hero.is-cinematic .hero-intro,
+  .hero.is-cinematic .hero-sub,
+  .hero.is-cinematic .hero-sub a { color: var(--paper); }
+  .hero.is-cinematic .hero-intro { max-width: 46ch; opacity: 0.92; }
+  /* The italic word is --accent on white elsewhere. Over footage it keeps the
+     yellow, which finally has a dark ground to sit on and reads at 11:1 rather
+     than the 1.34:1 it manages on the white layout. */
+  .hero.is-cinematic .display .italic { color: var(--accent); }
+  .hero.is-cinematic .btn-ghost {
+    color: var(--paper);
+    border-color: rgba(255,255,255,0.5);
+    backdrop-filter: blur(6px);
+  }
+  .hero.is-cinematic .btn-ghost:hover {
+    border-color: var(--paper);
+    background: rgba(255,255,255,0.12);
+  }
+  /* The expand control is centred on the panel in the split layout. Full-bleed,
+     the centre is where the headline goes, so it moves to the bottom corner. */
+  .hero.is-cinematic .hero-video-btn {
+    left: auto;
+    top: auto;
+    right: clamp(18px, 4vw, 40px);
+    bottom: clamp(96px, 14vh, 150px);
+    transform: none;
+  }
+  .hero.is-cinematic .hero-video-btn:hover { transform: translateY(-1px) scale(1.03); }
+  /* The marquee closes the section, so it sits below the film rather than over
+     it — a scrolling band across footage is noise. */
+  .hero.is-cinematic .marquee { margin-top: 0; position: relative; z-index: 2; }
+
+  @media (max-width: 700px) {
+    /* Portrait phones: 85vh of 16:9 footage crops to a letterbox sliver of the
+       middle. Shorter, and the copy gets the room it needs. */
+    .hero.is-cinematic { min-height: 76vh; min-height: 76dvh; }
+    .hero.is-cinematic .hero-grid { padding-top: clamp(90px, 16vh, 160px); }
+    .hero.is-cinematic .hero-grid > div:first-child { max-width: none; }
+    .hero.is-cinematic .hero-video-btn { bottom: clamp(80px, 12vh, 120px); }
+  }
+
   .hero-visual.has-photo { background: var(--bg-2); }
   .hero-visual.has-photo svg.skyline,
   .hero-visual.has-photo .frame-overlay { display: none; }
