@@ -122,8 +122,9 @@
       "enabled": true,
       "panels": 6,
       "art": "/images/byobu.svg",
-      "holdMs": 420,
-      "foldMs": 980
+      "holdMs": 380,
+      "foldMs": 820,
+      "pushMs": 460
     },
     "video": {
       "mode": "background",

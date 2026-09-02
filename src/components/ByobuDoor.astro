@@ -33,7 +33,7 @@ const art: string = door.art ?? '/images/byobu.svg';
         ))}
       </div>
     </div>
-    <script is:inline define:vars={{ holdMs: Number(door.holdMs ?? 420), foldMs: Number(door.foldMs ?? 980), panels }}>
+    <script is:inline define:vars={{ holdMs: Number(door.holdMs ?? 420), foldMs: Number(door.foldMs ?? 820), pushMs: Number(door.pushMs ?? 460), panels }}>
       (function () {
         var el = document.getElementById('byobu');
         if (!el) return;
@@ -76,8 +76,10 @@ const art: string = door.art ?? '/images/byobu.svg';
           // The film starts as the leaves begin to turn, so what appears behind
           // the screen is moving footage rather than a held first frame.
           document.dispatchEvent(new CustomEvent('niwa:byobu-open'));
-          // Last panel out, plus its stagger, plus a beat.
-          setTimeout(function () { el.remove(); }, foldMs + 400);
+          // Folded, then carried out. A screen folded open is still a screen
+          // standing in the doorway; the room is not open until it has gone.
+          setTimeout(function () { el.classList.add('is-gone'); }, foldMs);
+          setTimeout(function () { el.remove(); }, foldMs + pushMs + 60);
         }
 
         // `?door=hold` leaves the screen standing. A one-second fold cannot be

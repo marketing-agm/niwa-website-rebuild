@@ -4312,10 +4312,31 @@
     gap: clamp(36px, 5vw, 64px);
     align-items: center;
     grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
-    padding: var(--section-y) clamp(20px, 5vw, 64px);
-    max-width: 1320px;
-    margin: 0 auto;
-    background: var(--garden-paper);
+    /* Full-bleed dark, with the content still held to the page's measure —
+       the padding does the centring so no extra wrapper is needed. */
+    padding: var(--section-y) max(clamp(20px, 5vw, 64px), calc((100% - 1320px) / 2));
+    max-width: none;
+    margin: 0;
+    color: #F3EFE6;
+    /* A timber room in shadow. The light in the reference photographs is never
+       in the room — it is outside, coming through the opening — so the ground
+       is darkest at the edges and lifts only where the screen stands. */
+    background:
+      radial-gradient(120% 90% at 32% 45%, rgba(92, 74, 52, 0.34) 0%, rgba(24, 20, 15, 0) 62%),
+      linear-gradient(178deg, #17130E 0%, #221C15 46%, #14110C 100%);
+  }
+  .marumado > * { position: relative; z-index: 1; }
+  /* The floor. One horizontal line, which is what the moodboard means by clean
+     wood lines: the room is read from the join between wall and floor. */
+  .marumado::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 26%;
+    background: linear-gradient(180deg, rgba(74, 57, 38, 0.42) 0%, rgba(38, 29, 19, 0.9) 100%);
+    border-top: 1px solid rgba(196, 164, 112, 0.22);
   }
   @media (max-width: 900px) {
     .marumado { grid-template-columns: 1fr; }
@@ -4333,10 +4354,13 @@
         rgba(140, 124, 98, 0.5) 0 2px, transparent 2px calc(100% / 8)),
       repeating-linear-gradient(0deg,
         rgba(140, 124, 98, 0.5) 0 2px, transparent 2px calc(100% / 11)),
-      linear-gradient(165deg, #FBF8F0 0%, #F3EEE1 60%, #EDE6D6 100%);
+      linear-gradient(165deg, #F7F1E2 0%, #E8DFC9 58%, #CDBF9F 100%);
     border: clamp(12px, 1.6vw, 20px) solid #574733;
     border-image: linear-gradient(150deg, #6A5842 0%, #4A3D2C 50%, #675541 100%) 1;
-    box-shadow: 0 24px 60px -32px rgba(40, 30, 18, 0.5);
+    /* Lit from behind, the way a shoji is. The glow spills onto the room. */
+    box-shadow:
+      0 0 90px -10px rgba(226, 205, 148, 0.28),
+      0 40px 90px -40px rgba(0, 0, 0, 0.85);
     overflow: hidden;
   }
 
@@ -4381,9 +4405,19 @@
   }
 
   .marumado-copy { max-width: 46ch; }
-  .marumado-copy .display { margin: 8px 0 0; }
-  .marumado-copy .lede { margin: 18px 0 0; }
+  .marumado-copy .display { margin: 8px 0 0; color: #F6F2E8; }
+  .marumado-copy .lede { margin: 18px 0 0; color: rgba(243, 239, 230, 0.74); }
+  .marumado-copy .eyebrow { color: rgba(243, 239, 230, 0.52); }
+  .marumado-copy .eyebrow::before { background: rgba(214, 190, 130, 0.45); }
   .marumado-copy .btn { margin-top: 28px; }
+  /* On a dark ground the black primary button disappears. The accent is the
+     one thing in this room that should be as bright as the view. */
+  .marumado-copy .btn-primary {
+    background: var(--accent);
+    color: var(--on-accent);
+    border-color: var(--accent);
+  }
+  .marumado-copy .btn-primary:hover { background: #DACD2A; border-color: #DACD2A; }
 
   @media (max-width: 900px) {
     .marumado-shoji { aspect-ratio: 1 / 1; max-width: 520px; }
@@ -4395,11 +4429,15 @@
      open to the right and reveals the film already running behind it.
 
      The fold is real, not a wipe. Each leaf pivots on the hinge it shares with
-     its neighbour — `transform-origin: right center` — turning edge-on while
-     the leaves behind it are still flat, and the whole screen gathers at the
-     right. A leaf turned 78 degrees keeps about 21% of its width on screen, so
-     leaf *i* has to travel (panels - i) x 79% of its own width to land in the
-     stack. That is where the 79 comes from; it is geometry, not taste.
+     its neighbour — `transform-origin: left center` — turning edge-on while the
+     leaves behind it are still flat, and the whole screen gathers at the left.
+     A leaf turned 78 degrees keeps about 21% of its width on screen, so leaf
+     *i* travels i x 79% of its own width to land in the stack. That is where
+     the 79 comes from; it is geometry, not taste.
+
+     Then the gathered stack is pushed off frame — a screen folded open is still
+     a screen standing in the doorway, and the room is not really open until it
+     has been carried out.
 
      Sits above the film (300) because for its one second there is nothing else. */
   .byobu {
@@ -4412,7 +4450,7 @@
     background: transparent;
     overflow: hidden;
     perspective: 1700px;
-    perspective-origin: 88% 50%;
+    perspective-origin: 12% 50%;
   }
   .byobu[hidden] { display: none; }
 
@@ -4432,13 +4470,13 @@
     /* The silk, on the leaf itself — so what is behind a folded leaf is the
        film, and so nothing shows through before the artwork has loaded. */
     background: #EFE7D5;
-    transform-origin: right center;
+    transform-origin: left center;
     transform-style: preserve-3d;
     overflow: hidden;
     /* Hinge shadow on the leading edge, and the light catching the trailing one. */
     box-shadow:
-      inset -14px 0 22px -14px rgba(30, 22, 14, 0.55),
-      inset 14px 0 20px -16px rgba(255, 252, 240, 0.5);
+      inset 14px 0 22px -14px rgba(30, 22, 14, 0.55),
+      inset -14px 0 20px -16px rgba(255, 252, 240, 0.5);
     transition: transform var(--byobu-fold, 980ms) cubic-bezier(0.66, 0, 0.28, 1);
     transition-delay: calc(var(--i) * 40ms);
     will-change: transform;
@@ -4489,20 +4527,27 @@
   .byobu-shade {
     position: absolute;
     inset: 0;
-    background: linear-gradient(90deg, rgba(30, 24, 17, 0.30) 0%, rgba(30, 24, 17, 0) 55%);
+    background: linear-gradient(270deg, rgba(30, 24, 17, 0.34) 0%, rgba(30, 24, 17, 0) 55%);
     opacity: 0;
     transition: opacity var(--byobu-fold, 980ms) ease;
     transition-delay: calc(var(--i) * 40ms);
   }
 
   .byobu.is-open .byobu-panel {
-    transform: translateX(calc((var(--byobu-panels) - var(--i)) * 79%)) rotateY(-78deg);
+    transform: translateX(calc(var(--i) * -79%)) rotateY(78deg);
   }
   /* Alternate leaves turn the other way — that alternation is the concertina. */
   .byobu.is-open .byobu-panel:nth-child(even) {
-    transform: translateX(calc((var(--byobu-panels) - var(--i)) * 79%)) rotateY(78deg);
+    transform: translateX(calc(var(--i) * -79%)) rotateY(-78deg);
   }
   .byobu.is-open .byobu-shade { opacity: 1; }
+
+  /* Carried out of the doorway. Eased *in* rather than out: it is being pushed,
+     and a push starts slowly and leaves fast. */
+  .byobu-stage {
+    transition: transform 460ms cubic-bezier(0.5, 0, 0.85, 0.4);
+  }
+  .byobu.is-gone .byobu-stage { transform: translateX(-118%); }
   .byobu.is-open .byobu-panel:nth-child(even) .byobu-shade { opacity: 0.45; }
 
   /* Nothing scrolls while the screen is standing. */
