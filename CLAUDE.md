@@ -94,9 +94,14 @@ Workers form (`[assets] directory`, `workers_dev`) belongs to a different kind o
 project; a Workers deploy against Pages config fails with "Missing entry-point to
 Worker script or to assets directory".
 
-**This repo has no `main`.** The default branch is
-`claude/niwa-website-rebuild-setup-4i1y68`. Anything assuming `origin/main`
-breaks — `post-to-pr.mjs` resolves it from `origin/HEAD` for that reason.
+**`main` is production.** It was created late — the repo ran for a while with
+`claude/niwa-website-rebuild-setup-4i1y68` as its default, which is why
+`post-to-pr.mjs` resolves the default from `origin/HEAD` rather than assuming
+`main`. Leave that resolution in place; it is correct either way.
+
+**Nothing reaches `main` except a merge.** Branch from `main`, push, open a PR,
+review the preview, merge. Never push to `main`, and never merge on Claude's
+say-so — the preview URL is where a change is handed over.
 
 ## Relationship to Magnolia
 

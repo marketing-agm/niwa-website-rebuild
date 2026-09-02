@@ -73,7 +73,7 @@ Cloudflare **Pages**, one project.
 |---|---|
 | Repository | `marketing-agm/niwa-website-rebuild` |
 | Project name | `niwa-website-rebuild` — must match `name` in `wrangler.toml` |
-| Production branch | `claude/niwa-website-rebuild-setup-4i1y68` |
+| Production branch | `main` |
 | Build command | `npm run build` |
 | Output directory | `dist` (also pinned in `wrangler.toml`) |
 | Environment variables | none |
