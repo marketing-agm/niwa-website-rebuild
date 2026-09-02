@@ -2026,9 +2026,14 @@
     border-top: 1px solid var(--rule);
     border-bottom: 1px solid var(--rule);
   }
+  /* One row, however many layouts there are. This was `repeat(2, 1fr)` — a
+     two-plan assumption inherited from a property that had exactly a 1BR and a
+     2BR. Niwa has three, so the third wrapped onto a second row and the active
+     tab rendered as a full-width black bar beside two stacked ones. */
   .plan-switcher {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-auto-flow: column;
+    grid-auto-columns: 1fr;
     gap: 0;
     border: 1px solid var(--rule);
     border-radius: var(--radius-lg);
@@ -2036,7 +2041,9 @@
     background: var(--paper-2);
     margin-bottom: 32px;
   }
-  @media (max-width: 720px) { .plan-switcher { grid-template-columns: 1fr; } }
+  @media (max-width: 720px) {
+    .plan-switcher { grid-auto-flow: row; grid-auto-columns: auto; }
+  }
   .plan-tab {
     padding: 22px 24px;
     text-align: left;
@@ -2167,6 +2174,48 @@
     display: block;
   }
   .plan-tour-iframe[hidden] { display: none; }
+
+  /* Switching between two shoots of the same layout — the 1BR is shot furnished
+     and unfurnished. Floats over the tour rather than sitting under it, because
+     the frame is a fixed 4:3 and a row below would push the plan details out of
+     line with it. Top-left is the one corner Matterport's own chrome leaves
+     alone. */
+  .plan-tour-picker {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    z-index: 2;
+    display: flex;
+    gap: 6px;
+    padding: 5px;
+    border-radius: 999px;
+    background: rgba(10, 10, 10, 0.55);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+  }
+  .plan-tour-picker[hidden] { display: none; }
+  /* A layout with one tour has nothing to choose between, so the chip is a
+     label the visitor cannot act on. The picker still exists in the markup —
+     it is where the URL lives — it just isn't drawn. */
+  .plan-tour-picker.is-single { display: none; }
+  .plan-tour-chip {
+    border: 0;
+    border-radius: 999px;
+    padding: 7px 15px;
+    font: inherit;
+    font-size: 13px;
+    line-height: 1;
+    color: rgba(255, 255, 255, 0.75);
+    background: transparent;
+    cursor: pointer;
+    transition: background 160ms ease, color 160ms ease;
+  }
+  .plan-tour-chip:hover { color: #fff; background: rgba(255, 255, 255, 0.14); }
+  .plan-tour-chip.is-active {
+    background: var(--accent);
+    color: var(--on-accent);
+  }
+  .plan-tour-chip:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
   .plan-tour-placeholder {
     position: absolute;
     inset: 0;
@@ -2575,6 +2624,61 @@
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--ink-3);
+  }
+
+  /* ---------- Walk-the-building tours ----------
+     Matterport walkthroughs of the shared spaces. The floor-plan section covers
+     the homes; the roof and the gym belong to no layout tab, so they sit under
+     the gallery — the part of the page already about looking around. Rendered
+     inside .gallery-section, which is the one inverted scope on the page, so
+     these are styled for dark. */
+  .amenity-tours {
+    margin-top: clamp(40px, 5vw, 64px);
+    padding-top: clamp(32px, 4vw, 48px);
+    border-top: 1px solid rgba(255, 255, 255, 0.14);
+    text-align: center;
+  }
+  .amenity-tours-head {
+    margin: 0;
+    font-family: var(--serif);
+    font-weight: 420;
+    font-size: clamp(22px, 2.4vw, 30px);
+    letter-spacing: -0.015em;
+    color: #fff;
+  }
+  .amenity-tours-note {
+    margin: 10px auto 0;
+    max-width: 46ch;
+    font-size: 14.5px;
+    color: rgba(255, 255, 255, 0.66);
+  }
+  .amenity-tours-row {
+    margin-top: 22px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+  }
+  .amenity-tour {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    padding: 12px 22px;
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    border-radius: 999px;
+    color: #fff;
+    text-decoration: none;
+    font-size: 15px;
+    transition: background 180ms ease, border-color 180ms ease, color 180ms ease;
+  }
+  .amenity-tour:hover {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--on-accent);
+  }
+  .amenity-tour:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  @media (prefers-reduced-motion: reduce) {
+    .amenity-tour, .plan-tour-chip { transition: none; }
   }
 
   /* ---------- Lightbox ---------- */

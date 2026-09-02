@@ -64,8 +64,16 @@ const plans = allKeys.map((key) => {
   const bathValue = baths ? `${baths % 1 === 0 ? baths : baths.toFixed(1)} full` : '—';
   const ctaLabel = beds === 0 ? 'See available studios' : `See available ${beds} BRs`;
 
+  // Matterport walkthroughs, per layout. A list rather than a single URL: the
+  // 1BR is shot both furnished and unfurnished, and a renter comparing the two
+  // is exactly who this section is for.
+  const tours: { label: string; url: string }[] = Array.isArray(cfg.tours)
+    ? cfg.tours.filter((t: any) => t && t.url)
+    : (cfg.tour ? [{ label: bedLabel, url: cfg.tour }] : []);
+
   return {
     key,
+    tours,
     bedLabel,
     eyebrow: copy.eyebrow || [bedLabel, bathLabel].filter(Boolean).join(' · '),
     title: copy.title || `${bedLabel},`,
@@ -136,6 +144,19 @@ const disclaimer = sec.disclaimer ??
         <div class="plan-view plan-view-3d" data-view="3d">
           <div class="plan-tour-frame">
             <iframe class="plan-tour-iframe" title="3D walkthrough tour" allow="xr-spatial-tracking; fullscreen" allowfullscreen loading="lazy" hidden></iframe>
+            {/* One picker per layout that has tours, hidden until its tab is
+                the active one. A layout with a single tour still gets a picker
+                so the URL lives in exactly one place; CSS hides the lone chip
+                rather than the markup branching on the count. */}
+            {plans.filter((p) => p.tours.length > 0).map((p) => (
+              <div class={`plan-tour-picker${p.tours.length === 1 ? ' is-single' : ''}`} data-plan={p.key} hidden>
+                {p.tours.map((t, i) => (
+                  <button type="button" class={`plan-tour-chip${i === 0 ? ' is-active' : ''}`} data-tour-url={t.url}>
+                    {t.label}
+                  </button>
+                ))}
+              </div>
+            ))}
             <div class="plan-tour-placeholder">
               <span class="placeholder-eyebrow">3D tour</span>
               <p class="placeholder-title">3D Tour <span class="italic">Coming Soon</span></p>

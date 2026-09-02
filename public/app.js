@@ -1013,10 +1013,24 @@
   // back and forth between tabs doesn't inflate the conversion.
   const tour3dTracked = new Set();
 
+  // The tour URLs live on the chips FloorPlans.astro renders, one picker per
+  // layout. Reading them from the DOM rather than a second copy in config means
+  // what the visitor clicks and what the iframe loads cannot drift apart.
+  function activePicker() {
+    if (!planTourEl) return null;
+    return planTourEl.querySelector('.plan-tour-picker[data-plan="' + activePlan + '"]');
+  }
+
   function applyTourSrc() {
     if (!planTourEl || !planTourIframe) return;
     const placeholder = planTourEl.querySelector('.plan-tour-placeholder');
-    const url = planTourEl.dataset['tour' + activePlan.charAt(0).toUpperCase() + activePlan.slice(1)];
+    // Only the active layout's picker is on screen, and only on the 3D tab.
+    planTourEl.querySelectorAll('.plan-tour-picker').forEach((pk) => {
+      pk.hidden = pk.dataset.plan !== activePlan || activeView !== '3d';
+    });
+    const picker = activePicker();
+    const chip = picker && (picker.querySelector('.plan-tour-chip.is-active') || picker.querySelector('.plan-tour-chip'));
+    const url = chip && chip.dataset.tourUrl;
     if (activeView === '3d' && url) {
       if (planTourIframe.getAttribute('src') !== url) planTourIframe.setAttribute('src', url);
       planTourIframe.hidden = false;
@@ -1035,6 +1049,17 @@
       if (placeholder) placeholder.style.display = '';
     }
   }
+
+  // Switching between two shoots of the same layout — furnished and unfurnished
+  // 1BRs — is a chip click, not a tab. Delegated because the pickers are
+  // rendered per layout and only one is ever on screen.
+  planTourEl?.addEventListener('click', (e) => {
+    const chip = e.target.closest('.plan-tour-chip');
+    if (!chip) return;
+    const picker = chip.closest('.plan-tour-picker');
+    picker.querySelectorAll('.plan-tour-chip').forEach((c) => c.classList.toggle('is-active', c === chip));
+    applyTourSrc();
+  });
 
   document.querySelectorAll('.plan-tab').forEach(tab => {
     tab.addEventListener('click', () => {

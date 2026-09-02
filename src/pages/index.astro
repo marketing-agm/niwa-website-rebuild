@@ -62,6 +62,31 @@ const featuresHtml = featureCards.map((f: any) => `      <div class="feature-car
         <p>${escapeHtml(f.body)}</p>
       </div>`).join('\n');
 
+// Matterport walkthroughs of the shared spaces. The floor-plan section covers
+// the homes; these are the roof and the gym, which no layout tab would ever
+// surface, so they sit under the gallery — the part of the page that is already
+// about looking around the building.
+const amenityTours = site.config.amenityTours ?? {};
+const amenityTourItems: any[] = (amenityTours.items ?? []).filter((t: any) => t && t.url);
+const amenityToursHtml = amenityTourItems.length
+  ? '    <div class="amenity-tours reveal" data-delay="1">\n'
+    + '      <h3 class="amenity-tours-head">' + escapeHtml(amenityTours.heading ?? 'Walk the building') + '</h3>\n'
+    + (amenityTours.note ? '      <p class="amenity-tours-note">' + escapeHtml(amenityTours.note) + '</p>\n' : '')
+    + '      <div class="amenity-tours-row">\n'
+    + amenityTourItems.map((t: any) =>
+        // data-3d-tour is what the delegated analytics listener watches, so
+        // these count as tour views without a second listener.
+        '        <a class="amenity-tour" href="' + escapeHtml(t.url) + '" target="_blank" rel="noopener" data-3d-tour>\n'
+        + '          <span>' + escapeHtml(t.label) + '</span>\n'
+        + '          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" '
+        + 'stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'
+        + '<path d="M7 17 17 7"/><polyline points="8 7 17 7 17 16"/></svg>\n'
+        + '        </a>'
+      ).join('\n') + '\n'
+    + '      </div>\n'
+    + '    </div>'
+  : '';
+
 const nb = site.config.neighborhood ?? {};
 
 // The marquee band under the hero. Its copy used to be hardcoded in
@@ -120,6 +145,7 @@ const ADDRESS_TOKENS: Record<string, string> = {
   '{{NEIGHBORHOOD_TITLE}}': nb.title ?? `${site.config.address?.addressLocality ?? ''}`,
   '{{NEIGHBORHOOD_INTRO}}': nb.intro ?? '',
   '{{FEATURE_CARDS}}': featuresHtml,
+  '{{AMENITY_TOURS}}': amenityToursHtml,
   '{{GALLERY_LEDE}}': site.config.gallery?.lede ?? '',
   '{{GALLERY_NOTE}}': site.config.gallery?.note ?? '',
   '{{FEATURE_LISTS}}': featureListsHtml,
