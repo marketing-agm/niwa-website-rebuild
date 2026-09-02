@@ -73,16 +73,68 @@ const marqueeHtml = [...marqueeItems, ...marqueeItems]
   .map((t) => `      <span>${escapeHtml(t)}</span>`)
   .join('\n');
 
+// The amenity lists used to be three hardcoded blocks in the shared markup, and
+// they described Magnolia: "Cascade Mountain views", "Electric heat", and a
+// parking table quoting $75/mo covered and $50/mo uncovered. All of it rendered
+// on Niwa's page as Niwa's. Config-driven now, like the feature cards above.
+const featureLists: any[] = site.config.featureLists ?? [];
+// Built with concatenation rather than nested template literals: Astro's parser
+// mis-scans a backtick inside a ${} inside a backtick and fails the build with
+// "Expected > but found site". Every other builder in this file avoids it too.
+const featureListsHtml = featureLists.map((l: any) => {
+  const items = (l.items ?? []).map((it: string) => '          <li>' + escapeHtml(it) + '</li>').join('\n');
+  return '      <div class="list-block">\n'
+    + '        <h5>' + escapeHtml(l.heading) + '</h5>\n'
+    + '        <ul>\n' + items + '\n'
+    + '        </ul>\n'
+    + '      </div>';
+}).join('\n');
+
+// Rental terms. The template's ledger listed a security deposit, a $50 screening
+// fee, a $100 utility charge and a one-month concession — every one of them
+// Magnolia's, none confirmed for Niwa, all read by a prospect as Niwa's numbers.
+// Rows come from config now, so a figure nobody has confirmed cannot appear: what
+// is unknown is named as unknown rather than filled in from another property.
+const terms = site.config.rentalTerms ?? {};
+const termRows: any[] = terms.rows ?? [];
+const ledgerRows = termRows.map((r: any) => {
+  const note = r.note ? '\n            <small>' + escapeHtml(r.note) + '</small>' : '';
+  const live = r.live === 'rent-range' ? ' data-terms-rent-range' : '';
+  return '        <div class="ledger-row">\n'
+    + '          <div class="label">' + escapeHtml(r.label) + note + '\n'
+    + '          </div>\n'
+    + '          <div class="value"' + live + '>' + escapeHtml(r.value ?? '') + '</div>\n'
+    + '        </div>';
+}).join('\n');
+const pendingAside = terms.pending
+  ? '\n      <aside class="summary-card">\n'
+    + '        <h3>Still to confirm</h3>\n'
+    + '        <p class="terms-pending">' + escapeHtml(terms.pending) + '</p>\n'
+    + '      </aside>'
+  : '';
+const rentalTermsHtml = termRows.length
+  ? '      <div class="ledger">\n' + ledgerRows + '\n      </div>' + pendingAside
+  : '';
+
 const ADDRESS_TOKENS: Record<string, string> = {
   '{{NEIGHBORHOOD_TITLE}}': nb.title ?? `${site.config.address?.addressLocality ?? ''}`,
   '{{NEIGHBORHOOD_INTRO}}': nb.intro ?? '',
   '{{FEATURE_CARDS}}': featuresHtml,
+  '{{GALLERY_LEDE}}': site.config.gallery?.lede ?? '',
+  '{{GALLERY_NOTE}}': site.config.gallery?.note ?? '',
+  '{{FEATURE_LISTS}}': featureListsHtml,
+  '{{RENTAL_TERMS}}': rentalTermsHtml,
+  '{{FOOTER_BLURB}}': site.config.footerBlurb ?? '',
   '{{FOOTER_GUIDES}}': footerGuides,
   '{{MARQUEE_ITEMS}}': marqueeHtml,
   '{{HERO_TITLE}}': hero.title ?? siteName,
   '{{HERO_TITLE_ITALIC}}': hero.titleItalic ?? '',
   '{{HERO_INTRO}}': hero.intro ?? '',
   '{{HERO_OFFER}}': hero.offer ?? '',
+  // The leasing address was hardcoded twice in the markup as Magnolia's
+  // leasing@agmrealestategroup.com — AGM's general inbox, published on Niwa's
+  // page as Niwa's. Config-driven, same as the phone number beside it.
+  '{{SITE_EMAIL}}': site.config.contact?.email ?? '',
   '{{SITE_PHONE}}': formatPhone(site.config.contact?.phone),
   '{{SITE_PHONE_HREF}}': site.config.contact?.phoneHref ?? ('tel:' + digits),
   '{{SITE_PHONE_SMS}}': 'sms:' + digits,

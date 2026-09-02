@@ -170,7 +170,7 @@
         <div class="eyebrow">Gallery</div>
         <h2 class="display">See it for <span class="italic">yourself.</span></h2>
       </div>
-      <p class="lede reveal" data-delay="1">A look inside the building, around the homes, and through the neighborhood. Professional photography is on the way — schedule a tour to see it in person.</p>
+      <p class="lede reveal" data-delay="1">{{GALLERY_LEDE}}</p>
     </div>
 
     <div class="gallery-tabs reveal">
@@ -201,7 +201,7 @@
       <div class="gallery-strip" id="gallery-strip"></div>
     </div>
 
-    <p class="gallery-note reveal" data-delay="1">Photography coming soon — actual unit photos available on request.</p>
+    <p class="gallery-note reveal" data-delay="1">{{GALLERY_NOTE}}</p>
   </div>
 </section>
 
@@ -736,7 +736,7 @@
           </div>
           <div class="ml">
             <small>Email us</small>
-            <a href="mailto:leasing@agmrealestategroup.com">leasing@agmrealestategroup.com</a>
+            <a href="mailto:{{SITE_EMAIL}}">{{SITE_EMAIL}}</a>
           </div>
         </div>
         <div class="contact-method">
@@ -1031,34 +1031,7 @@
 
     <!-- Lists -->
     <div class="lists-grid">
-      <div class="list-block">
-        <h5>Amenities</h5>
-        <ul>
-          <li>Electric heat</li>
-          <li>Private balcony</li>
-          <li>Large closets</li>
-          <li>Cascade Mountain views <span class="badge">Select units</span></li>
-          <li>On-site laundry</li>
-          <li>Smoke-free building</li>
-        </ul>
-      </div>
-      <div class="list-block">
-        <h5>Appliances</h5>
-        <ul>
-          <li>Stove / oven</li>
-          <li>Full-size dishwasher</li>
-          <li>Refrigerator / freezer</li>
-          <li>Modern fixtures</li>
-        </ul>
-      </div>
-      <div class="list-block">
-        <h5>Parking</h5>
-        <ul>
-          <li>Covered parking <span class="badge">$75/mo</span></li>
-          <li>Uncovered parking <span class="badge">$50/mo</span></li>
-          <li>Free residential street parking nearby</li>
-        </ul>
-      </div>
+{{FEATURE_LISTS}}
     </div>
   </div>
         </div>
@@ -1067,62 +1040,7 @@
     
 
     <div class="pricing-grid">
-      <div class="ledger">
-        <div class="ledger-row">
-          <div class="label">Monthly rent
-            <small>Varies by home · 12-month lease</small>
-          </div>
-          <div class="value" data-terms-rent-range>$1,395 – $2,095</div>
-        </div>
-        <div class="ledger-row">
-          <div class="label">Refundable security deposit
-            <small>Equal to one month's rent · due prior to move in</small>
-          </div>
-          <div class="value">1 mo. rent</div>
-        </div>
-        <div class="ledger-row">
-          <div class="label">Non-refundable screening fee
-            <small>Per adult applicant</small>
-          </div>
-          <div class="value">$50</div>
-        </div>
-        <div class="ledger-row">
-          <div class="label">Water / sewer / garbage
-            <small>Flat rate · +$50 per additional occupant</small>
-          </div>
-          <div class="value">$100<span style="font-size:14px;color:rgba(255,255,255,0.5);font-family:var(--mono);"> /mo</span></div>
-        </div>
-        <div class="ledger-row">
-          <div class="label">Electricity
-            <small>Tenant sets up Seattle City Light</small>
-          </div>
-          <div class="value muted">Tenant</div>
-        </div>
-        <div class="ledger-row total">
-          <div class="label">Move-in special
-            <small>1 month free on 12-month lease · ask for details</small>
-          </div>
-          <div class="value">−1 mo</div>
-        </div>
-      </div>
-
-      <aside class="summary-card">
-        <h3>What's due at move-in</h3>
-        <ul class="summary-list">
-          <li><span>First 30 days base rent</span><strong>1 mo. rent</strong></li>
-          <li><span>Refundable security deposit</span><strong>1 mo. rent</strong></li>
-          <li><span>Screening fee (per adult)</span><strong>$50</strong></li>
-        </ul>
-        <div class="move-in-cost">
-          <span class="lbl">Estimated due at signing</span>
-          <span class="val" data-terms-due-range>$2,840 – $4,240</span>
-        </div>
-        <ul class="summary-list" style="margin-top:8px;">
-          <li><span>Lease term</span><strong>12 months</strong></li>
-          <li><span>Smoking</span><strong>Not permitted</strong></li>
-          <li><span>Renters insurance</span><strong>Required</strong></li>
-        </ul>
-      </aside>
+{{RENTAL_TERMS}}
     </div>
 
     <!-- Move-in cost calculator -->
@@ -1229,7 +1147,7 @@
           <span class="brand-mark" aria-hidden="true"></span>
           <span>{{SITE_NAME_LEAD}} <em style="font-style:italic;font-variation-settings:'opsz' 144, 'SOFT' 100;">{{SITE_NAME_EMPH}}</em></span>
         </div>
-        <p style="max-width:48ch;">One and two-bedroom apartments in one of Seattle's most livable neighborhoods, professionally managed by AGM Real Estate Group, LLC.</p>
+        <p style="max-width:48ch;">{{FOOTER_BLURB}}</p>
       </div>
       <div class="col">
         <h6>Property</h6>
@@ -1241,7 +1159,7 @@
       <div class="col">
         <h6>Contact</h6>
         <p><a href="{{SITE_PHONE_HREF}}">{{SITE_PHONE}}</a></p>
-        <p><a href="mailto:leasing@agmrealestategroup.com">leasing@agmrealestategroup.com</a></p>
+        <p><a href="mailto:{{SITE_EMAIL}}">{{SITE_EMAIL}}</a></p>
         <p>{{SITE_STREET}}<br/>{{SITE_CITYSTATE}}</p>
       </div>
       <div class="col">

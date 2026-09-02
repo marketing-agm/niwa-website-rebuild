@@ -5,20 +5,58 @@
 // useful instead is: get to a section, wait for the things that load late, and
 // hold still long enough for a screenshot to be worth looking at.
 
-/** Section anchors that exist on the page. Keep in sync with generated/body.html. */
-export const SECTIONS = ["top", "floor-plans", "availability", "gallery", "neighborhood", "tour", "faq"];
+/**
+ * Anchors on the page, split by what they actually are.
+ *
+ * Not everything with an anchor is a section. `tour`, `faq` and `neighborhood`
+ * used to be sections and are now dialogs (`#<name>-overlay`, role="dialog"),
+ * with the old hashes kept working as deep links. Scrolling to `#faq` therefore
+ * finds nothing and does nothing — which is how a "tour form" shot ended up
+ * being a photograph of the top of the page.
+ */
+export const SECTIONS = ["top", "floor-plans", "availability", "gallery"];
+export const SHEETS = ["tour", "faq", "neighborhood"];
 
 /**
  * Scroll to a section and wait for it to settle.
  *
  * Uses the in-page anchor rather than a raw scroll so the same smooth-scroll
  * behaviour a visitor gets is what gets photographed.
+ *
+ * Throws if the target isn't there. A missing anchor used to scroll nowhere and
+ * return happily, so the shot silently captured whatever was already on screen —
+ * a failure mode that looks like a successful run and has cost several rounds.
  */
 export async function goToSection(page, id) {
-  await page.evaluate((sel) => {
-    document.querySelector(sel)?.scrollIntoView({ behavior: "instant", block: "start" });
+  const found = await page.evaluate((sel) => {
+    const el = document.querySelector(sel);
+    if (!el) return false;
+    el.scrollIntoView({ behavior: "instant", block: "start" });
+    return true;
   }, `#${id}`);
+  if (!found) {
+    throw new Error(
+      `goToSection("${id}"): no #${id} on the page. ` +
+      (SHEETS.includes(id) ? `It is a dialog — use openSheet(page, "${id}").` : "Check the anchor name.")
+    );
+  }
   await page.waitForTimeout(300);
+}
+
+/**
+ * Open one of the dialog sheets (tour, faq, neighborhood).
+ *
+ * app.js opens these from the matching hash, on load or on an in-page link, so
+ * navigating to `/#faq` is the same path a visitor takes from the footer.
+ */
+export async function openSheet(page, name) {
+  await page.evaluate((n) => {
+    const link = document.querySelector(`a[href="#${n}"]`);
+    if (link) link.click();
+    else window.location.hash = `#${n}`;
+  }, name);
+  await page.waitForSelector(`#${name}-overlay.is-open`, { timeout: 5000 });
+  await page.waitForTimeout(500);
 }
 
 /**
