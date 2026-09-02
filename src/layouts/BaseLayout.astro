@@ -216,7 +216,14 @@ const emailjsConfigured = !!(c.integrations?.emailjs?.publicKey
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" media="print" onload="this.media='all'" />
 <noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" /></noscript>
 
-<style is:inline set:html={`:root{${themeVars}}`} />
+{/* `:root:root` is deliberate, not a typo. Astro hoists the bundled stylesheet
+    AFTER this inline block, and global.css opens with its own `:root { --accent:
+    #129AE5 }` fallbacks. At equal specificity the later rule wins, so every token
+    set in site.config.json was being silently overridden by the template's
+    Magnolia defaults — the site rendered blue however the config was edited.
+    Repeating the selector doubles specificity so config always wins, while
+    global.css keeps its values as a fallback for any token a site omits. */}
+<style is:inline set:html={`:root:root{${themeVars}}`} />
 
 <Analytics site={site} />
 </head>
