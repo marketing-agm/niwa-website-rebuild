@@ -55,14 +55,51 @@ export default {
         "`?video=off` — the still hero the video sits on top of. This is also what " +
         "reduced-motion, Save-Data and a failed video request all fall back to.",
       path: "/?video=off",
-      action: async (page) => { await freezeMotion(page); await settleReveals(page); },
+      // The viewport is per-page, not per-shot, so a shot that narrows it leaves
+      // every later shot narrow. 04 does exactly that; these two set their own
+      // width back rather than depending on running before it.
+      action: async (page) => {
+        await page.setViewportSize({ width: 1440, height: 900 });
+        await freezeMotion(page);
+        await settleReveals(page);
+      },
+    },
+    {
+      // These two panels are yellow fills that were carrying white type — 1.34:1,
+      // invisible. No anchor reaches them, so scroll by selector.
+      name: "07-yellow-panels",
+      caption:
+        "`.move-in-cost` and `.mc-summary` — both were a saturated yellow fill with " +
+        "white type on it. Pale fill, black type now.",
+      path: "/?video=off",
+      action: async (page) => {
+        await page.setViewportSize({ width: 1440, height: 900 });
+        await freezeMotion(page);
+        await settleReveals(page);
+        // These panels are two layers deep: inside the unit-detail modal, on its
+        // "Rental terms" tab. Neither exists in the static HTML — the units are
+        // rendered by app.js — so the path is open a unit, then open the tab.
+        // Scrolling straight to the selector silently no-ops instead.
+        await page.locator(".unit-card").first().scrollIntoViewIfNeeded();
+        await page.locator(".unit-card").first().click();
+        await page.waitForTimeout(700);
+        await page.click('[data-ud-tab="terms"]');
+        await page.waitForTimeout(500);
+        // Now that the tab is open the panel has a box, so this scrolls the
+        // modal's own overflow container rather than the page.
+        await page.locator(".move-in-cost").first().scrollIntoViewIfNeeded();
+        await page.waitForTimeout(400);
+      },
     },
     {
       name: "06-full-page",
       caption: "Whole page with the loop in place, for proportion and rhythm",
       path: "/?video=background",
       fullPage: true,
-      action: prep,
+      action: async (page) => {
+        await page.setViewportSize({ width: 1440, height: 900 });
+        await prep(page);
+      },
     },
   ],
 };
