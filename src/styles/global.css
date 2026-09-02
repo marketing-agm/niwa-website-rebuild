@@ -4143,6 +4143,85 @@
     .video-modal-inner { transform: none; }
   }
 
+  /* ---------- Arrival film ----------
+     The full building film, alone on the screen, before the page is revealed.
+     Nothing is layered over it: the footage carries its own burned-in captions,
+     and the hero headline set on top of them was unreadable — which is why this
+     plays first and the split hero fades up underneath when it ends.
+
+     z-index sits above the video modal (200) and the sticky nav, because for
+     the duration of the film there is nothing else to interact with. */
+  .arrival-film {
+    position: fixed;
+    inset: 0;
+    z-index: 300;
+    background: #000;
+    display: block;
+    opacity: 1;
+    transition: opacity 900ms ease;
+  }
+  /* An explicit `display` beats the `hidden` attribute's UA `display: none` —
+     the same trap `.video-modal` fell into, where a closed dialog stayed a
+     full-viewport layer swallowing every click on the page. */
+  .arrival-film[hidden] { display: none; }
+  .arrival-film.is-done { opacity: 0; pointer-events: none; }
+
+  .arrival-film-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+  /* The film is 16:9 and letterboxes hard on a portrait phone, but cropping it
+     to fill would cut the captions off at both ends. Fitting it and centring
+     against black keeps the frame the film was cut for. */
+  @media (max-aspect-ratio: 1/1) {
+    .arrival-film-video { object-fit: contain; }
+  }
+
+  /* Thirty seconds is a long time to hold someone who came to look at floor
+     plans. The way out is visible from the first frame, not revealed on hover. */
+  .arrival-film-skip {
+    position: absolute;
+    right: clamp(16px, 4vw, 40px);
+    bottom: clamp(20px, 5vh, 44px);
+    z-index: 1;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 18px;
+    border: 1px solid rgba(255, 255, 255, 0.45);
+    border-radius: 999px;
+    background: rgba(0, 0, 0, 0.35);
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+    color: #fff;
+    font: inherit;
+    font-size: 0.86rem;
+    letter-spacing: 0.01em;
+    cursor: pointer;
+    transition: background 200ms ease, border-color 200ms ease;
+  }
+  .arrival-film-skip:hover {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--on-accent);
+  }
+  .arrival-film-skip:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+
+  /* The page underneath must not move while the film plays — every scroll
+     gesture is read as "I'm done watching" and dismisses it instead. */
+  html.arrival-film-open,
+  html.arrival-film-open body { overflow: hidden; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .arrival-film,
+    .arrival-film-skip { transition: none; }
+  }
+
   /* ---------- Dark gallery section ----------
      Photography reads better against black; the section also breaks up the
      otherwise all-white page. Tokens stay light — only this scope inverts. */

@@ -1,0 +1,138 @@
+---
+// Arrival film.
+//
+// Stakeholder direction was vibrantcities.com — a full-screen film on arrival.
+// Overlaying the headline on it failed: the film carries its own burned-in
+// captions, and "Iconically, Seattle." fought them for the same pixels. So the
+// film gets the screen to itself, uninterrupted, and when it ends it fades out
+// to the split hero underneath. Nothing is layered over the footage at any
+// point, which is the whole reason this exists.
+//
+// It sits at the very top of <body> with its decision script inline directly
+// after it, so it covers the viewport in the same paint as the page rather
+// than dropping over a hero the visitor has already started reading.
+//
+// Shown once per tab (sessionStorage), skippable, and abandoned on any hint
+// that the visitor would rather get on with it. `?intro=on` replays it and
+// `?intro=off` suppresses it, which is how it gets reviewed and screenshotted.
+const { site } = Astro.props as { site: { config: any } };
+const v = site.config.hero?.video ?? {};
+const intro = v.arrival ?? {};
+// Source list, best format first — VP9/WebM is a third the size of the H.264
+// cut, and Safari falls through to the MP4.
+const sources: { src: string; type?: string }[] = Array.isArray(intro.sources)
+  ? intro.sources
+  : (Array.isArray(v.full) ? v.full : (v.full ? [{ src: v.full, type: 'video/mp4' }] : []));
+// A site with video switched off entirely shouldn't get an arrival film either.
+const enabled = intro.enabled === true && sources.length > 0 && (v.mode ?? 'off') !== 'off';
+---
+{enabled && (
+  <>
+    <div class="arrival-film" id="arrival-film" hidden>
+      <video
+        class="arrival-film-video"
+        muted
+        playsinline
+        preload="auto"
+        poster={v.poster}
+        aria-hidden="true"
+        tabindex="-1"
+      >
+        {sources.map((s) => <source src={s.src} type={s.type} />)}
+      </video>
+      <button type="button" class="arrival-film-skip">
+        <span>{intro.skipLabel || "Skip intro"}</span>
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+        </svg>
+      </button>
+    </div>
+    <script is:inline>
+      (function () {
+        var el = document.getElementById('arrival-film');
+        if (!el) return;
+        var root = document.documentElement;
+        var video = el.querySelector('.arrival-film-video');
+        var params = new URLSearchParams(location.search);
+        var force = params.get('intro');
+
+        // Reasons not to run it. A multi-megabyte autoplay is hostile on a
+        // metered phone,
+        // motion sensitivity is a real accessibility need, and a film that
+        // reappears on every navigation stops being a welcome and becomes an
+        // obstacle between a renter and the floor plans.
+        var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        var conn = navigator.connection || {};
+        var thin = !!conn.saveData || /^(slow-)?2g$/.test(conn.effectiveType || '');
+        var seen = false;
+        try { seen = sessionStorage.getItem('niwa:arrival-film') === '1'; } catch (e) {}
+        if (force === 'off' || (force !== 'on' && (reduce || thin || seen))) {
+          el.remove();
+          return;
+        }
+        try { sessionStorage.setItem('niwa:arrival-film', '1'); } catch (e) {}
+
+        el.hidden = false;
+        root.classList.add('arrival-film-open');
+
+        var done = false;
+        var startWatchdog;
+        var runWatchdog;
+
+        function finish() {
+          if (done) return;
+          done = true;
+          clearTimeout(startWatchdog);
+          clearTimeout(runWatchdog);
+          window.removeEventListener('wheel', onIntent);
+          window.removeEventListener('touchmove', onIntent);
+          window.removeEventListener('keydown', onKey);
+          el.classList.add('is-done');
+          root.classList.remove('arrival-film-open');
+          try { video.pause(); } catch (e) {}
+          // The hero's background loop holds off until now rather than
+          // competing with the film for the same pipe.
+          document.dispatchEvent(new CustomEvent('niwa:arrival-film-done'));
+          setTimeout(function () { el.remove(); }, 1000);
+        }
+
+        function onIntent() { finish(); }
+        function onKey(e) {
+          if (e.key === 'Escape' || e.key === ' ' || e.key === 'Enter' ||
+              e.key === 'PageDown' || e.key === 'ArrowDown') finish();
+        }
+
+        var skip = el.querySelector('.arrival-film-skip');
+        skip.addEventListener('click', finish);
+        // The only thing on screen worth reaching, so put the caret on it — a
+        // keyboard visitor shouldn't have to guess their way out of a film.
+        try { skip.focus({ preventScroll: true }); } catch (e) { skip.focus(); }
+        video.addEventListener('ended', finish);
+        video.addEventListener('error', finish);
+        // `error` on the <video> doesn't fire for a failed <source>; the element
+        // only gives up once every source has been tried, and reports that on the
+        // last child. Watching both covers a 404 and a missing codec.
+        video.lastElementChild.addEventListener('error', finish);
+        // Scrolling is the clearest "I'm done watching" there is. The page
+        // itself is locked underneath, so these only ever mean dismiss.
+        window.addEventListener('wheel', onIntent, { passive: true });
+        window.addEventListener('touchmove', onIntent, { passive: true });
+        window.addEventListener('keydown', onKey);
+
+        // Autoplay can still be refused, and the fetch can stall. Either way the
+        // visitor must not be held on the poster frame indefinitely, so give it
+        // five seconds to actually start and hand over to the page if it hasn't.
+        startWatchdog = setTimeout(finish, 5000);
+        video.addEventListener('playing', function () {
+          clearTimeout(startWatchdog);
+          // And a second cap once the length is known, in case playback dies
+          // partway and `ended` never arrives.
+          var d = isFinite(video.duration) ? video.duration : 40;
+          runWatchdog = setTimeout(finish, (d + 8) * 1000);
+        }, { once: true });
+
+        video.play().catch(finish);
+      })();
+    </script>
+  </>
+)}

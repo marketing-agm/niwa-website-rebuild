@@ -130,10 +130,23 @@
           "type": "video/mp4"
         }
       ],
-      "full": "/video/niwa-hero-film.mp4",
+      "full": [
+        {
+          "src": "/video/niwa-hero-film.webm",
+          "type": "video/webm"
+        },
+        {
+          "src": "/video/niwa-hero-film.mp4",
+          "type": "video/mp4"
+        }
+      ],
       "poster": "/images/hero-poster.jpg",
       "label": "Watch the building film",
-      "modalHeading": "Niwa Apartments — the building film"
+      "modalHeading": "Niwa Apartments — the building film",
+      "arrival": {
+        "enabled": true,
+        "skipLabel": "Skip intro"
+      }
     }
   },
   "floorPlans": {},
