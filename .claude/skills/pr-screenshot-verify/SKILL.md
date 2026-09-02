@@ -89,9 +89,15 @@ ported from:
   `readyState >= 2`; keep it in the hero shot.
 - **Always keep the phone-width shot.** Most traffic to a leasing site is mobile. A
   layout that only works at 1440 mostly does not work.
-- **This repo has no `main` branch.** The default is
+- **`main` is production**, but GitHub's default branch may still be
   `claude/niwa-website-rebuild-setup-4i1y68`. `post-to-pr.mjs` resolves it from
   `origin/HEAD` rather than assuming — if that ever fails, run
   `git remote set-head origin -a` once.
+- **The assets branch must not deploy.** `post-to-pr.mjs` puts `[CF-Pages-Skip]`
+  in its commit message for this reason. Take it out and every screenshot post
+  builds a deployment made of production's code plus PNGs, which then sits at the
+  top of the Cloudflare list as the newest deployment carrying the oldest code —
+  and the site reads as though it is flip-flopping between designs. Sort
+  deployments by content, not by time.
 - **Motion makes runs incomparable.** `freezeMotion()` zeroes animation and
   transition durations so two runs differ only where the code differs.

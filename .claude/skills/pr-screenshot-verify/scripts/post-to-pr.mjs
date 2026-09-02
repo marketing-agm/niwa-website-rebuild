@@ -96,7 +96,19 @@ try {
   mkdirSync(destAbs, { recursive: true });
   for (const s of shots) copyFileSync(path.join(shotsDir, s.name), path.join(destAbs, s.name));
   sh(`git add ${destRel}`);
-  sh(`git commit -q -m "chore: PR #${prNumber} verification screenshots (${runTag})"`);
+  // [CF-Pages-Skip] stops Cloudflare building this branch.
+  //
+  // Without it every screenshot post creates a deployment: this branch is the
+  // production code plus a folder of PNGs, so Cloudflare builds it and it lands
+  // at the top of the deployment list — the newest deployment by time, carrying
+  // the oldest code on the list. That is what made the site look like it was
+  // flip-flopping between palettes; it was really alternating between real
+  // preview branches and these.
+  //
+  // The dashboard fix is to exclude assets/* under branch control, but this
+  // belongs in the repo where it cannot be un-set by accident. Cloudflare also
+  // honours [CI Skip], [Skip CI] and [CF Pages Skip] — any one of them is enough.
+  sh(`git commit -q -m "chore: PR #${prNumber} verification screenshots (${runTag}) [CF-Pages-Skip]"`);
   sh(`git push -u origin ${assetsBranch}`);
 } finally {
   sh(`git checkout ${startBranch}`);
