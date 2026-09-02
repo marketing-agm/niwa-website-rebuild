@@ -93,6 +93,11 @@ ported from:
   `claude/niwa-website-rebuild-setup-4i1y68`. `post-to-pr.mjs` resolves it from
   `origin/HEAD` rather than assuming — if that ever fails, run
   `git remote set-head origin -a` once.
+- **Shoot into `.pr-shots`, not a name you invent.** `post-to-pr.mjs` switches
+  branches, and an output directory git does not ignore is wiped out from under
+  it mid-run — or worse, swept into your own commit by a `git add -A` first.
+  `.gitignore` now covers `.pr-shots*/`, so a suffixed name like
+  `.pr-shots-tours` is safe; anything else is not.
 - **The assets branch must not deploy.** `post-to-pr.mjs` puts `[CF-Pages-Skip]`
   in its commit message for this reason. Take it out and every screenshot post
   builds a deployment made of production's code plus PNGs, which then sits at the

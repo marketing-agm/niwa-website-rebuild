@@ -138,8 +138,8 @@ export async function freezeMotion(page) {
  * because the file 404'd" — two things that photograph almost identically.
  *
  * Note for anyone reading a run: this environment's headless Chromium has no
- * H.264 decoder. The loop ships VP9/WebM first so it plays here, but the full
- * film is MP4 only and will photograph as its poster frame, not as video.
+ * H.264 decoder. Both the loop and the full film ship VP9/WebM first, so both
+ * play here; anything MP4-only would photograph as its poster frame instead.
  */
 export async function videoReady(page, timeout = 8000) {
   await page.waitForFunction(() => {

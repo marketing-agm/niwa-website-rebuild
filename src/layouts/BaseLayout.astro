@@ -1,6 +1,7 @@
 ---
 import Analytics from '../components/Analytics.astro';
 import StickyCta from '../components/StickyCta.astro';
+import ArrivalFilm from '../components/ArrivalFilm.astro';
 import '../styles/global.css';
 
 const { site } = Astro.props as { site: { id: string; config: any; data: any; faq?: { q: string; a: string }[] } };
@@ -228,6 +229,7 @@ const emailjsConfigured = !!(c.integrations?.emailjs?.publicKey
 <Analytics site={site} />
 </head>
 <body>
+<ArrivalFilm site={site} />
 <slot />
 <StickyCta site={site} />
 <script is:inline set:html={`window.__SITE__=${JSON.stringify(siteRuntime)};`} />

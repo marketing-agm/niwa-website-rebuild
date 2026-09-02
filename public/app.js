@@ -847,14 +847,20 @@
     let loopVideo = null;
 
     if (autoplay) {
+      // The arrival film has the screen and the pipe to itself. Fetching a
+      // second video behind it only slows down the one being watched, so the
+      // loop holds off entirely until the film hands over. `autoplay` has to go
+      // too, not just `preload` — an autoplaying element starts loading no
+      // matter what preload says.
+      let gated = document.documentElement.classList.contains('arrival-film-open');
       loopVideo = document.createElement('video');
       loopVideo.className = 'hero-video';
       loopVideo.muted = true;          // property, not attribute — iOS checks this
       loopVideo.defaultMuted = true;
       loopVideo.loop = true;
-      loopVideo.autoplay = true;
+      loopVideo.autoplay = !gated;
       loopVideo.playsInline = true;
-      loopVideo.preload = 'auto';
+      loopVideo.preload = gated ? 'none' : 'auto';
       loopVideo.setAttribute('playsinline', '');
       loopVideo.setAttribute('aria-hidden', 'true');
       loopVideo.tabIndex = -1;
@@ -881,7 +887,16 @@
       visual.appendChild(loopVideo);
       // A muted autoplay can still be refused. Retry once, then leave the
       // poster showing rather than a frozen first frame.
-      const tryPlay = () => loopVideo.play().catch(() => {});
+      const tryPlay = () => { if (!gated) loopVideo.play().catch(() => {}); };
+      if (gated) {
+        document.addEventListener('niwa:arrival-film-done', () => {
+          gated = false;
+          loopVideo.autoplay = true;
+          loopVideo.preload = 'auto';
+          loopVideo.load();
+          tryPlay();
+        }, { once: true });
+      }
       tryPlay();
       loopVideo.addEventListener('canplay', tryPlay, { once: true });
 
@@ -926,7 +941,20 @@
       lastFocus = document.activeElement;
       // The big cut is only fetched when someone asks for it — attaching the
       // src up front would download it alongside the loop.
-      if (!bigVideo.src) bigVideo.src = vid.full || loopSources[loopSources.length - 1].src;
+      if (!bigVideo.src && !bigVideo.firstElementChild) {
+        // Same source-list rule as the loop: WebM leads because it is a third
+        // the size of the H.264 cut, and Safari falls through to the MP4.
+        const fullSources = Array.isArray(vid.full)
+          ? vid.full
+          : (vid.full ? [{ src: vid.full, type: 'video/mp4' }] : [loopSources[loopSources.length - 1]]);
+        fullSources.forEach((s) => {
+          const el = document.createElement('source');
+          el.src = s.src;
+          if (s.type) el.type = s.type;
+          bigVideo.appendChild(el);
+        });
+        bigVideo.load();
+      }
       // The film always starts from its own beginning. Matching the background
       // loop's timestamp would be meaningless: the loop is a re-cut of three
       // segments lifted from the middle of the film, so second 3 of one is
@@ -1013,10 +1041,24 @@
   // back and forth between tabs doesn't inflate the conversion.
   const tour3dTracked = new Set();
 
+  // The tour URLs live on the chips FloorPlans.astro renders, one picker per
+  // layout. Reading them from the DOM rather than a second copy in config means
+  // what the visitor clicks and what the iframe loads cannot drift apart.
+  function activePicker() {
+    if (!planTourEl) return null;
+    return planTourEl.querySelector('.plan-tour-picker[data-plan="' + activePlan + '"]');
+  }
+
   function applyTourSrc() {
     if (!planTourEl || !planTourIframe) return;
     const placeholder = planTourEl.querySelector('.plan-tour-placeholder');
-    const url = planTourEl.dataset['tour' + activePlan.charAt(0).toUpperCase() + activePlan.slice(1)];
+    // Only the active layout's picker is on screen, and only on the 3D tab.
+    planTourEl.querySelectorAll('.plan-tour-picker').forEach((pk) => {
+      pk.hidden = pk.dataset.plan !== activePlan || activeView !== '3d';
+    });
+    const picker = activePicker();
+    const chip = picker && (picker.querySelector('.plan-tour-chip.is-active') || picker.querySelector('.plan-tour-chip'));
+    const url = chip && chip.dataset.tourUrl;
     if (activeView === '3d' && url) {
       if (planTourIframe.getAttribute('src') !== url) planTourIframe.setAttribute('src', url);
       planTourIframe.hidden = false;
@@ -1035,6 +1077,17 @@
       if (placeholder) placeholder.style.display = '';
     }
   }
+
+  // Switching between two shoots of the same layout — furnished and unfurnished
+  // 1BRs — is a chip click, not a tab. Delegated because the pickers are
+  // rendered per layout and only one is ever on screen.
+  planTourEl?.addEventListener('click', (e) => {
+    const chip = e.target.closest('.plan-tour-chip');
+    if (!chip) return;
+    const picker = chip.closest('.plan-tour-picker');
+    picker.querySelectorAll('.plan-tour-chip').forEach((c) => c.classList.toggle('is-active', c === chip));
+    applyTourSrc();
+  });
 
   document.querySelectorAll('.plan-tab').forEach(tab => {
     tab.addEventListener('click', () => {

@@ -2026,9 +2026,14 @@
     border-top: 1px solid var(--rule);
     border-bottom: 1px solid var(--rule);
   }
+  /* One row, however many layouts there are. This was `repeat(2, 1fr)` — a
+     two-plan assumption inherited from a property that had exactly a 1BR and a
+     2BR. Niwa has three, so the third wrapped onto a second row and the active
+     tab rendered as a full-width black bar beside two stacked ones. */
   .plan-switcher {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-auto-flow: column;
+    grid-auto-columns: 1fr;
     gap: 0;
     border: 1px solid var(--rule);
     border-radius: var(--radius-lg);
@@ -2036,7 +2041,9 @@
     background: var(--paper-2);
     margin-bottom: 32px;
   }
-  @media (max-width: 720px) { .plan-switcher { grid-template-columns: 1fr; } }
+  @media (max-width: 720px) {
+    .plan-switcher { grid-auto-flow: row; grid-auto-columns: auto; }
+  }
   .plan-tab {
     padding: 22px 24px;
     text-align: left;
@@ -2167,6 +2174,48 @@
     display: block;
   }
   .plan-tour-iframe[hidden] { display: none; }
+
+  /* Switching between two shoots of the same layout — the 1BR is shot furnished
+     and unfurnished. Floats over the tour rather than sitting under it, because
+     the frame is a fixed 4:3 and a row below would push the plan details out of
+     line with it. Top-left is the one corner Matterport's own chrome leaves
+     alone. */
+  .plan-tour-picker {
+    position: absolute;
+    top: 12px;
+    left: 12px;
+    z-index: 2;
+    display: flex;
+    gap: 6px;
+    padding: 5px;
+    border-radius: 999px;
+    background: rgba(10, 10, 10, 0.55);
+    -webkit-backdrop-filter: blur(8px);
+    backdrop-filter: blur(8px);
+  }
+  .plan-tour-picker[hidden] { display: none; }
+  /* A layout with one tour has nothing to choose between, so the chip is a
+     label the visitor cannot act on. The picker still exists in the markup —
+     it is where the URL lives — it just isn't drawn. */
+  .plan-tour-picker.is-single { display: none; }
+  .plan-tour-chip {
+    border: 0;
+    border-radius: 999px;
+    padding: 7px 15px;
+    font: inherit;
+    font-size: 13px;
+    line-height: 1;
+    color: rgba(255, 255, 255, 0.75);
+    background: transparent;
+    cursor: pointer;
+    transition: background 160ms ease, color 160ms ease;
+  }
+  .plan-tour-chip:hover { color: #fff; background: rgba(255, 255, 255, 0.14); }
+  .plan-tour-chip.is-active {
+    background: var(--accent);
+    color: var(--on-accent);
+  }
+  .plan-tour-chip:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
   .plan-tour-placeholder {
     position: absolute;
     inset: 0;
@@ -2575,6 +2624,61 @@
     letter-spacing: 0.12em;
     text-transform: uppercase;
     color: var(--ink-3);
+  }
+
+  /* ---------- Walk-the-building tours ----------
+     Matterport walkthroughs of the shared spaces. The floor-plan section covers
+     the homes; the roof and the gym belong to no layout tab, so they sit under
+     the gallery — the part of the page already about looking around. Rendered
+     inside .gallery-section, which is the one inverted scope on the page, so
+     these are styled for dark. */
+  .amenity-tours {
+    margin-top: clamp(40px, 5vw, 64px);
+    padding-top: clamp(32px, 4vw, 48px);
+    border-top: 1px solid rgba(255, 255, 255, 0.14);
+    text-align: center;
+  }
+  .amenity-tours-head {
+    margin: 0;
+    font-family: var(--serif);
+    font-weight: 420;
+    font-size: clamp(22px, 2.4vw, 30px);
+    letter-spacing: -0.015em;
+    color: #fff;
+  }
+  .amenity-tours-note {
+    margin: 10px auto 0;
+    max-width: 46ch;
+    font-size: 14.5px;
+    color: rgba(255, 255, 255, 0.66);
+  }
+  .amenity-tours-row {
+    margin-top: 22px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+  }
+  .amenity-tour {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    padding: 12px 22px;
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    border-radius: 999px;
+    color: #fff;
+    text-decoration: none;
+    font-size: 15px;
+    transition: background 180ms ease, border-color 180ms ease, color 180ms ease;
+  }
+  .amenity-tour:hover {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--on-accent);
+  }
+  .amenity-tour:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+  @media (prefers-reduced-motion: reduce) {
+    .amenity-tour, .plan-tour-chip { transition: none; }
   }
 
   /* ---------- Lightbox ---------- */
@@ -4141,6 +4245,147 @@
     .video-modal-inner,
     .hero-video-btn { transition: none; }
     .video-modal-inner { transform: none; }
+  }
+
+  /* ---------- Arrival film ----------
+     The full building film, alone on the screen, before the page is revealed.
+     Nothing is layered over it: the footage carries its own burned-in captions,
+     and the hero headline set on top of them was unreadable — which is why this
+     plays first and the split hero fades up underneath when it ends.
+
+     z-index sits above the video modal (200) and the sticky nav, because for
+     the duration of the film there is nothing else to interact with. */
+  .arrival-film {
+    position: fixed;
+    inset: 0;
+    z-index: 300;
+    background: #000;
+    display: block;
+    opacity: 1;
+    transition: opacity 900ms ease;
+  }
+  /* An explicit `display` beats the `hidden` attribute's UA `display: none` —
+     the same trap `.video-modal` fell into, where a closed dialog stayed a
+     full-viewport layer swallowing every click on the page. */
+  .arrival-film[hidden] { display: none; }
+  .arrival-film.is-done { opacity: 0; pointer-events: none; }
+
+  /* Never cropped. The film's captions are burned in and they use the full
+     frame — the contact details run edge to edge across the middle, and the
+     lower-thirds are anchored hard to the left. `cover` cuts the phone number
+     in half on a laptop and eats the first word of every lower-third on a
+     phone, so the frame is fitted at every size and the letterbox is dressed
+     rather than cropped away. */
+  .arrival-film-video {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+  }
+  /* What fills the letterbox: the hero poster, blurred right down. A portrait
+     phone shows a 16:9 film as a band a quarter of the screen tall, and in flat
+     black that reads as a broken player rather than a cinema. Scaled past the
+     edges so the blur has nothing to feather against, and it costs nothing —
+     the poster is already fetched as the video's own placeholder. */
+  .arrival-film::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background: var(--film-backdrop, none) center / cover no-repeat;
+    filter: blur(30px) brightness(0.42) saturate(0.75);
+    transform: scale(1.18);
+  }
+
+  /* The wordmark belongs to the portrait composition below, not to a laptop
+     where the bars are forty pixels deep. */
+  .arrival-film-mark { display: none; }
+
+  /* Thirty seconds is a long time to hold someone who came to look at floor
+     plans. The way out is visible from the first frame, not revealed on hover. */
+  .arrival-film-skip {
+    position: absolute;
+    right: clamp(16px, 4vw, 40px);
+    bottom: clamp(20px, 5vh, 44px);
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 18px;
+    border: 1px solid rgba(255, 255, 255, 0.45);
+    border-radius: 999px;
+    background: rgba(0, 0, 0, 0.35);
+    -webkit-backdrop-filter: blur(6px);
+    backdrop-filter: blur(6px);
+    color: #fff;
+    font: inherit;
+    font-size: 0.86rem;
+    letter-spacing: 0.01em;
+    cursor: pointer;
+    transition: background 200ms ease, border-color 200ms ease;
+  }
+  .arrival-film-skip:hover {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: var(--on-accent);
+  }
+  .arrival-film-skip:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+
+  /* The page underneath must not move while the film plays — every scroll
+     gesture is read as "I'm done watching" and dismisses it instead. */
+  html.arrival-film-open,
+  html.arrival-film-open body { overflow: hidden; }
+
+  /* ---- Portrait: compose the letterbox instead of leaving it empty ----
+     A 16:9 film on a 390x844 phone is a band 220px tall. Cropping it to fill
+     is not available (the captions run to both edges), so the space around it
+     is given a job: wordmark above the frame, skip control below it, film in
+     the middle. Nothing sits ON the footage — these are outside the frame. */
+  @media (max-aspect-ratio: 4/5) {
+    .arrival-film {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: clamp(28px, 8vh, 64px);
+    }
+    .arrival-film-video {
+      height: auto;
+      aspect-ratio: 16 / 9;
+      flex: 0 0 auto;
+    }
+    .arrival-film-mark {
+      display: block;
+      position: relative;
+      z-index: 2;
+      margin: 0;
+      font-family: var(--serif);
+      font-weight: 420;
+      font-size: 22px;
+      letter-spacing: -0.02em;
+      color: #fff;
+    }
+    .arrival-film-mark em {
+      font-style: italic;
+      font-variation-settings: 'opsz' 144, 'SOFT' 100;
+    }
+    /* Out of the corner and under the frame, so the three parts read as one
+       composition rather than a control stranded in a dark field. */
+    .arrival-film-skip {
+      position: relative;
+      right: auto;
+      bottom: auto;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .arrival-film,
+    .arrival-film-skip { transition: none; }
   }
 
   /* ---------- Dark gallery section ----------

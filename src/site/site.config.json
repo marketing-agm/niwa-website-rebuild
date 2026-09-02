@@ -130,13 +130,55 @@
           "type": "video/mp4"
         }
       ],
-      "full": "/video/niwa-hero-film.mp4",
+      "full": [
+        {
+          "src": "/video/niwa-hero-film.webm",
+          "type": "video/webm"
+        },
+        {
+          "src": "/video/niwa-hero-film.mp4",
+          "type": "video/mp4"
+        }
+      ],
       "poster": "/images/hero-poster.jpg",
       "label": "Watch the building film",
-      "modalHeading": "Niwa Apartments — the building film"
+      "modalHeading": "Niwa Apartments — the building film",
+      "arrival": {
+        "enabled": true,
+        "skipLabel": "Skip intro"
+      }
     }
   },
-  "floorPlans": {},
+  "floorPlans": {
+    "studio": {
+      "tours": [
+        {
+          "label": "Studio",
+          "url": "https://my.matterport.com/show/?m=ibNNfRSsBPe"
+        }
+      ]
+    },
+    "1br": {
+      "tours": [
+        {
+          "label": "Furnished",
+          "url": "https://my.matterport.com/show/?m=uwQChVexN2s"
+        },
+        {
+          "label": "Unfurnished",
+          "url": "https://my.matterport.com/show/?m=DrwnamUbRaW"
+        }
+      ]
+    },
+    "2br": {
+      "tours": [
+        {
+          "label": "2 Bedroom",
+          "url": "https://my.matterport.com/show/?m=xKzg1tiMxeQ"
+        }
+      ]
+    }
+  },
   "integrations": {
     "orsApiKey": "",
     "emailjs": {
@@ -344,6 +386,24 @@
   },
   "gallery": {
     "lede": "A look around the building, the roof and the neighborhood — photographed this autumn.",
-    "note": "Photography of individual homes is on the way — ask the leasing team to see one in person."
+    "note": "Photography of individual homes is on the way — in the meantime you can walk any layout in 3D from the floor plans below."
+  },
+  "amenityTours": {
+    "heading": "Walk the building",
+    "note": "Three-dimensional tours — drag to look around, click to move through the space.",
+    "items": [
+      {
+        "label": "Rooftop clubroom",
+        "url": "https://my.matterport.com/show/?m=iEdgJrR4xAR"
+      },
+      {
+        "label": "Rooftop deck",
+        "url": "https://my.matterport.com/show/?m=tbv3bbXYLHS"
+      },
+      {
+        "label": "Fitness center",
+        "url": "https://my.matterport.com/show/?m=TJW1QP3fGHm"
+      }
+    ]
   }
 }
