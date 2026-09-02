@@ -1,5 +1,4 @@
 {
-  "_note": "Stills 2-8 are frames lifted from public/video/niwa-hero-film.mp4 at timestamps chosen to avoid the film's burned-in captions. They are stand-ins until professional photography exists — see the 'Photography coming soon' line the gallery still shows. Replace the files in place and these entries need no edits.",
   "photos": [
     {
       "id": 1,
@@ -7,55 +6,6 @@
       "src": "/images/gallery/exterior-building-facade.jpg",
       "title": "Building facade",
       "desc": "The yellow cladding on 1st Ave N, with the Space Needle behind"
-    },
-    {
-      "id": 2,
-      "cat": "units",
-      "src": "/images/gallery/units-living-room-view.jpg",
-      "title": "Living room",
-      "desc": "Floor-to-ceiling glass onto the water and the low rooftops of Lower Queen Anne"
-    },
-    {
-      "id": 3,
-      "cat": "exterior",
-      "src": "/images/gallery/exterior-rooftop-terrace.jpg",
-      "title": "Rooftop terrace",
-      "desc": "Planted beds, grills and an open outlook west over Elliott Bay"
-    },
-    {
-      "id": 4,
-      "cat": "units",
-      "src": "/images/gallery/units-studio.jpg",
-      "title": "Studio",
-      "desc": "Studios pair sleeping, kitchen and living in a single room"
-    },
-    {
-      "id": 5,
-      "cat": "interior",
-      "src": "/images/gallery/interior-kitchen.jpg",
-      "title": "Kitchen",
-      "desc": "Wood cabinetry, stainless appliances and a breakfast counter"
-    },
-    {
-      "id": 6,
-      "cat": "interior",
-      "src": "/images/gallery/interior-fitness-center.jpg",
-      "title": "Fitness center",
-      "desc": "Cardio, weights and a cable machine under exposed ceilings, open 24 hours"
-    },
-    {
-      "id": 7,
-      "cat": "interior",
-      "src": "/images/gallery/interior-bathroom.jpg",
-      "title": "Bathroom",
-      "desc": "Full bath with a deep vanity and stone-look counter"
-    },
-    {
-      "id": 8,
-      "cat": "exterior",
-      "src": "/images/gallery/exterior-street-view.jpg",
-      "title": "On 1st Ave N",
-      "desc": "The building from the street, a few blocks north of Seattle Center"
     }
   ]
 }
