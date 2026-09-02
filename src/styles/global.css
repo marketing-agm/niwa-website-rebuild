@@ -18,6 +18,18 @@
     /* Type that sits ON either yellow. Both are light fills, so this is black in
        every case; it is a token so no rule reaches for --paper and disappears. */
     --on-accent: #000000;
+    /* --- The garden, used as ground rather than as colour ---
+       Niwa is "garden". These are the tints the landing screen sits on: a warm
+       paper white, a pale sage lifted from the hellebore reference, and a
+       gravel grey from the raked-stone one. They exist to give the white some
+       temperature and depth — every one is within a few percent of white, on
+       purpose, because the brief was that nothing here may take attention off
+       the yellow that is already doing the work. */
+    --garden-paper: #FCFBF6;   /* the ground: white, very slightly warm */
+    --garden-leaf: #EDF1E8;    /* pale sage wash */
+    --garden-leaf-2: #DCE5D5;  /* the same, one step deeper — edges and veins */
+    --garden-stone: #F1EFE9;   /* raked gravel */
+    --garden-ink: #8C9384;     /* the green that reads as a line, not a fill */
     /* One knob for vertical rhythm between sections.
        Stepped rather than a single clamp across all widths: the values this
        replaces were 112px above 860, 80px down to 540 and 56px below that, and
@@ -4245,6 +4257,226 @@
     .video-modal-inner,
     .hero-video-btn { transition: none; }
     .video-modal-inner { transform: none; }
+  }
+
+  /* ---------- The marumado ----------
+     The round window. A byobu screen folds open on arrival and a round window
+     closes the page: you come in through a screen and leave looking out.
+
+     Everything but the photograph is drawn. The shoji is two repeating
+     gradients for the lattice on a paper ground, the centre post is one
+     element, and the circle is a clipped figure with a wood ring around it.
+     No image was needed for any of that, and a drawn lattice stays crisp at
+     any size where a photographed one would not. */
+  .marumado {
+    position: relative;
+    display: grid;
+    gap: clamp(36px, 5vw, 64px);
+    align-items: center;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+    padding: var(--section-y) clamp(20px, 5vw, 64px);
+    max-width: 1320px;
+    margin: 0 auto;
+    background: var(--garden-paper);
+  }
+  @media (max-width: 900px) {
+    .marumado { grid-template-columns: 1fr; }
+  }
+
+  /* The paper screen. The lattice is deliberately not square: real shoji are
+     taller than they are wide in each pane, and a square grid reads as graph
+     paper. */
+  .marumado-shoji {
+    position: relative;
+    aspect-ratio: 4 / 5;
+    border-radius: 3px;
+    background:
+      repeating-linear-gradient(90deg,
+        rgba(140, 124, 98, 0.5) 0 2px, transparent 2px calc(100% / 8)),
+      repeating-linear-gradient(0deg,
+        rgba(140, 124, 98, 0.5) 0 2px, transparent 2px calc(100% / 11)),
+      linear-gradient(165deg, #FBF8F0 0%, #F3EEE1 60%, #EDE6D6 100%);
+    border: clamp(12px, 1.6vw, 20px) solid #574733;
+    border-image: linear-gradient(150deg, #6A5842 0%, #4A3D2C 50%, #675541 100%) 1;
+    box-shadow: 0 24px 60px -32px rgba(40, 30, 18, 0.5);
+    overflow: hidden;
+  }
+
+  /* The centre post. In every marumado worth looking at, the screen's own
+     mullion crosses the opening — the window is cut through the shoji, not
+     hung beside it, and this is what says so. */
+  .marumado-post {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: clamp(7px, 0.9vw, 11px);
+    transform: translateX(-50%);
+    background: linear-gradient(90deg, #574733, #74604A 45%, #4C3E2D);
+    z-index: 2;
+  }
+
+  .marumado-window {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 74%;
+    aspect-ratio: 1;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    overflow: hidden;
+    z-index: 1;
+    /* The wood reveal around the opening, then the shadow the paper casts into
+       it. Two rings, because a single flat border reads as a sticker. */
+    box-shadow:
+      0 0 0 clamp(8px, 1.1vw, 14px) #67543E,
+      0 0 0 calc(clamp(8px, 1.1vw, 14px) + 2px) rgba(48, 38, 24, 0.6),
+      inset 0 0 40px -10px rgba(30, 24, 14, 0.55);
+  }
+  .marumado-window img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    /* A view seen through a window is further away than the room you are in. */
+    transform: scale(1.06);
+  }
+
+  .marumado-copy { max-width: 46ch; }
+  .marumado-copy .display { margin: 8px 0 0; }
+  .marumado-copy .lede { margin: 18px 0 0; }
+  .marumado-copy .btn { margin-top: 28px; }
+
+  @media (max-width: 900px) {
+    .marumado-shoji { aspect-ratio: 1 / 1; max-width: 520px; }
+    .marumado-copy { max-width: none; }
+  }
+
+  /* ---------- The byobu door ----------
+     A painted folding screen across the viewport on arrival, which concertinas
+     open to the right and reveals the film already running behind it.
+
+     The fold is real, not a wipe. Each leaf pivots on the hinge it shares with
+     its neighbour — `transform-origin: right center` — turning edge-on while
+     the leaves behind it are still flat, and the whole screen gathers at the
+     right. A leaf turned 78 degrees keeps about 21% of its width on screen, so
+     leaf *i* has to travel (panels - i) x 79% of its own width to land in the
+     stack. That is where the 79 comes from; it is geometry, not taste.
+
+     Sits above the film (300) because for its one second there is nothing else. */
+  .byobu {
+    position: fixed;
+    inset: 0;
+    z-index: 400;
+    /* Transparent, deliberately. The cream ground belongs to the leaves, not to
+       the stage — put it here and the film stays hidden behind a beige wall as
+       the screen opens onto nothing, which is the one thing this must not do. */
+    background: transparent;
+    overflow: hidden;
+    perspective: 1700px;
+    perspective-origin: 88% 50%;
+  }
+  .byobu[hidden] { display: none; }
+
+  .byobu-stage {
+    position: absolute;
+    inset: 0;
+    transform-style: preserve-3d;
+  }
+
+  .byobu-panel {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: calc(100% / var(--byobu-panels));
+    left: calc(var(--i) * 100% / var(--byobu-panels));
+    box-sizing: border-box;
+    /* The silk, on the leaf itself — so what is behind a folded leaf is the
+       film, and so nothing shows through before the artwork has loaded. */
+    background: #EFE7D5;
+    transform-origin: right center;
+    transform-style: preserve-3d;
+    overflow: hidden;
+    /* Hinge shadow on the leading edge, and the light catching the trailing one. */
+    box-shadow:
+      inset -14px 0 22px -14px rgba(30, 22, 14, 0.55),
+      inset 14px 0 20px -16px rgba(255, 252, 240, 0.5);
+    transition: transform var(--byobu-fold, 980ms) cubic-bezier(0.66, 0, 0.28, 1);
+    transition-delay: calc(var(--i) * 40ms);
+    will-change: transform;
+  }
+  @media (max-width: 700px) { .byobu-panel { --byobu-frame: 6px; } }
+
+  /* The lacquered frame around each leaf. This is what makes the thing read as
+     a folding screen rather than wallpaper: without a frame the artwork runs
+     edge to edge and the eye has no reason to see six panels at all.
+
+     Drawn as an overlay, not a `border`. A border insets the panel's content
+     box, so every slice of the artwork landed a frame-width off from its
+     neighbour and the branch visibly stepped at each hinge. On top, the frame
+     sits over the silk — which is where a real one sits anyway. */
+  .byobu-panel::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    border: var(--byobu-frame, 11px) solid transparent;
+    border-image: linear-gradient(160deg, #3B2E23 0%, #241B14 45%, #403126 100%) 1;
+    box-shadow: inset 0 0 0 1px rgba(214, 190, 130, 0.32);
+  }
+
+  /* Each panel is a window onto its own slice of one artwork, so the branch
+     runs unbroken across the closed screen and only breaks as it folds. */
+  .byobu-art {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: calc(var(--i) * -100%);
+    width: calc(var(--byobu-panels) * 100%);
+    /* Positioned against the panel's padding box, which the frame has already
+       inset — so each slice lands where its neighbour left off and the branch
+       carries across the hinge instead of stepping at it. */
+  }
+  .byobu-art img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* Light falling across leaves that are turning away from the viewer. Flat
+     while closed, ramped up as they pivot — without it the fold reads as paper
+     sliding sideways rather than turning. */
+  .byobu-shade {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, rgba(30, 24, 17, 0.30) 0%, rgba(30, 24, 17, 0) 55%);
+    opacity: 0;
+    transition: opacity var(--byobu-fold, 980ms) ease;
+    transition-delay: calc(var(--i) * 40ms);
+  }
+
+  .byobu.is-open .byobu-panel {
+    transform: translateX(calc((var(--byobu-panels) - var(--i)) * 79%)) rotateY(-78deg);
+  }
+  /* Alternate leaves turn the other way — that alternation is the concertina. */
+  .byobu.is-open .byobu-panel:nth-child(even) {
+    transform: translateX(calc((var(--byobu-panels) - var(--i)) * 79%)) rotateY(78deg);
+  }
+  .byobu.is-open .byobu-shade { opacity: 1; }
+  .byobu.is-open .byobu-panel:nth-child(even) .byobu-shade { opacity: 0.45; }
+
+  /* Nothing scrolls while the screen is standing. */
+  html.byobu-closed,
+  html.byobu-closed body { overflow: hidden; }
+
+  /* Motion sensitivity removes the whole entry sequence, door included — it is
+     handled in the component, which never un-hides this. Belt and braces here
+     in case the class survives a resume. */
+  @media (prefers-reduced-motion: reduce) {
+    .byobu-panel,
+    .byobu-shade { transition: none; }
   }
 
   /* ---------- Arrival film ----------

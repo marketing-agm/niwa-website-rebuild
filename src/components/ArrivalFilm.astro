@@ -125,16 +125,10 @@ const markEmph = site.config.wordmark?.emph ?? (lastSpace === -1 ? '' : siteName
         // only gives up once every source has been tried, and reports that on the
         // last child. Watching both covers a 404 and a missing codec.
         video.lastElementChild.addEventListener('error', finish);
-        // Scrolling is the clearest "I'm done watching" there is. The page
-        // itself is locked underneath, so these only ever mean dismiss.
-        window.addEventListener('wheel', onIntent, { passive: true });
-        window.addEventListener('touchmove', onIntent, { passive: true });
-        window.addEventListener('keydown', onKey);
-
         // Autoplay can still be refused, and the fetch can stall. Either way the
         // visitor must not be held on the poster frame indefinitely, so give it
-        // five seconds to actually start and hand over to the page if it hasn't.
-        startWatchdog = setTimeout(finish, 5000);
+        // five seconds from the moment it is asked to play, and hand over to the
+        // page if nothing has started by then.
         video.addEventListener('playing', function () {
           clearTimeout(startWatchdog);
           // And a second cap once the length is known, in case playback dies
@@ -143,7 +137,28 @@ const markEmph = site.config.wordmark?.emph ?? (lastSpace === -1 ? '' : siteName
           runWatchdog = setTimeout(finish, (d + 8) * 1000);
         }, { once: true });
 
-        video.play().catch(finish);
+        // The door, when there is one, owns the first beat: the film starts as
+        // the leaves begin to turn, so what appears behind the screen is moving
+        // footage and not a held first frame. The watchdog starts then too —
+        // counting five seconds while a screen is still standing would hand over
+        // to a page nobody has seen yet.
+        function start() {
+          // Scrolling is the clearest "I'm done watching" there is. The page is
+          // locked underneath, so these only ever mean dismiss — but they are
+          // only bound now, because while the door is still folding the same
+          // gestures mean "open it", and one flick of a wheel would otherwise
+          // open the screen and throw away the film behind it in one go.
+          window.addEventListener('wheel', onIntent, { passive: true });
+          window.addEventListener('touchmove', onIntent, { passive: true });
+          window.addEventListener('keydown', onKey);
+          startWatchdog = setTimeout(finish, 5000);
+          video.play().catch(finish);
+        }
+        if (document.documentElement.classList.contains('byobu-closed')) {
+          document.addEventListener('niwa:byobu-open', start, { once: true });
+        } else {
+          start();
+        }
       })();
     </script>
   </>

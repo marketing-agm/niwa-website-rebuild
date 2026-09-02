@@ -1,0 +1,98 @@
+---
+// The byobu door.
+//
+// A painted folding screen stands across the viewport on arrival, then
+// concertinas open to the right in about a second, revealing the building film
+// already running behind it. Door, film, then the fade to the landing page —
+// one sequence, once per tab.
+//
+// Why a real folding screen and not a wipe: a byobu folds. Each panel pivots on
+// the hinge it shares with its neighbour, so the leaves turn edge-on and gather
+// at the right while the ones behind them are still flat. That is the whole
+// read, and it only works if the panels are staggered and shaded — a flat slide
+// looks like a curtain, not a screen.
+//
+// The artwork is one SVG spanning every panel, and each panel is a window onto
+// its own slice of it, so the branch runs unbroken across the closed screen and
+// breaks apart only as it folds.
+const { site } = Astro.props as { site: { config: any } };
+const door = site.config.hero?.door ?? {};
+const enabled = door.enabled === true;
+const panels: number = Math.min(Math.max(Number(door.panels ?? 6), 3), 8);
+const art: string = door.art ?? '/images/byobu.svg';
+---
+{enabled && (
+  <>
+    <div class="byobu" id="byobu" hidden style={`--byobu-panels:${panels}`}>
+      <div class="byobu-stage">
+        {Array.from({ length: panels }).map((_, i) => (
+          <div class="byobu-panel" style={`--i:${i}`}>
+            <div class="byobu-art"><img src={art} alt="" decoding="sync" fetchpriority="high" /></div>
+            <div class="byobu-shade"></div>
+          </div>
+        ))}
+      </div>
+    </div>
+    <script is:inline define:vars={{ holdMs: Number(door.holdMs ?? 420), foldMs: Number(door.foldMs ?? 980), panels }}>
+      (function () {
+        var el = document.getElementById('byobu');
+        if (!el) return;
+        var root = document.documentElement;
+        var params = new URLSearchParams(location.search);
+        var force = params.get('intro');
+
+        // The door shares the arrival film's rules and its session key: they are
+        // one sequence, so it is never right for a visitor to get the door and
+        // not the film, or the film without the door.
+        var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        var conn = navigator.connection || {};
+        var thin = !!conn.saveData || /^(slow-)?2g$/.test(conn.effectiveType || '');
+        var seen = false;
+        try { seen = sessionStorage.getItem('niwa:arrival-film') === '1'; } catch (e) {}
+        if (force === 'off' || (force !== 'on' && (reduce || thin || seen))) {
+          el.remove();
+          return;
+        }
+
+        // Six leaves across a 390px phone is 65px each, and once the frames are
+        // drawn that reads as a fence rather than a screen. Fewer, wider leaves
+        // on a narrow viewport. Done here rather than in CSS because the count
+        // is a DOM fact, not a style — `--byobu-panels` drives the geometry and
+        // has to agree with how many panels actually exist.
+        var want = window.innerWidth < 700 ? 4 : panels;
+        var leaves = el.querySelectorAll('.byobu-panel');
+        for (var n = want; n < leaves.length; n++) leaves[n].remove();
+        el.style.setProperty('--byobu-panels', want);
+
+        el.hidden = false;
+        root.classList.add('byobu-closed');
+
+        var opened = false;
+        function open() {
+          if (opened) return;
+          opened = true;
+          el.classList.add('is-open');
+          root.classList.remove('byobu-closed');
+          // The film starts as the leaves begin to turn, so what appears behind
+          // the screen is moving footage rather than a held first frame.
+          document.dispatchEvent(new CustomEvent('niwa:byobu-open'));
+          // Last panel out, plus its stagger, plus a beat.
+          setTimeout(function () { el.remove(); }, foldMs + 400);
+        }
+
+        // `?door=hold` leaves the screen standing. A one-second fold cannot be
+        // reviewed or photographed while it is running, and the painting is
+        // half the work — this is how it gets looked at.
+        if (params.get('door') === 'hold') return;
+
+        // A beat of the closed screen first — folding it before anyone has seen
+        // it painted is throwing the picture away.
+        setTimeout(open, holdMs);
+        // And an escape hatch: any input opens it immediately.
+        ['pointerdown', 'keydown', 'wheel', 'touchmove'].forEach(function (ev) {
+          window.addEventListener(ev, open, { once: true, passive: true });
+        });
+      })();
+    </script>
+  </>
+)}

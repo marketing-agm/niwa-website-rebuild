@@ -87,6 +87,32 @@ const amenityToursHtml = amenityTourItems.length
     + '    </div>'
   : '';
 
+// The marumado — the round window. A byobu screen folds open on arrival and a
+// round window closes the page: you come in through a screen and leave looking
+// out. The shoji lattice and its centre post are drawn in CSS; the only asset
+// is the photograph framed in the circle.
+const maru = site.config.marumado ?? {};
+const marumadoHtml = maru.enabled === true && maru.image
+  ? '<section class="marumado" id="marumado" aria-labelledby="marumado-title">\n'
+    + '  <div class="marumado-shoji">\n'
+    + '    <div class="marumado-window">\n'
+    + '      <img src="' + escapeHtml(maru.image) + '" alt="' + escapeHtml(maru.alt ?? '') + '" loading="lazy" decoding="async" />\n'
+    + '    </div>\n'
+    + '    <div class="marumado-post" aria-hidden="true"></div>\n'
+    + '  </div>\n'
+    + '  <div class="marumado-copy reveal">\n'
+    + (maru.eyebrow ? '    <div class="eyebrow">' + escapeHtml(maru.eyebrow) + '</div>\n' : '')
+    + '    <h2 class="display" id="marumado-title">' + escapeHtml(maru.title ?? '')
+    + (maru.titleItalic ? ' <span class="italic">' + escapeHtml(maru.titleItalic) + '</span>' : '') + '</h2>\n'
+    + (maru.body ? '    <p class="lede">' + escapeHtml(maru.body) + '</p>\n' : '')
+    + '    <a class="btn btn-primary" href="#tour">' + escapeHtml(maru.cta ?? 'Schedule a tour')
+    + '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" '
+    + 'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'
+    + '<line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>\n'
+    + '  </div>\n'
+    + '</section>'
+  : '';
+
 const nb = site.config.neighborhood ?? {};
 
 // The marquee band under the hero. Its copy used to be hardcoded in
@@ -146,6 +172,7 @@ const ADDRESS_TOKENS: Record<string, string> = {
   '{{NEIGHBORHOOD_INTRO}}': nb.intro ?? '',
   '{{FEATURE_CARDS}}': featuresHtml,
   '{{AMENITY_TOURS}}': amenityToursHtml,
+  '{{MARUMADO}}': marumadoHtml,
   '{{GALLERY_LEDE}}': site.config.gallery?.lede ?? '',
   '{{GALLERY_NOTE}}': site.config.gallery?.note ?? '',
   '{{FEATURE_LISTS}}': featureListsHtml,

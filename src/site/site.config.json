@@ -118,6 +118,13 @@
     "titleItalic": "Seattle.",
     "offer": "",
     "intro": "Modern design meets city zen living — next to the iconic Space Needle.",
+    "door": {
+      "enabled": true,
+      "panels": 6,
+      "art": "/images/byobu.svg",
+      "holdMs": 420,
+      "foldMs": 980
+    },
     "video": {
       "mode": "background",
       "loop": [
@@ -405,5 +412,15 @@
         "url": "https://my.matterport.com/show/?m=TJW1QP3fGHm"
       }
     ]
+  },
+  "marumado": {
+    "enabled": true,
+    "eyebrow": "Come and see",
+    "title": "The view is the",
+    "titleItalic": "point.",
+    "body": "Niwa means garden. Ours is the whole of Queen Anne — Elliott Bay and the ferries to the west, the Space Needle at the end of the block, and the city laid out from the roof.",
+    "cta": "Schedule a tour",
+    "image": "/images/gallery/neighborhood-elliott-bay.jpg",
+    "alt": "The view west from Niwa — a Washington State ferry crossing Elliott Bay, the port cranes beyond, and Queen Anne's autumn trees in the foreground"
   }
 }
