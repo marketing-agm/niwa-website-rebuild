@@ -38,7 +38,7 @@ const manifestPath = path.join(shotsDir, "manifest.json");
 const manifest = existsSync(manifestPath) ? JSON.parse(readFileSync(manifestPath, "utf8")) : { shots: [], errors: [] };
 const shots = manifest.shots.length
   ? manifest.shots
-  : readdirSync(shotsDir).filter((f) => f.endsWith(".png")).map((name) => ({ name, caption: "" }));
+  : readdirSync(shotsDir).filter((f) => /\.(png|jpe?g)$/i.test(f)).map((name) => ({ name, caption: "" }));
 if (!shots.length) { console.error("No screenshots found in " + shotsDir); process.exit(1); }
 
 const proxy = process.env.HTTPS_PROXY || process.env.https_proxy || "";
@@ -112,7 +112,7 @@ md += manifest.errors?.length
   : `**0 console/page errors.**\n\n`;
 md += `> Screenshots live on the \`${assetsBranch}\` branch (kept out of the code diff). If an image doesn't render inline (GitHub proxies private-repo images), use the **view** link.\n\n`;
 for (const s of shots) {
-  md += `**${s.name.replace(/\.png$/, "")}**${s.caption ? " — " + s.caption : ""} &nbsp; <sub>([view](${blob(s.name)}))</sub>\n`;
+  md += `**${s.name.replace(/\.(png|jpe?g)$/i, "")}**${s.caption ? " — " + s.caption : ""} &nbsp; <sub>([view](${blob(s.name)}))</sub>\n`;
   md += `![${s.name}](${blob(s.name)}?raw=true)\n\n`;
 }
 

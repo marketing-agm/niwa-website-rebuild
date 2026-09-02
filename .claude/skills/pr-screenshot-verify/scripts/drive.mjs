@@ -13,6 +13,9 @@
 //   settleMs     — pause between action() and the shot; default 500. Raise it to let
 //                  a transition finish, drop it to 0 to catch a mid-animation frame.
 //   fullPage     — capture the whole scroll height instead of the viewport.
+//   format       — "png" (default) or "jpeg". fullPage shots default to jpeg:
+//                  a full-page PNG of this site is ~4MB, and these files are
+//                  committed to an assets branch, so git keeps them forever.
 //
 // This is the Astro port of the skill originally written for the Next.js deposits
 // app. Everything that made that version complicated is gone, because this site
@@ -116,7 +119,12 @@ async function main() {
   const browser = await chromium.launch({ executablePath: chrome, headless: true });
   const ctx = await browser.newContext({
     viewport: scenario.viewport || { width: 1280, height: 900 },
-    deviceScaleFactor: 2,          // retina — screenshots are read by a human
+    // 1x, not retina. A 2x pass produced ~15MB per run — and post-to-pr.mjs
+    // commits every shot to an assets branch, so that weight is permanent in
+    // git history. Ten rounds of design review would have added 150MB to a repo
+    // whose actual source is under 1MB. At 1x the screenshots are still read at
+    // 100% on a normal display, which is how they get judged anyway.
+    deviceScaleFactor: 1,
   });
 
   // Anything the page complains about is worth knowing before the PR is called
@@ -134,8 +142,17 @@ async function main() {
     await page.goto(url, { waitUntil: "networkidle" });
     if (shot.action) await shot.action(page);
     await page.waitForTimeout(shot.settleMs ?? 500);
-    const file = `${shot.name}.png`;
-    await page.screenshot({ path: path.join(outDir, file), fullPage: !!shot.fullPage });
+    // Full-page captures are the heavy ones, so they go to JPEG unless a shot
+    // asks otherwise. Viewport shots stay PNG: they are what type, spacing and
+    // colour contrast get judged on, and JPEG ringing around small text muddies
+    // exactly the thing being reviewed.
+    const fmt = shot.format || (shot.fullPage ? "jpeg" : "png");
+    const file = `${shot.name}.${fmt === "jpeg" ? "jpg" : "png"}`;
+    await page.screenshot({
+      path: path.join(outDir, file),
+      fullPage: !!shot.fullPage,
+      ...(fmt === "jpeg" ? { type: "jpeg", quality: 82 } : {}),
+    });
     manifest.shots.push({ name: file, caption: shot.caption || shot.name });
     console.log("shot:", file);
   }
