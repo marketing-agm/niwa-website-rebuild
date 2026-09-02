@@ -90,3 +90,36 @@ export async function freezeMotion(page) {
     }`,
   });
 }
+
+/**
+ * Wait for the hero background loop to be showing real frames.
+ *
+ * `heroReady()` covers a still hero. This is the stricter check the video needs:
+ * app.js only adds `video-ready` once the element has decoded data, so waiting on
+ * that class is what separates "the loop is playing" from "the poster is showing
+ * because the file 404'd" — two things that photograph almost identically.
+ *
+ * Note for anyone reading a run: this environment's headless Chromium has no
+ * H.264 decoder. The loop ships VP9/WebM first so it plays here, but the full
+ * film is MP4 only and will photograph as its poster frame, not as video.
+ */
+export async function videoReady(page, timeout = 8000) {
+  await page.waitForFunction(() => {
+    const v = document.querySelector(".hero-video");
+    if (!v) return true;                              // mode is modal or off
+    return v.readyState >= 2 && document.querySelector(".hero-visual.video-ready");
+  }, { timeout }).catch(() => {});
+  // Land on a frame with something in it rather than the first dark frame.
+  await page.evaluate(() => {
+    const v = document.querySelector(".hero-video");
+    if (v && Number.isFinite(v.duration)) { v.pause(); v.currentTime = 1.2; }
+  });
+  await page.waitForTimeout(350);
+}
+
+/** Open the expanded film from the hero control and wait for the dialog. */
+export async function openVideoModal(page) {
+  await page.click(".hero-video-btn");
+  await page.waitForSelector(".video-modal:not([hidden])", { timeout: 5000 }).catch(() => {});
+  await page.waitForTimeout(600);
+}

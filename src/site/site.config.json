@@ -105,7 +105,18 @@
     "title": "Iconically,",
     "titleItalic": "Seattle.",
     "offer": "",
-    "intro": "Modern design meets city zen living, next to the iconic Space Needle. Studio, one- and two-bedroom homes at 513 1st Ave N, with a rooftop terrace and a 24-hour fitness center."
+    "intro": "Modern design meets city zen living, next to the iconic Space Needle. Studio, one- and two-bedroom homes at 513 1st Ave N, with a rooftop terrace and a 24-hour fitness center.",
+    "video": {
+      "mode": "background",
+      "loop": [
+        { "src": "/video/niwa-hero-loop.webm", "type": "video/webm" },
+        { "src": "/video/niwa-hero-loop.mp4", "type": "video/mp4" }
+      ],
+      "full": "/video/niwa-hero-film.mp4",
+      "poster": "/images/hero-poster.jpg",
+      "label": "Watch the building film",
+      "modalHeading": "Niwa Apartments — the building film"
+    }
   },
   "floorPlans": {},
   "integrations": {

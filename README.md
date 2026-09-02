@@ -130,7 +130,10 @@ Drop files into `public/images/` and they serve at `/images/…`.
 
 | Path | Used by |
 |---|---|
-| `images/hero.jpg` | Hero visual. Landscape, ≥2000px wide. |
+| `images/hero.jpg` | Still hero visual. Landscape, ≥2000px wide. |
+| `images/hero-poster.jpg` | Poster frame for the hero video — must be the loop's own first frame, or the handover to playback visibly jumps. |
+| `video/niwa-hero-loop.webm` · `.mp4` | The 6.5s background loop. WebM first (smaller), MP4 for Safari. |
+| `video/niwa-hero-film.mp4` | The full 30s marketing film, fetched only when someone expands it. |
 | `images/og.jpg` | Social preview, 1200×630. Set `seo.ogImage` to `/images/og.jpg`. |
 | `images/floorplans/studio.png` | Studio plan drawing (11 units in the feed) |
 | `images/floorplans/1br.png` | 1 bed · 1 bath (2 units) |
@@ -145,6 +148,37 @@ exact. Landscape crops best; gallery cards are 4:3.
 
 Once the set gets large, move them to object storage (Cloudflare R2) and point
 `photos.json → src` at those URLs instead of committing binaries here.
+
+## The hero video
+
+`site.config.json → hero.video` drives it. `mode` picks the default placement and
+a `?video=` query parameter overrides it at runtime, so one deploy can be shown
+both ways:
+
+| `?video=` | What happens |
+|---|---|
+| `background` | The 6.5s loop autoplays behind the hero; a centred control expands the full film |
+| `modal` | The hero stays a still; the full film opens over the page on arrival, once per session |
+| `off` | Still photography only |
+
+The loop is **a re-cut, not the film**. The supplied 30s film has burned-in
+captions — a "NOW ARRIVING / NIWA" title card, feature labels, and a "NOW LEASING"
+end card carrying a phone number and email. Behind the hero those would sit
+alongside the page's own headline and CTA and duplicate them, so the loop is
+assembled from the only text-free stretches in the master: 15.70–17.35 (living
+room), 20.95–21.90 (rooftop), 7.95–10.15 (gym, kitchen) and 13.70–15.40 (bedroom).
+Order is deliberate — the living room and its view open the loop because that is
+the frame sitting next to "Iconically, Seattle."
+
+To re-cut it, work from `video/niwa-hero-film.mp4` and check any new in/out points
+against those windows; a quarter-second either side catches a caption fading.
+
+It never autoplays for `prefers-reduced-motion`, `Save-Data`, or a 2G connection —
+those get the poster and a play button instead.
+
+⚠️ **~15MB of video is committed here.** That is over the line the "Photos"
+section draws: move these to Cloudflare R2 and point `hero.video` at the URLs
+before the library grows further.
 
 ## Admin portal
 
