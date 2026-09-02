@@ -149,17 +149,12 @@
     </div>
   </div>
 
-  <!-- Marquee -->
+  <!-- Marquee — items come from site.config.json -> marquee, doubled for the
+       seamless loop. Never hardcode copy here; this markup used to carry another
+       property's concession, which rendered on Niwa's page. -->
   <div class="marquee" aria-hidden="true">
     <div class="marquee-track">
-      <span>One month free · 12-month lease</span>
-      <span>Ask your leasing agent for details</span>
-      <span>Limited availability</span>
-      <span>Smoke-free building</span>
-      <span>One month free · 12-month lease</span>
-      <span>Ask your leasing agent for details</span>
-      <span>Limited availability</span>
-      <span>Smoke-free building</span>
+{{MARQUEE_ITEMS}}
     </div>
   </div>
 </section>

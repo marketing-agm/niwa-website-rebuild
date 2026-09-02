@@ -64,11 +64,21 @@ const featuresHtml = featureCards.map((f: any) => `      <div class="feature-car
 
 const nb = site.config.neighborhood ?? {};
 
+// The marquee band under the hero. Its copy used to be hardcoded in
+// generated/body.html, where it read "One month free · 12-month lease" —
+// Magnolia's concession, rendering on Niwa's page. Config-driven now, and doubled
+// here because the CSS loop scrolls one track twice to appear seamless.
+const marqueeItems: string[] = site.config.marquee ?? [];
+const marqueeHtml = [...marqueeItems, ...marqueeItems]
+  .map((t) => `      <span>${escapeHtml(t)}</span>`)
+  .join('\n');
+
 const ADDRESS_TOKENS: Record<string, string> = {
   '{{NEIGHBORHOOD_TITLE}}': nb.title ?? `${site.config.address?.addressLocality ?? ''}`,
   '{{NEIGHBORHOOD_INTRO}}': nb.intro ?? '',
   '{{FEATURE_CARDS}}': featuresHtml,
   '{{FOOTER_GUIDES}}': footerGuides,
+  '{{MARQUEE_ITEMS}}': marqueeHtml,
   '{{HERO_TITLE}}': hero.title ?? siteName,
   '{{HERO_TITLE_ITALIC}}': hero.titleItalic ?? '',
   '{{HERO_INTRO}}': hero.intro ?? '',
