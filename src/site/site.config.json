@@ -9,6 +9,19 @@
     "phone": "+1-206-622-9991",
     "phoneHref": "tel:2066229991",
     "email": "leasing@niwaapartments.com",
+    "officeHours": [
+      {
+        "days": [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday"
+        ],
+        "opens": "08:00",
+        "closes": "17:00"
+      }
+    ],
     "afterHours": {
       "phone": "+1-206-622-8600",
       "phoneHref": "tel:2066228600",
