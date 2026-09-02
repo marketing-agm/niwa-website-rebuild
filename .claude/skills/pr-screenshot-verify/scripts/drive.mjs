@@ -124,6 +124,21 @@ async function main() {
   // picture.
   const errors = [];
   ctx.on("weberror", (e) => errors.push(String(e.error())));
+  // Astro's dev toolbar is a fixed pill at the bottom of every dev-server page.
+  // It is not in the production build, so leaving it in the shots puts a
+  // control bar in front of the thing being reviewed that no visitor will ever
+  // see. Hidden here rather than disabled in astro.config, which would take it
+  // away from anyone actually developing.
+  await ctx.addInitScript(() => {
+    const hide = () => {
+      const s = document.createElement("style");
+      s.textContent = "astro-dev-toolbar{display:none!important}";
+      (document.head || document.documentElement).appendChild(s);
+    };
+    if (document.head) hide();
+    else document.addEventListener("DOMContentLoaded", hide, { once: true });
+  });
+
   const page = await ctx.newPage();
   page.on("console", (m) => { if (m.type() === "error") errors.push(m.text()); });
   page.on("requestfailed", (r) => errors.push(`${r.failure()?.errorText} ${r.url()}`));
@@ -131,7 +146,11 @@ async function main() {
   const manifest = { shots: [], errors: [] };
   for (const shot of scenario.shots) {
     const url = base + (shot.path || "/");
-    await page.goto(url, { waitUntil: "networkidle" });
+    // `networkidle` is the right default for a static page, but it never
+    // settles on one that is streaming video — the arrival film keeps the
+    // network busy for its whole 30 seconds. A shot on such a page sets
+    // `waitUntil: "load"` and does its own waiting in action().
+    await page.goto(url, { waitUntil: shot.waitUntil || "networkidle" });
     if (shot.action) await shot.action(page);
     await page.waitForTimeout(shot.settleMs ?? 500);
     const file = `${shot.name}.png`;

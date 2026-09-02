@@ -4166,18 +4166,38 @@
   .arrival-film[hidden] { display: none; }
   .arrival-film.is-done { opacity: 0; pointer-events: none; }
 
+  /* Never cropped. The film's captions are burned in and they use the full
+     frame — the contact details run edge to edge across the middle, and the
+     lower-thirds are anchored hard to the left. `cover` cuts the phone number
+     in half on a laptop and eats the first word of every lower-third on a
+     phone, so the frame is fitted at every size and the letterbox is dressed
+     rather than cropped away. */
   .arrival-film-video {
+    position: relative;
+    z-index: 1;
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
     display: block;
   }
-  /* The film is 16:9 and letterboxes hard on a portrait phone, but cropping it
-     to fill would cut the captions off at both ends. Fitting it and centring
-     against black keeps the frame the film was cut for. */
-  @media (max-aspect-ratio: 1/1) {
-    .arrival-film-video { object-fit: contain; }
+  /* What fills the letterbox: the hero poster, blurred right down. A portrait
+     phone shows a 16:9 film as a band a quarter of the screen tall, and in flat
+     black that reads as a broken player rather than a cinema. Scaled past the
+     edges so the blur has nothing to feather against, and it costs nothing —
+     the poster is already fetched as the video's own placeholder. */
+  .arrival-film::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background: var(--film-backdrop, none) center / cover no-repeat;
+    filter: blur(30px) brightness(0.42) saturate(0.75);
+    transform: scale(1.18);
   }
+
+  /* The wordmark belongs to the portrait composition below, not to a laptop
+     where the bars are forty pixels deep. */
+  .arrival-film-mark { display: none; }
 
   /* Thirty seconds is a long time to hold someone who came to look at floor
      plans. The way out is visible from the first frame, not revealed on hover. */
@@ -4185,7 +4205,7 @@
     position: absolute;
     right: clamp(16px, 4vw, 40px);
     bottom: clamp(20px, 5vh, 44px);
-    z-index: 1;
+    z-index: 2;
     display: inline-flex;
     align-items: center;
     gap: 8px;
@@ -4216,6 +4236,48 @@
      gesture is read as "I'm done watching" and dismisses it instead. */
   html.arrival-film-open,
   html.arrival-film-open body { overflow: hidden; }
+
+  /* ---- Portrait: compose the letterbox instead of leaving it empty ----
+     A 16:9 film on a 390x844 phone is a band 220px tall. Cropping it to fill
+     is not available (the captions run to both edges), so the space around it
+     is given a job: wordmark above the frame, skip control below it, film in
+     the middle. Nothing sits ON the footage — these are outside the frame. */
+  @media (max-aspect-ratio: 4/5) {
+    .arrival-film {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: clamp(28px, 8vh, 64px);
+    }
+    .arrival-film-video {
+      height: auto;
+      aspect-ratio: 16 / 9;
+      flex: 0 0 auto;
+    }
+    .arrival-film-mark {
+      display: block;
+      position: relative;
+      z-index: 2;
+      margin: 0;
+      font-family: var(--serif);
+      font-weight: 420;
+      font-size: 22px;
+      letter-spacing: -0.02em;
+      color: #fff;
+    }
+    .arrival-film-mark em {
+      font-style: italic;
+      font-variation-settings: 'opsz' 144, 'SOFT' 100;
+    }
+    /* Out of the corner and under the frame, so the three parts read as one
+       composition rather than a control stranded in a dark field. */
+    .arrival-film-skip {
+      position: relative;
+      right: auto;
+      bottom: auto;
+    }
+  }
 
   @media (prefers-reduced-motion: reduce) {
     .arrival-film,

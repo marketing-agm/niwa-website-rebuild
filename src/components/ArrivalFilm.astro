@@ -25,10 +25,23 @@ const sources: { src: string; type?: string }[] = Array.isArray(intro.sources)
   : (Array.isArray(v.full) ? v.full : (v.full ? [{ src: v.full, type: 'video/mp4' }] : []));
 // A site with video switched off entirely shouldn't get an arrival film either.
 const enabled = intro.enabled === true && sources.length > 0 && (v.mode ?? 'off') !== 'off';
+
+// A 16:9 frame on a portrait phone is a band a quarter of the screen tall, and
+// the film cannot be cropped to fill — its captions run to both edges. So on
+// phones the letterbox is composed rather than left empty: wordmark above the
+// band, film, skip control below. Same wordmark as the nav.
+const siteName: string = site.config.name ?? '';
+const lastSpace = siteName.lastIndexOf(' ');
+const markLead = site.config.wordmark?.lead ?? (lastSpace === -1 ? siteName : siteName.slice(0, lastSpace));
+const markEmph = site.config.wordmark?.emph ?? (lastSpace === -1 ? '' : siteName.slice(lastSpace + 1));
 ---
 {enabled && (
   <>
-    <div class="arrival-film" id="arrival-film" hidden>
+    <div class="arrival-film" id="arrival-film" hidden style={v.poster ? `--film-backdrop: url(${v.poster})` : undefined}>
+      {/* The space is explicit: Astro collapses the whitespace between two
+          expressions across a line break, which ran this together as
+          "NiwaApartments". */}
+      <p class="arrival-film-mark" aria-hidden="true">{markLead}{' '}<em>{markEmph}</em></p>
       <video
         class="arrival-film-video"
         muted
@@ -57,10 +70,9 @@ const enabled = intro.enabled === true && sources.length > 0 && (v.mode ?? 'off'
         var force = params.get('intro');
 
         // Reasons not to run it. A multi-megabyte autoplay is hostile on a
-        // metered phone,
-        // motion sensitivity is a real accessibility need, and a film that
-        // reappears on every navigation stops being a welcome and becomes an
-        // obstacle between a renter and the floor plans.
+        // metered phone, motion sensitivity is a real accessibility need, and a
+        // film that reappears on every navigation stops being a welcome and
+        // becomes an obstacle between a renter and the floor plans.
         var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
         var conn = navigator.connection || {};
         var thin = !!conn.saveData || /^(slow-)?2g$/.test(conn.effectiveType || '');
