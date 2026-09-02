@@ -422,5 +422,18 @@
     "cta": "Schedule a tour",
     "image": "/images/gallery/neighborhood-elliott-bay.jpg",
     "alt": "The view west from Niwa — a Washington State ferry crossing Elliott Bay, the port cranes beyond, and Queen Anne's autumn trees in the foreground"
+  },
+  "sightmap": {
+    "enabled": true,
+    "embedUrl": "https://sightmap.com/embed/rkwn11mnpd2",
+    "eyebrow": "The building",
+    "title": "Pick your home off the",
+    "titleItalic": "map.",
+    "lede": "Every home in the building, floor by floor. Click one to see its layout, its rent and when it's free.",
+    "iframeTitle": "SightMap interactive property map showing unit availability at Niwa Apartments",
+    "note": "Availability shown on the map comes from SightMap; the list below is refreshed from the leasing system. If the two ever disagree, the leasing team has the last word."
+  },
+  "availabilitySection": {
+    "lede": "Studios, one-bedrooms and two-bedrooms across floors two through eight. Filter by what matters to you — bedrooms, availability, price."
   }
 }

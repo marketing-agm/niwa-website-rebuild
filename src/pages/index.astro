@@ -113,6 +113,36 @@ const marumadoHtml = maru.enabled === true && maru.image
     + '</section>'
   : '';
 
+// SightMap — the interactive building map. A renter picks a home off a drawing
+// of the building rather than reading a list of unit numbers, which is a far
+// better first move than scanning a table.
+//
+// Loaded lazily and only ever as the vendor's own embed: this is a third-party
+// frame, so it gets no more of the page than it needs. `sandbox` is deliberately
+// absent — SightMap needs scripts, same-origin and popups to function, and a
+// sandbox that permits all three grants nothing back.
+const smap = site.config.sightmap ?? {};
+const sightmapHtml = smap.enabled === true && smap.embedUrl
+  ? '<section class="building-map" id="building-map" aria-labelledby="building-map-title">\n'
+    + '  <div class="container">\n'
+    + '    <div class="section-head">\n'
+    + '      <div class="reveal">\n'
+    + '        <div class="eyebrow">' + escapeHtml(smap.eyebrow ?? 'The building') + '</div>\n'
+    + '        <h2 class="display" id="building-map-title">' + escapeHtml(smap.title ?? '')
+    + (smap.titleItalic ? ' <span class="italic">' + escapeHtml(smap.titleItalic) + '</span>' : '') + '</h2>\n'
+    + '      </div>\n'
+    + (smap.lede ? '      <p class="lede reveal" data-delay="1">' + escapeHtml(smap.lede) + '</p>\n' : '')
+    + '    </div>\n'
+    + '    <div class="building-map-frame reveal" data-delay="1">\n'
+    + '      <iframe src="' + escapeHtml(smap.embedUrl) + '" title="'
+    + escapeHtml(smap.iframeTitle ?? 'Interactive property map showing unit availability') + '"\n'
+    + '        loading="lazy" allow="geolocation; web-share; clipboard-write" referrerpolicy="strict-origin-when-cross-origin"></iframe>\n'
+    + '    </div>\n'
+    + (smap.note ? '    <p class="building-map-note">' + escapeHtml(smap.note) + '</p>\n' : '')
+    + '  </div>\n'
+    + '</section>'
+  : '';
+
 const nb = site.config.neighborhood ?? {};
 
 // The marquee band under the hero. Its copy used to be hardcoded in
@@ -173,6 +203,8 @@ const ADDRESS_TOKENS: Record<string, string> = {
   '{{FEATURE_CARDS}}': featuresHtml,
   '{{AMENITY_TOURS}}': amenityToursHtml,
   '{{MARUMADO}}': marumadoHtml,
+  '{{BUILDING_MAP}}': sightmapHtml,
+  '{{AVAILABILITY_LEDE}}': escapeHtml(site.config.availabilitySection?.lede ?? ''),
   '{{GALLERY_LEDE}}': site.config.gallery?.lede ?? '',
   '{{GALLERY_NOTE}}': site.config.gallery?.note ?? '',
   '{{FEATURE_LISTS}}': featureListsHtml,

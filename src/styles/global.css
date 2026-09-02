@@ -4259,6 +4259,44 @@
     .video-modal-inner { transform: none; }
   }
 
+  /* ---------- Building map ----------
+     A third-party interactive frame, so the job here is to give it a stable
+     shape and otherwise stay out of its way. Aspect-ratio rather than a fixed
+     height, with a floor: below about 520px the vendor's own controls start
+     overlapping the drawing. */
+  .building-map-frame {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    min-height: 520px;
+    border: 1px solid var(--rule);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    background: var(--garden-stone);
+  }
+  .building-map-frame iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    display: block;
+  }
+  .building-map-note {
+    margin: 18px auto 0;
+    max-width: 62ch;
+    text-align: center;
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--ink-3);
+  }
+  @media (max-width: 700px) {
+    /* Portrait: a wide frame becomes a letterbox sliver, and this one is meant
+       to be pinched and panned. Taller than it is wide, so there is something
+       to interact with. */
+    .building-map-frame { aspect-ratio: 3 / 4; min-height: 460px; }
+  }
+
   /* ---------- The marumado ----------
      The round window. A byobu screen folds open on arrival and a round window
      closes the page: you come in through a screen and leave looking out.
