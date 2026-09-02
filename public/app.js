@@ -800,6 +800,199 @@
     img.src = hero.image;
   })();
 
+  // ============== HERO VIDEO ==============
+  // Stakeholders asked for a video-forward homepage and left the placement
+  // deliberately undecided: autoplaying behind the hero, or a pop-up on arrival.
+  // Both are built. `hero.video.mode` picks the default and `?video=` overrides
+  // it at runtime, so one preview URL can be shown both ways in a single
+  // conversation instead of needing two deploys to compare.
+  //
+  //   background — muted loop fills the hero panel, expandable to the big cut
+  //   modal      — hero stays a still; the film opens over the page on arrival
+  //   off        — still photography only
+  //
+  // Layering is progressive, so nothing here can leave a blank hero: the
+  // illustrated skyline ships in the markup, the photo covers it, the video
+  // covers the photo, and the poster frame covers the video until it plays.
+  (function () {
+    const cfg = (window.__SITE__ && window.__SITE__.config) || {};
+    const hero = cfg.hero || {};
+    const vid = hero.video || {};
+    const visual = document.querySelector('.hero-visual');
+    // `loop` is a source list, best format first. VP9/WebM is ~20% smaller than
+    // the H.264 cut here, so it leads and Safari falls through to the MP4.
+    const loopSources = Array.isArray(vid.loop) ? vid.loop : (vid.loop ? [{ src: vid.loop }] : []);
+    if (!visual || !loopSources.length) return;
+
+    const override = new URLSearchParams(location.search).get('video');
+    const mode = ['background', 'modal', 'off'].includes(override) ? override : (vid.mode || 'off');
+    if (mode === 'off') return;
+
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    // Autoplaying 4.8MB unasked is hostile on a metered phone. Respect the
+    // browser's own hints and fall back to the poster plus a play control —
+    // the film is still one tap away, it just isn't forced.
+    const conn = navigator.connection || {};
+    const thinPipe = !!conn.saveData || /^(slow-)?2g$/.test(conn.effectiveType || '');
+    const autoplay = mode === 'background' && !reduceMotion && !thinPipe;
+
+    // The panel is decorative until it holds a control. Once it does, hiding it
+    // from assistive tech would hide a focusable button inside it, so the
+    // decoration is marked instead and the panel itself becomes reachable.
+    visual.removeAttribute('aria-hidden');
+    visual.querySelector('svg.skyline')?.setAttribute('aria-hidden', 'true');
+    visual.querySelector('.frame-overlay')?.setAttribute('aria-hidden', 'true');
+
+    const label = vid.label || 'Watch the film';
+    let loopVideo = null;
+
+    if (autoplay) {
+      loopVideo = document.createElement('video');
+      loopVideo.className = 'hero-video';
+      loopVideo.muted = true;          // property, not attribute — iOS checks this
+      loopVideo.defaultMuted = true;
+      loopVideo.loop = true;
+      loopVideo.autoplay = true;
+      loopVideo.playsInline = true;
+      loopVideo.preload = 'auto';
+      loopVideo.setAttribute('playsinline', '');
+      loopVideo.setAttribute('aria-hidden', 'true');
+      loopVideo.tabIndex = -1;
+      if (vid.poster) loopVideo.poster = vid.poster;
+      loopSources.forEach((s) => {
+        const el = document.createElement('source');
+        el.src = s.src;
+        if (s.type) el.type = s.type;
+        loopVideo.appendChild(el);
+      });
+      // Only reveal it once there are frames to show. Fading in an empty
+      // <video> flashes the poster over the photo and back again.
+      loopVideo.addEventListener('loadeddata', () => visual.classList.add('video-ready'), { once: true });
+      // `error` on the <video> itself doesn't fire for a failed <source>; the
+      // element only gives up once every source has been tried, and it reports
+      // that on the last child. Watching both covers a 404 and a decode failure.
+      const giveUp = () => {
+        visual.classList.remove('has-video', 'video-ready');
+        loopVideo.remove();
+      };
+      loopVideo.addEventListener('error', giveUp);
+      loopVideo.lastElementChild?.addEventListener('error', giveUp);
+      visual.classList.add('has-video');
+      visual.appendChild(loopVideo);
+      // A muted autoplay can still be refused. Retry once, then leave the
+      // poster showing rather than a frozen first frame.
+      const tryPlay = () => loopVideo.play().catch(() => {});
+      tryPlay();
+      loopVideo.addEventListener('canplay', tryPlay, { once: true });
+
+      // Don't burn CPU and battery decoding video the visitor has scrolled past.
+      if ('IntersectionObserver' in window) {
+        new IntersectionObserver((entries) => {
+          entries.forEach((e) => { e.isIntersecting ? tryPlay() : loopVideo.pause(); });
+        }, { threshold: 0.05 }).observe(visual);
+      }
+      document.addEventListener('visibilitychange', () => {
+        document.hidden ? loopVideo.pause() : tryPlay();
+      });
+    }
+
+    // ---- The expanded view, shared by both modes ----
+    // One dialog serves the "expand" affordance in background mode and the
+    // arrival pop-up in modal mode, so the film is only described once.
+    const dialog = document.createElement('div');
+    dialog.className = 'video-modal';
+    dialog.hidden = true;
+    dialog.setAttribute('role', 'dialog');
+    dialog.setAttribute('aria-modal', 'true');
+    dialog.setAttribute('aria-label', vid.modalHeading || label);
+    dialog.innerHTML =
+      '<div class="video-modal-backdrop" data-close></div>' +
+      '<div class="video-modal-inner">' +
+        '<button type="button" class="video-modal-close" data-close aria-label="Close video">' +
+          '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" ' +
+          'stroke-width="2" stroke-linecap="round" aria-hidden="true">' +
+          '<line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/></svg>' +
+        '</button>' +
+        '<video class="video-modal-video" controls playsinline preload="none"></video>' +
+      '</div>';
+    document.body.appendChild(dialog);
+
+    const bigVideo = dialog.querySelector('.video-modal-video');
+    if (vid.poster) bigVideo.poster = vid.poster;
+    const closeBtn = dialog.querySelector('.video-modal-close');
+    let lastFocus = null;
+
+    const openModal = () => {
+      lastFocus = document.activeElement;
+      // The big cut is only fetched when someone asks for it — attaching the
+      // src up front would download it alongside the loop.
+      if (!bigVideo.src) bigVideo.src = vid.full || loopSources[loopSources.length - 1].src;
+      // The film always starts from its own beginning. Matching the background
+      // loop's timestamp would be meaningless: the loop is a re-cut of three
+      // segments lifted from the middle of the film, so second 3 of one is
+      // nowhere near second 3 of the other.
+      loopVideo?.pause();
+      dialog.hidden = false;
+      document.documentElement.classList.add('video-modal-open');
+      requestAnimationFrame(() => dialog.classList.add('is-open'));
+      closeBtn.focus();
+      if (!reduceMotion) bigVideo.play().catch(() => {});
+    };
+
+    const closeModal = () => {
+      bigVideo.pause();
+      dialog.classList.remove('is-open');
+      document.documentElement.classList.remove('video-modal-open');
+      dialog.hidden = true;
+      if (loopVideo) loopVideo.play().catch(() => {});
+      if (lastFocus instanceof HTMLElement) lastFocus.focus();
+    };
+
+    dialog.addEventListener('click', (e) => { if (e.target.closest('[data-close]')) closeModal(); });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !dialog.hidden) closeModal();
+      // Nothing behind the dialog should be reachable while it's open, and the
+      // dialog holds exactly two stops — the close button and the player.
+      if (e.key === 'Tab' && !dialog.hidden) {
+        const stops = [closeBtn, bigVideo];
+        if (!stops.includes(document.activeElement)) { e.preventDefault(); closeBtn.focus(); }
+      }
+    });
+
+    // ---- The trigger in the hero ----
+    const trigger = document.createElement('button');
+    trigger.type = 'button';
+    trigger.className = 'hero-video-btn' + (autoplay ? ' hero-video-btn--expand' : '');
+    trigger.innerHTML =
+      '<span class="hero-video-btn-icon" aria-hidden="true">' +
+      (autoplay
+        ? '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" ' +
+          'stroke-width="2" stroke-linecap="round" stroke-linejoin="round">' +
+          '<polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/>' +
+          '<line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></svg>'
+        : '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">' +
+          '<polygon points="8 5 19 12 8 19"/></svg>') +
+      '</span>' +
+      '<span class="hero-video-btn-text">' + (autoplay ? 'Expand' : label) + '</span>';
+    trigger.addEventListener('click', openModal);
+    visual.appendChild(trigger);
+
+    // ---- Arrival pop-up, modal mode only ----
+    // Once per tab. A film that reopens on every navigation stops being a
+    // welcome and becomes an obstacle between a renter and the floor plans.
+    if (mode === 'modal' && !reduceMotion && !thinPipe) {
+      const seen = (() => {
+        try { return sessionStorage.getItem('niwa:hero-video') === '1'; } catch { return false; }
+      })();
+      if (!seen) {
+        try { sessionStorage.setItem('niwa:hero-video', '1'); } catch { /* private mode */ }
+        // A beat of the page first, so the visitor sees what they arrived at
+        // and the pop-up reads as part of the site rather than an interstitial.
+        setTimeout(openModal, 900);
+      }
+    }
+  })();
+
   // Initial render
   syncUnitCounts();
   syncPlanPricing();

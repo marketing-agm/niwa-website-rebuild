@@ -3985,6 +3985,144 @@
     display: block;
   }
 
+  /* ---------- Hero video ----------
+     Sits on top of .hero-photo rather than replacing it, so the photo is what
+     shows while the video buffers and what stays if it never arrives. The fade
+     waits for `video-ready` (first frames decoded) because revealing an empty
+     <video> flashes its poster over the photo and back. */
+  .hero-video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    opacity: 0;
+    transition: opacity 700ms ease;
+  }
+  .hero-visual.video-ready .hero-video { opacity: 1; }
+  /* The skyline illustration is a light gradient; a photo or video behind the
+     button needs the panel to stop showing through at the edges. */
+  .hero-visual.has-video { background: var(--ink); }
+
+  /* The one control on the panel: expand (background mode) or play (modal
+     mode). Yellow fill, black type — the accent is a fill here, never a text
+     colour, so it takes --on-accent. */
+  /* Centred, not tucked into a corner. The panel is full-bleed on desktop and
+     runs behind two opaque bands — the sticky nav across its top and the yellow
+     marquee across its bottom — so a corner-anchored control is either covered
+     or one clamped font-size away from being covered. The centre is clear at
+     every width, and it's where a play affordance is looked for anyway. */
+  .hero-video-btn {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 2;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    border: 0;
+    border-radius: 999px;
+    background: var(--accent);
+    color: var(--on-accent);
+    font: inherit;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    cursor: pointer;
+    box-shadow: 0 6px 24px rgba(0, 0, 0, 0.28);
+    transition: transform 200ms ease, background 200ms ease;
+  }
+  /* The centring lives in `transform`, so every hover/focus state has to carry
+     it too — a bare `translateY` here would fling the button off-centre. */
+  .hero-video-btn:hover {
+    background: #DACD2A;
+    transform: translate(-50%, -50%) scale(1.04);
+  }
+  .hero-video-btn:focus-visible {
+    outline: 2px solid var(--paper);
+    outline-offset: 3px;
+  }
+  .hero-video-btn-icon { display: inline-flex; }
+
+  /* ---------- Expanded video ----------
+     One dialog for both placements: the expand target in background mode and
+     the arrival pop-up in modal mode. */
+  html.video-modal-open { overflow: hidden; }
+  /* An explicit `display` beats the `hidden` attribute's UA `display: none`, so
+     without this the closed dialog stays a full-viewport fixed layer at z-index
+     200 — invisible at opacity 0, and swallowing every click on the page. */
+  .video-modal[hidden] { display: none; }
+  .video-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 200; /* over the sticky nav (50) and the sticky CTA */
+    display: grid;
+    place-items: center;
+    padding: clamp(16px, 4vw, 48px);
+    opacity: 0;
+    transition: opacity 260ms ease;
+  }
+  .video-modal.is-open { opacity: 1; }
+  .video-modal-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.88);
+  }
+  .video-modal-inner {
+    position: relative;
+    width: min(100%, 1180px);
+    transform: scale(0.985);
+    transition: transform 260ms ease;
+  }
+  .video-modal.is-open .video-modal-inner { transform: scale(1); }
+  .video-modal-video {
+    display: block;
+    width: 100%;
+    max-height: calc(100vh - clamp(32px, 8vw, 96px));
+    aspect-ratio: 16 / 9;
+    background: #000;
+    border-radius: var(--radius);
+  }
+  .video-modal-close {
+    position: absolute;
+    top: -48px;
+    right: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border: 0;
+    border-radius: 999px;
+    background: var(--accent);
+    color: var(--on-accent);
+    cursor: pointer;
+    transition: background 200ms ease;
+  }
+  .video-modal-close:hover { background: #DACD2A; }
+  .video-modal-close:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+  }
+  @media (max-width: 640px) {
+    /* No room above the player on a phone — tuck the close button into it. */
+    .video-modal-close {
+      top: 10px;
+      right: 10px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hero-video,
+    .video-modal,
+    .video-modal-inner,
+    .hero-video-btn { transition: none; }
+    .video-modal-inner { transform: none; }
+  }
+
   /* ---------- Dark gallery section ----------
      Photography reads better against black; the section also breaks up the
      otherwise all-white page. Tokens stay light — only this scope inverts. */
