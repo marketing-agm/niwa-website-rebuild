@@ -120,6 +120,8 @@ const ADDRESS_TOKENS: Record<string, string> = {
   '{{NEIGHBORHOOD_TITLE}}': nb.title ?? `${site.config.address?.addressLocality ?? ''}`,
   '{{NEIGHBORHOOD_INTRO}}': nb.intro ?? '',
   '{{FEATURE_CARDS}}': featuresHtml,
+  '{{GALLERY_LEDE}}': site.config.gallery?.lede ?? '',
+  '{{GALLERY_NOTE}}': site.config.gallery?.note ?? '',
   '{{FEATURE_LISTS}}': featureListsHtml,
   '{{RENTAL_TERMS}}': rentalTermsHtml,
   '{{FOOTER_BLURB}}': site.config.footerBlurb ?? '',

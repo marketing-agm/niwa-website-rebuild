@@ -3,9 +3,128 @@
     {
       "id": 1,
       "cat": "exterior",
-      "src": "/images/gallery/exterior-building-facade.jpg",
-      "title": "Building facade",
+      "src": "/images/gallery/exterior-on-1st-ave-n.jpg",
+      "title": "On 1st Ave N",
+      "desc": "The building from the street, a few blocks north of Seattle Center"
+    },
+    {
+      "id": 2,
+      "cat": "exterior",
+      "src": "/images/gallery/exterior-entrance.jpg",
+      "title": "The entrance",
+      "desc": "Controlled access and key fob entry, off 1st Ave N"
+    },
+    {
+      "id": 3,
+      "cat": "exterior",
+      "src": "/images/gallery/exterior-paseo.jpg",
+      "title": "The paseo",
+      "desc": "A planted walk alongside the building, past Woo Bar & Kitchen"
+    },
+    {
+      "id": 4,
+      "cat": "exterior",
+      "src": "/images/gallery/exterior-monument-sign.jpg",
+      "title": "513 1st Ave N",
+      "desc": "Where you turn in"
+    },
+    {
+      "id": 5,
+      "cat": "exterior",
+      "src": "/images/gallery/exterior-aerial-space-needle.jpg",
+      "title": "Iconically, Seattle",
       "desc": "The yellow cladding on 1st Ave N, with the Space Needle behind"
+    },
+    {
+      "id": 6,
+      "cat": "exterior",
+      "src": "/images/gallery/exterior-rooftop-terrace.jpg",
+      "title": "Rooftop terrace",
+      "desc": "Fire pit, grills and planted beds, looking south past the Space Needle"
+    },
+    {
+      "id": 7,
+      "cat": "exterior",
+      "src": "/images/gallery/exterior-terrace-walk.jpg",
+      "title": "The terrace walk",
+      "desc": "A sedum roof and dining for six, out over Elliott Bay"
+    },
+    {
+      "id": 8,
+      "cat": "interior",
+      "src": "/images/gallery/interior-lobby.jpg",
+      "title": "The lobby",
+      "desc": "Cedar battens and deep green, with a treats jar for the dogs"
+    },
+    {
+      "id": 9,
+      "cat": "interior",
+      "src": "/images/gallery/interior-vestibule.jpg",
+      "title": "The entry",
+      "desc": "Polished concrete, a round mirror and the mat with your name on it"
+    },
+    {
+      "id": 10,
+      "cat": "interior",
+      "src": "/images/gallery/interior-elevator-hall.jpg",
+      "title": "Elevator hall",
+      "desc": "Two lifts, every floor"
+    },
+    {
+      "id": 11,
+      "cat": "interior",
+      "src": "/images/gallery/interior-clubroom.jpg",
+      "title": "Rooftop clubroom",
+      "desc": "A residents' lounge with a working kitchen — the room holds 27"
+    },
+    {
+      "id": 12,
+      "cat": "interior",
+      "src": "/images/gallery/interior-clubroom-terrace.jpg",
+      "title": "Clubroom to terrace",
+      "desc": "The lounge opens straight onto the roof"
+    },
+    {
+      "id": 13,
+      "cat": "interior",
+      "src": "/images/gallery/interior-clubroom-kitchen.jpg",
+      "title": "Clubroom kitchen",
+      "desc": "Fridge, cooktop, coffee and a bar for four"
+    },
+    {
+      "id": 14,
+      "cat": "interior",
+      "src": "/images/gallery/interior-fitness-room.jpg",
+      "title": "Fitness room",
+      "desc": "Cardio, free weights and a cable machine, open 24 hours"
+    },
+    {
+      "id": 15,
+      "cat": "neighborhood",
+      "src": "/images/gallery/neighborhood-the-crossing.jpg",
+      "title": "The crossing",
+      "desc": "1st Ave N on an ordinary afternoon"
+    },
+    {
+      "id": 16,
+      "cat": "neighborhood",
+      "src": "/images/gallery/neighborhood-climate-pledge.jpg",
+      "title": "Climate Pledge Arena",
+      "desc": "Kraken and Storm nights, a walk away"
+    },
+    {
+      "id": 17,
+      "cat": "neighborhood",
+      "src": "/images/gallery/neighborhood-mopop.jpg",
+      "title": "MoPOP",
+      "desc": "Seattle Center's museums, at the end of the block"
+    },
+    {
+      "id": 18,
+      "cat": "neighborhood",
+      "src": "/images/gallery/neighborhood-elliott-bay.jpg",
+      "title": "Elliott Bay",
+      "desc": "Ferries, cranes and the Olympics, west from the roof"
     }
   ]
 }

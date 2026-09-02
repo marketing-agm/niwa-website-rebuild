@@ -341,5 +341,9 @@
   "geo": {
     "latitude": 47.623974,
     "longitude": -122.355881
+  },
+  "gallery": {
+    "lede": "A look around the building, the roof and the neighborhood — photographed this autumn.",
+    "note": "Photography of individual homes is on the way — ask the leasing team to see one in person."
   }
 }
