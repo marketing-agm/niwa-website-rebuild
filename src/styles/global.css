@@ -5985,3 +5985,75 @@
     .maru-pane--meta    { order: 6; }
     .maru-pane--lit     { order: 7; min-height: 40px; }
   }
+
+  /* ==========================================================================
+     ONE YELLOW, INCLUDING THE ITALICS
+     ==========================================================================
+     Direction: everything in italics is light yellow. So the display italic
+     takes the accent on every ground, light and dark alike — no darker gold
+     standing in for it, and no outline propping it up.
+
+     Stated plainly, because it will come up: #FFFCCC on white measures 1.05:1.
+     On the dark scopes the same yellow reads at about 17:1 and is doing real
+     work; on white it is a tint, not an ink, and the emphasis word reads as a
+     ghost rather than as type. That is a deliberate call, not an oversight.
+
+     Scoped to the display italics — the big serif emphasis words. The small
+     functional italics stay ink: unit numbers, comparison table headers and the
+     saved-list rows are labels a renter has to read to use the page, and a
+     ghosted unit number is a broken control rather than a light touch. */
+  .display .italic,
+  .hero .display .italic,
+  .marumado .display .italic,
+  .marumado-copy .display .italic,
+  .shoji-head .display .italic,
+  .gallery-section .display .italic,
+  .pricing h2.display .italic,
+  .placeholder-title .italic,
+  .tw-title .italic,
+  .tw-success h3 .italic {
+    color: var(--accent);
+    text-shadow: none;
+  }
+
+  /* ==========================================================================
+     THE HANDOVER OUT OF THE ARRIVAL FILM
+     ==========================================================================
+     It was a flat 900ms opacity dip, and it dipped onto a hero whose own loop
+     had not started loading yet — so the film froze on its last frame, faded to
+     a still photograph, and the panel popped into video a second later. Three
+     separate cuts in one transition.
+
+     The buffering half of the fix is in public/app.js. This half is the motion:
+     the frame eases down and toward the panel it is handing over to while the
+     black ground goes, and the film keeps playing the whole way out. */
+  .arrival-film { transition: opacity 1200ms cubic-bezier(0.22, 0.61, 0.36, 1); }
+  .arrival-film-video {
+    transition: transform 1200ms cubic-bezier(0.22, 0.61, 0.36, 1);
+    will-change: transform;
+  }
+  /* Receding, not vanishing. Scale alone on a phone, where the hero stacks and
+     there is no sideways to go; on a laptop it also drifts right, because that
+     is where the half-screen panel is. */
+  .arrival-film.is-done .arrival-film-video { transform: scale(0.94); }
+  @media (min-width: 900px) {
+    .arrival-film.is-done .arrival-film-video { transform: translateX(9%) scale(0.9); }
+  }
+  /* The furniture goes first and quickly. A skip control still inviting a click
+     on a layer that is on its way out is the one thing here worth hurrying. */
+  .arrival-film-skip {
+    transition: opacity 220ms ease, background 200ms ease, border-color 200ms ease;
+  }
+  .arrival-film.is-done .arrival-film-skip,
+  .arrival-film.is-done .arrival-film-mark { opacity: 0; }
+  .arrival-film-mark { transition: opacity 260ms ease; }
+
+  /* Restated after the block above, which reopened these transitions. Someone
+     who has asked the system for less motion does not get a drifting frame. */
+  @media (prefers-reduced-motion: reduce) {
+    .arrival-film,
+    .arrival-film-video,
+    .arrival-film-mark,
+    .arrival-film-skip { transition: none; }
+    .arrival-film.is-done .arrival-film-video { transform: none; }
+  }

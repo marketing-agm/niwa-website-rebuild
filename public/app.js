@@ -904,11 +904,27 @@
       // poster showing rather than a frozen first frame.
       const tryPlay = () => { if (!gated) loopVideo.play().catch(() => {}); };
       if (gated) {
+        // Start buffering partway through the film rather than at the end of it.
+        // The reason to hold off is pipe contention at the *start*, while the
+        // film is still filling its own buffer; five seconds in that is over,
+        // and fetching now is what lets the handover land on moving footage.
+        // Waiting for the film to end meant the fade dissolved onto a still
+        // photograph and the panel popped into video a second later — which is
+        // most of what made that transition feel like a cut.
+        const warm = setTimeout(() => {
+          if (gated) { loopVideo.preload = 'auto'; loopVideo.load(); }
+        }, 5000);
         document.addEventListener('niwa:arrival-film-done', () => {
+          clearTimeout(warm);
           gated = false;
           loopVideo.autoplay = true;
-          loopVideo.preload = 'auto';
-          loopVideo.load();
+          // Only load() if the warm-up never ran. It restarts the fetch from
+          // scratch, which would throw away the exact buffer this is here to
+          // have built.
+          if (loopVideo.preload !== 'auto') {
+            loopVideo.preload = 'auto';
+            loopVideo.load();
+          }
           tryPlay();
         }, { once: true });
       }

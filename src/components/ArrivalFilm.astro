@@ -99,13 +99,26 @@ const markEmph = site.config.wordmark?.emph ?? (lastSpace === -1 ? '' : siteName
           window.removeEventListener('wheel', onIntent);
           window.removeEventListener('touchmove', onIntent);
           window.removeEventListener('keydown', onKey);
-          el.classList.add('is-done');
-          root.classList.remove('arrival-film-open');
-          try { video.pause(); } catch (e) {}
-          // The hero's background loop holds off until now rather than
-          // competing with the film for the same pipe.
+          // Hand over first, fade second. The hero's loop is told to play before
+          // anything starts moving, so the crossfade lands on live footage —
+          // dispatching this alongside the fade meant the film dissolved into a
+          // still photograph and the panel popped into video a beat later.
           document.dispatchEvent(new CustomEvent('niwa:arrival-film-done'));
-          setTimeout(function () { el.remove(); }, 1000);
+          root.classList.remove('arrival-film-open');
+          // Two frames: one for the browser to apply the class-free state, one
+          // for it to notice the change. Setting the class in the same tick as
+          // the layout above can be coalesced into the first paint, and the
+          // transition is skipped entirely — it snaps instead of fading.
+          requestAnimationFrame(function () {
+            requestAnimationFrame(function () { el.classList.add('is-done'); });
+          });
+          // The film plays the whole way out. Pausing on the way in froze the
+          // last frame and then dissolved a still — which is the cut this
+          // transition exists to avoid. It stops when the element goes.
+          setTimeout(function () {
+            try { video.pause(); } catch (e) {}
+            el.remove();
+          }, 1400);
         }
 
         function onIntent() { finish(); }
