@@ -428,5 +428,14 @@
   },
   "availabilitySection": {
     "lede": "Studios, one-bedrooms and two-bedrooms across floors two through eight. Filter by what matters to you — bedrooms, availability, price."
+  },
+  "shojiPanel": {
+    "enabled": true,
+    "eyebrow": "Inside",
+    "title": "Everything, in its",
+    "titleItalic": "place.",
+    "image": "/images/gallery/interior-clubroom.jpg",
+    "alt": "The rooftop clubroom at Niwa, looking out over Queen Anne",
+    "note": "Amenities are open 24 hours. Features marked as select-home vary by layout — ask the leasing team which homes have what."
   }
 }

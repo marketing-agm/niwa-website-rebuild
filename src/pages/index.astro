@@ -143,6 +143,48 @@ const sightmapHtml = smap.enabled === true && smap.embedUrl
     + '</section>'
   : '';
 
+// The shoji panel.
+//
+// A real shoji screen has a structure, not just a texture: a transom, a field
+// of paper panes held in an even lattice, a band of clear glass low down where
+// the garden shows through, and a timber rail at the base. That is a page —
+// title, pockets of information, an opening onto imagery, a footer.
+//
+// So this section is a lattice with named cells, and the empty ones are cells
+// too. In a shoji the blank panes are not absence, they are the composition;
+// leaving them as grid gaps would draw them as solid rail instead of paper.
+const panel = site.config.shojiPanel ?? {};
+const panelLists: any[] = (site.config.featureLists ?? []).slice(0, 3);
+const cell = (area: string, cls: string, inner: string) =>
+  '      <div class="shoji-cell ' + cls + '" style="grid-area:' + area + '">\n' + inner + '      </div>';
+const listCell = (area: string, l: any) => cell(area, 'shoji-list',
+  '        <h4>' + escapeHtml(l?.heading ?? '') + '</h4>\n' +
+  '        <ul>\n' +
+  (l?.items ?? []).map((i: string) => '          <li>' + escapeHtml(i) + '</li>').join('\n') +
+  '\n        </ul>\n');
+const shojiHtml = panel.enabled === true && panelLists.length === 3
+  ? '<section class="shoji-section" id="the-building" aria-labelledby="shoji-title">\n'
+    + '  <div class="container">\n'
+    + '    <div class="shoji">\n'
+    + cell('t', 'shoji-head',
+        '        <div class="eyebrow">' + escapeHtml(panel.eyebrow ?? 'The building') + '</div>\n' +
+        '        <h2 class="display" id="shoji-title">' + escapeHtml(panel.title ?? '')
+        + (panel.titleItalic ? ' <span class="italic">' + escapeHtml(panel.titleItalic) + '</span>' : '')
+        + '</h2>\n') + '\n'
+    + cell('e1', 'shoji-empty', '') + '\n'
+    + listCell('c', panelLists[0]) + '\n'
+    + cell('w', 'shoji-window',
+        '        <img src="' + escapeHtml(panel.image ?? '') + '" alt="' + escapeHtml(panel.alt ?? '') + '" loading="lazy" decoding="async" />\n') + '\n'
+    + listCell('h', panelLists[1]) + '\n'
+    + cell('e2', 'shoji-empty', '') + '\n'
+    + listCell('p', panelLists[2]) + '\n'
+    + cell('n', 'shoji-note',
+        '        <p>' + escapeHtml(panel.note ?? '') + '</p>\n') + '\n'
+    + '    </div>\n'
+    + '  </div>\n'
+    + '</section>'
+  : '';
+
 const nb = site.config.neighborhood ?? {};
 
 // The marquee band under the hero. Its copy used to be hardcoded in
@@ -203,6 +245,7 @@ const ADDRESS_TOKENS: Record<string, string> = {
   '{{FEATURE_CARDS}}': featuresHtml,
   '{{AMENITY_TOURS}}': amenityToursHtml,
   '{{MARUMADO}}': marumadoHtml,
+  '{{SHOJI_PANEL}}': shojiHtml,
   '{{BUILDING_MAP}}': sightmapHtml,
   '{{AVAILABILITY_LEDE}}': escapeHtml(site.config.availabilitySection?.lede ?? ''),
   '{{GALLERY_LEDE}}': site.config.gallery?.lede ?? '',
