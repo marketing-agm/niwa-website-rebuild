@@ -5115,11 +5115,17 @@
   /* ---- Hairlines ----
      1px ash, and nothing thicker. This is the only divider in the system: no
      cards-on-fills, no background-colour section breaks. */
-  .unit-card, .feature-card, .filter-bar, .gallery-item, .summary-card,
+  /* Hairline, and the canvas showing through — except where the component is a
+     dark surface with light type on it. The first cut of this rule made the
+     unit cards and the gallery tiles transparent, which put their white text
+     straight onto parchment at about 1.1:1. Invisible. Found by measuring every
+     text node on the page against its real background, not by looking. */
+  .feature-card, .filter-bar, .summary-card,
   .building-map-frame, .plan-tour-frame {
     border: 1px solid var(--rule);
     background: transparent;
   }
+  .unit-card, .gallery-item { border: 1px solid var(--rule); }
 
   /* ---- Mono on every functional string ----
      Both refs are explicit that the monospace IS the voice: nav, buttons,
@@ -5386,4 +5392,61 @@
     .arrival-film[data-portal] .arrival-film-video,
     .arrival-film[data-portal]::before { clip-path: none; transition: none; }
     .portal-shoji { display: none; }
+  }
+
+  /* ---- Legibility pass ----
+     Measured, not eyeballed. Every text node on the page was checked against
+     its own composited background; what follows is what failed.
+
+     --ink-3 landed at exactly 4.14:1 on the linen canvas — under the 4.5 body
+     text needs, and it carries the eyebrows, the meta lines, the disclaimers
+     and the filter labels. One value, twenty failures. */
+  :root {
+    --ink-3: #6B6353;
+    /* The brand yellow is a fill, not an ink. #F1E249 as text on the canvas is
+       1.2:1 — it does not merely fail, it is close to invisible, and it was
+       already doing this on white before the canvas changed. Yellow text needs
+       its own darker value; the fill keeps the brand colour untouched. */
+    --accent-ink: #8A7A0F;
+    /* Labels were set at 11px across nav, buttons and meta alike. Oakâme puts
+       tracked-out labels at 10–12px but its body at 18–20px; applying the label
+       size to controls made every button on the site micro-type. */
+    --label: 12px;
+    --label-lg: 13px;
+  }
+
+  /* Yellow as type takes the ink; yellow as a surface keeps the brand value. */
+  .display .italic,
+  .hero .display .italic,
+  .marumado-copy .display .italic { color: var(--accent-ink); }
+  /* Except on the dark scopes, where the bright yellow is already correct and
+     is the only thing entitled to be as bright as the photography. */
+  .gallery-section .display .italic,
+  .marumado .display .italic,
+  .unit-card .italic { color: var(--accent); }
+
+  /* Controls read at 13px; only genuine micro-labels stay at 12. */
+  .nav-links a, .nav-cta, .nav-login, .nav-mobile a, .nav-mobile-cta,
+  .btn, .pill-tab, .plan-view-tab, .gallery-tab, .unit-card-cta, .ud-tab,
+  .amenity-tour, .sticky-cta-btn, .sl-btn, .tw-chip, .tw-continue,
+  .tw-submit, .form-submit {
+    font-size: var(--label-lg);
+  }
+  /* Sub-11px type had no business existing. */
+  .g-count, .gallery-item-cat, .gallery-note, .avail, .avail.soon,
+  .unit-urgency, .unit-cmp, .filter-meta, .unit-rail-hint, .tab-meta,
+  .placeholder-eyebrow, .building-map-note, .plan-disclaimer {
+    font-size: max(12px, 1em);
+  }
+  .unit-cmp { font-size: 12px; }
+  .plan-disclaimer, .building-map-note { font-size: 13px; }
+
+  /* The last of the micro-type. These are nested spans that inherit a size
+     smaller than their parent, so they have to be named rather than caught by
+     the rule above. Twelve pixels is the floor for anything a person is meant
+     to read; below that it is decoration, and none of these are. */
+  .visual-tag, .g-count, .tab-meta, .placeholder-eyebrow,
+  .gallery-item-cat, .unit-card-specs span, .unit-card-features li,
+  .filter-meta, .sl-count, .ud-tags li, .avail, .avail.soon {
+    font-size: 12px;
   }
