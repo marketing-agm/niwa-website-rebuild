@@ -108,7 +108,6 @@ const emailjsConfigured = !!(c.integrations?.emailjs?.publicKey && c.integration
 <script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd)} />
 {faqJsonLd && <script type="application/ld+json" is:inline set:html={JSON.stringify(faqJsonLd)} />}
 <link rel="preload" href="/fonts/inter-tight-latin.woff2" as="font" type="font/woff2" crossorigin />
-<link rel="preload" href="/fonts/geist-mono-latin.woff2" as="font" type="font/woff2" crossorigin />
 {themeVars && <style is:inline set:html={`:root:root{${themeVars}}`} />}
 <script is:inline set:html={`window.__SITE__=${JSON.stringify(siteRuntime)};`} />
 {emailjsConfigured && <script is:inline src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js" defer></script>}

@@ -1,26 +1,13 @@
 ---
-// One dialog for every 3D walk-through on the page. The iframe is empty until a
-// tour is opened and emptied again on close, so Matterport never loads
-// unprompted.
+// One dialog for the building walk-throughs. The iframe is empty until a tour
+// is opened and emptied again on close, so Matterport never loads unprompted.
 ---
-<dialog class="tdlg" data-tour-dialog aria-label="3D tour">
-  <div class="tdlg-bar">
+<dialog class="dlg" data-tour-dialog aria-label="3D tour">
+  <div class="dlg-bar">
     <span class="label" data-tour-title>3D tour</span>
-    <span class="label label--dim tdlg-hint">Drag to look · click to move</span>
-    <button type="button" class="tdlg-close mono" data-tour-close>Close ✕</button>
+    <button type="button" class="dlg-close" data-tour-close>Close ✕</button>
   </div>
-  <div class="tdlg-body">
+  <div class="dlg-frame">
     <iframe data-tour-frame title="Matterport 3D tour" allow="fullscreen; xr-spatial-tracking" allowfullscreen loading="lazy"></iframe>
   </div>
 </dialog>
-<style>
-  .tdlg { border: 0; padding: 0; margin: 0; width: 100vw; height: 100dvh; max-width: none; max-height: none; background: var(--bg); color: var(--fg); display: none; grid-template-rows: auto 1fr; }
-  .tdlg[open] { display: grid; }
-  .tdlg::backdrop { background: rgba(0,0,0,0.6); }
-  .tdlg-bar { display: grid; grid-template-columns: 1fr auto auto; gap: var(--gap); align-items: center; padding: 0 var(--gutter); height: var(--nav-h); border-bottom: 1px solid var(--line); }
-  .tdlg-close { font-size: var(--t-label); letter-spacing: 0.1em; text-transform: uppercase; padding: 10px 0 10px 16px; transition: color 0.3s; }
-  .tdlg-close:hover { color: var(--gold); }
-  .tdlg-body { background: #000; }
-  .tdlg-body iframe { width: 100%; height: 100%; border: 0; }
-  @media (max-width: 640px) { .tdlg-hint { display: none; } }
-</style>

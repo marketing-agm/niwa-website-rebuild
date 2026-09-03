@@ -4,86 +4,156 @@ const { site } = Astro.props as { site: any };
 const c = site.config;
 const homes = getHomes(c, site.data?.units ?? []);
 const pets = c.pets ?? {};
+const s = c.sightmap ?? {};
+const showMap = !!(s.enabled && s.embedUrl);
+const range = (a: number, b: number) => (a === b ? int(a) : `${int(a)}–${int(b)}`);
 ---
 <section class="section homes" id="floor-plans">
-  <div class="sec-head">
-    <span class="label">03 — The homes</span>
-    <span class="label label--dim">Prices and counts refresh from the leasing system</span>
-  </div>
   <div class="sec-title">
     <h2 class="h2" data-reveal>Studios to <em>two bedrooms.</em></h2>
-    <p class="body sec-lede" data-reveal>Nineteen distinct layouts across floors two through eight, so you can size up or down without leaving the neighborhood. Every layout below can be walked end to end in 3D.</p>
+    <p class="body sec-lede" data-reveal>{c.homes?.lede}</p>
   </div>
 
-  <ol class="home-rows">
-    {homes.map((h, i) => (
-      <li class="home-row" data-reveal>
-        <span class="label label--dim home-idx">{String(i + 1).padStart(2, '0')}</span>
-        <h3 class="home-name">{h.name}</h3>
-        <dl class="home-meta">
-          <div><dt class="label label--dim">Layout</dt><dd class="mono">{h.sqftMin === h.sqftMax ? int(h.sqftMin) : `${int(h.sqftMin)}–${int(h.sqftMax)}`} sq ft · {h.baths} bath</dd></div>
-          <div><dt class="label label--dim">From</dt><dd class="mono">{h.rentMin ? `${money(h.rentMin)}/mo` : 'Ask'}</dd></div>
-          <div><dt class="label label--dim">Listed</dt><dd class="mono">{h.now ? `${h.now} now` : ''}{h.now && h.soon ? ' · ' : ''}{h.soon ? `${h.soon} soon` : ''}{!h.now && !h.soon ? 'Join the list' : ''}</dd></div>
-        </dl>
-        <div class="home-tours">
-          {h.tours.map((t: any) => (
-            <button type="button" class="btn btn--ghost btn--sm" data-tour={t.url} data-tour-label={`${h.name} — ${t.label}`}>
-              {h.tours.length > 1 ? `Walk it · ${t.label}` : 'Walk it in 3D'} <span class="arr" aria-hidden="true">↗</span>
-            </button>
-          ))}
-        </div>
-      </li>
-    ))}
-  </ol>
+  <div class="tabs" role="tablist" aria-label="Homes" data-tabs>
+    <button type="button" class="tab is-active" role="tab" aria-selected="true" id="tab-layouts" aria-controls="panel-layouts" data-tab="layouts">Home types</button>
+    {showMap && <button type="button" class="tab" role="tab" aria-selected="false" id="tab-availability" aria-controls="availability" tabindex="-1" data-tab="availability">Availability</button>}
+  </div>
 
-  <div class="grid home-notes">
-    <div class="cell note" data-reveal>
-      <span class="label label--dim">Pets</span>
-      <p class="lead">Up to {pets.maxPerHome} pets per home.</p>
-      <p class="small">{pets.deposit} and {pets.types?.[0]?.rent} per pet. Cats to 20 lb; dogs to 75 lb, and two dogs must not exceed 75 lb combined. Dogs are interviewed, and some breeds are restricted — ask the leasing team for the current list. There is a standing pet wash in the building.</p>
-    </div>
-    <div class="cell note" data-reveal>
-      <span class="label label--dim">Income-restricted homes</span>
-      <p class="lead">MFTE, MHA and ADA homes are available.</p>
-      <p class="small">{c.housingPrograms?.note}</p>
-    </div>
-    <div class="cell note" data-reveal>
-      <span class="label label--dim">Terms</span>
-      <p class="lead">Rent varies by home, floor and date.</p>
-      <p class="small">{c.rentalTerms?.pending}</p>
+  <div class="tab-panel" id="panel-layouts" role="tabpanel" aria-labelledby="tab-layouts" data-tab-panel="layouts">
+    <ol class="home-rows">
+      {homes.map((h) => (
+        <li>
+          <button type="button" class="home-row" data-open-dialog={`home-${h.key}`} data-reveal>
+            <span class="home-name">{h.name}</span>
+            <span class="home-go label">{h.rentMin ? `From ${money(h.rentMin)}` : 'Ask leasing'} <span class="arr" aria-hidden="true">→</span></span>
+          </button>
+        </li>
+      ))}
+    </ol>
+
+    <div class="grid home-notes">
+      <div class="cell note" data-reveal>
+        <span class="label label--dim">Pets</span>
+        <p class="note-lead">Up to {pets.maxPerHome} pets per home.</p>
+        <p class="small">{pets.deposit} and {pets.types?.[0]?.rent} per pet. Cats up to 20 lb, dogs up to 75 lb combined. Dogs are interviewed and some breeds are restricted. There is a pet wash in the building.</p>
+      </div>
+      <div class="cell note" data-reveal>
+        <span class="label label--dim">Income-restricted homes</span>
+        <p class="note-lead">MFTE, MHA and ADA homes are available.</p>
+        <p class="small">{c.housingPrograms?.note}</p>
+      </div>
+      <div class="cell note" data-reveal>
+        <span class="label label--dim">Terms</span>
+        <p class="note-lead">Rent varies by home, floor and date.</p>
+        <p class="small">{c.rentalTerms?.pending}</p>
+      </div>
     </div>
   </div>
+
+  {showMap && (
+    <div class="tab-panel" id="availability" role="tabpanel" aria-labelledby="tab-availability" data-tab-panel="availability" hidden>
+      <div class="map-lede">
+        <p class="lead">{s.lede}</p>
+        <a class="label link" href={s.embedUrl} target="_blank" rel="noopener">Open the map in a new tab ↗</a>
+      </div>
+      <div class="map-frame" data-lenis-prevent>
+        <iframe data-src={s.embedUrl} title={s.iframeTitle} loading="lazy" allow="fullscreen" referrerpolicy="strict-origin-when-cross-origin"></iframe>
+      </div>
+      <p class="small map-note">{s.note}</p>
+    </div>
+  )}
 </section>
 
+{homes.map((h) => (
+  <dialog class="dlg hdlg" id={`home-${h.key}`} aria-label={`${h.name} details and 3D tour`}>
+    <div class="dlg-bar">
+      <span class="label">{h.name}</span>
+      <button type="button" class="dlg-close" data-dialog-close>Close ✕</button>
+    </div>
+    <div class="hdlg-body">
+      <aside class="hdlg-side">
+        <h3 class="h2">{h.name}</h3>
+        <dl class="hdlg-facts">
+          <div><dt class="label label--dim">Size</dt><dd>{range(h.sqftMin, h.sqftMax)} sq ft</dd></div>
+          <div><dt class="label label--dim">Bath</dt><dd>{h.baths}</dd></div>
+          <div><dt class="label label--dim">Starting rent</dt><dd>{h.rentMin ? `${money(h.rentMin)}/mo` : 'Ask leasing'}</dd></div>
+          <div><dt class="label label--dim">Available</dt><dd>{h.now ? `${h.now} now` : ''}{h.now && h.soon ? ', ' : ''}{h.soon ? `${h.soon} coming soon` : ''}{!h.now && !h.soon ? 'Join the waitlist' : ''}</dd></div>
+        </dl>
+        <p class="small">{h.key === 'studio' ? 'Studios run across floors two through eight, several with balcony decks and city views.' : h.key === '1br' ? 'One bedrooms with a full kitchen, in-unit washer and dryer, and room for a dining table. Tour it furnished or unfurnished.' : 'Two bedrooms with one bath, in-unit washer and dryer, and select homes with kitchen islands and vaulted ceilings.'}</p>
+        {h.tours.length > 0 && (
+          <div class="hdlg-tours">
+            <span class="label label--dim">3D walkthrough</span>
+            <div class="hdlg-tabs" role="tablist" aria-label="Tours">
+              {h.tours.map((t: any, i: number) => (
+                <button type="button" class={`tab tab--sm${i === 0 ? ' is-active' : ''}`} role="tab" aria-selected={i === 0 ? 'true' : 'false'} data-frame-src={t.url}>{t.label}</button>
+              ))}
+            </div>
+          </div>
+        )}
+        <div class="hdlg-actions">
+          <a class="btn" href="#tour" data-dialog-close>Schedule a tour <span class="arr" aria-hidden="true">→</span></a>
+          {showMap && <a class="btn btn--ghost" href="#availability" data-dialog-close>See availability</a>}
+        </div>
+      </aside>
+      <div class="dlg-frame">
+        <iframe data-frame title={`${h.name} 3D tour`} allow="fullscreen; xr-spatial-tracking" allowfullscreen loading="lazy"></iframe>
+      </div>
+    </div>
+  </dialog>
+))}
+
 <style>
-  .home-rows { border-top: 1px solid var(--line); }
+  .tabs { display: flex; gap: clamp(20px, 3vw, 56px); padding: 0 var(--inset); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .tab { position: relative; padding: clamp(14px, 1.5vw, 24px) 0; font-size: var(--t-lead); letter-spacing: -0.02em; color: var(--fg-3); transition: color 0.3s; }
+  .tab::after { content: ''; position: absolute; left: 0; right: 0; bottom: -1px; height: 2px; background: var(--gold); transform: scaleX(0); transform-origin: left; transition: transform 0.45s var(--ease); }
+  .tab:hover { color: var(--fg); }
+  .tab.is-active { color: var(--fg); }
+  .tab.is-active::after { transform: scaleX(1); }
+  .tab--sm { font-size: var(--t-body); padding: 8px 0; }
+  .tab-panel[hidden] { display: none; }
+
+  .home-rows > li { border-bottom: 1px solid var(--line); }
   .home-row {
-    display: grid; grid-template-columns: 4ch minmax(0, 5fr) minmax(0, 5fr) clamp(200px, 17vw, 280px); align-items: center; gap: var(--gap);
-    padding: clamp(22px, 2.6vw, 44px) var(--gutter); border-bottom: 1px solid var(--line);
-    transition: background-color 0.5s var(--ease);
+    width: 100%; display: flex; justify-content: space-between; align-items: center; gap: var(--gap); text-align: left;
+    padding: clamp(26px, 3vw, 52px) var(--inset);
+    transition: background-color 0.28s cubic-bezier(0.2, 0, 0, 1), color 0.28s cubic-bezier(0.2, 0, 0, 1);
   }
-  .home-row:hover { background: var(--bg-2); }
-  .home-name { font-size: clamp(2rem, 1rem + 4.2vw, 6rem); font-weight: 400; letter-spacing: -0.04em; line-height: 0.95; transition: transform 0.6s var(--ease); }
-  .home-row:hover .home-name { transform: translateX(0.1em); }
-  .home-meta { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: var(--gap); margin: 0; }
-  .home-meta div { display: grid; gap: 6px; }
-  .home-meta dd { margin: 0; white-space: nowrap; }
-  .home-tours { display: flex; flex-direction: column; gap: 8px; align-items: flex-end; }
+  .home-name { font-size: clamp(2.2rem, 1rem + 4.8vw, 7rem); font-weight: 400; letter-spacing: -0.04em; line-height: 0.95; transition: transform 0.6s var(--ease); }
+  .home-row:hover .home-name { transform: translateX(0.08em); }
+  .home-go { display: inline-flex; align-items: center; gap: 0.8em; color: var(--fg-2); white-space: nowrap; }
+  .home-go .arr { transition: transform 0.45s var(--ease); }
+  .home-row:hover .home-go .arr { transform: translateX(0.4em); }
   .home-notes { margin-top: -1px; }
-  .note { grid-column: span 4; display: grid; gap: 14px; align-content: start; }
-  .note .lead { font-size: var(--t-h3); line-height: 1.1; max-width: 16ch; }
+  .note { grid-column: span 4; display: grid; gap: 12px; align-content: start; }
+  .note-lead { font-size: var(--t-lead); line-height: 1.2; letter-spacing: -0.02em; max-width: 20ch; }
   .note .small { max-width: 44ch; }
+
+  .map-lede { display: flex; justify-content: space-between; align-items: end; gap: var(--gap); flex-wrap: wrap; padding: clamp(28px, 3.5vw, 56px) var(--inset); }
+  .map-lede .lead { max-width: 34ch; }
+  .map-lede .link { color: var(--fg-2); }
+  .map-frame { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); background: var(--bg-2); }
+  .map-frame iframe { width: 100%; height: clamp(560px, 82vh, 940px); border: 0; }
+  .map-note { padding: 16px var(--inset) clamp(28px, 3vw, 48px); max-width: 70ch; }
+
+  .hdlg-body { display: grid; grid-template-columns: minmax(300px, 30%) 1fr; min-height: 0; }
+  .hdlg-side { padding: var(--pad) var(--inset); display: grid; gap: clamp(18px, 2vw, 32px); align-content: start; overflow: auto; border-right: 1px solid var(--line); }
+  .hdlg-facts { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(14px, 1.6vw, 24px); margin: 0; }
+  .hdlg-facts div { display: grid; gap: 6px; }
+  .hdlg-facts dd { margin: 0; font-size: var(--t-body); }
+  .hdlg-side .small { max-width: 40ch; }
+  .hdlg-tours { display: grid; gap: 8px; }
+  .hdlg-tabs { display: flex; gap: 20px; flex-wrap: wrap; }
+  .hdlg-actions { display: flex; flex-wrap: wrap; gap: 10px; }
   @media (max-width: 1024px) {
-    .home-row { grid-template-columns: 4ch 1fr auto; grid-template-areas: 'idx name tours' 'idx meta meta'; row-gap: clamp(14px, 2vw, 24px); }
-    .home-idx { grid-area: idx; align-self: start; }
-    .home-name { grid-area: name; }
-    .home-meta { grid-area: meta; }
-    .home-tours { grid-area: tours; }
     .note { grid-column: 1 / -1; }
+    .hdlg-body { grid-template-columns: 1fr; grid-template-rows: auto 1fr; }
+    .hdlg-side { border-right: 0; border-bottom: 1px solid var(--line); overflow: visible; }
+    .hdlg-side .h2 { display: none; }
+    .hdlg-facts { grid-template-columns: repeat(4, 1fr); }
+    .hdlg-side .small { display: none; }
   }
   @media (max-width: 640px) {
-    .home-row { grid-template-columns: 1fr; grid-template-areas: 'idx' 'name' 'meta' 'tours'; }
-    .home-meta { grid-template-columns: repeat(2, 1fr); }
-    .home-tours { flex-direction: row; flex-wrap: wrap; align-items: flex-start; }
+    .home-row { flex-direction: column; align-items: flex-start; gap: 10px; }
+    .hdlg-facts { grid-template-columns: 1fr 1fr; }
   }
 </style>
