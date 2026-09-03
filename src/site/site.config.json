@@ -103,11 +103,25 @@
   },
   "hero": {
     "image": "/images/hero.jpg",
-    "alt": "Niwa Apartments at 513 1st Ave N — the yellow and grey facade in Queen Anne, with the Space Needle and the downtown Seattle skyline behind it",
+    "alt": "Niwa Apartments at 513 1st Ave N, the yellow and grey facade in Queen Anne with the Space Needle and downtown Seattle behind it",
     "title": "Iconically,",
     "titleItalic": "Seattle.",
     "offer": "",
-    "intro": "Modern design meets city zen living — next to the iconic Space Needle."
+    "intro": "Studio, one and two bedroom apartments in Lower Queen Anne, a short walk from Seattle Center and the Space Needle.",
+    "video": {
+      "loop": [
+        {
+          "src": "/video/niwa-hero-loop.webm",
+          "type": "video/webm"
+        },
+        {
+          "src": "/video/niwa-hero-loop.mp4",
+          "type": "video/mp4"
+        }
+      ],
+      "poster": "/images/hero-poster.jpg",
+      "playbackRate": 0.6
+    }
   },
   "floorPlans": {
     "studio": {
@@ -188,18 +202,18 @@
   },
   "neighborhood": {
     "title": "Queen Anne, in the heart of it",
-    "intro": "Seattle's best-kept secret — independent cafes, boutiques, galleries and cultural venues, with Seattle Center at the end of the block and easy access to South Lake Union, Capitol Hill, Downtown and the waterfront."
+    "intro": "Independent cafes, boutiques, galleries and venues, with Seattle Center at the end of the block and quick access to South Lake Union, Capitol Hill, Downtown and the waterfront."
   },
   "features": [
     {
       "icon": "views",
       "title": "Rooftop terrace",
-      "body": "Panoramic skyline views, grills and seating — the whole city from your own roof."
+      "body": "Skyline views, grills and seating. The whole city from your own roof."
     },
     {
       "icon": "deck",
       "title": "24-hour fitness center",
-      "body": "On site and always open. No membership, no commute, no excuses."
+      "body": "Cardio, free weights and a cable machine, on site and open around the clock."
     },
     {
       "icon": "kitchen",
@@ -214,19 +228,19 @@
     {
       "icon": "closets",
       "title": "Pet friendly",
-      "body": "Your dog gets Seattle Center and Kerry Park for a back garden."
+      "body": "Up to two pets per home, a pet wash in the building, and Seattle Center for a backyard."
     },
     {
       "icon": "baths",
       "title": "Steps from Seattle Center",
-      "body": "The Space Needle, MoPOP and Climate Pledge Arena are a walk, not a drive."
+      "body": "The Space Needle, MoPOP and Climate Pledge Arena are a short walk away."
     }
   ],
   "marquee": [
-    "Rooftop terrace · skyline views",
+    "Rooftop terrace with skyline views",
     "24-hour fitness center",
-    "Walk to Seattle Center",
-    "Studio · 1 bed · 2 bed"
+    "Steps from Seattle Center",
+    "Studio, one and two bedroom homes"
   ],
   "featureLists": [
     {
@@ -278,7 +292,7 @@
       },
       {
         "name": "Dogs",
-        "limit": "75 lb weight limit — two dogs must not exceed 75 lb combined",
+        "limit": "75 lb weight limit, two dogs combined",
         "rent": "$50 / month",
         "note": "Interview required"
       }
@@ -317,7 +331,7 @@
     ]
   },
   "housingPrograms": {
-    "note": "MFTE/MHA and ADA homes available. Income limits apply to income-restricted homes and are set by the City; ask the leasing team for current figures."
+    "note": "Income limits for restricted homes are set by the City. Ask the leasing team for current figures and what you need to apply."
   },
   "rentalTerms": {
     "rows": [
@@ -337,20 +351,20 @@
         "value": "$50"
       }
     ],
-    "pending": "Security deposit, screening fee and utility charges are set by the leasing team — ask when you tour, and they will be confirmed in writing before you sign."
+    "pending": "Security deposit, screening fee and utilities are set by the leasing team and confirmed in writing before you sign."
   },
-  "footerBlurb": "Studio, one- and two-bedroom apartments in Queen Anne, steps from Seattle Center. Professionally managed by AGM Real Estate Group, LLC.",
+  "footerBlurb": "Studio, one and two bedroom apartments in Queen Anne, steps from Seattle Center. Professionally managed by AGM Real Estate Group, LLC.",
   "geo": {
     "latitude": 47.623974,
     "longitude": -122.355881
   },
   "gallery": {
-    "lede": "A look around the building, the roof and the neighborhood — photographed this autumn.",
-    "note": "Photography of individual homes is on the way — in the meantime you can walk any layout in 3D from the floor plans below."
+    "lede": "The building, the roof and the neighborhood, photographed this autumn.",
+    "note": "Photography of individual homes is coming. In the meantime, every layout can be toured in 3D."
   },
   "amenityTours": {
     "heading": "Walk the building",
-    "note": "Three-dimensional tours — drag to look around, click to move through the space.",
+    "note": "Drag to look around and click to move through the space.",
     "items": [
       {
         "label": "Rooftop clubroom",
@@ -372,17 +386,24 @@
     "eyebrow": "The building",
     "title": "Pick your home off the",
     "titleItalic": "map.",
-    "lede": "Every home in the building, floor by floor. Click one to see its layout, its rent and when it's free.",
+    "lede": "Every home in the building, floor by floor. Select one to see its layout, rent and move-in date.",
     "iframeTitle": "SightMap interactive property map showing unit availability at Niwa Apartments",
-    "note": "Availability shown on the map comes from SightMap and refreshes from the leasing system. If anything on this page disagrees with it, the leasing team has the last word."
+    "note": "Availability on the map comes from SightMap and refreshes from the leasing system. If anything on this page disagrees with it, the leasing team has the final word."
   },
   "idea": {
     "kanji": "庭",
-    "body": "Niwa means garden. Ours is the whole of Queen Anne — Elliott Bay and the ferries to the west, the Space Needle at the end of the block, and the city laid out from the roof."
+    "body": "Niwa means garden. Ours is Queen Anne itself: Elliott Bay and the ferries to the west, the Space Needle at the end of the block, and the whole city laid out from the roof."
   },
   "building": {
     "title": "Everything, in its",
     "titleItalic": "place.",
-    "note": "Amenities are open 24 hours. Features marked as select-home vary by layout — ask the leasing team which homes have what."
+    "note": "Amenities are open 24 hours. Features marked select-home vary by layout, and the leasing team can tell you which homes have what."
+  },
+  "homes": {
+    "lede": "Nineteen layouts across floors two through eight. Choose a home type to see sizes, starting rents, current availability and a 3D walkthrough."
+  },
+  "tour": {
+    "lede": "Tell us who you are and when works. Leasing confirms by email, usually within one business day.",
+    "fine": "Niwa welcomes everyone. Some homes are income-restricted under Seattle's MFTE and MHA programs, and the leasing team can explain what applies."
   }
 }

@@ -42,21 +42,42 @@ document.addEventListener('click', (e) => {
   if (hash.length < 2) return;
   e.preventDefault();
   closeMenu();
+  revealHashTarget(hash);
   if (scrollToHash(hash)) history.replaceState(null, '', hash);
 });
 
+/* ---------- Tabs (the homes / availability) ---------- */
+function activateTab(name: string) {
+  const list = $('[data-tabs]');
+  if (!list) return;
+  $$<HTMLButtonElement>('[data-tab]', list).forEach((t) => {
+    const on = t.dataset.tab === name;
+    t.classList.toggle('is-active', on);
+    t.setAttribute('aria-selected', String(on));
+    t.tabIndex = on ? 0 : -1;
+  });
+  $$('[data-tab-panel]').forEach((panel) => {
+    const on = panel.dataset.tabPanel === name;
+    if (on && panel.hidden) {
+      panel.hidden = false;
+      // The map only loads once someone asks for it.
+      $$<HTMLIFrameElement>('iframe[data-src]', panel).forEach((f) => { f.src = f.dataset.src!; f.removeAttribute('data-src'); });
+      if (!reduce) gsap.fromTo(panel, { opacity: 0, y: 14 }, { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out', clearProps: 'all' });
+    } else if (!on) panel.hidden = true;
+  });
+  ScrollTrigger.refresh();
+}
+$$('[data-tabs] [data-tab]').forEach((t) => t.addEventListener('click', () => activateTab(t.dataset.tab!)));
+// A link into a hidden tab panel switches to that tab first.
+function revealHashTarget(hash: string) {
+  const target = hash.length > 1 ? $(hash) : null;
+  const panel = target?.closest<HTMLElement>('[data-tab-panel]');
+  if (panel && panel.hidden) activateTab(panel.dataset.tabPanel!);
+}
+if (location.hash) revealHashTarget(location.hash);
+
 /* ---------- Nav ---------- */
 const nav = $('[data-nav]');
-let lastY = 0;
-function onScroll(y: number) {
-  if (!nav) return;
-  nav.classList.toggle('is-scrolled', y > 12);
-  const down = y > lastY && y > innerHeight * 0.6;
-  nav.classList.toggle('is-hidden', down && Math.abs(y - lastY) > 2);
-  lastY = y;
-}
-if (lenis) lenis.on('scroll', (e: any) => onScroll(e.scroll));
-else window.addEventListener('scroll', () => onScroll(window.scrollY), { passive: true });
 
 const menu = $('[data-menu]');
 const burger = $<HTMLButtonElement>('[data-menu-toggle]');
@@ -113,6 +134,54 @@ $('[data-tour-close]')?.addEventListener('click', closeDlg);
 dlg?.addEventListener('close', closeDlg);
 dlg?.addEventListener('click', (e) => { if (e.target === dlg) closeDlg(); });
 
+/* ---------- Home-type dialogs ---------- */
+function openDialog(id: string) {
+  const d = document.getElementById(id) as HTMLDialogElement | null;
+  if (!d) return;
+  const f = $<HTMLIFrameElement>('[data-frame]', d);
+  const first = $<HTMLElement>('[data-frame-src]', d);
+  if (f && first && !f.src.startsWith('http')) f.src = first.dataset.frameSrc!;
+  d.showModal();
+  lenis?.stop();
+}
+function closeDialog(d: HTMLDialogElement) {
+  if (d.open) d.close();
+  const f = $<HTMLIFrameElement>('[data-frame]', d);
+  if (f) f.src = 'about:blank';
+  lenis?.start();
+}
+document.addEventListener('click', (e) => {
+  const el = e.target as Element;
+  const opener = el.closest<HTMLElement>('[data-open-dialog]');
+  if (opener) { openDialog(opener.dataset.openDialog!); return; }
+  const closer = el.closest<HTMLElement>('[data-dialog-close]');
+  if (closer) { const d = closer.closest('dialog') as HTMLDialogElement | null; if (d) closeDialog(d); return; }
+  const src = el.closest<HTMLElement>('[data-frame-src]');
+  if (src) {
+    const d = src.closest('dialog')!;
+    $$('[data-frame-src]', d).forEach((b) => { b.classList.toggle('is-active', b === src); b.setAttribute('aria-selected', String(b === src)); });
+    const f = $<HTMLIFrameElement>('[data-frame]', d);
+    if (f) f.src = src.dataset.frameSrc!;
+  }
+});
+$$<HTMLDialogElement>('dialog.hdlg').forEach((d) => {
+  d.addEventListener('close', () => closeDialog(d));
+  d.addEventListener('click', (e) => { if (e.target === d) closeDialog(d); });
+});
+
+/* ---------- Hero video: slower, and never for reduced motion ---------- */
+const heroVideo = $<HTMLVideoElement>('[data-hero-video]');
+if (heroVideo) {
+  const rate = parseFloat(heroVideo.dataset.rate || '0.6') || 0.6;
+  const apply = () => { heroVideo.playbackRate = rate; heroVideo.defaultPlaybackRate = rate; };
+  apply();
+  heroVideo.addEventListener('play', apply);
+  heroVideo.addEventListener('loadedmetadata', apply);
+  const conn = (navigator as any).connection;
+  if (reduce || conn?.saveData || /2g/.test(conn?.effectiveType || '')) { heroVideo.removeAttribute('autoplay'); heroVideo.pause(); }
+  else heroVideo.play().catch(() => {});
+}
+
 /* ---------- FAQ ---------- */
 $$('[data-faq-toggle]').forEach((btn) => {
   const panel = document.getElementById(btn.getAttribute('aria-controls')!);
@@ -133,20 +202,12 @@ $$('[data-faq-toggle]').forEach((btn) => {
 /* ---------- Gallery: pinned horizontal scroll on desktop, native on touch ---------- */
 const gal = $('[data-gallery]');
 const track = $('[data-gallery-track]');
-const galCount = $('[data-gallery-count]');
 const galBar = $('[data-gallery-progress]');
-const galItems = track ? $$('.gal-item', track) : [];
-function setGalCount(p: number) {
-  if (!galCount) return;
-  const i = Math.min(galItems.length, Math.max(1, Math.round(p * (galItems.length - 1)) + 1));
-  galCount.textContent = String(i).padStart(2, '0');
-}
 if (gal && track) {
   const useNative = coarse || reduce || innerWidth < 1024;
   if (useNative) {
     gal.classList.add('is-native');
     const vp = track.parentElement!;
-    vp.addEventListener('scroll', () => setGalCount(vp.scrollLeft / Math.max(1, vp.scrollWidth - vp.clientWidth)), { passive: true });
   } else {
     const vp = track.parentElement!;
     const dist = () => Math.max(0, track.scrollWidth - vp.clientWidth);
@@ -156,7 +217,7 @@ if (gal && track) {
         trigger: vp, pin: true, scrub: 0.6, anticipatePin: 1, invalidateOnRefresh: true,
         start: () => (vp.offsetHeight < innerHeight ? 'center center' : 'top top'),
         end: () => '+=' + dist(),
-        onUpdate: (self) => { setGalCount(self.progress); if (galBar) galBar.style.transform = `scaleX(${self.progress})`; },
+        onUpdate: (self) => { if (galBar) galBar.style.transform = `scaleX(${self.progress})`; },
       },
     });
   }

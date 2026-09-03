@@ -20,10 +20,6 @@ const nearby = [
 ];
 ---
 <section class="section hood" id="neighborhood">
-  <div class="sec-head">
-    <span class="label">05 — The neighborhood</span>
-    <span class="label label--dim">Uptown · Lower Queen Anne · 98109</span>
-  </div>
   <div class="sec-title">
     <h2 class="h2" data-reveal>{n.title}<em>.</em></h2>
     <p class="body sec-lede" data-reveal>{n.intro}</p>
@@ -37,8 +33,8 @@ const nearby = [
     <div class="cell hood-list" data-reveal>
       <span class="label label--dim">At the end of the block</span>
       <ul class="near">
-        {nearby.map(([a, b], i) => (
-          <li class="near-row"><span class="label label--dim">{String(i + 1).padStart(2, '0')}</span><span class="near-name">{a}</span><span class="small">{b}</span></li>
+        {nearby.map(([a, b]) => (
+          <li class="near-row"><span class="near-name">{a}</span><span class="small">{b}</span></li>
         ))}
       </ul>
     </div>
@@ -60,7 +56,7 @@ const nearby = [
   .hood-cap .small { color: var(--fg); opacity: 0.8; max-width: 40ch; }
   .hood-hero { grid-column: 1 / span 7; min-height: clamp(280px, 38vw, 680px); }
   .hood-list { grid-column: 8 / span 5; display: grid; gap: clamp(16px, 2vw, 32px); align-content: start; }
-  .near-row { display: grid; grid-template-columns: 3ch 1fr auto; gap: 12px; align-items: baseline; padding: 11px 0; border-top: 1px solid var(--line-2); }
+  .near-row { display: grid; grid-template-columns: 1fr auto; gap: 12px; align-items: baseline; padding: 12px 0; border-top: 1px solid var(--line-2); }
   .near-name { font-size: var(--t-body); }
   .near-row .small { text-align: right; }
   .hood-tile { grid-column: span 4; min-height: clamp(220px, 24vw, 420px); }

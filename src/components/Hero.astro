@@ -1,10 +1,9 @@
 ---
-import { Image } from 'astro:assets';
-import hero from '../assets/hero.jpg';
 const { site } = Astro.props as { site: any };
 const c = site.config;
 const h = c.hero ?? {};
 const a = c.address;
+const v = h.video ?? {};
 const facts = [
   ['Walk Score', String(c.walkScores?.walk ?? '')],
   ['Homes on floors', '2–8'],
@@ -14,8 +13,8 @@ const facts = [
 ---
 <section class="hero" id="top" data-hero>
   <div class="hero-top">
-    <p class="label" data-hero-fade>{a.streetAddress} — {a.placename}</p>
-    <p class="label hero-top-r" data-hero-fade>Now leasing · Studio, one &amp; two bedroom</p>
+    <p class="label" data-hero-fade>{a.streetAddress}, {a.addressLocality}</p>
+    <p class="label hero-top-r" data-hero-fade>Now leasing: studio, one and two bedroom homes</p>
   </div>
 
   <h1 class="h1 hero-title" data-hero-title>
@@ -36,28 +35,36 @@ const facts = [
     </dl>
   </div>
 
-  <figure class="hero-media" data-hero-media>
+  <div class="hero-media" data-hero-media>
     <div class="hero-media-clip">
-      <Image src={hero} alt={h.alt} widths={[640, 960, 1440, 2000]} sizes="100vw" format="webp" quality={78} loading="eager" fetchpriority="high" data-hero-img />
+      <video
+        class="hero-video"
+        data-hero-img
+        data-hero-video
+        data-rate={v.playbackRate ?? 0.6}
+        autoplay muted loop playsinline disablepictureinpicture
+        preload="metadata"
+        poster={v.poster}
+        aria-label={h.alt}
+      >
+        {(v.loop ?? []).map((s: any) => <source src={s.src} type={s.type} />)}
+      </video>
+      <div class="hero-shade" aria-hidden="true"></div>
     </div>
-    <figcaption class="hero-cap">
-      <span class="label label--dim">The yellow cladding on 1st Ave N, the Space Needle behind</span>
-      <span class="label label--dim">{c.geo?.latitude?.toFixed(4)}° N · {Math.abs(c.geo?.longitude ?? 0).toFixed(4)}° W</span>
-    </figcaption>
-  </figure>
+  </div>
 </section>
 
 <style>
-  .hero { position: relative; padding-top: calc(var(--nav-h) + clamp(28px, 4vw, 64px)); }
-  .hero-top { display: flex; justify-content: space-between; gap: var(--gap); padding: 0 var(--gutter) clamp(24px, 4.5vw, 80px); }
+  .hero { position: relative; padding-top: clamp(28px, 4vw, 64px); }
+  .hero-top { display: flex; justify-content: space-between; gap: var(--gap); padding: 0 var(--inset) clamp(24px, 4.5vw, 80px); }
   .hero-top-r { text-align: right; }
-  .hero-title { padding: 0 var(--gutter); display: grid; }
+  .hero-title { padding: 0 var(--inset); display: grid; }
   .hero-title .hero-line { display: block; overflow: hidden; padding-bottom: 0.06em; margin-bottom: -0.06em; }
   .hero-line-in { display: block; will-change: transform; }
   .hero-title .hero-line:nth-child(2) { font-style: italic; font-weight: 400; padding-left: clamp(0px, 14vw, 22vw); }
   .hero-row {
     display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: var(--gap); align-items: end;
-    padding: clamp(28px, 4vw, 64px) var(--gutter) clamp(24px, 3vw, 48px);
+    padding: clamp(28px, 4vw, 64px) var(--inset) clamp(28px, 3.4vw, 56px);
   }
   .hero-intro { grid-column: 1 / span 5; max-width: 26ch; }
   .hero-cta { grid-column: 6 / span 3; display: flex; flex-wrap: wrap; gap: 10px; align-self: end; }
@@ -66,8 +73,10 @@ const facts = [
   .hero-fact dd { margin: 0; color: var(--fg); }
   .hero-media { position: relative; }
   .hero-media-clip { height: clamp(300px, 66vh, 960px); overflow: hidden; }
-  .hero-media-clip :global(img) { width: 100%; height: 118%; object-fit: cover; object-position: 50% 40%; margin-top: -9%; will-change: transform; }
-  .hero-cap { display: flex; justify-content: space-between; gap: var(--gap); padding: 12px var(--gutter); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .hero-media-clip { position: relative; }
+  .hero-video { width: 100%; height: 118%; object-fit: cover; object-position: 50% 45%; margin-top: -9%; will-change: transform; background: var(--bg-2); }
+  .hero-shade { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(11,11,11,0.55) 0%, rgba(11,11,11,0.28) 45%, rgba(11,11,11,0.6) 100%); pointer-events: none; }
+  .hero-media { border-bottom: 1px solid var(--line); }
 
   @media (max-width: 1024px) {
     .hero-intro { grid-column: 1 / span 7; }
@@ -80,6 +89,5 @@ const facts = [
     .hero-title .hero-line:nth-child(2) { padding-left: 10vw; }
     .hero-intro, .hero-cta { grid-column: 1 / -1; justify-content: flex-start; }
     .hero-facts { grid-template-columns: repeat(2, 1fr); }
-    .hero-cap span:last-child { display: none; }
   }
 </style>

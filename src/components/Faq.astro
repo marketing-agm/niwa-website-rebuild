@@ -4,20 +4,15 @@ const items: { q: string; a: string }[] = site.faq ?? [];
 ---
 {items.length > 0 && (
 <section class="section faq" id="faq">
-  <div class="sec-head">
-    <span class="label">07 — Questions</span>
-    <span class="label label--dim">{String(items.length).padStart(2, '0')} answered</span>
-  </div>
   <div class="faq-grid">
     <div class="faq-side">
       <h2 class="h2" data-reveal>Asked <em>often.</em></h2>
-      <p class="body" data-reveal>Anything else, the leasing team picks up during office hours — or leave a note with your tour request.</p>
+      <p class="body" data-reveal>Anything else? The leasing team is available during office hours, or leave a note with your tour request.</p>
     </div>
     <ol class="faq-list">
       {items.map((it, i) => (
         <li class="faq-item" data-reveal>
           <button type="button" class="faq-q" aria-expanded="false" aria-controls={`faq-a-${i}`} id={`faq-q-${i}`} data-faq-toggle>
-            <span class="label label--dim faq-idx">{String(i + 1).padStart(2, '0')}</span>
             <span class="faq-text">{it.q}</span>
             <span class="faq-plus" aria-hidden="true"><i></i><i></i></span>
           </button>
@@ -31,11 +26,11 @@ const items: { q: string; a: string }[] = site.faq ?? [];
 </section>
 )}
 <style>
-  .faq-grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: var(--gap); padding: clamp(28px, 4vw, 64px) var(--gutter) var(--section); }
+  .faq-grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: var(--gap); padding: clamp(40px, 5.5vw, 104px) var(--inset) var(--section); border-top: 1px solid var(--line); }
   .faq-side { grid-column: 1 / span 4; display: grid; gap: var(--gap); align-content: start; position: sticky; top: calc(var(--nav-h) + var(--gap)); }
   .faq-list { grid-column: 5 / span 8; border-top: 1px solid var(--line); }
   .faq-item { border-bottom: 1px solid var(--line); }
-  .faq-q { width: 100%; display: grid; grid-template-columns: 3ch 1fr auto; gap: var(--gap); align-items: baseline; text-align: left; padding: clamp(16px, 1.8vw, 28px) 0; transition: color 0.3s; }
+  .faq-q { width: 100%; display: grid; grid-template-columns: 1fr auto; gap: var(--gap); align-items: baseline; text-align: left; padding: clamp(16px, 1.8vw, 28px) 0; transition: color 0.3s; }
   .faq-q:hover { color: var(--gold); }
   .faq-text { font-size: var(--t-lead); line-height: 1.25; letter-spacing: -0.015em; }
   .faq-plus { position: relative; width: 14px; height: 14px; align-self: center; }
@@ -44,7 +39,7 @@ const items: { q: string; a: string }[] = site.faq ?? [];
   .faq-q[aria-expanded="true"] .faq-plus i:last-child { transform: rotate(0); }
   .faq-a { overflow: hidden; }
   .faq-a[hidden] { display: none; }
-  .faq-a-inner { padding: 0 0 clamp(20px, 2.2vw, 32px) calc(3ch + var(--gap)); max-width: 62ch; }
+  .faq-a-inner { padding: 0 0 clamp(20px, 2.2vw, 32px); max-width: 62ch; }
   .faq-a-inner :global(a) { color: var(--fg); background: linear-gradient(currentColor, currentColor) no-repeat 0 100% / 100% 1px; }
   .faq-a-inner :global(a:hover) { color: var(--gold); }
   @media (max-width: 1024px) { .faq-side { grid-column: 1 / -1; position: static; } .faq-list { grid-column: 1 / -1; } }

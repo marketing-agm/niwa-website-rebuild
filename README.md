@@ -34,8 +34,9 @@ src/
   assets/                ← photography. Astro emits responsive WebP from these.
   layouts/BaseLayout.astro   ← <head>: SEO, Open Graph, JSON-LD, runtime config
   components/            ← one file per section, in page order:
-                           Nav, Hero, Marquee, Manifesto, Building, Homes,
-                           SiteMap, Neighborhood, Gallery, Faq, Tour, Footer,
+                           Nav, Hero, Marquee, Manifesto, Building, Homes
+                           (tabs: home types + availability map, per-type dialogs),
+                           Neighborhood, Gallery, Faq, Tour, Footer,
                            plus Wordmark, TourDialog (Matterport) and Analytics
   scripts/motion.ts      ← Lenis smooth scroll + GSAP (reveals, hero, pinned
                            gallery, counters, footer wordmark, menu, FAQ, dialog)
@@ -45,17 +46,26 @@ src/
   lib/photos.ts, lib/homes.ts  ← resolve photos to assets; describe layouts from the feed
   pages/                 ← index + robots.txt / sitemap.xml / site.webmanifest
 public/                  ← static files served as-is
-  fonts/                 ← self-hosted Inter Tight + Geist Mono (latin subsets)
+  fonts/                 ← self-hosted Inter Tight (latin subsets)
+  video/                 ← the hero loop (WebM + MP4)
   images/og.jpg, favicon.svg, llms.txt, admin/ (Sveltia CMS)
 ```
 
 ## The design
 
 One system, dark and monochrome, full-bleed with a hairline grid. Type is
-Inter Tight (display and body) and Geist Mono (labels and data), all sizes on a
-fluid `clamp()` scale so the composition holds from a 360px phone to a 2560px
-monitor. The only colour is Niwa's own cladding yellow (`--gold`), reserved for
-the tour section at the end of the page and the hover state of buttons.
+Inter Tight throughout (labels are the same face, small caps and tracked), all
+sizes on a fluid `clamp()` scale so the composition holds from a 360px phone to
+a 2560px monitor. The only colour is Niwa's own cladding yellow (`--gold`):
+the tour section at the end of the page, button hovers, and every grid cell and
+home-type row warming to gold under the pointer.
+
+The hero runs the 6.5s text-free loop cut from the building film
+(`public/video/`), at 0.6x speed under a dark gradient. Reduced-motion and
+Save-Data visitors get the poster frame. The homes section has two tabs: home
+types (each opens a dialog with facts from the feed and the Matterport
+walkthrough) and availability (the SightMap embed, loaded only when the tab is
+opened).
 
 Motion is GSAP with Lenis smooth scroll: masked line reveals in the hero, a
 clip-path reveal on the hero photograph with a slow parallax, scroll-scrubbed

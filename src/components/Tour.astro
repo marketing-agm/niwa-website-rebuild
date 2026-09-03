@@ -14,9 +14,9 @@ const slots = [['Morning', 'morning'], ['Midday', 'midday'], ['Afternoon', 'afte
 <section class="section tour" id="tour" data-tour-section>
   <div class="tour-inner">
     <div class="tour-head">
-      <span class="label tour-label">08 — Come and see</span>
+      <span class="label tour-label">Come and see</span>
       <h2 class="h2 tour-title" data-reveal>The view is <em>the point.</em></h2>
-      <p class="tour-lede" data-reveal>Tell us who you are and when suits, in one sentence. Leasing confirms by email, usually within a business day.</p>
+      <p class="tour-lede" data-reveal>{c.tour?.lede}</p>
     </div>
 
     <div class="tour-grid">
@@ -62,7 +62,7 @@ const slots = [['Morning', 'morning'], ['Midday', 'midday'], ['Afternoon', 'afte
           <button type="submit" class="btn btn--ink" data-tour-submit><span data-tour-submit-label>Request this tour</span> <span class="arr" aria-hidden="true">→</span></button>
           <p class="tf-status mono" role="status" aria-live="polite" data-tour-status></p>
         </div>
-        <p class="tf-fine">Fair housing: Niwa welcomes everyone. Some homes are income-restricted under Seattle's MFTE and MHA programs; the leasing team can explain what applies.</p>
+        <p class="tf-fine">{c.tour?.fine}</p>
       </form>
 
       <div class="tf-done" data-tour-done hidden>
@@ -97,7 +97,7 @@ const slots = [['Morning', 'morning'], ['Midday', 'midday'], ['Afternoon', 'afte
 <style>
   .tour { --fg: var(--ink); --fg-2: var(--ink-2); --fg-3: var(--ink-3); --line: var(--ink-line); --line-2: rgba(11,11,11,0.1);
     background: var(--gold); color: var(--ink); border-radius: var(--radius) var(--radius) 0 0; margin-top: calc(var(--section) * 0.5); color-scheme: light; }
-  .tour-inner { padding: clamp(40px, 5vw, 96px) var(--gutter) clamp(56px, 7vw, 128px); }
+  .tour-inner { padding: clamp(40px, 5vw, 96px) var(--inset) clamp(56px, 7vw, 128px); }
   .tour-label { color: var(--ink-2); }
   .tour-head { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: var(--gap); align-items: end; padding-bottom: clamp(36px, 5vw, 88px); }
   .tour-head .tour-label { grid-column: 1 / -1; }
