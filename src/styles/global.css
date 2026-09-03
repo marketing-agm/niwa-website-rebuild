@@ -64,7 +64,19 @@
     line-height: 1.55;
     font-weight: 400;
     letter-spacing: -0.005em;
-    overflow-x: hidden;
+    /* `clip`, not `hidden`. This is here to stop anything widening the page,
+       and `hidden` did that — but a non-visible overflow on one axis computes
+       the other to `auto`, which makes body a scroll container. A
+       `position: sticky` element then sticks to *body's* scrollport instead of
+       the viewport, which is to say it does not stick at all. The sticky nav
+       has been travelling with the page rather than holding at the top for as
+       long as this line has been here.
+
+       `clip` contains the same overflow and creates no scroll container, so
+       both things are true at once. Fixed in place rather than overridden
+       further down: the broken value invites the next person to "correct" an
+       override back to this. */
+    overflow-x: clip;
   }
 
   /* Subtle paper grain */
@@ -6122,3 +6134,46 @@
      is the point at which a repeat starts reading as a grid rather than as one
      mark. The two breakpoints go with it; there is nothing left for them to do. */
   body::before { --grid-col: clamp(92px, 13.5vw, 230px); }
+
+  /* ==========================================================================
+     THE NAV FITS AT EVERY WIDTH
+     ==========================================================================
+     It did not, at two of them, and it hid that by shrinking the wordmark:
+     flex items shrink by default, and "Niwa Apartments" was the thing with
+     slack to give. At 861px and at 1100px it gave up so much that the brand set
+     itself as "Niw / a / nts", one letter-group per line, in the corner of the
+     page. Because `overflow-x` on body contained the row, there was never a
+     scrollbar to give it away.
+
+     The wordmark stops shrinking, and the slack comes from the three things
+     that can spare it. `.nav-actions` deliberately keeps its own ability to
+     shrink — pinning that too pushed "Schedule a tour" 45px off the right edge,
+     which the clip turned into a half-cut button rather than a scrollbar, and
+     that is worse than a tight one.
+
+     Measured for horizontal overflow at 320 · 360 · 390 · 414 · 480 · 600 ·
+     700 · 768 · 834 · 860 · 861 · 880 · 900 · 901 · 920 · 960 · 1000 · 1024 ·
+     1080 · 1100 · 1180 · 1200 · 1280 · 1366 · 1440 · 1600 · 1920 · 2560. */
+  .nav .brand { flex: 0 0 auto; white-space: nowrap; }
+
+  /* 1. The secondary text link stays hidden longer — it was already the first
+        thing dropped at 1080, and the row is still tight to 1180. */
+  @media (max-width: 1180px) { .nav-login { display: none; } }
+
+  /* 2. The menu tightens its own padding where the row is tight. The links are
+        unchanged; only the space around them gives. */
+  @media (max-width: 1000px) {
+    .nav-links a { padding: 8px 11px; }
+    .nav-cta { padding-left: 16px; padding-right: 16px; }
+  }
+
+  /* 3. And the mobile nav starts one notch earlier. At 861px the desktop row
+        measures 897px in an 861px window — brand, five links and a pill CTA —
+        and there is no slack left to find. Below 901 the row goes and the
+        hamburger takes over, which it already did forty pixels lower down. */
+  @media (max-width: 900px) {
+    .nav-inner { position: relative; display: flex; justify-content: space-between; }
+    .nav-links,
+    .nav-actions { display: none; }
+    .nav-toggle { display: inline-flex; }
+  }
