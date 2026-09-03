@@ -5205,10 +5205,10 @@
     -webkit-mask-image: repeating-linear-gradient(180deg, #000 0 7px, transparent 7px 15px);
     mask-image: repeating-linear-gradient(180deg, #000 0 7px, transparent 7px 15px);
   }
-  /* One column fewer as the viewport narrows, so the lattice keeps roughly the
-     same rhythm instead of turning into corduroy on a phone. */
-  @media (max-width: 1100px) { body::before { --grid-col: 25%; } }
-  @media (max-width: 700px)  { body::before { --grid-col: 50%; } }
+  /* (Two breakpoints stepped the column count down as the viewport narrowed.
+     They are gone — the spacing is a clamped length now, so the rhythm is
+     constant without them. See "The construction grid keeps its rhythm at every
+     width" at the end of the file.) */
 
   /* --------------------------------------------------------------------------
      Sheet numbers
@@ -6033,3 +6033,92 @@
     .arrival-film-skip { transition: none; }
     .arrival-film.is-done .arrival-film-video { transform: none; }
   }
+
+  /* ==========================================================================
+     THE SHEET NUMBERS ACTUALLY COUNT NOW
+     ==========================================================================
+     The comment on the original block promised the numbering "can never leave
+     the page numbered 01, 02, 04". It did exactly that: the counter incremented
+     on every `section[id]`, but only four of them render it, so the page read
+     02 · 04 · 05 · 06 — starting at two, skipping three.
+
+     The count follows the *numbered heads* instead, in document order, which is
+     the only sequence a reader can check. And the two heads that were silently
+     unnumbered — the shoji panel and the marumado, both of which are section
+     heads in every sense except their class name — join the sequence, so the
+     page runs 01 through 06 with nothing missing and nothing counted twice.
+
+     `counter-increment` sits on the same element that renders the number: a
+     counter is incremented before that element's own ::before is generated, so
+     the first numbered head is 01 rather than 00. */
+  section[id] { counter-increment: none; }
+  .section-head .eyebrow,
+  .shoji-head .eyebrow,
+  .maru-pane--eyebrow .eyebrow { counter-increment: sheet; }
+
+  /* The two heads that were missing their number get the same treatment the
+     section heads already had: the counter replaces the leading dash, and the
+     dash moves to the far side of the label. */
+  .shoji-head .eyebrow::before,
+  .maru-pane--eyebrow .eyebrow::before {
+    content: counter(sheet, decimal-leading-zero);
+    width: auto;
+    height: auto;
+    background: none;
+    font-variant-numeric: tabular-nums;
+    color: var(--ink);
+    letter-spacing: 0.06em;
+  }
+  .shoji-head .eyebrow::after,
+  .maru-pane--eyebrow .eyebrow::after {
+    content: "";
+    width: 28px;
+    height: 1px;
+    background: var(--ink-3);
+    display: inline-block;
+    order: 1;
+  }
+  .shoji-head .eyebrow,
+  .maru-pane--eyebrow .eyebrow { gap: 12px; }
+
+  /* ==========================================================================
+     THE FILTER BAR STOPS PUSHING THE PAGE SIDEWAYS
+     ==========================================================================
+     At 320px — an iPhone SE, and the narrowest width worth supporting — the
+     bedroom pills came to 296px inside a 248px measure, so the whole document
+     scrolled horizontally: 333px of page in a 320px window. Every section on
+     the page paid for one control.
+
+     The segmented control wraps rather than scrolls. Only four options, and a
+     scroll rail would hide two of them behind an affordance nobody looks for;
+     wrapped, all four are on screen. The container radius comes down to match,
+     because a 999px stadium around two rows of pills reads as a mistake. */
+  @media (max-width: 560px) {
+    .filter-bar { padding: 18px 16px; gap: 18px; }
+    .filter-group { min-width: 0; width: 100%; }
+    .pill-toggle {
+      flex-wrap: wrap;
+      row-gap: 4px;
+      border-radius: 18px;
+      max-width: 100%;
+    }
+  }
+
+  /* ==========================================================================
+     THE CONSTRUCTION GRID KEEPS ITS RHYTHM AT EVERY WIDTH
+     ==========================================================================
+     The spacing was a percentage stepped down at two breakpoints, which meant
+     the "constant rhythm" it was aiming for was anything but. Below 700px the
+     step was 50% — two columns — so a phone got exactly one hairline straight
+     down the middle of the screen. At 320px that is a line 160px from either
+     edge with nothing to rhyme with, and it reads as a stray mark rather than
+     as a drafting grid. Which is the same complaint the section rail earned,
+     one layer further back. At the other end, 2560px spread six columns to
+     427px apart and the lattice stopped registering at all.
+
+     A length instead of a percentage, clamped. The spacing is now genuinely
+     constant across the range — about 92px on the narrowest phone, 230px on the
+     widest desktop — and there are never fewer than three lines on screen, which
+     is the point at which a repeat starts reading as a grid rather than as one
+     mark. The two breakpoints go with it; there is nothing left for them to do. */
+  body::before { --grid-col: clamp(92px, 13.5vw, 230px); }
