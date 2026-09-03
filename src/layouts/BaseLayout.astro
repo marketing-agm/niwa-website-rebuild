@@ -229,43 +229,50 @@ const emailjsConfigured = !!(c.integrations?.emailjs?.publicKey
 <Analytics site={site} />
 </head>
 <body>
-{/* The raked line. One stroke, drawn once, never animated — a garden path is
-    a thing you follow, not a thing that moves. Fixed and behind everything, so
-    it costs a single composite no matter how long the page gets. */}
-<div class="zen-path" aria-hidden="true">
-  <svg viewBox="0 0 1000 1000" preserveAspectRatio="none" focusable="false">
-    <path class="rake rake-2" d="M99 -40 C 279 150, 279 320, 114 470 C -51 620, -51 800, 154 930 C 279 1010, 399 1030, 509 1060" />
-    <path class="rake rake-2" d="M116 -40 C 296 150, 296 320, 131 470 C -34 620, -34 800, 171 930 C 296 1010, 416 1030, 526 1060" />
-    <path class="rake rake-2" d="M133 -40 C 313 150, 313 320, 148 470 C -17 620, -17 800, 188 930 C 313 1010, 433 1030, 543 1060" />
-    <path class="rake" d="M150 -40 C 330 150, 330 320, 165 470 C 0 620, 0 800, 205 930 C 330 1010, 450 1030, 560 1060" />
-    <path class="rake rake-2" d="M167 -40 C 347 150, 347 320, 182 470 C 17 620, 17 800, 222 930 C 347 1010, 467 1030, 577 1060" />
-    <path class="rake rake-2" d="M184 -40 C 364 150, 364 320, 199 470 C 34 620, 34 800, 239 930 C 364 1010, 484 1030, 594 1060" />
-    <path class="rake rake-2" d="M201 -40 C 381 150, 381 320, 216 470 C 51 620, 51 800, 256 930 C 381 1010, 501 1030, 611 1060" />
-    <path class="rake rake-2" d="M842 -40 C 662 190, 707 430, 867 570 C 982 680, 997 840, 862 1060" />
-    <path class="rake rake-2" d="M861 -40 C 681 190, 726 430, 886 570 C 1001 680, 1016 840, 881 1060" />
-    <path class="rake" d="M880 -40 C 700 190, 745 430, 905 570 C 1020 680, 1035 840, 900 1060" />
-    <path class="rake rake-2" d="M899 -40 C 719 190, 764 430, 924 570 C 1039 680, 1054 840, 919 1060" />
-    <path class="rake rake-2" d="M918 -40 C 738 190, 783 430, 943 570 C 1058 680, 1073 840, 938 1060" />
-    <ellipse class="stone" cx="165" cy="470" rx="17" ry="10" />
-    <ellipse class="stone-2" cx="196" cy="497" rx="9" ry="6" />
-    <ellipse class="stone" cx="905" cy="570" rx="14" ry="9" />
-    <ellipse class="stone-2" cx="877" cy="596" rx="8" ry="5" />
-    <ellipse class="stone" cx="212" cy="925" rx="11" ry="7" />
-    <path class="cross" d="M159 180 h16 M167 172 v16" />
-    <path class="cross" d="M159 520 h16 M167 512 v16" />
-    <path class="cross" d="M159 860 h16 M167 852 v16" />
-    <path class="cross" d="M325 180 h16 M333 172 v16" />
-    <path class="cross" d="M325 520 h16 M333 512 v16" />
-    <path class="cross" d="M325 860 h16 M333 852 v16" />
-    <path class="cross" d="M492 180 h16 M500 172 v16" />
-    <path class="cross" d="M492 520 h16 M500 512 v16" />
-    <path class="cross" d="M492 860 h16 M500 852 v16" />
-    <path class="cross" d="M659 180 h16 M667 172 v16" />
-    <path class="cross" d="M659 520 h16 M667 512 v16" />
-    <path class="cross" d="M659 860 h16 M667 852 v16" />
-    <path class="cross" d="M825 180 h16 M833 172 v16" />
-    <path class="cross" d="M825 520 h16 M833 512 v16" />
-    <path class="cross" d="M825 860 h16 M833 852 v16" />
+{/* ---- The walk ----
+    The old background was two static layers: a bundle of raked arcs and a
+    dashed construction grid. Both are gone. This replaces them with one thing
+    that is actually about walking a garden — a meandering path that travels
+    past you as you scroll, rather than a texture that sits behind the page.
+
+    The route is authored here so it renders without JavaScript; app.js does the
+    travelling (moving the path so the point you are "standing on" stays at a
+    fixed height on screen) and places the stepping stones along it. With JS off
+    you get a still garden path, which is what the page had before anyway.
+
+    Hidden entirely when the walk is switched off, and when the visitor has
+    asked their system for reduced motion. */}
+<div class="garden-path" id="garden-path" aria-hidden="true">
+  <svg viewBox="0 0 1000 5200" focusable="false" preserveAspectRatio="xMidYMid meet">
+    <defs>
+      <path id="niwa-walk" fill="none" d="M 500 -120
+        C 500 240, 300 380, 300 660
+        C 300 940, 700 1020, 700 1300
+        C 700 1580, 320 1660, 320 1940
+        C 320 2220, 690 2300, 690 2580
+        C 690 2860, 300 2940, 300 3220
+        C 300 3500, 700 3580, 700 3860
+        C 700 4140, 380 4220, 380 4500
+        C 380 4780, 560 4880, 560 5320" />
+    </defs>
+    {/* The rake. The same route drawn either side of itself — sand combed
+        parallel to the path is what a karesansui actually looks like, and
+        <use x> gets the offsets for free instead of seven hand-written curves
+        that drift out of sync the moment the route is edited. */}
+    {/* One camera group. The scroll handler moves this and nothing else, so
+        travelling the path costs a single transform per frame. */}
+    <g class="gp-camera">
+    <g class="gp-rakes">
+      <use href="#niwa-walk" x="-96" /><use href="#niwa-walk" x="96" />
+      <use href="#niwa-walk" x="-72" /><use href="#niwa-walk" x="72" />
+      <use href="#niwa-walk" x="-50" /><use href="#niwa-walk" x="50" />
+      <use href="#niwa-walk" x="-30" /><use href="#niwa-walk" x="30" />
+    </g>
+    <use href="#niwa-walk" class="gp-line" />
+    {/* Stones and the standing mark are placed by app.js, on the path. */}
+    <g class="gp-stones"></g>
+    <g class="gp-here"><circle r="7" /><circle class="gp-here-ring" r="17" /></g>
+    </g>
   </svg>
 </div>
 <ArrivalFilm site={site} />

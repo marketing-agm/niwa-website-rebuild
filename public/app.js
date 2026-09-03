@@ -2613,3 +2613,261 @@
       btn.style.background = '';
     }, 2800);
   }
+/* ===========================================================================
+   The walk
+   ===========================================================================
+   Niwa means garden, and a garden is walked rather than scrolled. The page has
+   a meandering path drawn behind it (authored in BaseLayout.astro); this moves
+   it so that the point you are standing on stays at a fixed height on screen.
+   The route slides past you and swings side to side, and the content leans with
+   it — which is the difference between a background that suggests a path and a
+   page that feels like it is travelling along one.
+
+   Three rules kept this from becoming a liability:
+
+   1. It never transforms an ancestor of anything `position: fixed`. A transform
+      makes its element the containing block for fixed descendants, which would
+      re-anchor the nav, the arrival film, the sticky CTA and the chat widget to
+      a drifting box. The lean is applied to `section > .container` only, and
+      the hero is excluded by name — its full-bleed video panel anchors to the
+      viewport's right edge, a mistake this stylesheet has already made twice.
+   2. It never widens the page. The lean is capped, and `html` is clipped on the
+      x axis, so no amount of drift can produce a horizontal scrollbar.
+   3. `prefers-reduced-motion` switches it off and leaves it off. It is on by
+      default for everyone else, and the toggle's answer is remembered.
+   =========================================================================== */
+(function () {
+  const layer = document.getElementById('garden-path');
+  if (!layer) return;
+
+  const svg = layer.querySelector('svg');
+  const route = layer.querySelector('#niwa-walk');
+  const stones = layer.querySelector('.gp-stones');
+  const here = layer.querySelector('.gp-here');
+  const camera = layer.querySelector('.gp-camera');
+  if (!svg || !route || !camera || !route.getPointAtLength) return;
+
+  const root = document.documentElement;
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const STORE = 'niwa:walk';
+
+  // On unless the visitor said otherwise, or their system did.
+  let stored = null;
+  try { stored = localStorage.getItem(STORE); } catch (e) {}
+  let on = stored ? stored === 'on' : !reduce.matches;
+
+  // ---- The stones ----
+  // Placed from the path itself rather than positioned by hand, so editing the
+  // route moves them with it instead of leaving them stranded in the sand.
+  const total = route.getTotalLength();
+  const STONE_GAP = 168;
+  for (let d = STONE_GAP * 0.6; d < total; d += STONE_GAP) {
+    const p = route.getPointAtLength(d);
+    const q = route.getPointAtLength(Math.min(d + 8, total));
+    const el = document.createElementNS('http://www.w3.org/2000/svg', 'ellipse');
+    // Stones lie flat on the ground, so they turn with the path rather than
+    // pointing along it — the long axis stays across the direction of travel.
+    const ang = Math.atan2(q.y - p.y, q.x - p.x) * 180 / Math.PI;
+    el.setAttribute('cx', p.x.toFixed(1));
+    el.setAttribute('cy', p.y.toFixed(1));
+    el.setAttribute('rx', (13 + (d % 3)).toFixed(1));
+    el.setAttribute('ry', '8');
+    el.setAttribute('transform', 'rotate(' + ang.toFixed(1) + ' ' + p.x.toFixed(1) + ' ' + p.y.toFixed(1) + ')');
+    stones.appendChild(el);
+  }
+
+  // ---- Travelling ----
+  // Everything below runs off one cached scroll value on an animation frame.
+  // Nothing here reads layout inside the frame except the viewport size, which
+  // is cached on resize — a getBoundingClientRect per scroll event is how a
+  // pretty idea turns into a janky one.
+  let vw = 0, vh = 0, docH = 1, ticking = false;
+  const HERE_AT = 0.60;         // where on screen you are standing
+
+  function measure() {
+    vw = window.innerWidth;
+    vh = window.innerHeight;
+    docH = Math.max(1, document.documentElement.scrollHeight - vh);
+  }
+
+  function frame() {
+    ticking = false;
+    // No walk on a phone. The path layer is hidden there by CSS, and the lean
+    // has to be zeroed here rather than in a media query because it is set as
+    // an inline style, which a stylesheet cannot outrank.
+    if (!on || vw <= 700) return;
+    const t = Math.min(1, Math.max(0, window.scrollY / docH));
+    const p = route.getPointAtLength(t * total);
+
+    // Zoomed past the viewport on purpose: at 1:1 the meander is a gentle
+    // wobble, and the point is to feel carried.
+    const scale = Math.max(vw, 900) / 1000 * 1.45;
+    const x = vw / 2 - p.x * scale;
+    const y = vh * HERE_AT - p.y * scale;
+    camera.setAttribute('transform',
+      'translate(' + x.toFixed(2) + ' ' + y.toFixed(2) + ') scale(' + scale.toFixed(4) + ')');
+    here.setAttribute('transform', 'translate(' + p.x.toFixed(1) + ' ' + p.y.toFixed(1) + ')');
+
+  }
+
+  function onScroll() {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(frame);
+  }
+
+  function apply() {
+    root.classList.toggle('walking', on);
+    if (on) { measure(); frame(); }
+    document.dispatchEvent(new CustomEvent('niwa:walk-changed'));
+    // Short in the nav, full in the mobile menu. "Walk the garden" beside the
+    // wordmark, the menu, a login link and a CTA left the brand about forty
+    // pixels of width, which it spent stacking "Niwa Apartments" one letter
+    // group per line.
+    const short = on ? 'Walking' : 'Walk';
+    const full = on ? 'Walking the garden' : 'Walk the garden';
+    document.querySelectorAll('.walk-toggle').forEach((b) => {
+      b.setAttribute('aria-pressed', on ? 'true' : 'false');
+      const text = b.querySelector('.walk-toggle-text');
+      if (text) text.textContent = b.classList.contains('walk-toggle--nav') ? short : full;
+      b.setAttribute('aria-label', full);
+      b.title = full;
+    });
+  }
+
+  // ---- The switch ----
+  // Injected rather than written into body.html: that file is regenerated by
+  // scripts/migrate.mjs, and a control that belongs to this feature should
+  // arrive and leave with it.
+  function makeToggle(cls) {
+    const b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'walk-toggle ' + cls;
+    b.innerHTML = '<span class="walk-toggle-dot" aria-hidden="true"></span>' +
+      '<span class="walk-toggle-text">Walk the garden</span>';
+    b.addEventListener('click', () => {
+      on = !on;
+      try { localStorage.setItem(STORE, on ? 'on' : 'off'); } catch (e) {}
+      apply();
+    });
+    return b;
+  }
+  const actions = document.querySelector('.nav-actions');
+  if (actions) actions.insertBefore(makeToggle('walk-toggle--nav'), actions.firstChild);
+  const mobile = document.querySelector('.nav-mobile');
+  if (mobile) mobile.appendChild(makeToggle('walk-toggle--mobile'));
+
+  measure();
+  apply();
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', () => { measure(); frame(); });
+  // A visitor who turns reduced motion on mid-visit means it.
+  reduce.addEventListener('change', (e) => {
+    if (e.matches) { on = false; apply(); }
+  });
+})();
+
+/* ===========================================================================
+   The pinned walk
+   ===========================================================================
+   The reference is landonorris.com: a band that holds the screen while your
+   scroll pulls its content sideways, and hands vertical scrolling back once it
+   has run out. It is the clearest version of "the screen moves along the path"
+   there is — you are not reading a page that suggests travel, you are moving.
+
+   The gallery was already a horizontal strip with its own overflow and its own
+   prev/next controls. This does not rebuild it; it drives it. The section is
+   wrapped in a tall spacer with a sticky viewport inside, and progress through
+   that spacer maps to the strip's scrollLeft. Drag, arrow keys and the existing
+   buttons all still work, because it is still the same scroller.
+
+   Deliberate limits:
+   - Desktop only. Pinned horizontal bands and touch scrolling fight each other,
+     and a phone has no room to spend on it.
+   - The pinned stretch is capped at a couple of screens. Mapping it one pixel
+     to one pixel is honest and unusable: eighteen photographs is 7,400px of
+     strip, which is eight full screens of scrolling to get past the gallery.
+     The strip travels faster than the page instead.
+   - It re-measures when the filter changes, because "Interior 7" is a much
+     shorter walk than "All 18".
+   - It switches off with the walk, and with reduced motion.
+   =========================================================================== */
+(function () {
+  const strip = document.getElementById('gallery-strip');
+  // Pin the strip, not the whole section. The gallery band also carries a
+  // heading, a filter row, a note and the three walkthrough buttons — well over
+  // a viewport of content — and a sticky frame taller than the screen can never
+  // show its own bottom edge. The head scrolls away as normal, the strip takes
+  // the screen for the length of the walk, and the rest follows after.
+  const band = strip && strip.closest('.gallery-strip-wrap');
+  if (!band || !strip) return;
+
+  const root = document.documentElement;
+  const MIN_WIDTH = 900;
+
+  // The spacer and the sticky frame are built here rather than in body.html:
+  // that file is regenerated by scripts/migrate.mjs, and this is behaviour, not
+  // content. If the script never runs the gallery is exactly what it was.
+  const pin = document.createElement('div');
+  pin.className = 'walk-pin';
+  const stick = document.createElement('div');
+  stick.className = 'walk-pin-stick';
+  band.parentNode.insertBefore(pin, band);
+  pin.appendChild(stick);
+  stick.appendChild(band);
+
+  let travel = 0, pinned = 0, ticking = false, active = false;
+  // How much page-scroll the band is allowed to hold, as a share of the screen.
+  const HOLD = 2.2;
+
+  function measure() {
+    active = root.classList.contains('walking') && window.innerWidth >= MIN_WIDTH;
+    if (!active) {
+      pin.style.height = '';
+      strip.scrollLeft = 0;
+      return;
+    }
+    // How far the strip can actually travel. Read once, here — not per frame.
+    travel = Math.max(0, strip.scrollWidth - strip.clientWidth);
+    pinned = Math.min(travel, window.innerHeight * HOLD);
+    // Centre the held strip in the screen rather than parking it under the nav
+    // and leaving half a viewport of empty ground beneath it. Never above the
+    // nav, which is sticky and would sit on top of the first row.
+    const navH = parseFloat(getComputedStyle(document.documentElement)
+      .getPropertyValue('--nav-h')) || 0;
+    stick.style.top = Math.max(navH + 16,
+      (window.innerHeight - stick.offsetHeight) / 2) + 'px';
+    // The sticky frame is as tall as its content; the spacer is that plus the
+    // stretch the band is allowed to hold for.
+    pin.style.height = (stick.offsetHeight + pinned) + 'px';
+  }
+
+  function frame() {
+    ticking = false;
+    if (!active || travel <= 0 || pinned <= 0) return;
+    const box = pin.getBoundingClientRect();
+    // Progress through the pinned stretch: 0 as the band arrives, 1 as it goes.
+    const t = Math.min(1, Math.max(0, -box.top / pinned));
+    strip.scrollLeft = t * travel;
+    stick.style.setProperty('--walk-progress', t.toFixed(4));
+  }
+
+  function onScroll() {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(frame);
+  }
+
+  // The gallery re-renders on every filter change, and a different number of
+  // photographs is a different length of walk.
+  const mo = new MutationObserver(() => { measure(); frame(); });
+  mo.observe(strip, { childList: true });
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', () => { measure(); frame(); });
+  document.addEventListener('niwa:walk-changed', () => { measure(); frame(); });
+  // Images arriving late change scrollWidth under us.
+  window.addEventListener('load', () => { measure(); frame(); });
+  measure();
+  frame();
+})();

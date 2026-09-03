@@ -87,6 +87,48 @@ const amenityToursHtml = amenityTourItems.length
     + '    </div>'
   : '';
 
+// ---- The mountain ----
+// A quiet band with nothing in it but Mount Rainier, drawn in characters. It
+// sits immediately before the marumado: the end of the walk is the mountain on
+// the horizon, and then the window you look at it through.
+//
+// Its own band on purpose. Every other place this could go — behind the hero,
+// under the whole page — puts a texture beneath body copy, and that is exactly
+// where legibility gets spent. Here there is nothing to compete with, so it can
+// be large and still be the lightest thing on the page.
+//
+// Generated from a height profile rather than drawn by hand, which is why the
+// summit dome is flat and offset and there is a shoulder on the right: that is
+// Little Tahoma. Marked aria-hidden and role="img" with a label, because a
+// screen reader reading out four hundred punctuation marks is not a mountain.
+const RAINIER_ART = `                                                    ..............
+                                                  ..................
+                                                .....................
+                                               ........::::.....:::....
+                                              ........::::......:::.....
+                                             .........::::......:::......
+                                           .......::::----::::::---.......
+                                          ......::::::---:::::::----::.....
+                                         .....:::::::----::::::::---:::......
+                                       ......:::::---====--------==-:::::.....
+                                     ......:::::-----====--------===--:::::....
+                                   ......::::------==+++=========+==----::::....       ...
+                                .......::::-----====++++=========+++==----::::....    .....
+                            ........:::::----=======++++=========++++====---::::........::..
+                          ......::::::----======++++***+++++++++++***+=====----:::....:::::.
+                        ....::::::-----=====+++++++****+++++++++++***+++++====---:::::-----:.
+                      ...:::-----=======++++++*****####***********###**++++++====-----=====-:.
+                    ..::--=======+++++++*********####################********++++=====+++++=-:.
+                 ..:--==+++++**********######################################***************+=:.
+             .:-==+***########################################################################*+=-::..`;
+const rainierHtml =
+  '<section class="rainier" id="rainier" aria-label="Mount Rainier, drawn in characters">\n'
+  + '  <div class="rainier-inner">\n'
+  + '    <pre class="rainier-art" aria-hidden="true">' + RAINIER_ART + '</pre>\n'
+  + '    <p class="rainier-caption"><span>Mount Rainier</span><span>14,411 ft &middot; 60 miles southeast</span></p>\n'
+  + '  </div>\n'
+  + '</section>\n';
+
 // The marumado — the round window that closes the page. It used to be a window
 // on the left and a column of copy on the right, which is the same two-column
 // split every other section already uses; the round window read as an ornament
@@ -273,7 +315,7 @@ const ADDRESS_TOKENS: Record<string, string> = {
   '{{NEIGHBORHOOD_INTRO}}': nb.intro ?? '',
   '{{FEATURE_CARDS}}': featuresHtml,
   '{{AMENITY_TOURS}}': amenityToursHtml,
-  '{{MARUMADO}}': marumadoHtml,
+  '{{MARUMADO}}': rainierHtml + marumadoHtml,
   '{{SHOJI_PANEL}}': shojiHtml,
   '{{BUILDING_MAP}}': sightmapHtml,
   '{{AVAILABILITY_LEDE}}': escapeHtml(site.config.availabilitySection?.lede ?? ''),
