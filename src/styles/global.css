@@ -4424,144 +4424,6 @@
     .marumado-copy { max-width: none; }
   }
 
-  /* ---------- The byobu door ----------
-     A painted folding screen across the viewport on arrival, which concertinas
-     open to the right and reveals the film already running behind it.
-
-     The fold is real, not a wipe. Each leaf pivots on the hinge it shares with
-     its neighbour — `transform-origin: left center` — turning edge-on while the
-     leaves behind it are still flat, and the whole screen gathers at the left.
-     A leaf turned 78 degrees keeps about 21% of its width on screen, so leaf
-     *i* travels i x 79% of its own width to land in the stack. That is where
-     the 79 comes from; it is geometry, not taste.
-
-     Then the gathered stack is pushed off frame — a screen folded open is still
-     a screen standing in the doorway, and the room is not really open until it
-     has been carried out.
-
-     Sits above the film (300) because for its one second there is nothing else. */
-  .byobu {
-    position: fixed;
-    inset: 0;
-    z-index: 400;
-    /* Transparent, deliberately. The cream ground belongs to the leaves, not to
-       the stage — put it here and the film stays hidden behind a beige wall as
-       the screen opens onto nothing, which is the one thing this must not do. */
-    background: transparent;
-    overflow: hidden;
-    perspective: 1700px;
-    perspective-origin: 12% 50%;
-  }
-  .byobu[hidden] { display: none; }
-
-  .byobu-stage {
-    position: absolute;
-    inset: 0;
-    transform-style: preserve-3d;
-  }
-
-  .byobu-panel {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    width: calc(100% / var(--byobu-panels));
-    left: calc(var(--i) * 100% / var(--byobu-panels));
-    box-sizing: border-box;
-    /* The silk, on the leaf itself — so what is behind a folded leaf is the
-       film, and so nothing shows through before the artwork has loaded. */
-    background: #EFE7D5;
-    transform-origin: left center;
-    transform-style: preserve-3d;
-    overflow: hidden;
-    /* Hinge shadow on the leading edge, and the light catching the trailing one. */
-    box-shadow:
-      inset 14px 0 22px -14px rgba(30, 22, 14, 0.55),
-      inset -14px 0 20px -16px rgba(255, 252, 240, 0.5);
-    transition: transform var(--byobu-fold, 980ms) cubic-bezier(0.66, 0, 0.28, 1);
-    transition-delay: calc(var(--i) * 40ms);
-    will-change: transform;
-  }
-  @media (max-width: 700px) { .byobu-panel { --byobu-frame: 6px; } }
-
-  /* The lacquered frame around each leaf. This is what makes the thing read as
-     a folding screen rather than wallpaper: without a frame the artwork runs
-     edge to edge and the eye has no reason to see six panels at all.
-
-     Drawn as an overlay, not a `border`. A border insets the panel's content
-     box, so every slice of the artwork landed a frame-width off from its
-     neighbour and the branch visibly stepped at each hinge. On top, the frame
-     sits over the silk — which is where a real one sits anyway. */
-  .byobu-panel::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    z-index: 2;
-    pointer-events: none;
-    border: var(--byobu-frame, 11px) solid transparent;
-    border-image: linear-gradient(160deg, #3B2E23 0%, #241B14 45%, #403126 100%) 1;
-    box-shadow: inset 0 0 0 1px rgba(214, 190, 130, 0.32);
-  }
-
-  /* Each panel is a window onto its own slice of one artwork, so the branch
-     runs unbroken across the closed screen and only breaks as it folds. */
-  .byobu-art {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: calc(var(--i) * -100%);
-    width: calc(var(--byobu-panels) * 100%);
-    /* Positioned against the panel's padding box, which the frame has already
-       inset — so each slice lands where its neighbour left off and the branch
-       carries across the hinge instead of stepping at it. */
-  }
-  .byobu-art img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-  }
-
-  /* Light falling across leaves that are turning away from the viewer. Flat
-     while closed, ramped up as they pivot — without it the fold reads as paper
-     sliding sideways rather than turning. */
-  .byobu-shade {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(270deg, rgba(30, 24, 17, 0.34) 0%, rgba(30, 24, 17, 0) 55%);
-    opacity: 0;
-    transition: opacity var(--byobu-fold, 980ms) ease;
-    transition-delay: calc(var(--i) * 40ms);
-  }
-
-  .byobu.is-open .byobu-panel {
-    transform: translateX(calc(var(--i) * -79%)) rotateY(78deg);
-  }
-  /* Alternate leaves turn the other way — that alternation is the concertina. */
-  .byobu.is-open .byobu-panel:nth-child(even) {
-    transform: translateX(calc(var(--i) * -79%)) rotateY(-78deg);
-  }
-  .byobu.is-open .byobu-shade { opacity: 1; }
-
-  /* Carried out of the doorway. Eased *in* rather than out: it is being pushed,
-     and a push starts slowly and leaves fast. */
-  .byobu-stage {
-    transition: transform 460ms cubic-bezier(0.5, 0, 0.85, 0.4);
-  }
-  .byobu.is-gone .byobu-stage { transform: translateX(-118%); }
-  .byobu.is-open .byobu-panel:nth-child(even) .byobu-shade { opacity: 0.45; }
-
-  /* Nothing scrolls while the screen is standing. */
-  html.byobu-closed,
-  html.byobu-closed body { overflow: hidden; }
-
-  /* Motion sensitivity removes the whole entry sequence, door included — it is
-     handled in the component, which never un-hides this. Belt and braces here
-     in case the class survives a resume. */
-  @media (prefers-reduced-motion: reduce) {
-    .byobu-panel,
-    .byobu-shade { transition: none; }
-  }
-
   /* ---------- Arrival film ----------
      The full building film, alone on the screen, before the page is revealed.
      Nothing is layered over it: the footage carries its own burned-in captions,
@@ -5176,4 +5038,273 @@
 
   @media (prefers-reduced-motion: reduce) {
     .faq-item summary::after { transition: none; }
+  }
+
+  /* ==========================================================================
+     SHOJI — the design system layer
+     ==========================================================================
+     Everything above this line is the template as forked. Everything below is
+     the system the property actually wants, applied as a layer rather than by
+     rewriting four thousand lines: same specificity, later in the file, wins.
+
+     Three references, one idea. Two of them (Monad, Oakâme) are warm off-white
+     canvases with hairline borders, no shadows, monospace on every functional
+     string and a display face used at weight 400. The third (Oberon) draws its
+     construction grid on the page — dashed rules, numbered sections, crosshairs
+     at the intersections. And the building is called Niwa, garden.
+
+     Those are not three ideas to reconcile. A shoji screen IS a lattice. A
+     tatami room IS a modular grid. Post and beam IS a hairline rule. So the
+     technical drawing and the Japanese room are the same drawing, and this
+     layer builds one thing from all of it.
+
+     Where the references disagree — Monad specifies 100px pills, Oakâme
+     specifies square — the architecture decides. There are no rounded corners
+     in a tatami room.
+     ========================================================================== */
+
+  :root {
+    /* No radius anywhere it can be helped. Circles that are meant to be
+       circles keep their 50% and are left alone below. */
+    --radius: 0px;
+    --radius-lg: 0px;
+
+    /* The bimodal scale. Both refs jump from tracked-out labels straight to
+       display sizes with almost nothing in between, and that gap is the whole
+       editorial tension — a museum label beside a wall-sized word. */
+    /* The grid ink is its own value, not --rule. A hairline that reads as a
+       border at the edge of a card is invisible drawn across a whole viewport,
+       and the first version of this was present in the DOM and unreadable on
+       screen — confirmed by sampling pixels, not by squinting. */
+    --grid-ink: #D2C8B2;
+    --label: 11px;
+    --label-track: 0.16em;
+    --measure: 62ch;
+  }
+
+  /* ---- Square ----
+     Listed rather than blanket-reset: `* { border-radius: 0 }` would flatten
+     the marumado, the map pins, the avatar dots and every status dot on the
+     page. These are the pills. */
+  .btn,
+  .nav-cta, .nav-login, .nav-links a, .nav .brand, .nav-toggle, .nav-mobile-cta,
+  .pill-tab, .pill-toggle, .plan-view-tab, .plan-view-toggle,
+  .plan-tour-chip, .plan-tour-picker,
+  .unit-card-cta, .ud-tab, .ud-tags, .ud-tags li, .ud-stats, .ud-stats > div,
+  .amenity-tour, .arrival-film-skip, .gallery-tab,
+  .form-submit, .cw-form .form-submit, .field input, .field textarea, .field select,
+  .sticky-cta-btn, .sl-btn, .tw-chip, .tw-back, .tw-continue, .tw-submit,
+  .strip-nav, .unit-fav, .unit-cmp, .unit-budget-tag, .unit-urgency,
+  .badge-featured, .video-modal-close, .hero-video-btn, .building-map-frame,
+  .plan-tour-frame, .gallery-item, .unit-card, .filter-bar, .summary-card,
+  .feature-card, .ledger, .marumado-shoji {
+    border-radius: 0;
+  }
+
+  /* ---- Flat ----
+     Depth comes from hairlines and negative space. A shadow on parchment reads
+     as a smudge. The exceptions kept below are the ones doing real work: the
+     lit shoji, and controls that float over photography. */
+  .btn, .nav-cta, .nav-login, .nav .brand, .unit-card, .feature-card,
+  .gallery-item, .filter-bar, .summary-card, .plan-tour-frame,
+  .building-map-frame, .pill-toggle, .plan-view-toggle, .strip-nav,
+  .sticky-cta, .shortlist-bar, .ud-panels, .amenity-tour {
+    box-shadow: none;
+  }
+
+  /* ---- Hairlines ----
+     1px ash, and nothing thicker. This is the only divider in the system: no
+     cards-on-fills, no background-colour section breaks. */
+  .unit-card, .feature-card, .filter-bar, .gallery-item, .summary-card,
+  .building-map-frame, .plan-tour-frame {
+    border: 1px solid var(--rule);
+    background: transparent;
+  }
+
+  /* ---- Mono on every functional string ----
+     Both refs are explicit that the monospace IS the voice: nav, buttons,
+     badges, tags, figures, meta. Prose stays in the sans, because a renter
+     reads real paragraphs here — pet policy, screening criteria, the FAQ —
+     and monospace body copy is measurably slower to get through. The mono
+     does the structure; the sans does the reading. */
+  .nav-links a, .nav-cta, .nav-login, .nav-mobile a, .nav-mobile-cta,
+  .btn, .pill-tab, .filter-label, .plan-view-tab, .plan-tour-chip,
+  .gallery-tab, .unit-card-cta, .ud-tab, .amenity-tour, .sticky-cta-btn,
+  .sl-btn, .tw-chip, .tw-continue, .tw-submit, .form-submit,
+  .unit-card-floor, .unit-plan-label, .unit-budget-tag, .badge-featured,
+  .building-map-note, .marumado-copy .btn {
+    font-family: var(--mono);
+    font-size: var(--label);
+    font-weight: 500;
+    letter-spacing: var(--label-track);
+    text-transform: uppercase;
+  }
+  /* The eyebrow is the museum label the whole system hangs off. */
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: var(--label);
+    font-weight: 500;
+    letter-spacing: var(--label-track);
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+
+  /* ---- Display ----
+     Weight 400 at every size. The serif's own stroke contrast and the negative
+     tracking carry it; bold would be shouting over an argument already won. */
+  .display {
+    font-family: var(--serif);
+    font-weight: 400;
+    letter-spacing: -0.03em;
+    line-height: 1.04;
+  }
+  .lede { max-width: var(--measure); }
+
+  /* --------------------------------------------------------------------------
+     The construction grid
+     --------------------------------------------------------------------------
+     Oberon draws the drafting board it was laid out on — dashed verticals full
+     bleed, crosshairs at the intersections, sections numbered like sheets. On a
+     building's website that reads as a plan set, and it is also, exactly, a
+     shoji lattice. Same drawing.
+
+     Painted once as a fixed layer behind everything at z-index -1, so it costs
+     one composite and does not repaint on scroll. `html` carries the canvas so
+     a negative z-index still has something to sit in front of; `body` is
+     transparent. Dark sections have their own fill and cover it, which is what
+     gives the page its light-dark-light rhythm without any extra work. */
+  html { background: var(--bg); }
+  /* Not `position: relative`. Making the body a containing block re-parented
+     every absolutely positioned element whose ancestors were static, and the
+     hero's full-bleed video panel silently pulled in from the right edge. */
+  body { background: transparent; }
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    /* Solid verticals, masked into dashes. A dashed vertical cannot be drawn
+       with one repeating gradient — the dash runs down the Y axis while the
+       column spacing runs across X — so the columns are the paint and the
+       dashes are the mask. Cheaper than an SVG and it never repaints. */
+    background-image:
+      repeating-linear-gradient(90deg,
+        var(--grid-ink) 0 1px, transparent 1px var(--grid-col, 16.6666%));
+    -webkit-mask-image: repeating-linear-gradient(180deg, #000 0 7px, transparent 7px 15px);
+    mask-image: repeating-linear-gradient(180deg, #000 0 7px, transparent 7px 15px);
+  }
+  /* One column fewer as the viewport narrows, so the lattice keeps roughly the
+     same rhythm instead of turning into corduroy on a phone. */
+  @media (max-width: 1100px) { body::before { --grid-col: 25%; } }
+  @media (max-width: 700px)  { body::before { --grid-col: 50%; } }
+
+  /* --------------------------------------------------------------------------
+     Sheet numbers
+     --------------------------------------------------------------------------
+     `01 / GALLERY`, `02 / FLOOR PLANS` — the eyebrow becomes a sheet reference.
+     Numbered by CSS counter rather than by hand: the count follows the sections
+     that actually exist, so adding or removing one can never leave the page
+     numbered 01, 02, 04. */
+  body { counter-reset: sheet; }
+  section[id] { counter-increment: sheet; }
+  .section-head .eyebrow::before {
+    content: counter(sheet, decimal-leading-zero);
+    width: auto;
+    height: auto;
+    background: none;
+    font-variant-numeric: tabular-nums;
+    color: var(--ink);
+    letter-spacing: 0.06em;
+  }
+  .section-head .eyebrow::after {
+    content: "";
+    width: 28px;
+    height: 1px;
+    background: var(--ink-3);
+    display: inline-block;
+    order: 1;
+  }
+  .section-head .eyebrow { gap: 12px; }
+  /* Inverted scopes: the number has to survive a dark ground. */
+  .gallery-section .section-head .eyebrow::before { color: #F6F2EA; }
+
+  /* --------------------------------------------------------------------------
+     The path
+     --------------------------------------------------------------------------
+     A raked line down the page, and the content set along it. Niwa means
+     garden; a garden is walked, not scrolled. The line is one SVG stroke in a
+     sticky layer, and the sections it passes are nudged to sit against it —
+     left, right, centre — so the eye follows a route while the page still does
+     the one thing a page should do, which is go down.
+
+     Drawn, not animated. The stroke does not move, redraw or parallax: that is
+     what keeps it free. Everything here is one element and one paint. */
+  .zen-path {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  .zen-path svg { width: 100%; height: 100%; display: block; }
+  .zen-path .rake {
+    fill: none;
+    stroke: #C6BAA0;
+    stroke-width: 1.3;
+    vector-effect: non-scaling-stroke;
+  }
+  .zen-path .rake { stroke: #C6BAA0; }
+  .zen-path .rake-2 { stroke: #D5CCB8; }
+  .zen-path .stone { fill: #B3A88E; }
+  .zen-path .stone-2 { fill: #C6BCA6; }
+  .zen-path .cross { stroke: #C0B49A; stroke-width: 1; vector-effect: non-scaling-stroke; }
+  @media (max-width: 700px) { .zen-path { display: none; } }
+
+  /* --------------------------------------------------------------------------
+     Content set along the path
+     --------------------------------------------------------------------------
+     Alternating anchors rather than a single centred column. Sections lean to
+     one side or the other so the reading line moves across the page as it
+     descends — the walk, without the page ever scrolling sideways. */
+  .container { position: relative; }
+  section[id]:nth-of-type(odd) .section-head { margin-left: 0; margin-right: auto; }
+  section[id]:nth-of-type(even) .section-head {
+    grid-template-columns: 1.4fr 1fr;
+    margin-left: auto;
+  }
+  @media (max-width: 860px) {
+    section[id]:nth-of-type(even) .section-head { grid-template-columns: 1fr; }
+  }
+
+  /* ---- Leftovers ----
+     Containers the first sweep missed, because they carry the radius rather
+     than the control inside them. */
+  .nav-links, .nav-inner .nav-links, .pill-toggle, .plan-view-toggle,
+  .ud-tabs, .gallery-tabs { border-radius: 0; }
+  /* The nav floats over the hero, over photography, and over the two inverted
+     sections. Those white pills were not decoration — they were the only reason
+     the wordmark stayed readable when a black gallery scrolled under it. Made
+     transparent, the nav vanished completely over the dark bands.
+     So: keep a surface, but make it the canvas tone rather than white, square,
+     and separated by a hairline. Same job, right system. */
+  .nav .brand, .nav-links, .nav-login {
+    background: var(--bg);
+    border: 1px solid var(--rule);
+    box-shadow: none;
+  }
+  .nav .brand:hover { border-color: var(--ink-3); box-shadow: none; }
+
+  /* The rake passes behind the headline, so it is pulled back where type sits
+     and left alone in the margins. */
+  .hero .container, .section-head { position: relative; z-index: 1; }
+
+  /* `Walk the building` is a section heading, not a control — serif, and sized
+     with the other section headings rather than with the labels. */
+  .amenity-tours-head {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(24px, 2.6vw, 34px);
+    letter-spacing: -0.025em;
+    text-transform: none;
   }

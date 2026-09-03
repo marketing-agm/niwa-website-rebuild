@@ -137,11 +137,6 @@ const markEmph = site.config.wordmark?.emph ?? (lastSpace === -1 ? '' : siteName
           runWatchdog = setTimeout(finish, (d + 8) * 1000);
         }, { once: true });
 
-        // The door, when there is one, owns the first beat: the film starts as
-        // the leaves begin to turn, so what appears behind the screen is moving
-        // footage and not a held first frame. The watchdog starts then too —
-        // counting five seconds while a screen is still standing would hand over
-        // to a page nobody has seen yet.
         function start() {
           // Scrolling is the clearest "I'm done watching" there is. The page is
           // locked underneath, so these only ever mean dismiss — but they are
@@ -154,11 +149,7 @@ const markEmph = site.config.wordmark?.emph ?? (lastSpace === -1 ? '' : siteName
           startWatchdog = setTimeout(finish, 5000);
           video.play().catch(finish);
         }
-        if (document.documentElement.classList.contains('byobu-closed')) {
-          document.addEventListener('niwa:byobu-open', start, { once: true });
-        } else {
-          start();
-        }
+        start();
       })();
     </script>
   </>
