@@ -1,0 +1,89 @@
+---
+import { getHomes, money, int } from '../lib/homes';
+const { site } = Astro.props as { site: any };
+const c = site.config;
+const homes = getHomes(c, site.data?.units ?? []);
+const pets = c.pets ?? {};
+---
+<section class="section homes" id="floor-plans">
+  <div class="sec-head">
+    <span class="label">03 — The homes</span>
+    <span class="label label--dim">Prices and counts refresh from the leasing system</span>
+  </div>
+  <div class="sec-title">
+    <h2 class="h2" data-reveal>Studios to <em>two bedrooms.</em></h2>
+    <p class="body sec-lede" data-reveal>Nineteen distinct layouts across floors two through eight, so you can size up or down without leaving the neighborhood. Every layout below can be walked end to end in 3D.</p>
+  </div>
+
+  <ol class="home-rows">
+    {homes.map((h, i) => (
+      <li class="home-row" data-reveal>
+        <span class="label label--dim home-idx">{String(i + 1).padStart(2, '0')}</span>
+        <h3 class="home-name">{h.name}</h3>
+        <dl class="home-meta">
+          <div><dt class="label label--dim">Layout</dt><dd class="mono">{h.sqftMin === h.sqftMax ? int(h.sqftMin) : `${int(h.sqftMin)}–${int(h.sqftMax)}`} sq ft · {h.baths} bath</dd></div>
+          <div><dt class="label label--dim">From</dt><dd class="mono">{h.rentMin ? `${money(h.rentMin)}/mo` : 'Ask'}</dd></div>
+          <div><dt class="label label--dim">Listed</dt><dd class="mono">{h.now ? `${h.now} now` : ''}{h.now && h.soon ? ' · ' : ''}{h.soon ? `${h.soon} soon` : ''}{!h.now && !h.soon ? 'Join the list' : ''}</dd></div>
+        </dl>
+        <div class="home-tours">
+          {h.tours.map((t: any) => (
+            <button type="button" class="btn btn--ghost btn--sm" data-tour={t.url} data-tour-label={`${h.name} — ${t.label}`}>
+              {h.tours.length > 1 ? `Walk it · ${t.label}` : 'Walk it in 3D'} <span class="arr" aria-hidden="true">↗</span>
+            </button>
+          ))}
+        </div>
+      </li>
+    ))}
+  </ol>
+
+  <div class="grid home-notes">
+    <div class="cell note" data-reveal>
+      <span class="label label--dim">Pets</span>
+      <p class="lead">Up to {pets.maxPerHome} pets per home.</p>
+      <p class="small">{pets.deposit} and {pets.types?.[0]?.rent} per pet. Cats to 20 lb; dogs to 75 lb, and two dogs must not exceed 75 lb combined. Dogs are interviewed, and some breeds are restricted — ask the leasing team for the current list. There is a standing pet wash in the building.</p>
+    </div>
+    <div class="cell note" data-reveal>
+      <span class="label label--dim">Income-restricted homes</span>
+      <p class="lead">MFTE, MHA and ADA homes are available.</p>
+      <p class="small">{c.housingPrograms?.note}</p>
+    </div>
+    <div class="cell note" data-reveal>
+      <span class="label label--dim">Terms</span>
+      <p class="lead">Rent varies by home, floor and date.</p>
+      <p class="small">{c.rentalTerms?.pending}</p>
+    </div>
+  </div>
+</section>
+
+<style>
+  .home-rows { border-top: 1px solid var(--line); }
+  .home-row {
+    display: grid; grid-template-columns: 4ch minmax(0, 5fr) minmax(0, 5fr) clamp(200px, 17vw, 280px); align-items: center; gap: var(--gap);
+    padding: clamp(22px, 2.6vw, 44px) var(--gutter); border-bottom: 1px solid var(--line);
+    transition: background-color 0.5s var(--ease);
+  }
+  .home-row:hover { background: var(--bg-2); }
+  .home-name { font-size: clamp(2rem, 1rem + 4.2vw, 6rem); font-weight: 400; letter-spacing: -0.04em; line-height: 0.95; transition: transform 0.6s var(--ease); }
+  .home-row:hover .home-name { transform: translateX(0.1em); }
+  .home-meta { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: var(--gap); margin: 0; }
+  .home-meta div { display: grid; gap: 6px; }
+  .home-meta dd { margin: 0; white-space: nowrap; }
+  .home-tours { display: flex; flex-direction: column; gap: 8px; align-items: flex-end; }
+  .home-notes { margin-top: -1px; }
+  .note { grid-column: span 4; display: grid; gap: 14px; align-content: start; }
+  .note .lead { font-size: var(--t-h3); line-height: 1.1; max-width: 16ch; }
+  .note .small { max-width: 44ch; }
+  @media (max-width: 1024px) {
+    .home-row { grid-template-columns: 4ch 1fr auto; grid-template-areas: 'idx name tours' 'idx meta meta'; row-gap: clamp(14px, 2vw, 24px); }
+    .home-idx { grid-area: idx; align-self: start; }
+    .home-name { grid-area: name; }
+    .home-meta { grid-area: meta; }
+    .home-tours { grid-area: tours; }
+    .note { grid-column: 1 / -1; }
+  }
+  @media (max-width: 640px) {
+    .home-row { grid-template-columns: 1fr; grid-template-areas: 'idx' 'name' 'meta' 'tours'; }
+    .home-meta { grid-template-columns: repeat(2, 1fr); }
+    .home-tours { flex-direction: row; flex-wrap: wrap; align-items: flex-start; }
+  }
+</style>

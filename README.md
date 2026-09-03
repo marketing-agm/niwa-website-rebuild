@@ -24,25 +24,51 @@ ports it across by hand.
 
 ```
 src/
-  site/                  ← everything specific to Niwa
-    site.config.json     ← identity, address, geo, theme colors, SEO, analytics
-    units.json           ← availability / pricing / floor plans (from AppFolio)
-    places.json          ← neighborhood map pins
-    photos.json          ← gallery
-    bus-stops.json       ← transit points for the map
+  site/                  ← everything specific to Niwa (content, not design)
+    site.config.json     ← identity, address, geo, copy, SEO, integrations
+    units.json           ← availability / pricing (from AppFolio) — drives the
+                           per-layout "from" rents and counts in The homes
+    photos.json          ← gallery captions; `src` names a file in src/assets/gallery
     faq.json
-  layouts/BaseLayout.astro   ← <head>: SEO, Open Graph, JSON-LD, theme
-  components/            ← FloorPlans, Faq, StickyCta, Analytics
-  styles/global.css      ← all styling
-  generated/body.html    ← the page markup
+    places.json, bus-stops.json  ← unused by the current design, kept for the CMS
+  assets/                ← photography. Astro emits responsive WebP from these.
+  layouts/BaseLayout.astro   ← <head>: SEO, Open Graph, JSON-LD, runtime config
+  components/            ← one file per section, in page order:
+                           Nav, Hero, Marquee, Manifesto, Building, Homes,
+                           SiteMap, Neighborhood, Gallery, Faq, Tour, Footer,
+                           plus Wordmark, TourDialog (Matterport) and Analytics
+  scripts/motion.ts      ← Lenis smooth scroll + GSAP (reveals, hero, pinned
+                           gallery, counters, footer wordmark, menu, FAQ, dialog)
+  scripts/tour.ts        ← the tour-request sentence: validation, EmailJS, mailto fallback
+  styles/global.css      ← design tokens, fluid type scale, hairline grid, buttons
   lib/site.ts            ← loads the JSON above
+  lib/photos.ts, lib/homes.ts  ← resolve photos to assets; describe layouts from the feed
   pages/                 ← index + robots.txt / sitemap.xml / site.webmanifest
 public/                  ← static files served as-is
-  app.js                 ← all client-side behavior
-  images/                ← hero, gallery, floor plans
-  llms.txt               ← for AI crawlers
-  admin/                 ← Sveltia CMS (see below)
+  fonts/                 ← self-hosted Inter Tight + Geist Mono (latin subsets)
+  images/og.jpg, favicon.svg, llms.txt, admin/ (Sveltia CMS)
 ```
+
+## The design
+
+One system, dark and monochrome, full-bleed with a hairline grid. Type is
+Inter Tight (display and body) and Geist Mono (labels and data), all sizes on a
+fluid `clamp()` scale so the composition holds from a 360px phone to a 2560px
+monitor. The only colour is Niwa's own cladding yellow (`--gold`), reserved for
+the tour section at the end of the page and the hover state of buttons.
+
+Motion is GSAP with Lenis smooth scroll: masked line reveals in the hero, a
+clip-path reveal on the hero photograph with a slow parallax, scroll-scrubbed
+words in the manifesto, a horizontally pinned gallery on desktop (native swipe
+on touch), counters, and the footer wordmark drawing itself with DrawSVG.
+Everything respects `prefers-reduced-motion`, which turns Lenis and the
+decoration off and leaves the page fully usable.
+
+The tour request is a sentence — "Hi, I'm ___. I'm looking for [a studio]…" —
+with chips for the choices and the next six weekdays offered as visit dates.
+It sends through EmailJS when `integrations.emailjs` is configured; when it is
+not, it hands the visitor a prepared `mailto:` so a request is never silently
+dropped.
 
 ## Run locally
 
@@ -114,71 +140,23 @@ host that doesn't exist tells Google the live page isn't authoritative.
 
 ## Still to do
 
-- [ ] `geo` — no coordinates set, so the map has no "you are here" pin and
-      there is no `GeoCoordinates` in the structured data
-- [ ] `places.json`, `bus-stops.json`, `faq.json` are empty
-- [ ] No photos yet — `public/images/` is scaffolded but empty, so the gallery
-      and hero fall back to placeholders
-- [ ] `integrations.emailjs` keys are blank — **the tour form silently sends
-      nothing until these are set.** It shows "Thanks ✓" either way.
+- [ ] Photography of individual homes — the gallery is the building, roof and
+      neighborhood only
+- [ ] `integrations.emailjs` keys are blank — until they are set the tour form
+      falls back to a prepared `mailto:` link for the visitor to send themselves.
 - [ ] Analytics IDs (`analytics.google`, `posthog`, `clarity`) are blank
 - [ ] `seo.ogImage` is empty, so link previews have no image
 
 ## Photos
 
-Drop files into `public/images/` and they serve at `/images/…`.
+Photography lives in `src/assets/gallery/` and is referenced from
+`src/site/photos.json` by filename (`src` keeps the `/images/gallery/<file>.jpg`
+form). Astro resizes and converts to WebP at build time, so commit full-size
+originals (landscape, ≥2000px wide). A `photos.json` entry that points at a
+missing file fails the build rather than shipping a broken image.
 
-| Path | Used by |
-|---|---|
-| `images/hero.jpg` | Still hero visual. Landscape, ≥2000px wide. |
-| `images/hero-poster.jpg` | Poster frame for the hero video — must be the loop's own first frame, or the handover to playback visibly jumps. |
-| `video/niwa-hero-loop.webm` · `.mp4` | The 6.5s background loop. WebM first (smaller), MP4 for Safari. |
-| `video/niwa-hero-film.mp4` | The full 30s marketing film, fetched only when someone expands it. |
-| `images/og.jpg` | Social preview, 1200×630. Set `seo.ogImage` to `/images/og.jpg`. |
-| `images/floorplans/studio.png` | Studio plan drawing (11 units in the feed) |
-| `images/floorplans/1br.png` | 1 bed · 1 bath (2 units) |
-| `images/floorplans/2br1ba.png` | 2 bed · 1 bath (4 units) |
-| `images/gallery/<category>-<slug>.jpg` | Gallery — referenced by `photos.json` → `src` |
-| `images/plans/<plan>-<room>.jpg` | Per-layout photos in the unit modal |
-
-Gallery categories: `interior`, `exterior`, `units`, `neighborhood`.
-
-Filenames are referenced by config, not discovered by scanning — keep them
-exact. Landscape crops best; gallery cards are 4:3.
-
-Once the set gets large, move them to object storage (Cloudflare R2) and point
-`photos.json → src` at those URLs instead of committing binaries here.
-
-## The hero video
-
-`site.config.json → hero.video` drives it. `mode` picks the default placement and
-a `?video=` query parameter overrides it at runtime, so one deploy can be shown
-both ways:
-
-| `?video=` | What happens |
-|---|---|
-| `background` | The 6.5s loop autoplays behind the hero; a centred control expands the full film |
-| `modal` | The hero stays a still; the full film opens over the page on arrival, once per session |
-| `off` | Still photography only |
-
-The loop is **a re-cut, not the film**. The supplied 30s film has burned-in
-captions — a "NOW ARRIVING / NIWA" title card, feature labels, and a "NOW LEASING"
-end card carrying a phone number and email. Behind the hero those would sit
-alongside the page's own headline and CTA and duplicate them, so the loop is
-assembled from the only text-free stretches in the master: 15.70–17.35 (living
-room), 20.95–21.90 (rooftop), 7.95–10.15 (gym, kitchen) and 13.70–15.40 (bedroom).
-Order is deliberate — the living room and its view open the loop because that is
-the frame sitting next to "Iconically, Seattle."
-
-To re-cut it, work from `video/niwa-hero-film.mp4` and check any new in/out points
-against those windows; a quarter-second either side catches a caption fading.
-
-It never autoplays for `prefers-reduced-motion`, `Save-Data`, or a 2G connection —
-those get the poster and a play button instead.
-
-⚠️ **~15MB of video is committed here.** That is over the line the "Photos"
-section draws: move these to Cloudflare R2 and point `hero.video` at the URLs
-before the library grows further.
+`src/assets/hero.jpg` is the hero; `public/images/og.jpg` (1200×630) is the
+social preview.
 
 ## Admin portal
 
@@ -196,11 +174,11 @@ The CMS commits via the GitHub API, which needs an OAuth relay:
    Cloudflare Worker; set `GITHUB_CLIENT_ID` / `GITHUB_CLIENT_SECRET` as secrets.
 3. Put the worker's URL in `base_url`.
 
-## External dependencies (loaded from CDN at runtime)
+## External dependencies
 
-Google Fonts, Leaflet 1.9.4, CartoDB map tiles, OpenStreetMap Nominatim
-(commute geocoding), OpenRouteService (optional, via
-`site.config.json → integrations.orsApiKey`).
+Bundled: GSAP and Lenis (npm). Embedded at runtime: SightMap (the interactive
+availability map) and Matterport (3D tours, loaded only when a tour is opened).
+EmailJS loads from its CDN only when configured. Fonts are self-hosted.
 
 ## Fair-housing note
 

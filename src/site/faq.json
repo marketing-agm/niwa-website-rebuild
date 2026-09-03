@@ -1,5 +1,5 @@
 {
-  "_note": "Every answer is grounded in units.json (the AppFolio feed), site.config.json, or copy confirmed by marketing as current on niwaseattle.com. Deliberately absent, because no verified source exists yet: office hours, parking cost, storage cost, security deposit, screening fee and utilities (the figures the template shipped are Magnolia's — see issues #17 and #8). Rents and dates are kept out on purpose: this file is hand-written and would go stale the next time `npm run refresh` runs, so price questions point at the live Availability section.",
+  "_note": "Every answer is grounded in units.json (the AppFolio feed), site.config.json, or copy confirmed by marketing as current on niwaseattle.com. Deliberately absent, because no verified source exists yet: office hours, parking cost, storage cost, security deposit, screening fee and utilities (the figures the template shipped are Magnolia's — see issues #17 and #8). Rents and dates are kept out on purpose: this file is hand-written and would go stale the next time `npm run refresh` runs, so price questions point at the live interactive map and the per-layout starting rents, both of which come from the feed.",
   "faq": [
     {
       "q": "What kinds of homes does Niwa have?",
@@ -7,11 +7,11 @@
     },
     {
       "q": "What does a home cost, and what's available right now?",
-      "a": "Rent varies by layout, floor and move-in date, so rather than quote a figure that ages, the <a href=\"#availability\">Availability</a> section shows every home currently listed with its actual rent and date. That list is refreshed from the leasing system rather than maintained by hand, so what you see there is what is genuinely available."
+      "a": "Rent varies by layout, floor and move-in date, so rather than quote a figure that ages, the <a href=\"#availability\">interactive map</a> shows every home currently listed with its actual rent and date, refreshed from the leasing system. <a href=\"#floor-plans\">The homes</a> lists the starting rent for each layout."
     },
     {
       "q": "When can I move in?",
-      "a": "Some homes are ready now and others open up over the following weeks. Each listing in <a href=\"#availability\">Availability</a> carries its own date — filter by \"Now\" to see only what you could move into immediately."
+      "a": "Some homes are ready now and others open up over the following weeks. Every home on the <a href=\"#availability\">map</a> carries its own date, and <a href=\"#floor-plans\">the homes</a> shows how many of each layout are available now and how many are coming soon."
     },
     {
       "q": "Is Niwa pet friendly?",
@@ -35,7 +35,7 @@
     },
     {
       "q": "How do I see a home in person?",
-      "a": "Three ways. Walk any layout in 3D from <a href=\"#floor-plans\">Floor plans</a> — studio, one-bedroom (furnished or unfurnished) and two-bedroom are all shot end to end. Walk the rooftop clubroom, the rooftop deck and the fitness center from the <a href=\"#gallery\">Gallery</a>. Then, when you want to stand in one, use the <a href=\"#tour\">tour request form</a> and the leasing team will follow up to arrange a time, or call <a href=\"tel:2066229991\">(206) 622-9991</a> during office hours."
+      "a": "Three ways. Walk any layout in 3D from <a href=\"#floor-plans\">Floor plans</a> — studio, one-bedroom (furnished or unfurnished) and two-bedroom are all shot end to end. Walk the rooftop clubroom, the rooftop deck and the fitness center from <a href=\"#building\">the building</a>. Then, when you want to stand in one, use the <a href=\"#tour\">tour request form</a> and the leasing team will follow up to arrange a time, or call <a href=\"tel:2066229991\">(206) 622-9991</a> during office hours."
     }
   ]
 }

@@ -1,28 +1,18 @@
 ---
 import Analytics from '../components/Analytics.astro';
-import StickyCta from '../components/StickyCta.astro';
-import ArrivalFilm from '../components/ArrivalFilm.astro';
+import TourDialog from '../components/TourDialog.astro';
 import '../styles/global.css';
 
 const { site } = Astro.props as { site: { id: string; config: any; data: any; faq?: { q: string; a: string }[] } };
 const c = site.config;
 const url = c.domain.replace(/\/$/, '') + '/';
 
-// Price range is derived from live availability, not hand-maintained. units.json
-// is refreshed from the AppFolio feed on a schedule, so a static
-// schema.priceRange silently drifts out of date the moment rents move — which is
-// exactly how this file ended up advertising a range no unit was renting at.
-// Falls back to the configured string when a site has no units loaded yet.
-// Scoped to move-in-ready homes, matching the hero figure and the plan tabs.
-// Spanning every unit made the structured data quote a floor price that nothing
-// on the page listed, because a cheaper home was still weeks from available.
+// Price range is derived from live availability, not hand-maintained — a static
+// schema.priceRange drifts the moment rents move. Scoped to move-in-ready homes.
 const allUnits: any[] = site.data?.units ?? [];
-const rentScope = allUnits.filter((u: any) => u.availType === 'now').length
-  ? allUnits.filter((u: any) => u.availType === 'now')
-  : allUnits;
-const liveRents: number[] = rentScope
-  .map((u: any) => Number(u.rent))
-  .filter((n: number) => Number.isFinite(n) && n > 0);
+const nowUnits = allUnits.filter((u: any) => u.availType === 'now');
+const rentScope = nowUnits.length ? nowUnits : allUnits;
+const liveRents: number[] = rentScope.map((u: any) => Number(u.rent)).filter((n: number) => Number.isFinite(n) && n > 0);
 const money = (n: number) => '$' + n.toLocaleString('en-US');
 const priceRange = liveRents.length
   ? (Math.min(...liveRents) === Math.max(...liveRents)
@@ -30,42 +20,6 @@ const priceRange = liveRents.length
       : `${money(Math.min(...liveRents))}–${money(Math.max(...liveRents))}/mo`)
   : c.schema.priceRange;
 
-// A site can market a property made of several buildings (Magnolia lists
-// Crestview, Vista and Manor). config.address/geo stay the leasing anchor —
-// where a renter actually goes to tour — and `buildings` describes the rest.
-// Absent or single-entry `buildings` leaves the structured data exactly as it
-// was, so single-building sites are unaffected.
-const buildings: any[] = Array.isArray(c.buildings) ? c.buildings : [];
-const postal = (a: any) => ({
-  '@type': 'PostalAddress',
-  streetAddress: a.streetAddress,
-  addressLocality: a.addressLocality,
-  addressRegion: a.addressRegion,
-  postalCode: a.postalCode,
-  addressCountry: a.addressCountry,
-});
-// Only buildings with real coordinates get a geo block — a guessed lat/lng in
-// structured data is worse than none, since search engines will place a pin on it.
-const containsPlace = buildings.map((b) => {
-  const place: any = {
-    '@type': 'ApartmentComplex',
-    name: b.name,
-    address: postal(b.address || {}),
-  };
-  if (b.geo && b.geo.latitude != null && b.geo.longitude != null) {
-    place.geo = { '@type': 'GeoCoordinates', latitude: b.geo.latitude, longitude: b.geo.longitude };
-  }
-  return place;
-});
-
-// Ranking for your own property name is an entity problem, not a keyword one:
-// Google has to be confident this site IS the business being searched for.
-// - @id gives the entity a stable identifier to attach those signals to.
-// - alternateName covers the names renters actually type. This property is
-//   "Magnolia Apartments" but people search the buildings by name, and without
-//   this Google has no reason to treat them as the same thing.
-// - sameAs reconciles the site with the Google Business Profile and socials,
-//   which is the strongest signal that a website and a real business are one.
 const alternateName: string[] = c.seo.alternateNames ?? [];
 const sameAs: string[] = c.seo.sameAs ?? [];
 const officeHours: any[] = c.contact.officeHours ?? [];
@@ -91,189 +45,81 @@ const jsonLd: any = {
   containedInPlace: { '@type': 'Place', name: c.schema.containedInPlace },
   numberOfBedrooms: c.schema.numberOfBedrooms,
   petsAllowed: c.schema.petsAllowed,
-  amenityFeature: (c.schema.amenityFeature || []).map((name: string) => ({
-    '@type': 'LocationFeatureSpecification',
-    name,
-    value: true,
-  })),
+  amenityFeature: (c.schema.amenityFeature || []).map((name: string) => ({ '@type': 'LocationFeatureSpecification', name, value: true })),
 };
-// Declaring the buildings tells search engines the listing spans several
-// addresses. Without it the markup asserts every home is at the anchor address,
-// which is simply untrue once a second building is listed.
-// Coordinates are optional: a site can launch before anyone has looked up its
-// lat/lng, and asserting a guessed point in structured data would place the
-// property somewhere it isn't.
 if (c.geo && c.geo.latitude != null && c.geo.longitude != null) {
   jsonLd.geo = { '@type': 'GeoCoordinates', latitude: c.geo.latitude, longitude: c.geo.longitude };
 }
-if (containsPlace.length > 1) jsonLd.containsPlace = containsPlace;
 if (alternateName.length) jsonLd.alternateName = alternateName;
 if (sameAs.length) jsonLd.sameAs = sameAs;
 if (c.contact.email) jsonLd.email = c.contact.email;
 if (officeHours.length) {
-  jsonLd.openingHoursSpecification = officeHours.map((h: any) => ({
-    '@type': 'OpeningHoursSpecification',
-    dayOfWeek: h.days,
-    opens: h.opens,
-    closes: h.closes,
-  }));
+  jsonLd.openingHoursSpecification = officeHours.map((h: any) => ({ '@type': 'OpeningHoursSpecification', dayOfWeek: h.days, opens: h.opens, closes: h.closes }));
 }
 
-// FAQPage structured data, built from the same per-site faq.json the FAQ section
-// renders. Wins rich results in search and gives AI answer engines clean Q&A.
 const faqItems = site.faq || [];
-const stripTags = (s: string) =>
-  s.replace(/<[^>]+>/g, ' ').replace(/&nbsp;/g, ' ').replace(/&amp;/g, '&').replace(/\s+/g, ' ').trim();
+const stripTags = (s: string) => s.replace(/<[^>]+>/g, ' ').replace(/&nbsp;/g, ' ').replace(/&amp;/g, '&').replace(/\s+/g, ' ').trim();
 const faqJsonLd = faqItems.length
-  ? {
-      '@context': 'https://schema.org',
-      '@type': 'FAQPage',
-      mainEntity: faqItems.map((f) => ({
-        '@type': 'Question',
-        name: f.q,
-        acceptedAnswer: { '@type': 'Answer', text: stripTags(f.a) },
-      })),
-    }
+  ? { '@context': 'https://schema.org', '@type': 'FAQPage', mainEntity: faqItems.map((f) => ({ '@type': 'Question', name: f.q, acceptedAnswer: { '@type': 'Answer', text: stripTags(f.a) } })) }
   : null;
 
-const themeVars = Object.entries(c.theme.colors)
-  .map(([k, v]) => `${k}: ${v};`)
-  .join(' ');
+// Design tokens a site can override from config. `:root:root` outranks the
+// stylesheet's own :root so config always wins.
+const themeVars = Object.entries(c.theme?.colors ?? {}).map(([k, v]) => `${k}: ${v};`).join(' ');
 
-// expose config + data to the legacy app script
+// What the client scripts need: identity, contact and integrations. Nothing else.
 const siteRuntime = {
   id: site.id,
-  config: {
-    name: c.name,
-    address: c.address,
-    integrations: c.integrations,
-    contact: c.contact,
-    geo: c.geo,
-    hero: c.hero || {},
-    floorPlans: c.floorPlans || {},
-    buildings: c.buildings || [],
-  },
-  data: site.data,
+  config: { name: c.name, address: c.address, integrations: c.integrations, contact: c.contact },
 };
-
-const emailjsConfigured = !!(c.integrations?.emailjs?.publicKey
-  && c.integrations.emailjs.serviceId
-  && c.integrations.emailjs.templateId);
+const emailjsConfigured = !!(c.integrations?.emailjs?.publicKey && c.integrations.emailjs.serviceId && c.integrations.emailjs.templateId);
 ---
 <!DOCTYPE html>
 <html lang={c.lang}>
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
 <title>{c.seo.title}</title>
 <meta name="description" content={c.seo.description} />
 <meta name="keywords" content={c.seo.keywords} />
-<meta name="robots" content={c.seo.noindex
-  ? 'noindex, nofollow'
-  : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'} />
+<meta name="robots" content={c.seo.noindex ? 'noindex, nofollow' : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'} />
 <meta name="author" content={c.seo.author} />
-
 <link rel="canonical" href={url} />
-
-{/* Search Console / Bing Webmaster ownership. Verifying is what lets you
-    submit the sitemap and request indexing — the fastest route from "site is
-    live" to "site is in the index". Empty values emit nothing. */}
 {c.seo.verification?.google && <meta name="google-site-verification" content={c.seo.verification.google} />}
 {c.seo.verification?.bing && <meta name="msvalidate.01" content={c.seo.verification.bing} />}
-
 <meta name="geo.region" content={c.address.geoRegion} />
 <meta name="geo.placename" content={c.address.placename} />
 {c.geo?.latitude != null && <meta name="geo.position" content={`${c.geo.latitude};${c.geo.longitude}`} />}
 {c.geo?.latitude != null && <meta name="ICBM" content={`${c.geo.latitude}, ${c.geo.longitude}`} />}
-
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content={c.name} />
 <meta property="og:title" content={c.seo.title} />
 <meta property="og:description" content={c.seo.description} />
 <meta property="og:url" content={url} />
 <meta property="og:locale" content={c.locale} />
-{/* og:image MUST be absolute. Facebook, LinkedIn, Slack and iMessage all
-    refuse a relative path and render the link with no picture at all — which
-    looks like a broken site in exactly the place a link gets shared. A path
-    starting "/" is resolved against the site's domain; anything already
-    absolute is passed through untouched. */}
 {c.seo.ogImage && <meta property="og:image" content={new URL(c.seo.ogImage, c.domain).href} />}
 {c.seo.ogImage && <meta property="og:image:alt" content={c.hero?.alt || `${c.name} apartments`} />}
-
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content={c.seo.title} />
 <meta name="twitter:description" content={c.seo.twitterDescription || c.seo.description} />
-
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 <link rel="manifest" href="/site.webmanifest" />
-<meta name="theme-color" content={c.theme.themeColor} />
-
+<meta name="theme-color" content={c.theme?.themeColor ?? '#0b0b0b'} />
 <script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd)} />
 {faqJsonLd && <script type="application/ld+json" is:inline set:html={JSON.stringify(faqJsonLd)} />}
-
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght,SOFT,WONK@0,9..144,300..700,30..100,0..1;1,9..144,300..700,30..100,0..1&family=Montserrat:ital,wght@0,300..700;1,300..600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" media="print" onload="this.media='all'" />
-<noscript><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" /></noscript>
-
-{/* `:root:root` is deliberate, not a typo. Astro hoists the bundled stylesheet
-    AFTER this inline block, and global.css opens with its own `:root { --accent:
-    #129AE5 }` fallbacks. At equal specificity the later rule wins, so every token
-    set in site.config.json was being silently overridden by the template's
-    Magnolia defaults — the site rendered blue however the config was edited.
-    Repeating the selector doubles specificity so config always wins, while
-    global.css keeps its values as a fallback for any token a site omits. */}
-<style is:inline set:html={`:root:root{${themeVars}}`} />
-
+<link rel="preload" href="/fonts/inter-tight-latin.woff2" as="font" type="font/woff2" crossorigin />
+<link rel="preload" href="/fonts/geist-mono-latin.woff2" as="font" type="font/woff2" crossorigin />
+{themeVars && <style is:inline set:html={`:root:root{${themeVars}}`} />}
+<script is:inline set:html={`window.__SITE__=${JSON.stringify(siteRuntime)};`} />
+{emailjsConfigured && <script is:inline src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js" defer></script>}
 <Analytics site={site} />
 </head>
 <body>
-{/* The raked line. One stroke, drawn once, never animated — a garden path is
-    a thing you follow, not a thing that moves. Fixed and behind everything, so
-    it costs a single composite no matter how long the page gets. */}
-<div class="zen-path" aria-hidden="true">
-  <svg viewBox="0 0 1000 1000" preserveAspectRatio="none" focusable="false">
-    <path class="rake rake-2" d="M99 -40 C 279 150, 279 320, 114 470 C -51 620, -51 800, 154 930 C 279 1010, 399 1030, 509 1060" />
-    <path class="rake rake-2" d="M116 -40 C 296 150, 296 320, 131 470 C -34 620, -34 800, 171 930 C 296 1010, 416 1030, 526 1060" />
-    <path class="rake rake-2" d="M133 -40 C 313 150, 313 320, 148 470 C -17 620, -17 800, 188 930 C 313 1010, 433 1030, 543 1060" />
-    <path class="rake" d="M150 -40 C 330 150, 330 320, 165 470 C 0 620, 0 800, 205 930 C 330 1010, 450 1030, 560 1060" />
-    <path class="rake rake-2" d="M167 -40 C 347 150, 347 320, 182 470 C 17 620, 17 800, 222 930 C 347 1010, 467 1030, 577 1060" />
-    <path class="rake rake-2" d="M184 -40 C 364 150, 364 320, 199 470 C 34 620, 34 800, 239 930 C 364 1010, 484 1030, 594 1060" />
-    <path class="rake rake-2" d="M201 -40 C 381 150, 381 320, 216 470 C 51 620, 51 800, 256 930 C 381 1010, 501 1030, 611 1060" />
-    <path class="rake rake-2" d="M842 -40 C 662 190, 707 430, 867 570 C 982 680, 997 840, 862 1060" />
-    <path class="rake rake-2" d="M861 -40 C 681 190, 726 430, 886 570 C 1001 680, 1016 840, 881 1060" />
-    <path class="rake" d="M880 -40 C 700 190, 745 430, 905 570 C 1020 680, 1035 840, 900 1060" />
-    <path class="rake rake-2" d="M899 -40 C 719 190, 764 430, 924 570 C 1039 680, 1054 840, 919 1060" />
-    <path class="rake rake-2" d="M918 -40 C 738 190, 783 430, 943 570 C 1058 680, 1073 840, 938 1060" />
-    <ellipse class="stone" cx="165" cy="470" rx="17" ry="10" />
-    <ellipse class="stone-2" cx="196" cy="497" rx="9" ry="6" />
-    <ellipse class="stone" cx="905" cy="570" rx="14" ry="9" />
-    <ellipse class="stone-2" cx="877" cy="596" rx="8" ry="5" />
-    <ellipse class="stone" cx="212" cy="925" rx="11" ry="7" />
-    <path class="cross" d="M159 180 h16 M167 172 v16" />
-    <path class="cross" d="M159 520 h16 M167 512 v16" />
-    <path class="cross" d="M159 860 h16 M167 852 v16" />
-    <path class="cross" d="M325 180 h16 M333 172 v16" />
-    <path class="cross" d="M325 520 h16 M333 512 v16" />
-    <path class="cross" d="M325 860 h16 M333 852 v16" />
-    <path class="cross" d="M492 180 h16 M500 172 v16" />
-    <path class="cross" d="M492 520 h16 M500 512 v16" />
-    <path class="cross" d="M492 860 h16 M500 852 v16" />
-    <path class="cross" d="M659 180 h16 M667 172 v16" />
-    <path class="cross" d="M659 520 h16 M667 512 v16" />
-    <path class="cross" d="M659 860 h16 M667 852 v16" />
-    <path class="cross" d="M825 180 h16 M833 172 v16" />
-    <path class="cross" d="M825 520 h16 M833 512 v16" />
-    <path class="cross" d="M825 860 h16 M833 852 v16" />
-  </svg>
-</div>
-<ArrivalFilm site={site} />
 <slot />
-<StickyCta site={site} />
-<script is:inline set:html={`window.__SITE__=${JSON.stringify(siteRuntime)};`} />
-<script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
-{emailjsConfigured && <script is:inline src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>}
-<script is:inline src="/app.js"></script>
+<TourDialog />
+<script>
+  import '../scripts/motion.ts';
+  import '../scripts/tour.ts';
+</script>
 </body>
 </html>

@@ -1,0 +1,62 @@
+---
+const { site } = Astro.props as { site: any };
+const c = site.config;
+const ws = c.walkScores ?? {};
+// Walk Score's own descriptors for these bands.
+const scores = [
+  { k: 'Walk Score', v: ws.walk, d: "Walker's paradise — daily errands do not require a car." },
+  { k: 'Bike Score', v: ws.bike, d: 'Very bikeable — most trips are easy on a bike.' },
+  { k: 'Transit Score', v: ws.transit, d: 'Some transit — a few nearby public transportation options.' },
+];
+---
+<section class="section manifesto" id="about">
+  <div class="sec-head">
+    <span class="label">01 — The idea</span>
+    <span class="label label--dim"><span lang="ja">{c.idea?.kanji}</span> · niwa · garden</span>
+  </div>
+
+  <div class="mani-body">
+    <p class="mani-text" data-words>{c.idea?.body}</p>
+    <p class="body mani-aside" data-reveal>
+      {c.neighborhood?.intro}
+    </p>
+  </div>
+
+  <div class="grid scores">
+    {scores.map((s) => (
+      <div class="cell score" data-reveal>
+        <span class="label label--dim">{s.k}</span>
+        <b class="score-num" data-count={s.v}>0</b>
+        <i class="score-bar" style={`--v:${(s.v ?? 0) / 100}`} data-bar></i>
+        <span class="small">{s.d}</span>
+      </div>
+    ))}
+    <div class="cell score score--text" data-reveal>
+      <span class="label label--dim">Where</span>
+      <p class="h3">Seattle Center at the end of the block.</p>
+      <span class="small">The Space Needle, MoPOP and Climate Pledge Arena are a walk, not a drive.</span>
+    </div>
+  </div>
+</section>
+
+<style>
+  .mani-body {
+    display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: var(--gap);
+    padding: clamp(48px, 7vw, 140px) var(--gutter) clamp(48px, 6vw, 120px);
+  }
+  .mani-text { grid-column: 1 / span 10; font-size: clamp(1.9rem, 1rem + 3.4vw, 5rem); line-height: 1.04; letter-spacing: -0.03em; font-weight: 400; text-wrap: pretty; }
+  .mani-text :global(.word) { display: inline-block; }
+  .mani-aside { grid-column: 9 / span 4; margin-top: clamp(20px, 3vw, 48px); align-self: start; }
+  .score { display: grid; gap: 14px; align-content: start; min-height: clamp(180px, 16vw, 280px); }
+  .score-num { font-size: var(--t-num); line-height: 0.9; letter-spacing: -0.05em; font-weight: 400; font-variant-numeric: tabular-nums; }
+  .score-bar { display: block; height: 1px; background: var(--line); position: relative; }
+  .score-bar::after { content: ''; position: absolute; inset: 0; background: var(--fg); transform: scaleX(var(--p, 0)); transform-origin: left; }
+  .score--text { gap: 12px; }
+  .score--text .h3 { font-weight: 400; max-width: 14ch; }
+  @media (max-width: 1024px) {
+    .mani-text { grid-column: 1 / -1; }
+    .mani-aside { grid-column: 1 / span 8; }
+    .scores { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 560px) { .scores { grid-template-columns: 1fr; } .score { min-height: 0; } }
+</style>

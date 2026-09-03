@@ -1,0 +1,155 @@
+---
+import { formatPhone } from '../lib/site';
+const { site } = Astro.props as { site: any };
+const c = site.config;
+const a = c.address;
+const phone = formatPhone(c.contact?.phone);
+const after = c.contact?.afterHours ?? {};
+const hours = c.contact?.officeHours?.[0];
+const fmtHour = (t: string) => { const [h] = t.split(':').map(Number); return `${((h + 11) % 12) + 1}${h < 12 ? 'am' : 'pm'}`; };
+const beds = [['studio', 'a studio'], ['1br', 'a one-bedroom'], ['2br', 'a two-bedroom'], ['either', 'not sure yet']];
+const windows = [['asap', 'as soon as possible'], ['30d', 'within 30 days'], ['60d', 'in one to two months'], ['flex', "I'm flexible"]];
+const slots = [['Morning', 'morning'], ['Midday', 'midday'], ['Afternoon', 'afternoon']];
+---
+<section class="section tour" id="tour" data-tour-section>
+  <div class="tour-inner">
+    <div class="tour-head">
+      <span class="label tour-label">08 — Come and see</span>
+      <h2 class="h2 tour-title" data-reveal>The view is <em>the point.</em></h2>
+      <p class="tour-lede" data-reveal>Tell us who you are and when suits, in one sentence. Leasing confirms by email, usually within a business day.</p>
+    </div>
+
+    <div class="tour-grid">
+      <form class="tf" id="tour-form" novalidate data-tour-form data-reveal>
+        <p class="tf-line">
+          <span class="tf-w">Hi, I'm</span>
+          <span class="tf-field"><label class="sr-only" for="tf-first">First name</label><input id="tf-first" name="fname" type="text" placeholder="first name" autocomplete="given-name" required data-autosize /></span>
+          <span class="tf-field"><label class="sr-only" for="tf-last">Last name</label><input id="tf-last" name="lname" type="text" placeholder="last name" autocomplete="family-name" data-autosize /><span class="tf-w">.</span></span>
+        </p>
+        <p class="tf-line">
+          <span class="tf-w">I'm looking for</span>
+          <span class="tf-chips" role="radiogroup" aria-label="Home type">
+            {beds.map(([v, l]) => <label class="chip"><input type="radio" name="beds" value={v} /><span>{l}</span></label>)}
+          </span>
+        </p>
+        <p class="tf-line">
+          <span class="tf-w">to move in</span>
+          <span class="tf-chips" role="radiogroup" aria-label="Move-in window">
+            {windows.map(([v, l]) => <label class="chip"><input type="radio" name="movein" value={v} /><span>{l}</span></label>)}
+          </span>
+        </p>
+        <p class="tf-line">
+          <span class="tf-w">I could visit</span>
+          <span class="tf-chips" role="radiogroup" aria-label="Day to visit" data-tour-days>
+            <label class="chip"><input type="radio" name="day" value="any" checked /><span>any weekday</span></label>
+          </span>
+          <span class="tf-w">in the</span>
+          <span class="tf-chips" role="radiogroup" aria-label="Time of day">
+            {slots.map(([v, l]) => <label class="chip"><input type="radio" name="slot" value={v} /><span>{l}</span></label>)}
+          </span>
+        </p>
+        <p class="tf-line">
+          <span class="tf-w">Reach me at</span>
+          <span class="tf-field"><label class="sr-only" for="tf-email">Email address</label><input id="tf-email" name="email" type="email" placeholder="email" autocomplete="email" required data-autosize /></span>
+          <span class="tf-w">or</span>
+          <span class="tf-field"><label class="sr-only" for="tf-phone">Phone (optional)</label><input id="tf-phone" name="phone" type="tel" placeholder="phone, optional" autocomplete="tel" data-autosize /><span class="tf-w">.</span></span>
+        </p>
+        <p class="tf-line tf-line--note">
+          <label class="sr-only" for="tf-msg">Anything else</label>
+          <textarea id="tf-msg" name="msg" rows="1" placeholder="Anything else? Questions, must-haves, a home you have your eye on…" data-autogrow></textarea>
+        </p>
+        <div class="tf-foot">
+          <button type="submit" class="btn btn--ink" data-tour-submit><span data-tour-submit-label>Request this tour</span> <span class="arr" aria-hidden="true">→</span></button>
+          <p class="tf-status mono" role="status" aria-live="polite" data-tour-status></p>
+        </div>
+        <p class="tf-fine">Fair housing: Niwa welcomes everyone. Some homes are income-restricted under Seattle's MFTE and MHA programs; the leasing team can explain what applies.</p>
+      </form>
+
+      <div class="tf-done" data-tour-done hidden>
+        <span class="label tour-label">Request received</span>
+        <p class="h2" data-tour-done-title>Thanks.</p>
+        <p class="tour-lede" data-tour-done-body></p>
+        <div class="tf-done-actions" data-tour-done-actions></div>
+      </div>
+
+      <aside class="tour-rail">
+        <div class="rail-cell">
+          <span class="label tour-label">Visit</span>
+          <p class="rail-big">{a.streetAddress}</p>
+          <p class="rail-sm">{a.addressLocality}, {a.addressRegion} {a.postalCode}</p>
+          <a class="link mono rail-link" href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(`${c.name}, ${a.streetAddress}, ${a.addressLocality}, ${a.addressRegion} ${a.postalCode}`)}`} target="_blank" rel="noopener">Directions ↗</a>
+        </div>
+        <div class="rail-cell">
+          <span class="label tour-label">Call or write</span>
+          <p class="rail-big"><a href={c.contact?.phoneHref}>{phone}</a></p>
+          <p class="rail-sm"><a class="link" href={`mailto:${c.contact?.email}`}>{c.contact?.email}</a></p>
+        </div>
+        <div class="rail-cell">
+          <span class="label tour-label">Office hours</span>
+          {hours && <p class="rail-big">Mon – Fri, {fmtHour(hours.opens)} – {fmtHour(hours.closes)}</p>}
+          <p class="rail-sm">{after.note} <a class="link" href={after.phoneHref}>{formatPhone(after.phone)}</a>.</p>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<style>
+  .tour { --fg: var(--ink); --fg-2: var(--ink-2); --fg-3: var(--ink-3); --line: var(--ink-line); --line-2: rgba(11,11,11,0.1);
+    background: var(--gold); color: var(--ink); border-radius: var(--radius) var(--radius) 0 0; margin-top: calc(var(--section) * 0.5); color-scheme: light; }
+  .tour-inner { padding: clamp(40px, 5vw, 96px) var(--gutter) clamp(56px, 7vw, 128px); }
+  .tour-label { color: var(--ink-2); }
+  .tour-head { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: var(--gap); align-items: end; padding-bottom: clamp(36px, 5vw, 88px); }
+  .tour-head .tour-label { grid-column: 1 / -1; }
+  .tour-title { grid-column: 1 / span 8; }
+  .tour-lede { grid-column: 9 / span 4; font-size: var(--t-body); color: var(--ink-2); max-width: 40ch; text-wrap: pretty; }
+  .tour-grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: var(--gap); border-top: 1px solid var(--ink-line); padding-top: clamp(28px, 3.5vw, 56px); }
+  .tf, .tf-done { grid-column: 1 / span 8; }
+  .tour-rail { grid-column: 10 / span 3; display: grid; align-content: start; }
+
+  /* The sentence */
+  .tf-line { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.28em 0.4em; font-size: clamp(1.4rem, 0.9rem + 1.7vw, 2.8rem); line-height: 1.5; letter-spacing: -0.025em; font-weight: 400; margin-bottom: clamp(10px, 1.2vw, 20px); }
+  .tf-field { display: inline-flex; align-items: baseline; }
+  .tf input, .tf textarea { background: transparent; border: 0; border-bottom: 1px solid var(--ink); border-radius: 0; padding: 0 0.1em; min-width: 6ch; color: var(--ink); font-style: italic; font-weight: 400; transition: border-color 0.3s, background-color 0.3s; }
+  .tf input::placeholder, .tf textarea::placeholder { color: var(--ink-3); font-style: italic; }
+  .tf input:focus, .tf textarea:focus { outline: none; border-bottom-color: var(--ink); background: rgba(255,255,255,0.22); }
+  .tf .is-invalid { border-bottom: 2px solid #b3261e; }
+  .tf-chips { display: inline-flex; flex-wrap: wrap; gap: 0.32em; align-items: center; vertical-align: baseline; }
+  .tf :global(.chip) { position: relative; display: inline-flex; }
+  .tf :global(.chip input) { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
+  .tf :global(.chip span) { display: inline-block; border: 1px solid var(--ink); border-radius: 999px; padding: 0.08em 0.62em 0.12em; font-size: 0.66em; line-height: 1.25; letter-spacing: -0.01em; transition: background-color 0.35s var(--ease), color 0.35s var(--ease), transform 0.35s var(--ease); white-space: nowrap; }
+  .tf :global(.chip:hover span) { background: rgba(11,11,11,0.08); }
+  .tf :global(.chip input:checked + span) { background: var(--ink); color: var(--gold); }
+  .tf :global(.chip input:focus-visible + span) { outline: 2px solid var(--ink); outline-offset: 3px; }
+  .tf-line--note textarea { width: 100%; min-width: 0; resize: none; font-size: 0.7em; line-height: 1.4; font-style: normal; padding: 0.3em 0; overflow: hidden; }
+  .tf-foot { display: flex; flex-wrap: wrap; align-items: center; gap: var(--gap); margin-top: clamp(20px, 2.6vw, 40px); }
+  .tf-status { color: var(--ink-2); font-size: var(--t-small); }
+  .tf-fine { margin-top: clamp(20px, 2.6vw, 40px); font-size: var(--t-small); color: var(--ink-2); max-width: 62ch; line-height: 1.5; }
+  .tf-done { display: grid; gap: var(--gap); align-content: start; }
+  .tf-done[hidden] { display: none; }
+  .tf-done .tour-lede { grid-column: auto; font-size: var(--t-lead); max-width: 36ch; }
+  .tf-done-actions { display: flex; flex-wrap: wrap; gap: 10px; }
+
+  .rail-cell { display: grid; gap: 6px; padding: clamp(14px, 1.6vw, 24px) 0; border-top: 1px solid var(--ink-line); }
+  .rail-cell:first-child { border-top: 0; padding-top: 0; }
+  .rail-big { font-size: var(--t-lead); line-height: 1.2; letter-spacing: -0.02em; }
+  .rail-sm { font-size: var(--t-small); color: var(--ink-2); line-height: 1.5; }
+  .rail-link { justify-self: start; margin-top: 6px; color: var(--ink); font-size: var(--t-label); letter-spacing: 0.08em; text-transform: uppercase; }
+  .tour .link:hover { color: var(--ink); opacity: 0.7; }
+  .tour :focus-visible { outline-color: var(--ink); }
+  .tour ::selection { background: var(--ink); color: var(--gold); }
+
+  @media (max-width: 1100px) {
+    .tour-title { grid-column: 1 / -1; }
+    .tour-lede { grid-column: 1 / span 8; }
+    .tf, .tf-done { grid-column: 1 / -1; }
+    .tour-rail { grid-column: 1 / -1; grid-template-columns: repeat(3, 1fr); gap: var(--gap); border-top: 1px solid var(--ink-line); margin-top: var(--gap); padding-top: var(--gap); }
+    .rail-cell { border-top: 0; padding: 0; }
+  }
+  @media (max-width: 640px) {
+    .tour-rail { grid-template-columns: 1fr; }
+    .rail-cell { border-top: 1px solid var(--ink-line); padding: 16px 0; }
+    .rail-cell:first-child { border-top: 0; padding-top: 0; }
+    .tf-line { gap: 0.3em 0.36em; }
+  }
+</style>

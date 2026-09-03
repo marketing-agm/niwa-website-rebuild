@@ -1,0 +1,33 @@
+---
+const { site } = Astro.props as { site: any };
+const s = site.config.sightmap ?? {};
+---
+{s.enabled && s.embedUrl && (
+<section class="section sitemap" id="availability">
+  <div class="sec-head">
+    <span class="label">04 — The map</span>
+    <span class="label label--dim">Live availability · SightMap</span>
+  </div>
+  <div class="sec-title">
+    <h2 class="h2" data-reveal>{s.title} <em>{s.titleItalic}</em></h2>
+    <p class="body sec-lede" data-reveal>{s.lede}</p>
+  </div>
+  <div class="map-frame" data-reveal data-lenis-prevent>
+    <iframe
+      src={s.embedUrl}
+      title={s.iframeTitle}
+      loading="lazy"
+      allow="fullscreen"
+      referrerpolicy="strict-origin-when-cross-origin"
+    ></iframe>
+  </div>
+  <div class="map-foot"><p class="small map-note">{s.note}</p><a class="label link map-open" href={s.embedUrl} target="_blank" rel="noopener">Open the map in a new tab ↗</a></div>
+</section>
+)}
+<style>
+  .map-frame { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); background: var(--bg-2); }
+  .map-frame iframe { width: 100%; height: clamp(560px, 82vh, 940px); border: 0; }
+  .map-foot { display: flex; justify-content: space-between; align-items: baseline; gap: var(--gap); flex-wrap: wrap; padding: 14px var(--gutter) 0; }
+  .map-note { max-width: 70ch; }
+  .map-open { color: var(--fg-2); }
+</style>

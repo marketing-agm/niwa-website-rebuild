@@ -1,0 +1,73 @@
+---
+import { Image } from 'astro:assets';
+import { photo } from '../lib/photos';
+const { site } = Astro.props as { site: any };
+const c = site.config;
+const n = c.neighborhood ?? {};
+const mopop = photo('neighborhood-mopop');
+const bay = photo('neighborhood-elliott-bay');
+const arena = photo('neighborhood-climate-pledge');
+const crossing = photo('neighborhood-the-crossing');
+const nearby = [
+  ['Space Needle', 'Seattle Center'],
+  ['MoPOP', 'Seattle Center'],
+  ['Climate Pledge Arena', 'Kraken & Storm nights'],
+  ['Kerry Park', 'Upper Queen Anne'],
+  ['Queen Anne Avenue', 'Cafes, boutiques, galleries'],
+  ['Elliott Bay waterfront', 'Ferries and the Olympics'],
+  ['South Lake Union', 'Amazon, Google, the Cut'],
+  ['Downtown & Capitol Hill', 'A short ride'],
+];
+---
+<section class="section hood" id="neighborhood">
+  <div class="sec-head">
+    <span class="label">05 — The neighborhood</span>
+    <span class="label label--dim">Uptown · Lower Queen Anne · 98109</span>
+  </div>
+  <div class="sec-title">
+    <h2 class="h2" data-reveal>{n.title}<em>.</em></h2>
+    <p class="body sec-lede" data-reveal>{n.intro}</p>
+  </div>
+
+  <div class="grid hood-grid">
+    <figure class="cell cell--img hood-hero" data-reveal>
+      <Image src={mopop.img} alt={mopop.alt} widths={[640, 960, 1440, 2000]} sizes="(max-width: 1024px) 100vw, 60vw" format="webp" quality={76} />
+      <figcaption class="hood-cap"><span class="label">{mopop.title}</span><span class="small">{mopop.desc}</span></figcaption>
+    </figure>
+    <div class="cell hood-list" data-reveal>
+      <span class="label label--dim">At the end of the block</span>
+      <ul class="near">
+        {nearby.map(([a, b], i) => (
+          <li class="near-row"><span class="label label--dim">{String(i + 1).padStart(2, '0')}</span><span class="near-name">{a}</span><span class="small">{b}</span></li>
+        ))}
+      </ul>
+    </div>
+    {[crossing, arena, bay].map((p) => (
+      <figure class="cell cell--img hood-tile" data-reveal>
+        <Image src={p.img} alt={p.alt} widths={[480, 800, 1200]} sizes="(max-width: 640px) 100vw, 33vw" format="webp" quality={74} />
+        <figcaption class="hood-cap"><span class="label">{p.title}</span></figcaption>
+      </figure>
+    ))}
+  </div>
+</section>
+
+<style>
+  .hood-grid figure { position: relative; }
+  .hood-grid figure :global(img) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 1.2s var(--ease); }
+  .hood-grid figure:hover :global(img) { transform: scale(1.03); }
+  .hood-cap { position: absolute; left: var(--pad); right: var(--pad); bottom: calc(var(--pad) * 0.8); display: grid; gap: 4px; text-shadow: 0 1px 12px rgba(0,0,0,0.65); }
+  .hood-cap .label { color: var(--fg); }
+  .hood-cap .small { color: var(--fg); opacity: 0.8; max-width: 40ch; }
+  .hood-hero { grid-column: 1 / span 7; min-height: clamp(280px, 38vw, 680px); }
+  .hood-list { grid-column: 8 / span 5; display: grid; gap: clamp(16px, 2vw, 32px); align-content: start; }
+  .near-row { display: grid; grid-template-columns: 3ch 1fr auto; gap: 12px; align-items: baseline; padding: 11px 0; border-top: 1px solid var(--line-2); }
+  .near-name { font-size: var(--t-body); }
+  .near-row .small { text-align: right; }
+  .hood-tile { grid-column: span 4; min-height: clamp(220px, 24vw, 420px); }
+  @media (max-width: 1024px) {
+    .hood-hero { grid-column: 1 / -1; aspect-ratio: 16 / 9; min-height: 0; }
+    .hood-list { grid-column: 1 / -1; }
+    .hood-tile { grid-column: span 4; aspect-ratio: 4 / 3; min-height: 0; }
+  }
+  @media (max-width: 640px) { .hood-tile { grid-column: 1 / -1; } .near-row .small { display: none; } }
+</style>
