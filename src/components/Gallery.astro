@@ -1,0 +1,61 @@
+---
+import { Image } from 'astro:assets';
+import { photo } from '../lib/photos';
+const { site } = Astro.props as { site: any };
+const g = site.config.gallery ?? {};
+const slugs = [
+  'exterior-on-1st-ave-n', 'exterior-entrance', 'exterior-paseo', 'exterior-monument-sign',
+  'interior-vestibule', 'interior-elevator-hall', 'interior-clubroom-terrace',
+  'interior-clubroom-kitchen', 'exterior-terrace-walk', 'interior-fitness-room',
+];
+const items = slugs.map(photo);
+---
+<section class="section gallery" id="gallery" data-gallery>
+  <div class="sec-head">
+    <span class="label">06 — A look around</span>
+    <span class="label label--dim">Ten frames · drag or scroll</span>
+  </div>
+  <div class="gal-lede">
+    <p class="lead" data-reveal>{g.lede}</p>
+    <p class="small" data-reveal>{g.note}</p>
+  </div>
+  <div class="gal-viewport">
+    <div class="gal-track" data-gallery-track>
+      {items.map((p, i) => (
+        <figure class="gal-item" style={`--ar:${(p.img.width / p.img.height).toFixed(3)}`}>
+          <div class="gal-img">
+            <Image src={p.img} alt={p.alt} widths={[640, 960, 1440]} sizes="(max-width: 720px) 86vw, 60vh" format="webp" quality={76} loading="lazy" />
+          </div>
+          <figcaption class="gal-cap">
+            <span class="label">{String(i + 1).padStart(2, '0')} · {p.title}</span>
+            <span class="small">{p.desc}</span>
+          </figcaption>
+        </figure>
+      ))}
+    </div>
+    <div class="gal-progress" aria-hidden="true"><i data-gallery-progress></i></div>
+    <span class="label label--dim gal-count" aria-hidden="true"><span data-gallery-count>01</span> / {String(items.length).padStart(2, '0')}</span>
+  </div>
+</section>
+
+<style>
+  .gal-lede { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: var(--gap); padding: clamp(28px, 4vw, 64px) var(--gutter); }
+  .gal-lede .lead { grid-column: 1 / span 7; max-width: 30ch; }
+  .gal-lede .small { grid-column: 9 / span 4; align-self: end; }
+  .gal-viewport { position: relative; overflow: hidden; border-top: 1px solid var(--line); padding: var(--gap) 0 calc(var(--gap) + 14px); }
+  .gal-track { display: flex; gap: var(--gap); padding: 0 var(--gutter); width: max-content; will-change: transform; }
+  .gal-item { --h: clamp(280px, 60vh, 760px); display: grid; gap: 12px; flex: 0 0 auto; width: calc(var(--h) * var(--ar)); max-width: calc(100vw - var(--gutter) * 2); }
+  .gal-img { height: var(--h); overflow: hidden; background: var(--bg-2); }
+  .gal-img :global(img) { width: 100%; height: 100%; object-fit: cover; }
+  .gal-cap { display: grid; gap: 4px; }
+  .gal-progress { position: absolute; left: var(--gutter); right: var(--gutter); bottom: 0; height: 1px; background: var(--line); }
+  .gal-count { position: absolute; right: var(--gutter); bottom: 10px; background: var(--bg); padding-left: 12px; }
+  .gal-progress i { display: block; height: 100%; background: var(--fg); transform: scaleX(0); transform-origin: left; }
+  /* Touch and small screens: native horizontal scroll with snap, no pinning. */
+  .gallery.is-native .gal-viewport { overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
+  .gallery.is-native .gal-viewport::-webkit-scrollbar { display: none; }
+  .gallery.is-native .gal-item { scroll-snap-align: start; scroll-margin-left: var(--gutter); }
+  .gallery.is-native .gal-progress, .gallery.is-native .gal-count { display: none; }
+  @media (max-width: 1024px) { .gal-lede .lead { grid-column: 1 / -1; } .gal-lede .small { grid-column: 1 / span 8; } }
+  @media (max-width: 720px) { .gal-item { --h: clamp(240px, 48vh, 420px); } }
+</style>

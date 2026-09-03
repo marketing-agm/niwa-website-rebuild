@@ -14,7 +14,7 @@
 - Managed by: AGM Real Estate Group, LLC
 
 ## Pages
-- [Home / availability / floor plans / tour scheduling]({{SITE_DOMAIN}}/)
+- [Home: the building, the homes and their 3D tours, the interactive availability map, the neighborhood, FAQ and tour scheduling]({{SITE_DOMAIN}}/)
 
 ## Contact
 - To schedule a tour or apply, use the tour scheduler at {{SITE_DOMAIN}}/#tour

@@ -1,0 +1,26 @@
+---
+// The Niwa wordmark, redrawn as four monoline strokes with round caps — the
+// same construction as the brand artwork, at 1KB instead of 148KB, and
+// drawable with DrawSVG because it is real geometry, not a traced outline.
+const { class: cls = '', label = 'Niwa Apartments', decorative = false } = Astro.props as {
+  class?: string; label?: string; decorative?: boolean;
+};
+---
+<svg
+  class={`wordmark ${cls}`}
+  viewBox="0 0 652 200"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="26"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  role={decorative ? undefined : 'img'}
+  aria-label={decorative ? undefined : label}
+  aria-hidden={decorative ? 'true' : undefined}
+  focusable="false"
+>
+  <path data-stroke d="M22 178V22l128 156V22" />
+  <path data-stroke d="M206 22v156" />
+  <path data-stroke d="M262 22l44 156 44-156 44 156 44-156" />
+  <path data-stroke d="M498 178l66-156 66 156" />
+</svg>

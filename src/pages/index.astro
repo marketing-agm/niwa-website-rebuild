@@ -1,344 +1,42 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import Hero from '../components/Hero.astro';
+import Marquee from '../components/Marquee.astro';
+import Manifesto from '../components/Manifesto.astro';
+import Building from '../components/Building.astro';
+import Homes from '../components/Homes.astro';
+import SiteMap from '../components/SiteMap.astro';
+import Neighborhood from '../components/Neighborhood.astro';
+import Gallery from '../components/Gallery.astro';
 import Faq from '../components/Faq.astro';
-import FloorPlans from '../components/FloorPlans.astro';
-import { getSite, formatPhone } from '../lib/site';
-import { FEATURE_ICONS } from '../lib/featureIcons';
-import bodyHtml from '../generated/body.html?raw';
+import Tour from '../components/Tour.astro';
+import Footer from '../components/Footer.astro';
+import { getSite } from '../lib/site';
 
 const site = getSite();
-
-// The shared markup can't hardcode a street address — it renders every property.
-// Address tokens are substituted at build time (same idea as {{SITE_DOMAIN}} in
-// the per-site public/ folder) rather than filled in by JS, so the correct
-// address is in the HTML source for crawlers and for anyone without JS. Doing it
-// client-side would have shipped one property's address as every other
-// property's no-JS fallback.
-const addr = site.config.address ?? {};
-const cityState = [addr.addressLocality, addr.addressRegion].filter(Boolean).join(', ') +
-  (addr.postalCode ? ' ' + addr.postalCode : '');
-const mapQuery = encodeURIComponent(
-  [addr.streetAddress, addr.addressLocality, cityState.split(', ').pop()].filter(Boolean).join(', ')
-);
-// The wordmark sets the last word in italic ("Magnolia *Apartments*"). Split on
-// the final space by default so any property name works; a site whose name
-// doesn't split that way can set `wordmark` explicitly.
-const siteName: string = site.config.name ?? '';
-const wordmark = site.config.wordmark ?? {};
-const lastSpace = siteName.lastIndexOf(' ');
-const nameLead = wordmark.lead ?? (lastSpace === -1 ? siteName : siteName.slice(0, lastSpace));
-const nameEmph = wordmark.emph ?? (lastSpace === -1 ? '' : siteName.slice(lastSpace + 1));
-
-// Hero copy is per-property, not template text. Defaults keep a site that
-// hasn't written any from rendering empty headings.
-const hero = site.config.hero ?? {};
-// Strip a US country code so sms:/tel: keep the 10-digit form they had —
-// same normalisation formatPhone() applies for display.
-const digits = String(site.config.contact?.phone ?? '').replace(/\D/g, '').replace(/^1(?=\d{10}$)/, '');
-
-// Footer guide links are built from sitemap.pages — the same list that decides
-// what goes in sitemap.xml — so a site can't advertise guides it doesn't ship.
-// The old hardcoded links pointed at Magnolia's three guides and would have
-// 404'd on every other property.
-const guidePages: any[] = (site.config.sitemap?.pages ?? []).filter((pg: any) =>
-  String(pg.path || '').startsWith('/guides/'));
-const escapeHtml = (v: string) =>
-  String(v).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-// Derive a label from the slug when the page doesn't supply one.
-const guideLabel = (pg: any) => pg.label ?? String(pg.path).replace(/^\/guides\//, '').replace(/\/$/, '')
-  .split('-').map((w: string) => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
-const footerGuides = guidePages.length
-  ? `        <h6>${escapeHtml(site.config.neighborhood?.guidesHeading ?? 'Guides')}</h6>\n` +
-    guidePages.map((pg) => `        <p><a href="${escapeHtml(pg.path)}">${escapeHtml(guideLabel(pg))}</a></p>`).join('\n')
-  : '';
-
-// Feature cards come from config: the six that used to live in the shared
-// markup described Magnolia specifically, so a studio building inherited
-// claims like "Two true bedrooms" and "Two full baths" that were untrue of it.
-const featureCards: any[] = site.config.features ?? [];
-const featuresHtml = featureCards.map((f: any) => `      <div class="feature-card">
-        <div class="icon">${FEATURE_ICONS[f.icon] ?? FEATURE_ICONS.kitchen}</div>
-        <h4>${escapeHtml(f.title)}</h4>
-        <p>${escapeHtml(f.body)}</p>
-      </div>`).join('\n');
-
-// Matterport walkthroughs of the shared spaces. The floor-plan section covers
-// the homes; these are the roof and the gym, which no layout tab would ever
-// surface, so they sit under the gallery — the part of the page that is already
-// about looking around the building.
-const amenityTours = site.config.amenityTours ?? {};
-const amenityTourItems: any[] = (amenityTours.items ?? []).filter((t: any) => t && t.url);
-const amenityToursHtml = amenityTourItems.length
-  ? '    <div class="amenity-tours reveal" data-delay="1">\n'
-    + '      <h3 class="amenity-tours-head">' + escapeHtml(amenityTours.heading ?? 'Walk the building') + '</h3>\n'
-    + (amenityTours.note ? '      <p class="amenity-tours-note">' + escapeHtml(amenityTours.note) + '</p>\n' : '')
-    + '      <div class="amenity-tours-row">\n'
-    + amenityTourItems.map((t: any) =>
-        // data-3d-tour is what the delegated analytics listener watches, so
-        // these count as tour views without a second listener.
-        '        <a class="amenity-tour" href="' + escapeHtml(t.url) + '" target="_blank" rel="noopener" data-3d-tour>\n'
-        + '          <span>' + escapeHtml(t.label) + '</span>\n'
-        + '          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" '
-        + 'stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'
-        + '<path d="M7 17 17 7"/><polyline points="8 7 17 7 17 16"/></svg>\n'
-        + '        </a>'
-      ).join('\n') + '\n'
-    + '      </div>\n'
-    + '    </div>'
-  : '';
-
-// The marumado — the round window that closes the page. It used to be a window
-// on the left and a column of copy on the right, which is the same two-column
-// split every other section already uses; the round window read as an ornament
-// bolted to the side of a paragraph.
-//
-// So the screen is the section now. The whole band is one shoji: a lattice of
-// panes with 1px rails, and the copy lives *inside* the panes — eyebrow in one,
-// heading across two, the lede in another, the call to action in a third — with
-// the round opening cut through the lower-left quarter of the same screen. The
-// panes are deliberately unequal and the reading order zig-zags, so the eye
-// moves across the lattice instead of down a column.
-//
-// Everything but the photograph is drawn: the lattice is the grid's own gap
-// over an ink ground, and the centre post is one element crossing the opening.
-const maru = site.config.marumado ?? {};
-// The small pane bottom-right. A screen with nothing in one pane looks
-// unfinished; the address is the one thing a leasing page can always put there,
-// and "come and see" is a great deal more actionable with a street on it.
-const maruMeta: string[] = Array.isArray(maru.meta) && maru.meta.length
-  ? maru.meta
-  : [addr.streetAddress, cityState].filter(Boolean);
-const pane = (mod: string, inner: string, attrs = '') =>
-  '    <div class="maru-pane maru-pane--' + mod + '"' + attrs + '>\n' + inner + '    </div>\n';
-const marumadoHtml = maru.enabled === true && maru.image
-  ? '<section class="marumado" id="marumado" aria-labelledby="marumado-title">\n'
-    + '  <div class="maru-screen reveal">\n'
-    + (maru.eyebrow
-        ? pane('eyebrow', '      <div class="eyebrow">' + escapeHtml(maru.eyebrow) + '</div>\n')
-        : '')
-    // One pane lit. A shoji is never a flat field — the light behind it is
-    // uneven — and this is the page's one yellow doing that job as a surface
-    // rather than as an ink.
-    + pane('lit', '', ' aria-hidden="true"')
-    + pane('title',
-        '      <h2 class="display" id="marumado-title">' + escapeHtml(maru.title ?? '')
-        + (maru.titleItalic ? ' <span class="italic">' + escapeHtml(maru.titleItalic) + '</span>' : '')
-        + '</h2>\n')
-    + pane('view',
-        '      <div class="marumado-window">\n'
-        + '        <img src="' + escapeHtml(maru.image) + '" alt="' + escapeHtml(maru.alt ?? '') + '" loading="lazy" decoding="async" />\n'
-        + '      </div>\n'
-        + '      <div class="marumado-post" aria-hidden="true"></div>\n')
-    + (maru.body ? pane('body', '      <p class="lede">' + escapeHtml(maru.body) + '</p>\n') : '')
-    + pane('cta',
-        '      <a class="btn btn-primary" href="#tour">' + escapeHtml(maru.cta ?? 'Schedule a tour')
-        + '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" '
-        + 'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'
-        + '<line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>\n')
-    + (maruMeta.length
-        ? pane('meta', maruMeta.map((line: string) => '      <span>' + escapeHtml(line) + '</span>\n').join(''))
-        : '')
-    + '  </div>\n'
-    + '</section>'
-  : '';
-
-// SightMap — the interactive building map. A renter picks a home off a drawing
-// of the building rather than reading a list of unit numbers, which is a far
-// better first move than scanning a table.
-//
-// Loaded lazily and only ever as the vendor's own embed: this is a third-party
-// frame, so it gets no more of the page than it needs. `sandbox` is deliberately
-// absent — SightMap needs scripts, same-origin and popups to function, and a
-// sandbox that permits all three grants nothing back.
-const smap = site.config.sightmap ?? {};
-const sightmapHtml = smap.enabled === true && smap.embedUrl
-  ? '<section class="building-map" id="building-map" aria-labelledby="building-map-title">\n'
-    + '  <div class="container">\n'
-    + '    <div class="section-head">\n'
-    + '      <div class="reveal">\n'
-    + '        <div class="eyebrow">' + escapeHtml(smap.eyebrow ?? 'The building') + '</div>\n'
-    + '        <h2 class="display" id="building-map-title">' + escapeHtml(smap.title ?? '')
-    + (smap.titleItalic ? ' <span class="italic">' + escapeHtml(smap.titleItalic) + '</span>' : '') + '</h2>\n'
-    + '      </div>\n'
-    + (smap.lede ? '      <p class="lede reveal" data-delay="1">' + escapeHtml(smap.lede) + '</p>\n' : '')
-    + '    </div>\n'
-    + '    <div class="building-map-frame reveal" data-delay="1">\n'
-    + '      <iframe src="' + escapeHtml(smap.embedUrl) + '" title="'
-    + escapeHtml(smap.iframeTitle ?? 'Interactive property map showing unit availability') + '"\n'
-    + '        loading="lazy" allow="geolocation; web-share; clipboard-write" referrerpolicy="strict-origin-when-cross-origin"></iframe>\n'
-    + '    </div>\n'
-    + (smap.note ? '    <p class="building-map-note">' + escapeHtml(smap.note) + '</p>\n' : '')
-    + '  </div>\n'
-    + '</section>'
-  : '';
-
-// The shoji panel.
-//
-// A real shoji screen has a structure, not just a texture: a transom, a field
-// of paper panes held in an even lattice, a band of clear glass low down where
-// the garden shows through, and a timber rail at the base. That is a page —
-// title, pockets of information, an opening onto imagery, a footer.
-//
-// So this section is a lattice with named cells, and the empty ones are cells
-// too. In a shoji the blank panes are not absence, they are the composition;
-// leaving them as grid gaps would draw them as solid rail instead of paper.
-const panel = site.config.shojiPanel ?? {};
-const panelLists: any[] = (site.config.featureLists ?? []).slice(0, 3);
-const cell = (area: string, cls: string, inner: string) =>
-  '      <div class="shoji-cell ' + cls + '" style="grid-area:' + area + '">\n' + inner + '      </div>';
-const listCell = (area: string, l: any) => cell(area, 'shoji-list',
-  '        <h4>' + escapeHtml(l?.heading ?? '') + '</h4>\n' +
-  '        <ul>\n' +
-  (l?.items ?? []).map((i: string) => '          <li>' + escapeHtml(i) + '</li>').join('\n') +
-  '\n        </ul>\n');
-const shojiHtml = panel.enabled === true && panelLists.length === 3
-  ? '<section class="shoji-section" id="the-building" aria-labelledby="shoji-title">\n'
-    + '  <div class="container">\n'
-    + '    <div class="shoji">\n'
-    + cell('t', 'shoji-head',
-        '        <div class="eyebrow">' + escapeHtml(panel.eyebrow ?? 'The building') + '</div>\n' +
-        '        <h2 class="display" id="shoji-title">' + escapeHtml(panel.title ?? '')
-        + (panel.titleItalic ? ' <span class="italic">' + escapeHtml(panel.titleItalic) + '</span>' : '')
-        + '</h2>\n') + '\n'
-    + cell('e1', 'shoji-empty', '') + '\n'
-    + listCell('c', panelLists[0]) + '\n'
-    + cell('w', 'shoji-window',
-        '        <img src="' + escapeHtml(panel.image ?? '') + '" alt="' + escapeHtml(panel.alt ?? '') + '" loading="lazy" decoding="async" />\n') + '\n'
-    + listCell('h', panelLists[1]) + '\n'
-    + cell('e2', 'shoji-empty', '') + '\n'
-    + listCell('p', panelLists[2]) + '\n'
-    + cell('n', 'shoji-note',
-        '        <p>' + escapeHtml(panel.note ?? '') + '</p>\n') + '\n'
-    + '    </div>\n'
-    + '  </div>\n'
-    + '</section>'
-  : '';
-
-const nb = site.config.neighborhood ?? {};
-
-// The marquee band under the hero. Its copy used to be hardcoded in
-// generated/body.html, where it read "One month free · 12-month lease" —
-// Magnolia's concession, rendering on Niwa's page. Config-driven now, and doubled
-// here because the CSS loop scrolls one track twice to appear seamless.
-const marqueeItems: string[] = site.config.marquee ?? [];
-const marqueeHtml = [...marqueeItems, ...marqueeItems]
-  .map((t) => `      <span>${escapeHtml(t)}</span>`)
-  .join('\n');
-
-// The amenity lists used to be three hardcoded blocks in the shared markup, and
-// they described Magnolia: "Cascade Mountain views", "Electric heat", and a
-// parking table quoting $75/mo covered and $50/mo uncovered. All of it rendered
-// on Niwa's page as Niwa's. Config-driven now, like the feature cards above.
-const featureLists: any[] = site.config.featureLists ?? [];
-// Built with concatenation rather than nested template literals: Astro's parser
-// mis-scans a backtick inside a ${} inside a backtick and fails the build with
-// "Expected > but found site". Every other builder in this file avoids it too.
-const featureListsHtml = featureLists.map((l: any) => {
-  const items = (l.items ?? []).map((it: string) => '          <li>' + escapeHtml(it) + '</li>').join('\n');
-  return '      <div class="list-block">\n'
-    + '        <h5>' + escapeHtml(l.heading) + '</h5>\n'
-    + '        <ul>\n' + items + '\n'
-    + '        </ul>\n'
-    + '      </div>';
-}).join('\n');
-
-// Rental terms. The template's ledger listed a security deposit, a $50 screening
-// fee, a $100 utility charge and a one-month concession — every one of them
-// Magnolia's, none confirmed for Niwa, all read by a prospect as Niwa's numbers.
-// Rows come from config now, so a figure nobody has confirmed cannot appear: what
-// is unknown is named as unknown rather than filled in from another property.
-const terms = site.config.rentalTerms ?? {};
-const termRows: any[] = terms.rows ?? [];
-const ledgerRows = termRows.map((r: any) => {
-  const note = r.note ? '\n            <small>' + escapeHtml(r.note) + '</small>' : '';
-  const live = r.live === 'rent-range' ? ' data-terms-rent-range' : '';
-  return '        <div class="ledger-row">\n'
-    + '          <div class="label">' + escapeHtml(r.label) + note + '\n'
-    + '          </div>\n'
-    + '          <div class="value"' + live + '>' + escapeHtml(r.value ?? '') + '</div>\n'
-    + '        </div>';
-}).join('\n');
-const pendingAside = terms.pending
-  ? '\n      <aside class="summary-card">\n'
-    + '        <h3>Still to confirm</h3>\n'
-    + '        <p class="terms-pending">' + escapeHtml(terms.pending) + '</p>\n'
-    + '      </aside>'
-  : '';
-const rentalTermsHtml = termRows.length
-  ? '      <div class="ledger">\n' + ledgerRows + '\n      </div>' + pendingAside
-  : '';
-
-const ADDRESS_TOKENS: Record<string, string> = {
-  '{{NEIGHBORHOOD_TITLE}}': nb.title ?? `${site.config.address?.addressLocality ?? ''}`,
-  '{{NEIGHBORHOOD_INTRO}}': nb.intro ?? '',
-  '{{FEATURE_CARDS}}': featuresHtml,
-  '{{AMENITY_TOURS}}': amenityToursHtml,
-  '{{MARUMADO}}': marumadoHtml,
-  '{{SHOJI_PANEL}}': shojiHtml,
-  '{{BUILDING_MAP}}': sightmapHtml,
-  '{{AVAILABILITY_LEDE}}': escapeHtml(site.config.availabilitySection?.lede ?? ''),
-  '{{GALLERY_LEDE}}': site.config.gallery?.lede ?? '',
-  '{{GALLERY_NOTE}}': site.config.gallery?.note ?? '',
-  '{{FEATURE_LISTS}}': featureListsHtml,
-  '{{RENTAL_TERMS}}': rentalTermsHtml,
-  '{{FOOTER_BLURB}}': site.config.footerBlurb ?? '',
-  '{{FOOTER_GUIDES}}': footerGuides,
-  '{{MARQUEE_ITEMS}}': marqueeHtml,
-  '{{HERO_TITLE}}': hero.title ?? siteName,
-  '{{HERO_TITLE_ITALIC}}': hero.titleItalic ?? '',
-  '{{HERO_INTRO}}': hero.intro ?? '',
-  '{{HERO_OFFER}}': hero.offer ?? '',
-  // The leasing address was hardcoded twice in the markup as Magnolia's
-  // leasing@agmrealestategroup.com — AGM's general inbox, published on Niwa's
-  // page as Niwa's. Config-driven, same as the phone number beside it.
-  '{{SITE_EMAIL}}': site.config.contact?.email ?? '',
-  '{{SITE_PHONE}}': formatPhone(site.config.contact?.phone),
-  '{{SITE_PHONE_HREF}}': site.config.contact?.phoneHref ?? ('tel:' + digits),
-  '{{SITE_PHONE_SMS}}': 'sms:' + digits,
-  '{{SITE_STREET}}': addr.streetAddress ?? '',
-  '{{SITE_CITYSTATE}}': cityState,
-  '{{SITE_LOCALITY}}': addr.addressLocality ?? '',
-  '{{SITE_MAP_HREF}}': 'https://maps.google.com/maps?t=m&z=14&q=' + mapQuery,
-  '{{SITE_NAME}}': siteName,
-  '{{SITE_NAME_LEAD}}': nameLead,
-  '{{SITE_NAME_EMPH}}': nameEmph,
-};
-// A site with no hero offer or intro shouldn't render an empty pill or an empty
-// paragraph, so strip those wrappers before substituting.
-const dropIfEmpty: [string, RegExp][] = [
-  [hero.offer, /\s*<span class="pill pill--accent">\{\{HERO_OFFER\}\}<\/span>/],
-  [hero.intro, /\s*<p class="hero-intro reveal" data-delay="3">\{\{HERO_INTRO\}\}<\/p>/],
+const c = site.config;
+const a = c.address;
+const marquee: string[] = [
+  ...(c.marquee ?? []),
+  `${a.streetAddress}, ${a.addressLocality}`,
+  'Pet friendly',
+  'MFTE homes available',
 ];
-const resolveTokens = (html: string) => {
-  let out = html;
-  for (const [value, pattern] of dropIfEmpty) if (!value) out = out.replace(pattern, '');
-  return Object.entries(ADDRESS_TOKENS).reduce((acc, [token, v]) => acc.replaceAll(token, v), out);
-};
-
-// The shared body markup carries the static sections. Two sections are
-// data-driven and rendered as components instead, spliced into their designed
-// positions so scripts/migrate.mjs stays re-runnable and the markup file never
-// has to know about per-site data:
-//
-//   FloorPlans — one tab per layout the property actually has, so a studio or
-//                3BR property needs no markup fork. Slotted at the FLOOR PLANS
-//                marker comment left in body.html.
-//   Faq        — after the tour CTA, before the footer.
-const FLOOR_PLANS_MARKER = '<!-- ================= FLOOR PLANS ================= -->';
-const floorPlansAt = bodyHtml.indexOf(FLOOR_PLANS_MARKER);
-
-// Fall back to appending rather than dropping content if a marker ever moves.
-const beforePlans = floorPlansAt === -1 ? bodyHtml : bodyHtml.slice(0, floorPlansAt);
-const afterPlans = floorPlansAt === -1 ? '' : bodyHtml.slice(floorPlansAt + FLOOR_PLANS_MARKER.length);
-
-const footerAt = afterPlans.lastIndexOf('<footer');
-const bodyMain = footerAt === -1 ? afterPlans : afterPlans.slice(0, footerAt);
-const bodyFooter = footerAt === -1 ? '' : afterPlans.slice(footerAt);
 ---
 <BaseLayout site={site}>
-  <Fragment set:html={resolveTokens(beforePlans)} />
-  <FloorPlans site={site} />
-  <Fragment set:html={resolveTokens(bodyMain)} />
-  <Faq site={site} />
-  <Fragment set:html={resolveTokens(bodyFooter)} />
+  <Nav site={site} />
+  <main id="main">
+    <Hero site={site} />
+    <Marquee items={marquee} />
+    <Manifesto site={site} />
+    <Building site={site} />
+    <Homes site={site} />
+    <SiteMap site={site} />
+    <Neighborhood site={site} />
+    <Gallery site={site} />
+    <Faq site={site} />
+    <Tour site={site} />
+  </main>
+  <Footer site={site} />
 </BaseLayout>

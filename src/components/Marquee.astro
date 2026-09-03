@@ -1,0 +1,23 @@
+---
+const { items = [] } = Astro.props as { items: string[] };
+const list = items.length ? items : ['Niwa Apartments'];
+---
+<div class="marquee" aria-hidden="true">
+  <div class="marquee-track">
+    {[0, 1].map(() => (
+      <div class="marquee-set">
+        {list.map((t) => <span class="marquee-item label">{t}<i class="marquee-dot"></i></span>)}
+      </div>
+    ))}
+  </div>
+</div>
+<style>
+  .marquee { overflow: hidden; border-bottom: 1px solid var(--line); padding: clamp(12px, 1.1vw, 18px) 0; }
+  .marquee-track { display: flex; width: max-content; animation: marquee 42s linear infinite; }
+  .marquee:hover .marquee-track { animation-play-state: paused; }
+  .marquee-set { display: flex; flex-shrink: 0; }
+  .marquee-item { display: inline-flex; align-items: center; gap: clamp(28px, 3vw, 56px); padding-right: clamp(28px, 3vw, 56px); color: var(--fg-2); white-space: nowrap; }
+  .marquee-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--fg-3); }
+  @keyframes marquee { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+  @media (prefers-reduced-motion: reduce) { .marquee-track { animation: none; } }
+</style>

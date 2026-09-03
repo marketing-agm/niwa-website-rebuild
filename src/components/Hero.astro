@@ -1,0 +1,85 @@
+---
+import { Image } from 'astro:assets';
+import hero from '../assets/hero.jpg';
+const { site } = Astro.props as { site: any };
+const c = site.config;
+const h = c.hero ?? {};
+const a = c.address;
+const facts = [
+  ['Walk Score', String(c.walkScores?.walk ?? '')],
+  ['Homes on floors', '2–8'],
+  ['Distinct layouts', '19'],
+  ['Pets', 'Welcome'],
+];
+---
+<section class="hero" id="top" data-hero>
+  <div class="hero-top">
+    <p class="label" data-hero-fade>{a.streetAddress} — {a.placename}</p>
+    <p class="label hero-top-r" data-hero-fade>Now leasing · Studio, one &amp; two bedroom</p>
+  </div>
+
+  <h1 class="h1 hero-title" data-hero-title>
+    <span class="hero-line"><span class="hero-line-in">{h.title}</span></span>
+    <span class="hero-line"><span class="hero-line-in">{h.titleItalic}</span></span>
+  </h1>
+
+  <div class="hero-row">
+    <p class="lead hero-intro" data-hero-fade>{h.intro}</p>
+    <div class="hero-cta" data-hero-fade>
+      <a class="btn" href="#tour">Schedule a tour <span class="arr" aria-hidden="true">→</span></a>
+      <a class="btn btn--ghost" href="#floor-plans">See the homes</a>
+    </div>
+    <dl class="hero-facts" data-hero-fade>
+      {facts.map(([k, v]) => (
+        <div class="hero-fact"><dt class="label label--dim">{k}</dt><dd class="mono">{v}</dd></div>
+      ))}
+    </dl>
+  </div>
+
+  <figure class="hero-media" data-hero-media>
+    <div class="hero-media-clip">
+      <Image src={hero} alt={h.alt} widths={[640, 960, 1440, 2000]} sizes="100vw" format="webp" quality={78} loading="eager" fetchpriority="high" data-hero-img />
+    </div>
+    <figcaption class="hero-cap">
+      <span class="label label--dim">The yellow cladding on 1st Ave N, the Space Needle behind</span>
+      <span class="label label--dim">{c.geo?.latitude?.toFixed(4)}° N · {Math.abs(c.geo?.longitude ?? 0).toFixed(4)}° W</span>
+    </figcaption>
+  </figure>
+</section>
+
+<style>
+  .hero { position: relative; padding-top: calc(var(--nav-h) + clamp(28px, 4vw, 64px)); }
+  .hero-top { display: flex; justify-content: space-between; gap: var(--gap); padding: 0 var(--gutter) clamp(24px, 4.5vw, 80px); }
+  .hero-top-r { text-align: right; }
+  .hero-title { padding: 0 var(--gutter); display: grid; }
+  .hero-title .hero-line { display: block; overflow: hidden; padding-bottom: 0.06em; margin-bottom: -0.06em; }
+  .hero-line-in { display: block; will-change: transform; }
+  .hero-title .hero-line:nth-child(2) { font-style: italic; font-weight: 400; padding-left: clamp(0px, 14vw, 22vw); }
+  .hero-row {
+    display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: var(--gap); align-items: end;
+    padding: clamp(28px, 4vw, 64px) var(--gutter) clamp(24px, 3vw, 48px);
+  }
+  .hero-intro { grid-column: 1 / span 5; max-width: 26ch; }
+  .hero-cta { grid-column: 6 / span 3; display: flex; flex-wrap: wrap; gap: 10px; align-self: end; }
+  .hero-facts { grid-column: 9 / span 4; display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); margin: 0; }
+  .hero-fact { background: var(--bg); padding: clamp(10px, 1vw, 16px) clamp(12px, 1.1vw, 18px); display: grid; gap: 6px; }
+  .hero-fact dd { margin: 0; color: var(--fg); }
+  .hero-media { position: relative; }
+  .hero-media-clip { height: clamp(300px, 66vh, 960px); overflow: hidden; }
+  .hero-media-clip :global(img) { width: 100%; height: 118%; object-fit: cover; object-position: 50% 40%; margin-top: -9%; will-change: transform; }
+  .hero-cap { display: flex; justify-content: space-between; gap: var(--gap); padding: 12px var(--gutter); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+
+  @media (max-width: 1024px) {
+    .hero-intro { grid-column: 1 / span 7; }
+    .hero-cta { grid-column: 8 / span 5; justify-content: flex-end; }
+    .hero-facts { grid-column: 1 / -1; grid-template-columns: repeat(4, 1fr); }
+  }
+  @media (max-width: 720px) {
+    .hero-top { flex-direction: column; gap: 6px; }
+    .hero-top-r { text-align: left; }
+    .hero-title .hero-line:nth-child(2) { padding-left: 10vw; }
+    .hero-intro, .hero-cta { grid-column: 1 / -1; justify-content: flex-start; }
+    .hero-facts { grid-template-columns: repeat(2, 1fr); }
+    .hero-cap span:last-child { display: none; }
+  }
+</style>
