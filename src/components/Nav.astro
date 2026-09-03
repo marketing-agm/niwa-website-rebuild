@@ -62,13 +62,15 @@ const links = [
   .nav.is-gold .nav-link, .nav.is-gold .nav-phone { color: var(--ink-2); }
   .nav.is-gold .nav-link:hover, .nav.is-gold .nav-link.is-active, .nav.is-gold .nav-phone:hover { color: var(--ink); }
   .nav.is-gold .nav-link::after { background: var(--ink); }
+  .nav.is-gold .nav-link.is-active { color: var(--ink); }
   .nav.is-gold .btn { --btn-bg: var(--ink); --btn-fg: var(--gold); --btn-line: var(--ink); --btn-hover: var(--fg); }
   .nav-brand { display: block; height: clamp(15px, 1.15vw, 20px); }
   .nav-brand :global(svg) { height: 100%; width: auto; }
-  .nav-links { display: flex; justify-content: center; gap: clamp(14px, 1.6vw, 34px); }
+  .nav-links { display: flex; justify-content: center; gap: clamp(26px, 3.2vw, 64px); }
   .nav-link { position: relative; color: var(--fg-2); font-size: var(--t-label); letter-spacing: 0.08em; text-transform: uppercase; padding: 6px 0; transition: color 0.3s; }
-  .nav-link::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: var(--fg); transform: scaleX(0); transform-origin: right; transition: transform 0.45s var(--ease); }
-  .nav-link:hover, .nav-link.is-active { color: var(--fg); }
+  .nav-link::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: var(--gold); transform: scaleX(0); transform-origin: right; transition: transform 0.45s var(--ease); }
+  .nav-link:hover { color: var(--fg); }
+  .nav-link.is-active { color: var(--gold); }
   .nav-link:hover::after, .nav-link.is-active::after { transform: scaleX(1); transform-origin: left; }
   .nav-right { display: flex; align-items: center; gap: clamp(12px, 1.4vw, 28px); justify-self: end; }
   .nav-phone { color: var(--fg-2); font-size: var(--t-label); letter-spacing: 0.04em; transition: color 0.3s; }

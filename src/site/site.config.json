@@ -404,6 +404,15 @@
   },
   "tour": {
     "lede": "Tell us who you are and when works. Leasing confirms by email, usually within one business day.",
-    "fine": "Niwa welcomes everyone. Some homes are income-restricted under Seattle's MFTE and MHA programs, and the leasing team can explain what applies."
+    "fine": "Niwa welcomes everyone. Some homes are income-restricted under Seattle's MFTE and MHA programs, and the leasing team can explain what applies.",
+    "eyebrow": "Schedule a tour",
+    "title": "See it in person",
+    "titleItalic": "this week."
+  },
+  "special": {
+    "label": "Now leasing: up to 4 weeks free",
+    "eyebrow": "New Niwa resident special",
+    "title": "Up to 4 weeks free",
+    "note": "On select homes. Ask the leasing team which homes qualify and how long the offer runs."
   }
 }

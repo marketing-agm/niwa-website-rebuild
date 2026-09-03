@@ -291,3 +291,42 @@ if (!reduce) {
 // Layout can shift as web fonts and lazy images arrive.
 document.fonts?.ready.then(() => ScrollTrigger.refresh());
 window.addEventListener('load', () => ScrollTrigger.refresh());
+
+/* ---------- The leasing special: a small panel beside the cursor ---------- */
+const specialBtn = $<HTMLButtonElement>('[data-special-toggle]');
+const specialPop = $('[data-special-pop]');
+if (specialBtn && specialPop) {
+  const close = () => {
+    if (specialPop.hidden) return;
+    specialPop.hidden = true;
+    specialBtn.setAttribute('aria-expanded', 'false');
+  };
+  const open = (x: number, y: number) => {
+    specialPop.hidden = false;
+    specialBtn.setAttribute('aria-expanded', 'true');
+    const pad = 12;
+    const w = specialPop.offsetWidth, h = specialPop.offsetHeight;
+    const small = innerWidth < 720;
+    let left = small ? (innerWidth - w) / 2 : x + pad;
+    let top = small ? Math.min(y + pad, innerHeight - h - pad) : y + pad;
+    if (left + w > innerWidth - pad) left = x - w - pad;
+    if (left < pad) left = pad;
+    if (top + h > innerHeight - pad) top = Math.max(pad, y - h - pad);
+    specialPop.style.left = `${Math.round(left)}px`;
+    specialPop.style.top = `${Math.round(top)}px`;
+    if (!reduce) gsap.fromTo(specialPop, { opacity: 0, y: 8, scale: 0.98 }, { opacity: 1, y: 0, scale: 1, duration: 0.35, ease: 'power3.out', clearProps: 'scale' });
+    (specialPop.querySelector('a, button') as HTMLElement | null)?.focus({ preventScroll: true });
+  };
+  specialBtn.addEventListener('click', (e) => {
+    if (!specialPop.hidden) return close();
+    const r = specialBtn.getBoundingClientRect();
+    // Keyboard activation has no pointer position; anchor to the label instead.
+    const x = e.clientX || r.left, y = e.clientY || r.bottom;
+    open(x, y);
+  });
+  specialPop.addEventListener('click', (e) => { if ((e.target as Element).closest('[data-special-close]')) close(); });
+  document.addEventListener('click', (e) => { if (!specialPop.hidden && !specialPop.contains(e.target as Node) && e.target !== specialBtn) close(); });
+  window.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
+  window.addEventListener('scroll', close, { passive: true });
+  lenis?.on('scroll', close);
+}

@@ -14,8 +14,8 @@ const slots = [['Morning', 'morning'], ['Midday', 'midday'], ['Afternoon', 'afte
 <section class="section tour" id="tour" data-tour-section>
   <div class="tour-inner">
     <div class="tour-head">
-      <span class="label tour-label">Come and see</span>
-      <h2 class="h2 tour-title" data-reveal>The view is <em>the point.</em></h2>
+      <span class="label tour-label">{c.tour?.eyebrow}</span>
+      <h2 class="h2 tour-title" data-reveal>{c.tour?.title} <em>{c.tour?.titleItalic}</em></h2>
       <p class="tour-lede" data-reveal>{c.tour?.lede}</p>
     </div>
 

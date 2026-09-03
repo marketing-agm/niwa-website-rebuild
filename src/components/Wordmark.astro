@@ -1,14 +1,18 @@
 ---
-// The Niwa wordmark, redrawn as four monoline strokes with round caps — the
+// The Niwa wordmark, redrawn as four monoline strokes with round caps: the
 // same construction as the brand artwork, at 1KB instead of 148KB, and
 // drawable with DrawSVG because it is real geometry, not a traced outline.
+//
+// Letter spacing is optical: the gap between neighbouring strokes is measured
+// at mid-height, where the slanted W and A legs sit, so N·I, I·W and W·A read
+// as the same distance.
 const { class: cls = '', label = 'Niwa Apartments', decorative = false } = Astro.props as {
   class?: string; label?: string; decorative?: boolean;
 };
 ---
 <svg
   class={`wordmark ${cls}`}
-  viewBox="0 0 652 200"
+  viewBox="0 0 560 200"
   fill="none"
   stroke="currentColor"
   stroke-width="26"
@@ -20,7 +24,7 @@ const { class: cls = '', label = 'Niwa Apartments', decorative = false } = Astro
   focusable="false"
 >
   <path data-stroke d="M22 178V22l128 156V22" />
-  <path data-stroke d="M206 22v156" />
-  <path data-stroke d="M262 22l44 156 44-156 44 156 44-156" />
-  <path data-stroke d="M498 178l66-156 66 156" />
+  <path data-stroke d="M208 22v156" />
+  <path data-stroke d="M256 22l34 156 34-156 34 156 34-156" />
+  <path data-stroke d="M412 178l56-156 56 156" />
 </svg>
