@@ -5636,3 +5636,125 @@
     footer::before, footer::after { height: 16px; }
     footer { padding-top: 52px; }
   }
+
+  /* ==========================================================================
+     BREAKING THE STACK
+     ==========================================================================
+     The template this was forked from announces every section identically:
+     eyebrow, display heading, lede, then a centred block. Six times down the
+     page. It is a good checklist of what a leasing site must say and a poor
+     answer to where any of it should sit.
+
+     So the lattice becomes the page's layout system rather than one section's
+     decoration, and each section takes a different position in it. The grid
+     stays constant; the composition inside it does not. */
+
+  /* ---- The rail ----
+     The sheet number set vertically down the left edge, the way a drawing is
+     labelled along its margin. Runs in the gutter outside the content measure,
+     so it costs no width and never collides with the text. Hidden where there
+     is no gutter to put it in. */
+  @media (min-width: 1180px) {
+    section[id]::before {
+      content: counter(sheet, decimal-leading-zero);
+      position: absolute;
+      left: clamp(18px, 3vw, 46px);
+      top: var(--section-y);
+      writing-mode: vertical-rl;
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 500;
+      letter-spacing: 0.42em;
+      text-transform: uppercase;
+      color: var(--ink-3);
+      opacity: 0.75;
+      pointer-events: none;
+    }
+    section[id]::after {
+      content: "";
+      position: absolute;
+      left: calc(clamp(18px, 3vw, 46px) + 6px);
+      top: calc(var(--section-y) + 46px);
+      bottom: var(--section-y);
+      width: 1px;
+      background: var(--rule);
+      pointer-events: none;
+    }
+    .gallery-section::before { color: rgba(255,255,255,0.62); }
+    .gallery-section::after { background: rgba(255,255,255,0.22); }
+  }
+
+  /* ---- Section heads stop being one shape ----
+     Three treatments, cycled, so no two adjacent sections announce themselves
+     the same way. Nothing here changes what is said — only where it sits. */
+
+  /* 1st: title left, lede indented to the far right of the measure. */
+  section[id]:nth-of-type(3n+1) .section-head {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+  section[id]:nth-of-type(3n+1) .section-head > .reveal:first-child { grid-column: 1; }
+  section[id]:nth-of-type(3n+1) .section-head .lede { grid-column: 2; justify-self: end; }
+
+  /* 2nd: the title takes the whole measure and the lede drops beneath it,
+     pushed to the right — the heading behaves like a banner rather than a
+     column. */
+  section[id]:nth-of-type(3n+2) .section-head {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+  section[id]:nth-of-type(3n+2) .section-head .display {
+    font-size: clamp(44px, 7vw, 104px);
+    line-height: 0.98;
+  }
+  section[id]:nth-of-type(3n+2) .section-head .lede {
+    justify-self: end;
+    text-align: right;
+    max-width: 44ch;
+  }
+
+  /* 3rd: reversed — lede first on the left, the title arriving after it on the
+     right, so the eye starts where it did not last time. */
+  section[id]:nth-of-type(3n) .section-head {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+  }
+  section[id]:nth-of-type(3n) .section-head > .reveal:first-child { order: 2; }
+  section[id]:nth-of-type(3n) .section-head .lede { order: 1; align-self: start; }
+
+  @media (max-width: 900px) {
+    section[id] .section-head,
+    section[id]:nth-of-type(3n+1) .section-head,
+    section[id]:nth-of-type(3n+2) .section-head,
+    section[id]:nth-of-type(3n) .section-head {
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+    section[id] .section-head .lede,
+    section[id]:nth-of-type(3n+2) .section-head .lede {
+      justify-self: start;
+      text-align: left;
+    }
+    section[id]:nth-of-type(3n) .section-head > .reveal:first-child { order: 0; }
+    section[id]:nth-of-type(3n) .section-head .lede { order: 1; }
+  }
+
+  /* ---- Floor plans: the layout switcher becomes a rail ----
+     Tabs across the top is the shape every listing site uses. Down the side it
+     reads as an index, the plan viewer gets the width it actually wants, and
+     the section stops looking like the one above it. */
+  @media (min-width: 1100px) {
+    .floor-plans .plan-switcher {
+      grid-auto-flow: row;
+      grid-auto-columns: auto;
+      float: left;
+      width: 232px;
+      margin: 0 0 32px 0;
+      border-right: 0;
+    }
+    .floor-plans .plan-tab { border-right: 0; border-bottom: 1px solid var(--rule); }
+    .floor-plans .plan-tab:last-child { border-bottom: 0; }
+    .floor-plans .plan-display {
+      margin-left: 264px;
+      grid-template-columns: 1.35fr 1fr;
+    }
+    .floor-plans .plan-disclaimer { clear: both; }
+  }
