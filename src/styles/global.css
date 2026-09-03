@@ -12,9 +12,14 @@
        anything that should catch the eye. --warm is the field: the large areas
        that used to carry --accent and read as a wall of saturated yellow. Both
        are brand values; what changed is which one covers area. */
-    --accent: #F1E249;   /* Niwa yellow — PRIMARY, the pop */
-    --accent-2: #F1E249;
-    --warm: #FFFCCC;     /* Niwa pale yellow — SECONDARY, the field */
+    /* One yellow. There were two — a saturated highlight and a pale field —
+       and two yellows on a white page read as a sale, not as a brand. The pale
+       one is the brand yellow now, everywhere, with no second value beneath it.
+       --warm is kept as an alias so the eleven rules that reach for it do not
+       have to be rewritten, but it resolves to the same colour. */
+    --accent: #FFFCCC;
+    --accent-2: #FFFCCC;
+    --warm: #FFFCCC;
     /* Type that sits ON either yellow. Both are light fills, so this is black in
        every case; it is a token so no rule reaches for --paper and disappears. */
     --on-accent: #000000;
@@ -36,7 +41,7 @@
        861px wide and to 102px at 1200px, tightening the page on a normal laptop
        while claiming to open it up. Every value below is above the one it
        replaces, at every width. */
-    --section-y: clamp(120px, 10vw, 168px);
+    --section-y: clamp(148px, 12.5vw, 216px);
     --shadow: 0 1px 0 rgba(10,10,10,0.04), 0 12px 32px -16px rgba(10,10,10,0.18);
     --shadow-sm: 0 1px 2px rgba(10,10,10,0.06);
     --radius: 4px;
@@ -243,7 +248,7 @@
     transition: background 180ms ease, transform 180ms ease, box-shadow 180ms ease;
   }
   .nav-cta:hover {
-    background: #DACD2A;
+    background: var(--ink); color: #FFFFFF;
     color: var(--on-accent);
     transform: translateY(-1px);
     box-shadow: 0 10px 22px -12px var(--accent);
@@ -615,8 +620,8 @@
   section { padding: var(--section-y) 0; position: relative; }
   /* The two narrow steps keep their own values rather than riding the desktop
      clamp, which would undershoot them. Old: 80px here, 56px below 540. */
-  @media (max-width: 860px) { :root { --section-y: 104px; } }
-  @media (max-width: 540px) { :root { --section-y: 76px; } }
+  @media (max-width: 860px) { :root { --section-y: 128px; } }
+  @media (max-width: 540px) { :root { --section-y: 96px; } }
 
   .section-head {
     display: grid;
@@ -2909,7 +2914,7 @@
     box-shadow: 0 0 0 2px rgba(255,255,255,0.7) inset;
   }
   .nb-pill-dot--all {
-    background: conic-gradient(from 45deg, #F1E249, #F1E249, #8b6f47, #3d5a6c, #6b4a7a, #F1E249);
+    background: conic-gradient(from 45deg, var(--accent), var(--accent), #8b6f47, #3d5a6c, #6b4a7a, var(--accent));
   }
   .nb-pill-count {
     font-family: var(--mono);
@@ -4174,7 +4179,7 @@
   /* The centring lives in `transform`, so every hover/focus state has to carry
      it too — a bare `translateY` here would fling the button off-centre. */
   .hero-video-btn:hover {
-    background: #DACD2A;
+    background: var(--ink); color: #FFFFFF;
     transform: translate(-50%, -50%) scale(1.04);
   }
   .hero-video-btn:focus-visible {
@@ -4238,7 +4243,7 @@
     cursor: pointer;
     transition: background 200ms ease;
   }
-  .video-modal-close:hover { background: #DACD2A; }
+  .video-modal-close:hover { background: var(--ink); color: #FFFFFF; }
   .video-modal-close:focus-visible {
     outline: 2px solid var(--accent);
     outline-offset: 3px;
@@ -4417,7 +4422,7 @@
     color: var(--on-accent);
     border-color: var(--accent);
   }
-  .marumado-copy .btn-primary:hover { background: #DACD2A; border-color: #DACD2A; }
+  .marumado-copy .btn-primary:hover { background: #FFFFFF; border-color: #FFFFFF; color: var(--ink); }
 
   @media (max-width: 900px) {
     .marumado-shoji { aspect-ratio: 1 / 1; max-width: 520px; }
@@ -4985,7 +4990,7 @@
   .faq-item summary::after {
     content: ""; position: absolute; right: 6px; top: 50%; width: 13px; height: 13px;
     margin-top: -7px; background-size: contain; background-repeat: no-repeat;
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23F1E249' stroke-width='2' stroke-linecap='round'><line x1='12' y1='5' x2='12' y2='19'/><line x1='5' y1='12' x2='19' y2='12'/></svg>");
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23111111' stroke-width='2' stroke-linecap='round'><line x1='12' y1='5' x2='12' y2='19'/><line x1='5' y1='12' x2='19' y2='12'/></svg>");
     transition: transform 220ms ease;
   }
   .faq-item[open] summary::after { transform: rotate(45deg); }
@@ -5457,3 +5462,48 @@
   footer h6, .footer h6 { font-size: 12px; }
   footer p, .footer p { font-size: 13px; }
   .eho { font-size: 12px; }
+
+  /* ==========================================================================
+     ONE YELLOW, AND MORE AIR
+     ========================================================================== */
+
+  /* The pale yellow is a *surface*. On white it has almost no luminance
+     difference — about 1.07:1 — so a button filled with it and nothing else is
+     a button with no edge. Every yellow fill gets a rule so it holds its shape;
+     the type on it is black, which is 18:1 and never in doubt. */
+  .nav-cta, .btn-primary, .marumado-copy .btn-primary,
+  .hero-video-btn, .badge-featured, .unit-budget-tag {
+    background: var(--accent);
+    color: var(--on-accent);
+    border: 1px solid var(--ink);
+  }
+  .nav-cta:hover, .btn-primary:hover, .marumado-copy .btn-primary:hover,
+  .hero-video-btn:hover {
+    background: var(--ink);
+    color: #FFFFFF;
+    border-color: var(--ink);
+  }
+
+  /* Yellow as type is gone with the second yellow: #FFFCCC on white is
+     unreadable at any size, and a darker gold would be a second yellow by
+     another name. The headline's emphasis comes from the italic itself, which
+     in this serif is already a strong enough signal to carry it. */
+  .display .italic,
+  .hero .display .italic,
+  .marumado-copy .display .italic { color: var(--ink); }
+  /* On the inverted scopes the one yellow reads perfectly well as type — it is
+     nearly white against black — so it keeps the accent there. */
+  .gallery-section .display .italic,
+  .marumado .display .italic,
+  .unit-card .italic,
+  .pricing h2.display .italic { color: var(--accent); }
+
+  /* More air. Section rhythm is raised in --section-y; these are the interior
+     gaps that would otherwise make the sections themselves feel tighter as the
+     space around them grows. */
+  .section-head { margin-bottom: clamp(72px, 7vw, 112px); gap: 80px; }
+  .hero { padding-top: clamp(48px, 5vw, 88px); }
+  .hero-grid { gap: 64px; }
+  .amenity-tours { margin-top: clamp(56px, 6vw, 88px); padding-top: clamp(44px, 5vw, 68px); }
+  .marumado { gap: clamp(52px, 6vw, 88px); }
+  .filter-bar { margin-bottom: clamp(40px, 4vw, 64px); }

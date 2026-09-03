@@ -1268,12 +1268,17 @@
     return `${Math.max(1, Math.round(mi / 25 * 60))} min drive`;
   }
 
+  // Wayfinding, not brand. These five have to be told apart from each other at
+  // the size of a map pin, which the brand's single pale yellow cannot do — and
+  // two of them were the same value, so Parks and Food were indistinguishable
+  // both on the map and in the legend beneath it. The brand yellow is reserved
+  // for the property's own pin, so "you are here" is the one yellow thing.
   const CATEGORIES = {
-    parks:    { label: 'Parks & Outdoors', color: '#F1E249' },
-    food:     { label: 'Food & Drink',     color: '#F1E249' },
-    shopping: { label: 'Shopping & Grocery', color: '#8b6f47' },
-    transit:  { label: 'Transit',          color: '#3d5a6c' },
-    schools:  { label: 'Schools',          color: '#6b4a7a' }
+    parks:    { label: 'Parks & Outdoors',   color: '#4A7A4E' },
+    food:     { label: 'Food & Drink',       color: '#B4552F' },
+    shopping: { label: 'Shopping & Grocery', color: '#8B6F47' },
+    transit:  { label: 'Transit',            color: '#3D5A6C' },
+    schools:  { label: 'Schools',            color: '#6B4A7A' }
   };
 
   // Grouped by category; the list is sorted by computed distance at render time

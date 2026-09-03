@@ -97,8 +97,8 @@
       "--ink-3": "#666666",
       "--rule": "#E0E0E0",
       "--rule-2": "#EDEDED",
-      "--accent": "#F1E249",
-      "--accent-2": "#F1E249",
+      "--accent": "#FFFCCC",
+      "--accent-2": "#FFFCCC",
       "--warm": "#FFFCCC",
       "--on-accent": "#000000"
     },
