@@ -263,6 +263,10 @@
     }
   ],
   "marquee": [
+    {
+      "text": "One month free",
+      "offer": true
+    },
     "Rooftop terrace · skyline views",
     "24-hour fitness center",
     "Walk to Seattle Center",

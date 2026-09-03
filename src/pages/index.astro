@@ -220,9 +220,21 @@ const nb = site.config.neighborhood ?? {};
 // generated/body.html, where it read "One month free · 12-month lease" —
 // Magnolia's concession, rendering on Niwa's page. Config-driven now, and doubled
 // here because the CSS loop scrolls one track twice to appear seamless.
-const marqueeItems: string[] = site.config.marquee ?? [];
+//
+// An item may be a plain string or `{ "text": "...", "offer": true }`. The offer
+// flag is the only distinction the band makes, and it exists because a rent
+// concession is not an amenity: "One month free" and "24-hour fitness center"
+// scrolling past in identical type means the one thing a renter would stop for
+// reads as the fourth item in a list of features.
+type MarqueeItem = string | { text?: string; offer?: boolean };
+const marqueeItems: MarqueeItem[] = site.config.marquee ?? [];
 const marqueeHtml = [...marqueeItems, ...marqueeItems]
-  .map((t) => `      <span>${escapeHtml(t)}</span>`)
+  .map((item) => {
+    const text = typeof item === 'string' ? item : (item?.text ?? '');
+    const offer = typeof item === 'object' && item?.offer === true;
+    return '      <span' + (offer ? ' class="marquee-offer"' : '') + '>'
+      + escapeHtml(text) + '</span>';
+  })
   .join('\n');
 
 // The amenity lists used to be three hardcoded blocks in the shared markup, and

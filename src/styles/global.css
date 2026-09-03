@@ -6177,3 +6177,30 @@
     .nav-actions { display: none; }
     .nav-toggle { display: inline-flex; }
   }
+
+  /* ---- The offer in the marquee ----
+     A rent concession is not an amenity. Set in the same italic serif as
+     "24-hour fitness center", "One month free" scrolls past as the fourth
+     feature in a list of features — the one line a renter would actually stop
+     for, dressed as the one they would not.
+
+     So it inverts: the band is the pale yellow, the offer is a black chip cut
+     out of it. Same band, same track, one thing that is clearly not a feature. */
+  .marquee-track .marquee-offer {
+    background: var(--ink);
+    color: var(--accent);
+    font-family: var(--mono);
+    font-style: normal;
+    font-size: 0.62em;
+    font-weight: 500;
+    letter-spacing: var(--label-track);
+    text-transform: uppercase;
+    padding: 0.55em 1.1em;
+    /* The track sets `gap: 56px` on every span for the separator; the chip
+       carries its own padding instead, so the gap is reset inside it.
+       Both of these need the track in the selector: `.marquee-track span` and
+       `.marquee-track span::after` outrank a bare class, so the first version
+       of this rendered the separator star inside the black chip. */
+    gap: 0;
+  }
+  .marquee-track .marquee-offer::after { content: none; }
