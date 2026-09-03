@@ -162,6 +162,33 @@ if (gal && track) {
   }
 }
 
+/* ---------- Hero film ---------- */
+// The poster is the first frame, so a paused video and the still are the same
+// picture — nothing jumps when playback is refused or switched off.
+const heroVideo = $<HTMLVideoElement>('[data-hero-video]');
+if (heroVideo) {
+  if (reduce) {
+    heroVideo.autoplay = false;
+    heroVideo.removeAttribute('autoplay');
+    heroVideo.pause();
+  } else {
+    // Some browsers ignore the autoplay attribute but honour a play() call.
+    const play = () => heroVideo.play().catch(() => {});
+    play();
+    // Don't decode 1080p for a hero nobody is looking at.
+    if ('IntersectionObserver' in window) {
+      new IntersectionObserver(
+        (entries) => entries.forEach((e) => (e.isIntersecting ? play() : heroVideo.pause())),
+        { rootMargin: '200px' },
+      ).observe(heroVideo);
+    }
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) heroVideo.pause();
+      else if (heroVideo.getBoundingClientRect().bottom > 0) play();
+    });
+  }
+}
+
 /* ---------- Everything below is decoration; skip it for reduced motion ---------- */
 if (!reduce) {
   // Hero entrance

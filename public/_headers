@@ -36,3 +36,7 @@
 # Fonts: immutable, content-addressed by filename
 /fonts/*
   Cache-Control: public, max-age=31536000, immutable
+
+# Hero film: big and rarely recut, so cache it hard
+/video/*
+  Cache-Control: public, max-age=2592000
