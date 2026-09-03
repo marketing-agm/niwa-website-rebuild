@@ -47,6 +47,7 @@ src/
 public/                  ← static files served as-is
   fonts/                 ← self-hosted Inter Tight + Geist Mono (latin subsets)
   images/og.jpg, favicon.svg, llms.txt, admin/ (Sveltia CMS)
+  video/                 ← the hero film + its poster frame
 ```
 
 ## The design
@@ -58,7 +59,7 @@ monitor. The only colour is Niwa's own cladding yellow (`--gold`), reserved for
 the tour section at the end of the page and the hover state of buttons.
 
 Motion is GSAP with Lenis smooth scroll: masked line reveals in the hero, a
-clip-path reveal on the hero photograph with a slow parallax, scroll-scrubbed
+clip-path reveal on the hero film with a slow parallax, scroll-scrubbed
 words in the manifesto, a horizontally pinned gallery on desktop (native swipe
 on touch), counters, and the footer wordmark drawing itself with DrawSVG.
 Everything respects `prefers-reduced-motion`, which turns Lenis and the
@@ -155,8 +156,24 @@ form). Astro resizes and converts to WebP at build time, so commit full-size
 originals (landscape, ≥2000px wide). A `photos.json` entry that points at a
 missing file fails the build rather than shipping a broken image.
 
-`src/assets/hero.jpg` is the hero; `public/images/og.jpg` (1200×630) is the
-social preview.
+The hero is a film, not a still: `public/video/niwa-hero.mp4` (1920×1080, 30s,
+H.264, no audio track, ~6 MB) with `public/video/niwa-hero-poster.jpg` as its
+poster. Video in `public/` is served untouched — Astro does not transcode it —
+so re-encode before committing a replacement:
+
+```bash
+ffmpeg -i source.mov -an -c:v libx264 -profile:v high -preset slow -crf 32 \
+  -pix_fmt yuv420p -g 48 -movflags +faststart public/video/niwa-hero.mp4
+ffmpeg -i public/video/niwa-hero.mp4 -frames:v 1 -vf scale=1600:-2 -q:v 6 \
+  public/video/niwa-hero-poster.jpg
+```
+
+Keep the poster as frame one, so a paused or blocked video looks identical to
+the still. `-an` is deliberate: the hero is muted, and a silent file is the
+only kind browsers will autoplay.
+
+`src/assets/hero.jpg` is the retired hero still, kept as source photography;
+`public/images/og.jpg` (1200×630) is the social preview.
 
 ## Admin portal
 

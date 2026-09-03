@@ -1,6 +1,4 @@
 ---
-import { Image } from 'astro:assets';
-import hero from '../assets/hero.jpg';
 const { site } = Astro.props as { site: any };
 const c = site.config;
 const h = c.hero ?? {};
@@ -38,10 +36,24 @@ const facts = [
 
   <figure class="hero-media" data-hero-media>
     <div class="hero-media-clip">
-      <Image src={hero} alt={h.alt} widths={[640, 960, 1440, 2000]} sizes="100vw" format="webp" quality={78} loading="eager" fetchpriority="high" data-hero-img />
+      <video
+        class="hero-video"
+        poster="/video/niwa-hero-poster.jpg"
+        aria-label="A film of Niwa Apartments: the yellow and grey facade on 1st Ave N, the homes and kitchens inside, the roof deck, and the Space Needle and downtown Seattle beyond"
+        autoplay
+        muted
+        loop
+        playsinline
+        preload="metadata"
+        data-hero-img
+        data-hero-video
+      >
+        <source src="/video/niwa-hero.webm" type="video/webm" />
+        <source src="/video/niwa-hero.mp4" type="video/mp4" />
+      </video>
     </div>
     <figcaption class="hero-cap">
-      <span class="label label--dim">The yellow cladding on 1st Ave N, the Space Needle behind</span>
+      <span class="label label--dim">The building, the homes, the roof deck — filmed on 1st Ave N</span>
       <span class="label label--dim">{c.geo?.latitude?.toFixed(4)}° N · {Math.abs(c.geo?.longitude ?? 0).toFixed(4)}° W</span>
     </figcaption>
   </figure>
@@ -65,8 +77,11 @@ const facts = [
   .hero-fact { background: var(--bg); padding: clamp(10px, 1vw, 16px) clamp(12px, 1.1vw, 18px); display: grid; gap: 6px; }
   .hero-fact dd { margin: 0; color: var(--fg); }
   .hero-media { position: relative; }
-  .hero-media-clip { height: clamp(300px, 66vh, 960px); overflow: hidden; }
-  .hero-media-clip :global(img) { width: 100%; height: 118%; object-fit: cover; object-position: 50% 40%; margin-top: -9%; will-change: transform; }
+  .hero-media-clip { height: clamp(300px, 66vh, 960px); overflow: hidden; background: var(--bg); }
+  /* 118% tall and pulled up 9% leaves the parallax room to travel without
+     baring an edge. Centred, not top-weighted like the still was: the film
+     carries its own captions in the lower third. */
+  .hero-video { display: block; width: 100%; height: 118%; object-fit: cover; object-position: 50% 50%; margin-top: -9%; will-change: transform; }
   .hero-cap { display: flex; justify-content: space-between; gap: var(--gap); padding: 12px var(--gutter); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
 
   @media (max-width: 1024px) {
