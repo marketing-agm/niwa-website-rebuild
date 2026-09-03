@@ -5777,26 +5777,22 @@
     }
   }
 
-  /* ---- The yellow comes back to the headline ----
-     #FFFCCC on white is 1.07:1, so the fill cannot carry it alone. A hard
-     offset shadow in ink gives every letterform a defined edge — the glyph is
-     read from the black, the colour is read from the yellow. Offset in `em` so
-     it scales with the type instead of turning into a smudge at 100px and a
-     halo at 30px. */
+  /* ---- The outlined headline is reverted ----
+     Yellow type with a hard ink shadow was tried and rejected on sight: an
+     outline is a sticker effect, not a serif. On a light ground the italic goes
+     back to plain ink and carries its emphasis the way the typeface intended.
+     The yellow stays where it belongs — as a *fill*, on the panes and rails and
+     buttons, never as an ink on white. */
   .display .italic,
   .hero .display .italic,
   .marumado-copy .display .italic,
   .shoji-head .display .italic {
-    color: var(--accent);
-    text-shadow:
-      0.028em 0.034em 0 var(--ink),
-      -0.006em 0 0 var(--ink),
-      0 -0.006em 0 var(--ink);
+    color: var(--ink);
+    text-shadow: none;
   }
-  /* On the inverted scopes the yellow already reads at 17:1 against black. A
-     shadow there would only muddy it. */
+  /* On the inverted scopes the yellow is nearly white against black and reads
+     at 17:1, so it keeps the accent — no shadow needed there either. */
   .gallery-section .display .italic,
-  .marumado .display .italic,
   .unit-card .italic,
   .pricing h2.display .italic {
     color: var(--accent);
@@ -5850,4 +5846,142 @@
     background-image: repeating-linear-gradient(90deg,
       rgba(255,255,255,0.07) 0 1px, transparent 1px 7px);
     opacity: 1;
+  }
+
+  /* ==========================================================================
+     THE MARUMADO IS THE SCREEN
+     ==========================================================================
+     It was a round window on the left and a paragraph on the right — the same
+     two-column split as every other section, with a piece of Japanese joinery
+     parked in one half of it. That is why it read as an ornament.
+
+     Now the shoji *is* the section. One lattice spans the band, the copy sits
+     inside its panes, and the round opening is cut through the lower-left
+     quarter of the same screen rather than standing next to the text.
+
+     The lattice is the grid's own 1px gap over an ink ground with every cell
+     filled — the same trick the .shoji section uses, so the two read as one
+     piece of carpentry. Nothing here is an image except the view. */
+
+  .marumado {
+    display: block;
+    padding: var(--section-y) max(clamp(20px, 5vw, 64px), calc((100% - 1320px) / 2));
+    background: var(--ink);
+    color: #FFFFFF;
+  }
+  /* The drawn floor went with the timber room — the screen has a real frame
+     around it now, which is what was holding the composition down. And the
+     section rail goes with it: a grey hairline floating in the black margin
+     beside a framed screen is a stray mark. Both are the same `::after`, and
+     `section[id]::after` outranks a bare class — hence the attribute here. */
+  section[id].marumado::after { content: none; }
+
+  /* The type inside the screen sits on paper, so the italic is ink here like
+     everywhere else on a light ground. Stated at this specificity because the
+     inverted-scope rule further up still claims `.marumado .display .italic`
+     for the accent, from when this section was a dark room. */
+  .marumado .display .italic { color: var(--ink); text-shadow: none; }
+
+  .maru-screen {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    /* The slack goes into the heading's row, not the lede's: a display line
+       wants air around it, a paragraph wants to sit against its rail. */
+    grid-template-rows: auto 1fr auto auto;
+    gap: 1px;
+    background: var(--ink);
+    /* The kamachi — the heavy outer stile. Thicker than the rails inside it,
+       because on a real screen it is. */
+    border: clamp(10px, 1.3vw, 18px) solid var(--ink);
+    box-shadow:
+      0 0 0 1px rgba(255, 252, 204, 0.34),
+      0 60px 120px -60px rgba(0, 0, 0, 0.9);
+  }
+  .maru-pane {
+    position: relative;
+    min-width: 0;
+    background: var(--paper);
+    padding: clamp(20px, 2.1vw, 34px);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 12px;
+  }
+
+  /* Deliberately unequal, and the reading order zig-zags: label top-left, a lit
+     pane, the heading top-right dropping two rows, the view filling the lower
+     left, then lede, action, address. The eye crosses the lattice rather than
+     running down one edge of it. */
+  .maru-pane--eyebrow { grid-column: 1 / 5;  grid-row: 1;     justify-content: center; }
+  .maru-pane--lit     { grid-column: 5 / 7;  grid-row: 1; }
+  .maru-pane--title   { grid-column: 7 / 13; grid-row: 1 / 3; justify-content: center; }
+  .maru-pane--view    { grid-column: 1 / 7;  grid-row: 2 / 5; }
+  .maru-pane--body    { grid-column: 7 / 13; grid-row: 3;     justify-content: flex-start; }
+  .maru-pane--cta     { grid-column: 7 / 10; grid-row: 4;     justify-content: center; }
+  .maru-pane--meta    { grid-column: 10 / 13; grid-row: 4;    justify-content: center; }
+
+  /* One pane lit. A shoji is never an even field — the light behind it is
+     uneven — and this is the page's single yellow doing that job as a surface,
+     which is the only place it belongs. */
+  .maru-pane--lit { background: var(--accent); }
+
+  /* The pane the window is cut through. Its own finer lattice, so the opening
+     reads as a hole in a field of paper panes and not as a circle in a box. */
+  .maru-pane--view {
+    padding: 0;
+    overflow: hidden;
+    min-height: clamp(380px, 40vw, 620px);
+    background:
+      repeating-linear-gradient(90deg, rgba(0,0,0,0.5) 0 1px, transparent 1px calc(100% / 5)),
+      repeating-linear-gradient(0deg,  rgba(0,0,0,0.5) 0 1px, transparent 1px calc(100% / 6)),
+      var(--paper);
+  }
+  .marumado-window {
+    /* Small enough that the paper panes read all the way around it. An opening
+       that touches the rails is a photograph in a box, not a window in a wall. */
+    width: min(58%, 400px);
+    box-shadow:
+      0 0 0 clamp(6px, 0.7vw, 10px) var(--ink),
+      0 0 0 calc(clamp(6px, 0.7vw, 10px) + 1px) rgba(255, 252, 204, 0.5),
+      inset 0 0 34px -12px rgba(0, 0, 0, 0.5);
+  }
+  /* The mullion. A post dead down the centre of a circle stops being joinery
+     and starts being a gunsight, so it runs at a third — where the screen's own
+     lattice would put it — and it is a rail, not a beam. */
+  .marumado-post {
+    left: 36%;
+    width: clamp(4px, 0.42vw, 6px);
+  }
+
+  /* Type inside the panes. Black on paper, the way the rest of the page reads —
+     the drama is the black room around the screen, not white text in it. */
+  .maru-pane .display {
+    margin: 0;
+    color: var(--ink);
+    font-size: clamp(38px, 4.2vw, 66px);
+    line-height: 0.98;
+  }
+  .maru-pane .lede { margin: 0; color: var(--ink-2); max-width: 42ch; }
+  .maru-pane .eyebrow { margin: 0; align-self: flex-start; color: var(--ink-3); }
+  .maru-pane--meta {
+    gap: 4px;
+    font-family: var(--mono);
+    font-size: var(--label);
+    letter-spacing: 0.06em;
+    color: var(--ink-3);
+  }
+  .maru-pane--cta .btn { margin: 0; align-self: flex-start; }
+
+  /* Below the fold of a laptop the twelve-column weave becomes a stack. The lit
+     pane goes last and thin — a strip of light at the base of the screen. */
+  @media (max-width: 900px) {
+    .maru-screen { grid-template-columns: minmax(0, 1fr); grid-template-rows: none; }
+    .maru-pane { grid-column: auto; grid-row: auto; }
+    .maru-pane--eyebrow { order: 1; }
+    .maru-pane--title   { order: 2; }
+    .maru-pane--view    { order: 3; min-height: 0; aspect-ratio: 1 / 1; }
+    .maru-pane--body    { order: 4; }
+    .maru-pane--cta     { order: 5; }
+    .maru-pane--meta    { order: 6; }
+    .maru-pane--lit     { order: 7; min-height: 40px; }
   }

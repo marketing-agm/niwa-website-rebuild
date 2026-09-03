@@ -87,28 +87,57 @@ const amenityToursHtml = amenityTourItems.length
     + '    </div>'
   : '';
 
-// The marumado — the round window. A byobu screen folds open on arrival and a
-// round window closes the page: you come in through a screen and leave looking
-// out. The shoji lattice and its centre post are drawn in CSS; the only asset
-// is the photograph framed in the circle.
+// The marumado — the round window that closes the page. It used to be a window
+// on the left and a column of copy on the right, which is the same two-column
+// split every other section already uses; the round window read as an ornament
+// bolted to the side of a paragraph.
+//
+// So the screen is the section now. The whole band is one shoji: a lattice of
+// panes with 1px rails, and the copy lives *inside* the panes — eyebrow in one,
+// heading across two, the lede in another, the call to action in a third — with
+// the round opening cut through the lower-left quarter of the same screen. The
+// panes are deliberately unequal and the reading order zig-zags, so the eye
+// moves across the lattice instead of down a column.
+//
+// Everything but the photograph is drawn: the lattice is the grid's own gap
+// over an ink ground, and the centre post is one element crossing the opening.
 const maru = site.config.marumado ?? {};
+// The small pane bottom-right. A screen with nothing in one pane looks
+// unfinished; the address is the one thing a leasing page can always put there,
+// and "come and see" is a great deal more actionable with a street on it.
+const maruMeta: string[] = Array.isArray(maru.meta) && maru.meta.length
+  ? maru.meta
+  : [addr.streetAddress, cityState].filter(Boolean);
+const pane = (mod: string, inner: string, attrs = '') =>
+  '    <div class="maru-pane maru-pane--' + mod + '"' + attrs + '>\n' + inner + '    </div>\n';
 const marumadoHtml = maru.enabled === true && maru.image
   ? '<section class="marumado" id="marumado" aria-labelledby="marumado-title">\n'
-    + '  <div class="marumado-shoji">\n'
-    + '    <div class="marumado-window">\n'
-    + '      <img src="' + escapeHtml(maru.image) + '" alt="' + escapeHtml(maru.alt ?? '') + '" loading="lazy" decoding="async" />\n'
-    + '    </div>\n'
-    + '    <div class="marumado-post" aria-hidden="true"></div>\n'
-    + '  </div>\n'
-    + '  <div class="marumado-copy reveal">\n'
-    + (maru.eyebrow ? '    <div class="eyebrow">' + escapeHtml(maru.eyebrow) + '</div>\n' : '')
-    + '    <h2 class="display" id="marumado-title">' + escapeHtml(maru.title ?? '')
-    + (maru.titleItalic ? ' <span class="italic">' + escapeHtml(maru.titleItalic) + '</span>' : '') + '</h2>\n'
-    + (maru.body ? '    <p class="lede">' + escapeHtml(maru.body) + '</p>\n' : '')
-    + '    <a class="btn btn-primary" href="#tour">' + escapeHtml(maru.cta ?? 'Schedule a tour')
-    + '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" '
-    + 'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'
-    + '<line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>\n'
+    + '  <div class="maru-screen reveal">\n'
+    + (maru.eyebrow
+        ? pane('eyebrow', '      <div class="eyebrow">' + escapeHtml(maru.eyebrow) + '</div>\n')
+        : '')
+    // One pane lit. A shoji is never a flat field — the light behind it is
+    // uneven — and this is the page's one yellow doing that job as a surface
+    // rather than as an ink.
+    + pane('lit', '', ' aria-hidden="true"')
+    + pane('title',
+        '      <h2 class="display" id="marumado-title">' + escapeHtml(maru.title ?? '')
+        + (maru.titleItalic ? ' <span class="italic">' + escapeHtml(maru.titleItalic) + '</span>' : '')
+        + '</h2>\n')
+    + pane('view',
+        '      <div class="marumado-window">\n'
+        + '        <img src="' + escapeHtml(maru.image) + '" alt="' + escapeHtml(maru.alt ?? '') + '" loading="lazy" decoding="async" />\n'
+        + '      </div>\n'
+        + '      <div class="marumado-post" aria-hidden="true"></div>\n')
+    + (maru.body ? pane('body', '      <p class="lede">' + escapeHtml(maru.body) + '</p>\n') : '')
+    + pane('cta',
+        '      <a class="btn btn-primary" href="#tour">' + escapeHtml(maru.cta ?? 'Schedule a tour')
+        + '<svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" '
+        + 'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'
+        + '<line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>\n')
+    + (maruMeta.length
+        ? pane('meta', maruMeta.map((line: string) => '      <span>' + escapeHtml(line) + '</span>\n').join(''))
+        : '')
     + '  </div>\n'
     + '</section>'
   : '';
