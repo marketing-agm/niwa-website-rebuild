@@ -50,11 +50,55 @@ export default {
   viewport: { width: 1440, height: 900 },
   shots: [
     {
-      name: "01-film-opens",
-      caption: "**Arrival.** The film full-screen with nothing layered on it, so its own title card reads as it was cut.",
+      name: "01-portal-shut",
+      caption: "**Arrival.** The film opens behind a marumado cut through a shoji screen \u2014 the same window the page closes on. Held here at the start of the aperture; it grows past the corner of the screen over a second and a half.",
       path: "/?intro=on",
       waitUntil: "load",
-      action: (page) => filmAt(page, 2),
+      settleMs: 0,
+      action: async (page) => {
+        // The aperture is on a timer, so it has to be frozen rather than waited
+        // for \u2014 by the driver's own settle it would already be wide open.
+        await page.addStyleTag({ content: `.arrival-film[data-portal] .arrival-film-video,
+          .arrival-film[data-portal]::before, .portal-shoji, .portal-post { transition: none !important; }` });
+        await page.waitForFunction(() => {
+          const v = document.querySelector(".arrival-film-video");
+          return v && v.readyState >= 2;
+        }, { timeout: 15000 });
+        await page.evaluate(() => {
+          const el = document.getElementById("arrival-film");
+          el.classList.remove("is-open");
+          const v = document.querySelector(".arrival-film-video");
+          v.pause(); v.currentTime = 3;
+        });
+        await page.waitForTimeout(500);
+      },
+    },
+    {
+      name: "01b-portal-opening",
+      caption: "Mid-aperture. The screen's own centre post crosses the opening, which is what says the window is cut *through* the screen rather than hung beside it.",
+      path: "/?intro=on",
+      waitUntil: "load",
+      settleMs: 0,
+      action: async (page) => {
+        await page.waitForFunction(() => {
+          const v = document.querySelector(".arrival-film-video");
+          return v && v.readyState >= 2;
+        }, { timeout: 15000 });
+        await page.evaluate(() => {
+          const el = document.getElementById("arrival-film");
+          el.classList.remove("is-open");
+          const v = document.querySelector(".arrival-film-video");
+          v.pause(); v.currentTime = 3;
+          void el.offsetWidth;
+          el.style.setProperty("--x", "1");
+          document.querySelectorAll(".arrival-film[data-portal] .arrival-film-video, .portal-shoji")
+            .forEach((n) => { n.style.transitionDuration = "0s"; });
+          el.querySelector(".arrival-film-video").style.clipPath = "circle(46vmin at 50% 50%)";
+          const sh = el.querySelector(".portal-shoji");
+          if (sh) sh.style.maskImage = "radial-gradient(circle at 50% 50%, transparent 46vmin, #000 calc(46vmin + 1px))";
+        });
+        await page.waitForTimeout(400);
+      },
     },
     {
       name: "02-film-mid",

@@ -83,10 +83,25 @@
   const filters = { beds: 'all', avail: 'all' };
   let sortBy = 'price-asc';
 
-  const PLAN_LABELS = {
-    '1br': '1 BR · 1 BA',
-    '2br2ba': '2 BR · 2 BA'
-  };
+  // Derived from the home itself, never from a lookup table.
+  //
+  // This was a two-entry map — '1br' and '2br2ba' — hardcoded for a property
+  // that had exactly those two layouts. Niwa's feed carries 'studio', '1br' and
+  // '2br1ba', so fifteen of seventeen homes rendered the label `undefined`: on
+  // the card badge, in the shortlist, in the compare table and in the contact
+  // form's home picker. A map keyed by plan code cannot survive a property whose
+  // codes differ, and every property's codes differ. Beds and baths come from
+  // the feed for every home, so they are what the label is built from.
+  function planLabel(unit) {
+    if (!unit) return '';
+    const beds = Number(unit.beds);
+    const baths = Number(unit.baths);
+    const bedPart = beds === 0 ? 'Studio' : (Number.isFinite(beds) ? beds + ' BR' : 'Home');
+    const bathPart = Number.isFinite(baths) && baths > 0
+      ? ' · ' + (baths % 1 === 0 ? baths : baths.toFixed(1)) + ' BA'
+      : '';
+    return bedPart + bathPart;
+  }
 
   // ----- Conversion state: favorites (persisted), compare (session), budget
   const COMPARE_MAX = 3;
@@ -277,7 +292,7 @@
     return `
       <article class="${cls}" style="animation-delay:${idx * 50}ms" data-unit-open="${uidOf(unit)}">
         <div class="unit-card-plan">
-          <span class="unit-plan-label">${PLAN_LABELS[unit.plan]}</span>
+          <span class="unit-plan-label">${planLabel(unit)}</span>
           ${featured}
           <span class="unit-plan-placeholder">Floor Plan<br><em>Coming Soon</em></span>
         </div>
@@ -607,7 +622,7 @@
 
     if (title) title.innerHTML = 'Unit <span class="italic">' + u.id + '</span>';
     if (eyebrow) {
-      const plan = PLAN_LABELS[u.plan] || 'Available home';
+      const plan = planLabel(u) || 'Available home';
       // With more than one building in play, the plan alone doesn't tell a
       // renter which home they're looking at — name the property and street.
       const where = MULTI_PROPERTY
@@ -670,7 +685,7 @@
       return `<div class="sl-row">
         <div class="sl-row-info">
           <div class="sl-row-title">Unit <span class="italic">${u.id}</span></div>
-          <div class="sl-row-meta">${PLAN_LABELS[u.plan]} · ${u.sqft.toLocaleString()} sqft · ${MULTI_PROPERTY && u.address ? u.address : u.floor}</div>
+          <div class="sl-row-meta">${planLabel(u)} · ${u.sqft.toLocaleString()} sqft · ${MULTI_PROPERTY && u.address ? u.address : u.floor}</div>
         </div>
         <div class="sl-row-price">${price}</div>
         <button class="sl-row-remove" type="button" data-sl-remove="${uidOf(u)}" aria-label="Remove Unit ${u.id}">
@@ -713,7 +728,7 @@
       return '<tr><th>' + label + '</th>' + units.map(fn).join('') + '</tr>';
     }
     const rows = [
-      row('Plan', u => `<td>${PLAN_LABELS[u.plan]}</td>`),
+      row('Plan', u => `<td>${planLabel(u)}</td>`),
       row('Beds', u => `<td>${u.beds}</td>`),
       row('Baths', u => `<td>${u.baths}</td>`),
       row('Size', u => `<td class="${u.sqft === maxSqft ? 'ct-best' : ''}">${u.sqft.toLocaleString()} sqft</td>`),
@@ -889,11 +904,27 @@
       // poster showing rather than a frozen first frame.
       const tryPlay = () => { if (!gated) loopVideo.play().catch(() => {}); };
       if (gated) {
+        // Start buffering partway through the film rather than at the end of it.
+        // The reason to hold off is pipe contention at the *start*, while the
+        // film is still filling its own buffer; five seconds in that is over,
+        // and fetching now is what lets the handover land on moving footage.
+        // Waiting for the film to end meant the fade dissolved onto a still
+        // photograph and the panel popped into video a second later — which is
+        // most of what made that transition feel like a cut.
+        const warm = setTimeout(() => {
+          if (gated) { loopVideo.preload = 'auto'; loopVideo.load(); }
+        }, 5000);
         document.addEventListener('niwa:arrival-film-done', () => {
+          clearTimeout(warm);
           gated = false;
           loopVideo.autoplay = true;
-          loopVideo.preload = 'auto';
-          loopVideo.load();
+          // Only load() if the warm-up never ran. It restarts the fetch from
+          // scratch, which would throw away the exact buffer this is here to
+          // have built.
+          if (loopVideo.preload !== 'auto') {
+            loopVideo.preload = 'auto';
+            loopVideo.load();
+          }
           tryPlay();
         }, { once: true });
       }
@@ -1253,12 +1284,17 @@
     return `${Math.max(1, Math.round(mi / 25 * 60))} min drive`;
   }
 
+  // Wayfinding, not brand. These five have to be told apart from each other at
+  // the size of a map pin, which the brand's single pale yellow cannot do — and
+  // two of them were the same value, so Parks and Food were indistinguishable
+  // both on the map and in the legend beneath it. The brand yellow is reserved
+  // for the property's own pin, so "you are here" is the one yellow thing.
   const CATEGORIES = {
-    parks:    { label: 'Parks & Outdoors', color: '#F1E249' },
-    food:     { label: 'Food & Drink',     color: '#F1E249' },
-    shopping: { label: 'Shopping & Grocery', color: '#8b6f47' },
-    transit:  { label: 'Transit',          color: '#3d5a6c' },
-    schools:  { label: 'Schools',          color: '#6b4a7a' }
+    parks:    { label: 'Parks & Outdoors',   color: '#4A7A4E' },
+    food:     { label: 'Food & Drink',       color: '#B4552F' },
+    shopping: { label: 'Shopping & Grocery', color: '#8B6F47' },
+    transit:  { label: 'Transit',            color: '#3D5A6C' },
+    schools:  { label: 'Schools',            color: '#6B4A7A' }
   };
 
   // Grouped by category; the list is sorted by computed distance at render time
@@ -1772,7 +1808,7 @@
     // Populate from priced UNITS (skip inquire-only), 1BR then 2BR
     const priced = UNITS.filter(u => u.rent != null).sort((a, b) => a.beds - b.beds || a.rent - b.rent);
     sel.innerHTML = priced.map(u =>
-      `<option value="${uidOf(u)}">Unit ${u.id}${MULTI_PROPERTY && u.property ? " · " + u.property : ""} · ${PLAN_LABELS[u.plan]} · $${u.rent.toLocaleString()}/mo</option>`
+      `<option value="${uidOf(u)}">Unit ${u.id}${MULTI_PROPERTY && u.property ? " · " + u.property : ""} · ${planLabel(u)} · $${u.rent.toLocaleString()}/mo</option>`
     ).join('');
 
     function money(n) { return '$' + Math.round(n).toLocaleString(); }

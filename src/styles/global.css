@@ -12,12 +12,26 @@
        anything that should catch the eye. --warm is the field: the large areas
        that used to carry --accent and read as a wall of saturated yellow. Both
        are brand values; what changed is which one covers area. */
-    --accent: #F1E249;   /* Niwa yellow — PRIMARY, the pop */
-    --accent-2: #F1E249;
-    --warm: #FFFCCC;     /* Niwa pale yellow — SECONDARY, the field */
+    /* One yellow. There were two — a saturated highlight and a pale field —
+       and two yellows on a white page read as a sale, not as a brand. The pale
+       one is the brand yellow now, everywhere, with no second value beneath it.
+       --warm is kept as an alias so the eleven rules that reach for it do not
+       have to be rewritten, but it resolves to the same colour. */
+    --accent: #FFFCCC;
+    --accent-2: #FFFCCC;
+    --warm: #FFFCCC;
     /* Type that sits ON either yellow. Both are light fills, so this is black in
        every case; it is a token so no rule reaches for --paper and disappears. */
     --on-accent: #000000;
+    /* --- The garden, used as ground rather than as colour ---
+       Niwa is "garden". These are the tints the landing screen sits on: a warm
+       paper white, a pale sage lifted from the hellebore reference, and a
+       gravel grey from the raked-stone one. They exist to give the white some
+       temperature and depth — every one is within a few percent of white, on
+       purpose, because the brief was that nothing here may take attention off
+       the yellow that is already doing the work. */
+    --garden-paper: #FFFFFF;
+    --garden-stone: #F5F5F5;   /* raked gravel, as a surface */
     /* One knob for vertical rhythm between sections.
        Stepped rather than a single clamp across all widths: the values this
        replaces were 112px above 860, 80px down to 540 and 56px below that, and
@@ -27,7 +41,7 @@
        861px wide and to 102px at 1200px, tightening the page on a normal laptop
        while claiming to open it up. Every value below is above the one it
        replaces, at every width. */
-    --section-y: clamp(120px, 10vw, 168px);
+    --section-y: clamp(148px, 12.5vw, 216px);
     --shadow: 0 1px 0 rgba(10,10,10,0.04), 0 12px 32px -16px rgba(10,10,10,0.18);
     --shadow-sm: 0 1px 2px rgba(10,10,10,0.06);
     --radius: 4px;
@@ -35,7 +49,7 @@
     --container: 1280px;
     --nav-h: 64px;
     --serif: "Fraunces", "Source Serif 4", Georgia, serif;
-    --sans: "Geist", -apple-system, "Helvetica Neue", Arial, sans-serif;
+    --sans: "Montserrat", -apple-system, "Helvetica Neue", Arial, sans-serif;
     --mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
   }
 
@@ -234,7 +248,7 @@
     transition: background 180ms ease, transform 180ms ease, box-shadow 180ms ease;
   }
   .nav-cta:hover {
-    background: #DACD2A;
+    background: var(--ink); color: #FFFFFF;
     color: var(--on-accent);
     transform: translateY(-1px);
     box-shadow: 0 10px 22px -12px var(--accent);
@@ -606,8 +620,8 @@
   section { padding: var(--section-y) 0; position: relative; }
   /* The two narrow steps keep their own values rather than riding the desktop
      clamp, which would undershoot them. Old: 80px here, 56px below 540. */
-  @media (max-width: 860px) { :root { --section-y: 104px; } }
-  @media (max-width: 540px) { :root { --section-y: 76px; } }
+  @media (max-width: 860px) { :root { --section-y: 128px; } }
+  @media (max-width: 540px) { :root { --section-y: 96px; } }
 
   .section-head {
     display: grid;
@@ -2900,7 +2914,7 @@
     box-shadow: 0 0 0 2px rgba(255,255,255,0.7) inset;
   }
   .nb-pill-dot--all {
-    background: conic-gradient(from 45deg, #F1E249, #F1E249, #8b6f47, #3d5a6c, #6b4a7a, #F1E249);
+    background: conic-gradient(from 45deg, var(--accent), var(--accent), #8b6f47, #3d5a6c, #6b4a7a, var(--accent));
   }
   .nb-pill-count {
     font-family: var(--mono);
@@ -4077,15 +4091,18 @@
   }
 
   /* ---------- Full-bleed hero visual ----------
-     The image anchors to the right edge of the viewport and spans from the top
-     of the page (behind the sticky nav) down to the bottom of the marquee — the
-     marquee lives inside .hero, so its bottom is the section's bottom. The left
-     edge stays roughly where the grid column started. */
+     Anchored to the right edge and running down to the bottom of the marquee,
+     which lives inside .hero so its bottom is the section's bottom.
+
+     It starts at the top of .hero rather than behind the nav. The nav is its
+     own strip now: a band with a surface and a hairline under it, and the
+     footage beneath, not behind. Layering the two meant the menu sat on moving
+     video and neither read cleanly. */
   @media (min-width: 961px) {
     .hero { position: relative; }
     .hero-visual {
       position: absolute;
-      top: calc(-1 * var(--nav-h, 64px));
+      top: 0;
       right: 0;
       bottom: 0;
       width: 47vw;
@@ -4162,7 +4179,7 @@
   /* The centring lives in `transform`, so every hover/focus state has to carry
      it too — a bare `translateY` here would fling the button off-centre. */
   .hero-video-btn:hover {
-    background: #DACD2A;
+    background: var(--ink); color: #FFFFFF;
     transform: translate(-50%, -50%) scale(1.04);
   }
   .hero-video-btn:focus-visible {
@@ -4226,7 +4243,7 @@
     cursor: pointer;
     transition: background 200ms ease;
   }
-  .video-modal-close:hover { background: #DACD2A; }
+  .video-modal-close:hover { background: var(--ink); color: #FFFFFF; }
   .video-modal-close:focus-visible {
     outline: 2px solid var(--accent);
     outline-offset: 3px;
@@ -4245,6 +4262,171 @@
     .video-modal-inner,
     .hero-video-btn { transition: none; }
     .video-modal-inner { transform: none; }
+  }
+
+  /* ---------- Building map ----------
+     A third-party interactive frame, so the job here is to give it a stable
+     shape and otherwise stay out of its way. Aspect-ratio rather than a fixed
+     height, with a floor: below about 520px the vendor's own controls start
+     overlapping the drawing. */
+  .building-map-frame {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    min-height: 520px;
+    border: 1px solid var(--rule);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    background: var(--garden-stone);
+  }
+  .building-map-frame iframe {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+    display: block;
+  }
+  .building-map-note {
+    margin: 18px auto 0;
+    max-width: 62ch;
+    text-align: center;
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--ink-3);
+  }
+  @media (max-width: 700px) {
+    /* Portrait: a wide frame becomes a letterbox sliver, and this one is meant
+       to be pinched and panned. Taller than it is wide, so there is something
+       to interact with. */
+    .building-map-frame { aspect-ratio: 3 / 4; min-height: 460px; }
+  }
+
+  /* ---------- The marumado ----------
+     The round window. A byobu screen folds open on arrival and a round window
+     closes the page: you come in through a screen and leave looking out.
+
+     Everything but the photograph is drawn. The shoji is two repeating
+     gradients for the lattice on a paper ground, the centre post is one
+     element, and the circle is a clipped figure with a wood ring around it.
+     No image was needed for any of that, and a drawn lattice stays crisp at
+     any size where a photographed one would not. */
+  .marumado {
+    position: relative;
+    display: grid;
+    gap: clamp(36px, 5vw, 64px);
+    align-items: center;
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+    /* Full-bleed dark, with the content still held to the page's measure —
+       the padding does the centring so no extra wrapper is needed. */
+    padding: var(--section-y) max(clamp(20px, 5vw, 64px), calc((100% - 1320px) / 2));
+    max-width: none;
+    margin: 0;
+    color: #F3EFE6;
+    /* A timber room in shadow. The light in the reference photographs is never
+       in the room — it is outside, coming through the opening — so the ground
+       is darkest at the edges and lifts only where the screen stands. */
+    background:
+      radial-gradient(120% 90% at 32% 45%, rgba(92, 74, 52, 0.34) 0%, rgba(24, 20, 15, 0) 62%),
+      linear-gradient(178deg, #17130E 0%, #221C15 46%, #14110C 100%);
+  }
+  .marumado > * { position: relative; z-index: 1; }
+  /* The floor. One horizontal line, which is what the moodboard means by clean
+     wood lines: the room is read from the join between wall and floor. */
+  .marumado::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 26%;
+    background: linear-gradient(180deg, rgba(74, 57, 38, 0.42) 0%, rgba(38, 29, 19, 0.9) 100%);
+    border-top: 1px solid rgba(196, 164, 112, 0.22);
+  }
+  @media (max-width: 900px) {
+    .marumado { grid-template-columns: 1fr; }
+  }
+
+  /* The paper screen. The lattice is deliberately not square: real shoji are
+     taller than they are wide in each pane, and a square grid reads as graph
+     paper. */
+  .marumado-shoji {
+    position: relative;
+    aspect-ratio: 4 / 5;
+    border-radius: 3px;
+    background:
+      repeating-linear-gradient(90deg,
+        rgba(140, 124, 98, 0.5) 0 2px, transparent 2px calc(100% / 8)),
+      repeating-linear-gradient(0deg,
+        rgba(140, 124, 98, 0.5) 0 2px, transparent 2px calc(100% / 11)),
+      linear-gradient(165deg, #F7F1E2 0%, #E8DFC9 58%, #CDBF9F 100%);
+    border: clamp(12px, 1.6vw, 20px) solid #574733;
+    border-image: linear-gradient(150deg, #6A5842 0%, #4A3D2C 50%, #675541 100%) 1;
+    /* Lit from behind, the way a shoji is. The glow spills onto the room. */
+    box-shadow:
+      0 0 90px -10px rgba(226, 205, 148, 0.28),
+      0 40px 90px -40px rgba(0, 0, 0, 0.85);
+    overflow: hidden;
+  }
+
+  /* The centre post. In every marumado worth looking at, the screen's own
+     mullion crosses the opening — the window is cut through the shoji, not
+     hung beside it, and this is what says so. */
+  .marumado-post {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: clamp(7px, 0.9vw, 11px);
+    transform: translateX(-50%);
+    background: linear-gradient(90deg, #574733, #74604A 45%, #4C3E2D);
+    z-index: 2;
+  }
+
+  .marumado-window {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 74%;
+    aspect-ratio: 1;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    overflow: hidden;
+    z-index: 1;
+    /* The wood reveal around the opening, then the shadow the paper casts into
+       it. Two rings, because a single flat border reads as a sticker. */
+    box-shadow:
+      0 0 0 clamp(8px, 1.1vw, 14px) #67543E,
+      0 0 0 calc(clamp(8px, 1.1vw, 14px) + 2px) rgba(48, 38, 24, 0.6),
+      inset 0 0 40px -10px rgba(30, 24, 14, 0.55);
+  }
+  .marumado-window img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    /* A view seen through a window is further away than the room you are in. */
+    transform: scale(1.06);
+  }
+
+  .marumado-copy { max-width: 46ch; }
+  .marumado-copy .display { margin: 8px 0 0; color: #F6F2E8; }
+  .marumado-copy .lede { margin: 18px 0 0; color: rgba(243, 239, 230, 0.74); }
+  .marumado-copy .eyebrow { color: rgba(243, 239, 230, 0.52); }
+  .marumado-copy .eyebrow::before { background: rgba(214, 190, 130, 0.45); }
+  .marumado-copy .btn { margin-top: 28px; }
+  /* On a dark ground the black primary button disappears. The accent is the
+     one thing in this room that should be as bright as the view. */
+  .marumado-copy .btn-primary {
+    background: var(--accent);
+    color: var(--on-accent);
+    border-color: var(--accent);
+  }
+  .marumado-copy .btn-primary:hover { background: #FFFFFF; border-color: #FFFFFF; color: var(--ink); }
+
+  @media (max-width: 900px) {
+    .marumado-shoji { aspect-ratio: 1 / 1; max-width: 520px; }
+    .marumado-copy { max-width: none; }
   }
 
   /* ---------- Arrival film ----------
@@ -4808,7 +4990,7 @@
   .faq-item summary::after {
     content: ""; position: absolute; right: 6px; top: 50%; width: 13px; height: 13px;
     margin-top: -7px; background-size: contain; background-repeat: no-repeat;
-    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23F1E249' stroke-width='2' stroke-linecap='round'><line x1='12' y1='5' x2='12' y2='19'/><line x1='5' y1='12' x2='19' y2='12'/></svg>");
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23111111' stroke-width='2' stroke-linecap='round'><line x1='12' y1='5' x2='12' y2='19'/><line x1='5' y1='12' x2='19' y2='12'/></svg>");
     transition: transform 220ms ease;
   }
   .faq-item[open] summary::after { transform: rotate(45deg); }
@@ -4862,3 +5044,1081 @@
   @media (prefers-reduced-motion: reduce) {
     .faq-item summary::after { transition: none; }
   }
+
+  /* ==========================================================================
+     SHOJI — the design system layer
+     ==========================================================================
+     Everything above this line is the template as forked. Everything below is
+     the system the property actually wants, applied as a layer rather than by
+     rewriting four thousand lines: same specificity, later in the file, wins.
+
+     Three references, one idea. Two of them (Monad, Oakâme) are warm off-white
+     canvases with hairline borders, no shadows, monospace on every functional
+     string and a display face used at weight 400. The third (Oberon) draws its
+     construction grid on the page — dashed rules, numbered sections, crosshairs
+     at the intersections. And the building is called Niwa, garden.
+
+     Those are not three ideas to reconcile. A shoji screen IS a lattice. A
+     tatami room IS a modular grid. Post and beam IS a hairline rule. So the
+     technical drawing and the Japanese room are the same drawing, and this
+     layer builds one thing from all of it.
+
+     Where the references disagree — Monad specifies 100px pills, Oakâme
+     specifies square — the architecture decides. There are no rounded corners
+     in a tatami room.
+     ========================================================================== */
+
+  :root {
+    /* No radius anywhere it can be helped. Circles that are meant to be
+       circles keep their 50% and are left alone below. */
+    --radius: 0px;
+    --radius-lg: 0px;
+
+    /* The bimodal scale. Both refs jump from tracked-out labels straight to
+       display sizes with almost nothing in between, and that gap is the whole
+       editorial tension — a museum label beside a wall-sized word. */
+    /* The grid ink is its own value, not --rule. A hairline that reads as a
+       border at the edge of a card is invisible drawn across a whole viewport,
+       and the first version of this was present in the DOM and unreadable on
+       screen — confirmed by sampling pixels, not by squinting. */
+    --grid-ink: #DBDBDB;
+    --label: 11px;
+    --label-track: 0.16em;
+    --measure: 62ch;
+  }
+
+  /* ---- Square ----
+     Listed rather than blanket-reset: `* { border-radius: 0 }` would flatten
+     the marumado, the map pins, the avatar dots and every status dot on the
+     page. These are the pills. */
+  .btn,
+  .nav-cta, .nav-login, .nav-links a, .nav .brand, .nav-toggle, .nav-mobile-cta,
+  .pill-tab, .pill-toggle, .plan-view-tab, .plan-view-toggle,
+  .plan-tour-chip, .plan-tour-picker,
+  .unit-card-cta, .ud-tab, .ud-tags, .ud-tags li, .ud-stats, .ud-stats > div,
+  .amenity-tour, .arrival-film-skip, .gallery-tab,
+  .form-submit, .cw-form .form-submit, .field input, .field textarea, .field select,
+  .sticky-cta-btn, .sl-btn, .tw-chip, .tw-back, .tw-continue, .tw-submit,
+  .strip-nav, .unit-fav, .unit-cmp, .unit-budget-tag, .unit-urgency,
+  .badge-featured, .video-modal-close, .hero-video-btn, .building-map-frame,
+  .plan-tour-frame, .gallery-item, .unit-card, .filter-bar, .summary-card,
+  .feature-card, .ledger, .marumado-shoji {
+    border-radius: 0;
+  }
+
+  /* ---- Flat ----
+     Depth comes from hairlines and negative space. A shadow on parchment reads
+     as a smudge. The exceptions kept below are the ones doing real work: the
+     lit shoji, and controls that float over photography. */
+  .btn, .nav-cta, .nav-login, .nav .brand, .unit-card, .feature-card,
+  .gallery-item, .filter-bar, .summary-card, .plan-tour-frame,
+  .building-map-frame, .pill-toggle, .plan-view-toggle, .strip-nav,
+  .sticky-cta, .shortlist-bar, .ud-panels, .amenity-tour {
+    box-shadow: none;
+  }
+
+  /* ---- Hairlines ----
+     1px ash, and nothing thicker. This is the only divider in the system: no
+     cards-on-fills, no background-colour section breaks. */
+  /* Hairline, and the canvas showing through — except where the component is a
+     dark surface with light type on it. The first cut of this rule made the
+     unit cards and the gallery tiles transparent, which put their white text
+     straight onto parchment at about 1.1:1. Invisible. Found by measuring every
+     text node on the page against its real background, not by looking. */
+  .feature-card, .filter-bar, .summary-card,
+  .building-map-frame, .plan-tour-frame {
+    border: 1px solid var(--rule);
+    background: transparent;
+  }
+  .unit-card, .gallery-item { border: 1px solid var(--rule); }
+
+  /* ---- Mono on every functional string ----
+     Both refs are explicit that the monospace IS the voice: nav, buttons,
+     badges, tags, figures, meta. Prose stays in the sans, because a renter
+     reads real paragraphs here — pet policy, screening criteria, the FAQ —
+     and monospace body copy is measurably slower to get through. The mono
+     does the structure; the sans does the reading. */
+  .nav-links a, .nav-cta, .nav-login, .nav-mobile a, .nav-mobile-cta,
+  .btn, .pill-tab, .filter-label, .plan-view-tab, .plan-tour-chip,
+  .gallery-tab, .unit-card-cta, .ud-tab, .amenity-tour, .sticky-cta-btn,
+  .sl-btn, .tw-chip, .tw-continue, .tw-submit, .form-submit,
+  .unit-card-floor, .unit-plan-label, .unit-budget-tag, .badge-featured,
+  .building-map-note, .marumado-copy .btn {
+    font-family: var(--mono);
+    font-size: var(--label);
+    font-weight: 500;
+    letter-spacing: var(--label-track);
+    text-transform: uppercase;
+  }
+  /* The eyebrow is the museum label the whole system hangs off. */
+  .eyebrow {
+    font-family: var(--mono);
+    font-size: var(--label);
+    font-weight: 500;
+    letter-spacing: var(--label-track);
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+
+  /* ---- Display ----
+     Weight 400 at every size. The serif's own stroke contrast and the negative
+     tracking carry it; bold would be shouting over an argument already won. */
+  .display {
+    font-family: var(--serif);
+    font-weight: 400;
+    letter-spacing: -0.03em;
+    line-height: 1.04;
+  }
+  .lede { max-width: var(--measure); }
+
+  /* --------------------------------------------------------------------------
+     The construction grid
+     --------------------------------------------------------------------------
+     Oberon draws the drafting board it was laid out on — dashed verticals full
+     bleed, crosshairs at the intersections, sections numbered like sheets. On a
+     building's website that reads as a plan set, and it is also, exactly, a
+     shoji lattice. Same drawing.
+
+     Painted once as a fixed layer behind everything at z-index -1, so it costs
+     one composite and does not repaint on scroll. `html` carries the canvas so
+     a negative z-index still has something to sit in front of; `body` is
+     transparent. Dark sections have their own fill and cover it, which is what
+     gives the page its light-dark-light rhythm without any extra work. */
+  html { background: var(--bg); }
+  /* Not `position: relative`. Making the body a containing block re-parented
+     every absolutely positioned element whose ancestors were static, and the
+     hero's full-bleed video panel silently pulled in from the right edge. */
+  body { background: transparent; }
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    /* Solid verticals, masked into dashes. A dashed vertical cannot be drawn
+       with one repeating gradient — the dash runs down the Y axis while the
+       column spacing runs across X — so the columns are the paint and the
+       dashes are the mask. Cheaper than an SVG and it never repaints. */
+    background-image:
+      repeating-linear-gradient(90deg,
+        var(--grid-ink) 0 1px, transparent 1px var(--grid-col, 16.6666%));
+    -webkit-mask-image: repeating-linear-gradient(180deg, #000 0 7px, transparent 7px 15px);
+    mask-image: repeating-linear-gradient(180deg, #000 0 7px, transparent 7px 15px);
+  }
+  /* (Two breakpoints stepped the column count down as the viewport narrowed.
+     They are gone — the spacing is a clamped length now, so the rhythm is
+     constant without them. See "The construction grid keeps its rhythm at every
+     width" at the end of the file.) */
+
+  /* --------------------------------------------------------------------------
+     Sheet numbers
+     --------------------------------------------------------------------------
+     `01 / GALLERY`, `02 / FLOOR PLANS` — the eyebrow becomes a sheet reference.
+     Numbered by CSS counter rather than by hand: the count follows the sections
+     that actually exist, so adding or removing one can never leave the page
+     numbered 01, 02, 04. */
+  body { counter-reset: sheet; }
+  section[id] { counter-increment: sheet; }
+  .section-head .eyebrow::before {
+    content: counter(sheet, decimal-leading-zero);
+    width: auto;
+    height: auto;
+    background: none;
+    font-variant-numeric: tabular-nums;
+    color: var(--ink);
+    letter-spacing: 0.06em;
+  }
+  .section-head .eyebrow::after {
+    content: "";
+    width: 28px;
+    height: 1px;
+    background: var(--ink-3);
+    display: inline-block;
+    order: 1;
+  }
+  .section-head .eyebrow { gap: 12px; }
+  /* Inverted scopes: the number has to survive a dark ground. */
+  .gallery-section .section-head .eyebrow::before { color: #F6F2EA; }
+
+  /* --------------------------------------------------------------------------
+     The path
+     --------------------------------------------------------------------------
+     A raked line down the page, and the content set along it. Niwa means
+     garden; a garden is walked, not scrolled. The line is one SVG stroke in a
+     sticky layer, and the sections it passes are nudged to sit against it —
+     left, right, centre — so the eye follows a route while the page still does
+     the one thing a page should do, which is go down.
+
+     Drawn, not animated. The stroke does not move, redraw or parallax: that is
+     what keeps it free. Everything here is one element and one paint. */
+  .zen-path {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  .zen-path svg { width: 100%; height: 100%; display: block; }
+  .zen-path .rake {
+    fill: none;
+    stroke: #DCDCDC;
+    stroke-width: 1.3;
+    vector-effect: non-scaling-stroke;
+  }
+  .zen-path .rake { stroke: #DCDCDC; }
+  .zen-path .rake-2 { stroke: #EAEAEA; }
+  .zen-path .stone { fill: #D2D2D2; }
+  .zen-path .stone-2 { fill: #E2E2E2; }
+  .zen-path .cross { stroke: #D6D6D6; stroke-width: 1; vector-effect: non-scaling-stroke; }
+  @media (max-width: 700px) { .zen-path { display: none; } }
+
+  /* --------------------------------------------------------------------------
+     Content set along the path
+     --------------------------------------------------------------------------
+     Alternating anchors rather than a single centred column. Sections lean to
+     one side or the other so the reading line moves across the page as it
+     descends — the walk, without the page ever scrolling sideways. */
+  /* Deliberately NOT `.container { position: relative }`. Positioning the
+     container makes it the containing block for every absolutely positioned
+     descendant, and the hero's full-bleed video panel — which anchors to
+     `right: 0` of the viewport — silently pulled in to the container's edge
+     instead. Second time this exact mistake has been made in this stylesheet;
+     the first was `position: relative` on body. Only the sections that need a
+     stacking context get one, by name. */
+  /* The hero copy is lifted above the raked path by the copy column itself,
+     never by `.hero .container` — positioning the container makes it the
+     containing block for the full-bleed video panel, which anchors to the
+     viewport's right edge and quietly pulls in to the container's instead. */
+  .hero-grid > div:first-child, .section-head { position: relative; z-index: 1; }
+  section[id]:nth-of-type(odd) .section-head { margin-left: 0; margin-right: auto; }
+  section[id]:nth-of-type(even) .section-head {
+    grid-template-columns: 1.4fr 1fr;
+    margin-left: auto;
+  }
+  @media (max-width: 860px) {
+    section[id]:nth-of-type(even) .section-head { grid-template-columns: 1fr; }
+  }
+
+  /* ---- Leftovers ----
+     Containers the first sweep missed, because they carry the radius rather
+     than the control inside them. */
+  .nav-links, .nav-inner .nav-links, .pill-toggle, .plan-view-toggle,
+  .ud-tabs, .gallery-tabs { border-radius: 0; }
+  /* The nav floats over the hero, over photography, and over the two inverted
+     sections. Those white pills were not decoration — they were the only reason
+     the wordmark stayed readable when a black gallery scrolled under it. Made
+     transparent, the nav vanished completely over the dark bands.
+     So: keep a surface, but make it the canvas tone rather than white, square,
+     and separated by a hairline. Same job, right system. */
+  .nav .brand, .nav-links, .nav-login {
+    background: var(--bg);
+    border: 1px solid var(--rule);
+    box-shadow: none;
+  }
+  .nav .brand:hover { border-color: var(--ink-3); box-shadow: none; }
+
+  /* The rake passes behind the headline, so it is pulled back where type sits
+     and left alone in the margins. */
+  /* (see above — the container must stay unpositioned) */
+
+  /* `Walk the building` is a section heading, not a control — serif, and sized
+     with the other section headings rather than with the labels. */
+  .amenity-tours-head {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: clamp(24px, 2.6vw, 34px);
+    letter-spacing: -0.025em;
+    text-transform: none;
+  }
+
+  /* The last of the micro-type. These are nested spans that inherit a size
+     smaller than their parent, so they have to be named rather than caught by
+     the rule above. Twelve pixels is the floor for anything a person is meant
+     to read; below that it is decoration, and none of these are. */
+  .visual-tag, .g-count, .tab-meta, .placeholder-eyebrow,
+  .gallery-item-cat, .unit-card-specs span, .unit-card-features li,
+  .filter-meta, .sl-count, .ud-tags li, .avail, .avail.soon {
+    font-size: 12px;
+  }
+
+  /* ---- The nav over the film ----
+     The film is a fixed layer at 300 and the nav is sticky at 50, so without
+     this the menu is underneath it and unclickable. Raised only while the film
+     is up, so nothing about the normal page changes. Its chips are canvas-toned
+     with dark type, which reads over footage exactly as it reads over the hero
+     photograph. */
+  html.arrival-film-open .nav { z-index: 320; }
+
+  /* ---- Expand, out of the middle ----
+     It was centred because the corner version kept being swallowed by the
+     marquee: the video panel runs full-bleed *behind* that yellow band, so
+     `bottom: 20px` puts the control underneath it. Bottom-right, lifted clear
+     of the band rather than tucked into the true corner. */
+  .hero-video-btn {
+    left: auto;
+    top: auto;
+    right: clamp(16px, 2vw, 28px);
+    bottom: clamp(88px, 12vh, 132px);
+    transform: none;
+  }
+  .hero-video-btn:hover { transform: scale(1.04); }
+  @media (max-width: 900px) {
+    /* Stacked layout: the panel is no longer behind the marquee, so the button
+       can sit where a corner control should. */
+    .hero-video-btn { bottom: clamp(16px, 3vh, 28px); }
+  }
+
+  /* ---- The nav is a strip, not a set of chips floating on the page ----
+     The reference is right: a bar with a surface of its own and the imagery
+     beneath it reads better than a menu sitting on moving footage. The bar
+     carries the surface now, so the individual chips give theirs up — they were
+     only ever there because there was no bar to sit on. The one exception is
+     the yellow CTA, which is a filled button by design. */
+  .nav {
+    background: var(--bg);
+    border-bottom: 1px solid var(--rule);
+  }
+  .nav.scrolled { background: var(--bg); }
+  .nav .brand, .nav-links, .nav-login {
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+  }
+  .nav .brand:hover { border: 0; }
+  .nav-login { border: 1px solid var(--rule); }
+
+  /* The film gets the same treatment: it begins under the strip rather than
+     behind it, so the menu is legible on its own ground for the whole 30
+     seconds instead of fighting whatever frame is on screen. */
+  /* Plus the hairline: the bar is --nav-h of content and 1px of border, so
+     `top: var(--nav-h)` alone leaves the film a pixel under its own rule. */
+  .arrival-film { top: calc(var(--nav-h) + 1px); }
+
+  /* Montserrat replaces Geist for prose and UI. It has a bigger x-height and
+     wider letterforms than the face it replaces, so the same nominal size reads
+     larger and tighter — line-height comes up and the display tracking comes in
+     a touch to compensate. */
+  body { font-family: var(--sans); }
+  p, .lede, li { line-height: 1.62; }
+  .lede { letter-spacing: -0.005em; }
+
+  /* ---- Legibility, restored ----
+     This block was written once and then silently deleted: removing the portal
+     was done by slicing the stylesheet between two comment markers, and this
+     had been appended between them. The palette change to white masked it —
+     most of the original failures were fixed incidentally by pure white and
+     black — so only the yellow survived to give it away. Re-measured after
+     restoring, not assumed. */
+  :root {
+    /* The brand yellow is a fill, not an ink. #F1E249 as text on white is
+       1.34:1 — not "low contrast", unreadable. Yellow type takes a darker gold
+       so it still reads as the brand; every yellow *surface* keeps the exact
+       brand value. */
+    --accent-ink: #8A7A0F;
+    --label: 12px;
+    --label-lg: 13px;
+  }
+  .display .italic,
+  .hero .display .italic,
+  .marumado-copy .display .italic { color: var(--accent-ink); }
+  /* Except on the inverted scopes, where the bright yellow is already right and
+     is the only thing entitled to be as bright as the photography. */
+  .gallery-section .display .italic,
+  .marumado .display .italic,
+  .unit-card .italic,
+  .pricing h2.display .italic { color: var(--accent); }
+
+  /* Controls read at 13px; only genuine micro-labels stay at 12. Labels had
+     been set at 11px across nav, buttons and meta alike, which made every
+     button on the site micro-type. */
+  .nav-links a, .nav-cta, .nav-login, .nav-mobile a, .nav-mobile-cta,
+  .btn, .pill-tab, .plan-view-tab, .gallery-tab, .unit-card-cta, .ud-tab,
+  .amenity-tour, .sticky-cta-btn, .sl-btn, .tw-chip, .tw-continue,
+  .tw-submit, .form-submit { font-size: var(--label-lg); }
+  .visual-tag, .g-count, .tab-meta, .placeholder-eyebrow,
+  .gallery-item-cat, .unit-card-specs span, .unit-card-features li,
+  .filter-meta, .sl-count, .ud-tags li, .avail, .avail.soon,
+  .unit-rail-hint, .unit-cmp { font-size: 12px; }
+  .plan-disclaimer, .building-map-note, .gallery-note { font-size: 13px; }
+
+  /* Scoped, because the rules that set these are scoped too: `.gallery-tab
+     .g-count` and `.plan-tab .tab-meta` are two-class selectors and beat a
+     bare `.g-count` no matter how late it appears. Specificity, not order. */
+  .gallery-tab .g-count { font-size: 12px; opacity: 0.75; }
+  .gallery-tab.is-active .g-count { opacity: 1; }
+  .plan-tab .tab-meta { font-size: 12px; opacity: 1; color: var(--ink-3); }
+  .plan-tab.is-active .tab-meta { color: rgba(255,255,255,0.82); }
+  .gallery-item .gallery-item-cat,
+  .unit-card .unit-card-specs span,
+  .unit-card .unit-card-features li,
+  .filter-bar .filter-meta,
+  .plan-placeholder .placeholder-eyebrow,
+  .plan-tour-placeholder .placeholder-eyebrow { font-size: 12px; }
+
+  /* The last six, all scoped by their own parents for the same reason. */
+  .unit-card .avail, .unit-card .avail.soon { font-size: 12px; }
+  .unit-card .unit-urgency { font-size: 12px; }
+  .shortlist-bar .sl-count, .sl-summary .sl-count { font-size: 12px; }
+  footer h6, .footer h6 { font-size: 12px; }
+  footer p, .footer p { font-size: 13px; }
+  .eho { font-size: 12px; }
+
+  /* ==========================================================================
+     ONE YELLOW, AND MORE AIR
+     ========================================================================== */
+
+  /* The pale yellow is a *surface*. On white it has almost no luminance
+     difference — about 1.07:1 — so a button filled with it and nothing else is
+     a button with no edge. Every yellow fill gets a rule so it holds its shape;
+     the type on it is black, which is 18:1 and never in doubt. */
+  .nav-cta, .btn-primary, .marumado-copy .btn-primary,
+  .hero-video-btn, .badge-featured, .unit-budget-tag {
+    background: var(--accent);
+    color: var(--on-accent);
+    border: 1px solid var(--ink);
+  }
+  .nav-cta:hover, .btn-primary:hover, .marumado-copy .btn-primary:hover,
+  .hero-video-btn:hover {
+    background: var(--ink);
+    color: #FFFFFF;
+    border-color: var(--ink);
+  }
+
+  /* Yellow as type is gone with the second yellow: #FFFCCC on white is
+     unreadable at any size, and a darker gold would be a second yellow by
+     another name. The headline's emphasis comes from the italic itself, which
+     in this serif is already a strong enough signal to carry it. */
+  .display .italic,
+  .hero .display .italic,
+  .marumado-copy .display .italic { color: var(--ink); }
+  /* On the inverted scopes the one yellow reads perfectly well as type — it is
+     nearly white against black — so it keeps the accent there. */
+  .gallery-section .display .italic,
+  .marumado .display .italic,
+  .unit-card .italic,
+  .pricing h2.display .italic { color: var(--accent); }
+
+  /* More air. Section rhythm is raised in --section-y; these are the interior
+     gaps that would otherwise make the sections themselves feel tighter as the
+     space around them grows. */
+  .section-head { margin-bottom: clamp(72px, 7vw, 112px); gap: 80px; }
+  .hero { padding-top: clamp(48px, 5vw, 88px); }
+  .hero-grid { gap: 64px; }
+  .amenity-tours { margin-top: clamp(56px, 6vw, 88px); padding-top: clamp(44px, 5vw, 68px); }
+  .marumado { gap: clamp(52px, 6vw, 88px); }
+  .filter-bar { margin-bottom: clamp(40px, 4vw, 64px); }
+
+  /* ==========================================================================
+     THE SHOJI PANEL
+     ==========================================================================
+     A shoji screen has a structure, not just a texture: a transom, a field of
+     paper panes in an even lattice, a band of clear glass low down where the
+     garden shows through, and a timber rail at the base.
+
+     The lattice is drawn by the grid itself — a 1px gap over a rail-coloured
+     ground, with every cell filled — rather than by bordering each cell. One
+     declaration, perfectly even rails, no doubled lines where cells meet, and
+     no arithmetic when a cell spans two columns.
+
+     Which means the empty panes have to be real cells. In a shoji the blank
+     panes are the composition, not absence; left as grid gaps they would draw
+     as solid rail instead of paper. */
+  .shoji-section { padding: var(--section-y) 0; }
+  .shoji {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: auto 1fr 1fr auto;
+    grid-template-areas:
+      "t  t  t  e1 e1 e1"
+      "c  c  w  w  h  h"
+      "c  c  w  w  h  h"
+      "e2 p  p  n  n  n";
+    gap: 1px;
+    background: var(--rule);
+    border: 1px solid var(--rule);
+  }
+  .shoji-cell {
+    background: var(--bg);
+    padding: clamp(22px, 2.4vw, 38px);
+    min-height: 0;
+  }
+  .shoji-empty { padding: 0; }
+
+  .shoji-head { display: flex; flex-direction: column; justify-content: flex-end; }
+  .shoji-head .display { margin: 14px 0 0; font-size: clamp(30px, 3.8vw, 54px); }
+
+  .shoji-list h4 {
+    margin: 0 0 16px;
+    font-family: var(--mono);
+    font-size: var(--label);
+    font-weight: 500;
+    letter-spacing: var(--label-track);
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+  .shoji-list ul { margin: 0; padding: 0; list-style: none; }
+  .shoji-list li {
+    padding: 7px 0;
+    font-size: 14px;
+    line-height: 1.5;
+    border-bottom: 1px solid var(--rule-2);
+  }
+  .shoji-list li:last-child { border-bottom: 0; }
+
+  /* The glazed pane. The one cell you see *through* rather than read — it holds
+     no padding because a window has no margin. */
+  .shoji-window { padding: 0; position: relative; overflow: hidden; }
+  .shoji-window img { width: 100%; height: 100%; object-fit: cover; display: block; }
+
+  .shoji-note {
+    display: flex;
+    align-items: flex-end;
+  }
+  .shoji-note p {
+    margin: 0;
+    max-width: 54ch;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--ink-3);
+  }
+
+  /* A lattice this wide becomes a spreadsheet on a phone. Below the breakpoint
+     it stacks, the blank panes drop out entirely — a pause you cannot see is
+     just wasted screen — and the window keeps a shape of its own. */
+  @media (max-width: 900px) {
+    .shoji {
+      grid-template-columns: 1fr;
+      grid-template-rows: none;
+      grid-template-areas: "t" "c" "w" "h" "p" "n";
+    }
+    .shoji-empty { display: none; }
+    .shoji-window { aspect-ratio: 16 / 10; }
+  }
+
+  /* ---- The koshi: the timber rail at the base ----
+     The last band of a shoji is solid wood, and it is what stops the screen
+     from floating. The footer was already the dark ground; what it lacked was
+     the rail. One warm band, the only brown in the system, sitting exactly
+     where the timber sits in the screen.
+
+     Deliberately a band and not a wash: flooding the footer with wood tone
+     would put a second warm colour against a palette that is now one yellow,
+     white and black. A rail states the idea and spends nothing. */
+  footer {
+    border-top: 0;
+    position: relative;
+    padding-top: 64px;
+  }
+  footer::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 22px;
+    background: linear-gradient(180deg, #7A6142 0%, #5E4A32 55%, #3E3020 100%);
+    box-shadow: inset 0 -1px 0 rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,236,200,0.22);
+  }
+  /* The grain: fine vertical strokes, the same rhythm as the lattice above. */
+  footer::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 22px;
+    pointer-events: none;
+    background-image: repeating-linear-gradient(90deg,
+      rgba(0,0,0,0.16) 0 1px, transparent 1px 7px);
+    opacity: 0.5;
+  }
+  @media (max-width: 700px) {
+    footer::before, footer::after { height: 16px; }
+    footer { padding-top: 52px; }
+  }
+
+  /* ==========================================================================
+     BREAKING THE STACK
+     ==========================================================================
+     The template this was forked from announces every section identically:
+     eyebrow, display heading, lede, then a centred block. Six times down the
+     page. It is a good checklist of what a leasing site must say and a poor
+     answer to where any of it should sit.
+
+     So the lattice becomes the page's layout system rather than one section's
+     decoration, and each section takes a different position in it. The grid
+     stays constant; the composition inside it does not. */
+
+  /* (A drawing-sheet margin used to live here — a vertical sheet number and a
+     hairline rule down the left edge. Both are gone; see "The drawing-sheet
+     margin comes out" further down for why. The lattice does that job now.) */
+
+  /* ---- Section heads stop being one shape ----
+     Three treatments, cycled, so no two adjacent sections announce themselves
+     the same way. Nothing here changes what is said — only where it sits. */
+
+  /* 1st: title left, lede indented to the far right of the measure. */
+  section[id]:nth-of-type(3n+1) .section-head {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+  section[id]:nth-of-type(3n+1) .section-head > .reveal:first-child { grid-column: 1; }
+  section[id]:nth-of-type(3n+1) .section-head .lede { grid-column: 2; justify-self: end; }
+
+  /* 2nd: the title takes the whole measure and the lede drops beneath it,
+     pushed to the right — the heading behaves like a banner rather than a
+     column. */
+  section[id]:nth-of-type(3n+2) .section-head {
+    grid-template-columns: 1fr;
+    gap: 28px;
+  }
+  section[id]:nth-of-type(3n+2) .section-head .display {
+    font-size: clamp(44px, 7vw, 104px);
+    line-height: 0.98;
+  }
+  section[id]:nth-of-type(3n+2) .section-head .lede {
+    justify-self: end;
+    text-align: right;
+    max-width: 44ch;
+  }
+
+  /* 3rd: reversed — lede first on the left, the title arriving after it on the
+     right, so the eye starts where it did not last time. */
+  section[id]:nth-of-type(3n) .section-head {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr);
+  }
+  section[id]:nth-of-type(3n) .section-head > .reveal:first-child { order: 2; }
+  section[id]:nth-of-type(3n) .section-head .lede { order: 1; align-self: start; }
+
+  @media (max-width: 900px) {
+    section[id] .section-head,
+    section[id]:nth-of-type(3n+1) .section-head,
+    section[id]:nth-of-type(3n+2) .section-head,
+    section[id]:nth-of-type(3n) .section-head {
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+    section[id] .section-head .lede,
+    section[id]:nth-of-type(3n+2) .section-head .lede {
+      justify-self: start;
+      text-align: left;
+    }
+    section[id]:nth-of-type(3n) .section-head > .reveal:first-child { order: 0; }
+    section[id]:nth-of-type(3n) .section-head .lede { order: 1; }
+  }
+
+  /* ---- Floor plans: the layout switcher becomes a rail ----
+     Tabs across the top is the shape every listing site uses. Down the side it
+     reads as an index, the plan viewer gets the width it actually wants, and
+     the section stops looking like the one above it. */
+  @media (min-width: 1100px) {
+    .floor-plans .plan-switcher {
+      grid-auto-flow: row;
+      grid-auto-columns: auto;
+      float: left;
+      width: 232px;
+      margin: 0 0 32px 0;
+      border-right: 0;
+    }
+    .floor-plans .plan-tab { border-right: 0; border-bottom: 1px solid var(--rule); }
+    .floor-plans .plan-tab:last-child { border-bottom: 0; }
+    .floor-plans .plan-display {
+      margin-left: 264px;
+      grid-template-columns: 1.35fr 1fr;
+    }
+    .floor-plans .plan-disclaimer { clear: both; }
+  }
+
+  /* ==========================================================================
+     BACK IN BRAND
+     ========================================================================== */
+
+  /* ---- The drawing-sheet margin comes out, both halves of it ----
+     The idea was a technical drawing's margin: the sheet number set vertically
+     down the left edge with a rule beside it. Neither half survived contact.
+
+     The number went first — it repeated the number already sitting in the
+     eyebrow two inches to its right, and at 12px rotated in a margin it was
+     unreadable anyway, so it was an illegible duplicate of a legible thing. On
+     the floor-plans head the two collided outright.
+
+     The rule went next, and for the reason decoration usually goes: it did not
+     read as a margin rule, it read as a stray line. It only ever worked where
+     the section had a gutter to sit in, and the sections do not agree about
+     that — over the gallery, whose tab row starts further left than the rest of
+     the page, it ran straight down through the middle of the "All 18" chip. A
+     hairline crossing a button is a defect, whatever it was drawn for.
+
+     The architecture the rail was reaching for is in the lattice now — the
+     shoji panel and the marumado screen — where it is structure rather than a
+     mark in the margin. */
+  section[id]::before,
+  section[id]::after { content: none; }
+
+  /* ---- The outlined headline is reverted ----
+     Yellow type with a hard ink shadow was tried and rejected on sight: an
+     outline is a sticker effect, not a serif. On a light ground the italic goes
+     back to plain ink and carries its emphasis the way the typeface intended.
+     The yellow stays where it belongs — as a *fill*, on the panes and rails and
+     buttons, never as an ink on white. */
+  .display .italic,
+  .hero .display .italic,
+  .marumado-copy .display .italic,
+  .shoji-head .display .italic {
+    color: var(--ink);
+    text-shadow: none;
+  }
+  /* On the inverted scopes the yellow is nearly white against black and reads
+     at 17:1, so it keeps the accent — no shadow needed there either. */
+  .gallery-section .display .italic,
+  .unit-card .italic,
+  .pricing h2.display .italic {
+    color: var(--accent);
+    text-shadow: none;
+  }
+
+  /* ---- The marumado stops being brown ----
+     A timber room was right when the page was warm linen. Against white, black
+     and one pale yellow it is the only thing on the site wearing a different
+     palette, which is exactly how it read. Same composition — screen, lattice,
+     centre post, round opening, the view as the brightest thing — rebuilt in
+     the three colours the rest of the page uses. */
+  .marumado {
+    color: #FFFFFF;
+    background: var(--ink);
+  }
+  .marumado::after {
+    background: linear-gradient(180deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0) 100%);
+    border-top: 1px solid rgba(255, 252, 204, 0.30);
+  }
+  .marumado-shoji {
+    background:
+      repeating-linear-gradient(90deg, rgba(0,0,0,0.55) 0 2px, transparent 2px calc(100% / 8)),
+      repeating-linear-gradient(0deg,  rgba(0,0,0,0.55) 0 2px, transparent 2px calc(100% / 11)),
+      #FFFFFF;
+    border: clamp(12px, 1.6vw, 20px) solid var(--ink);
+    border-image: none;
+    box-shadow: 0 0 0 1px rgba(255,252,204,0.28);
+  }
+  .marumado-post { background: var(--ink); }
+  .marumado-window {
+    box-shadow:
+      0 0 0 clamp(8px, 1.1vw, 14px) var(--ink),
+      0 0 0 calc(clamp(8px, 1.1vw, 14px) + 1px) rgba(255, 252, 204, 0.34),
+      inset 0 0 34px -12px rgba(0, 0, 0, 0.5);
+  }
+  .marumado-copy .lede { color: rgba(255,255,255,0.76); }
+  .marumado-copy .eyebrow { color: rgba(255,255,255,0.58); }
+  .marumado-copy .eyebrow::after { background: rgba(255,252,204,0.5); }
+
+  /* ---- And so does the koshi ----
+     Same brown, same problem, one band lower. The rail stays — it is what stops
+     the footer floating — but in ink with a yellow hairline instead of timber. */
+  footer::before {
+    background: var(--ink);
+    box-shadow:
+      inset 0 1px 0 var(--accent),
+      inset 0 -1px 0 rgba(255,255,255,0.10);
+  }
+  footer::after {
+    background-image: repeating-linear-gradient(90deg,
+      rgba(255,255,255,0.07) 0 1px, transparent 1px 7px);
+    opacity: 1;
+  }
+
+  /* ==========================================================================
+     THE MARUMADO IS THE SCREEN
+     ==========================================================================
+     It was a round window on the left and a paragraph on the right — the same
+     two-column split as every other section, with a piece of Japanese joinery
+     parked in one half of it. That is why it read as an ornament.
+
+     Now the shoji *is* the section. One lattice spans the band, the copy sits
+     inside its panes, and the round opening is cut through the lower-left
+     quarter of the same screen rather than standing next to the text.
+
+     The lattice is the grid's own 1px gap over an ink ground with every cell
+     filled — the same trick the .shoji section uses, so the two read as one
+     piece of carpentry. Nothing here is an image except the view. */
+
+  .marumado {
+    display: block;
+    padding: var(--section-y) max(clamp(20px, 5vw, 64px), calc((100% - 1320px) / 2));
+    background: var(--ink);
+    color: #FFFFFF;
+  }
+  /* The drawn floor went with the timber room — the screen has a real frame
+     around it now, which is what was holding the composition down. (The section
+     rail shared this `::after` and used to need killing here too; it is gone
+     page-wide, so this is the floor alone.) */
+  section[id].marumado::after { content: none; }
+
+  /* The type inside the screen sits on paper, so the italic is ink here like
+     everywhere else on a light ground. Stated at this specificity because the
+     inverted-scope rule further up still claims `.marumado .display .italic`
+     for the accent, from when this section was a dark room. */
+  .marumado .display .italic { color: var(--ink); text-shadow: none; }
+
+  .maru-screen {
+    display: grid;
+    grid-template-columns: repeat(12, minmax(0, 1fr));
+    /* The slack goes into the heading's row, not the lede's: a display line
+       wants air around it, a paragraph wants to sit against its rail. */
+    grid-template-rows: auto 1fr auto auto;
+    gap: 1px;
+    background: var(--ink);
+    /* The kamachi — the heavy outer stile. Thicker than the rails inside it,
+       because on a real screen it is. */
+    border: clamp(10px, 1.3vw, 18px) solid var(--ink);
+    box-shadow:
+      0 0 0 1px rgba(255, 252, 204, 0.34),
+      0 60px 120px -60px rgba(0, 0, 0, 0.9);
+  }
+  .maru-pane {
+    position: relative;
+    min-width: 0;
+    background: var(--paper);
+    padding: clamp(20px, 2.1vw, 34px);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    gap: 12px;
+  }
+
+  /* Deliberately unequal, and the reading order zig-zags: label top-left, a lit
+     pane, the heading top-right dropping two rows, the view filling the lower
+     left, then lede, action, address. The eye crosses the lattice rather than
+     running down one edge of it. */
+  .maru-pane--eyebrow { grid-column: 1 / 5;  grid-row: 1;     justify-content: center; }
+  .maru-pane--lit     { grid-column: 5 / 7;  grid-row: 1; }
+  .maru-pane--title   { grid-column: 7 / 13; grid-row: 1 / 3; justify-content: center; }
+  .maru-pane--view    { grid-column: 1 / 7;  grid-row: 2 / 5; }
+  .maru-pane--body    { grid-column: 7 / 13; grid-row: 3;     justify-content: flex-start; }
+  .maru-pane--cta     { grid-column: 7 / 10; grid-row: 4;     justify-content: center; }
+  .maru-pane--meta    { grid-column: 10 / 13; grid-row: 4;    justify-content: center; }
+
+  /* One pane lit. A shoji is never an even field — the light behind it is
+     uneven — and this is the page's single yellow doing that job as a surface,
+     which is the only place it belongs. */
+  .maru-pane--lit { background: var(--accent); }
+
+  /* The pane the window is cut through. Its own finer lattice, so the opening
+     reads as a hole in a field of paper panes and not as a circle in a box. */
+  .maru-pane--view {
+    padding: 0;
+    overflow: hidden;
+    min-height: clamp(380px, 40vw, 620px);
+    background:
+      repeating-linear-gradient(90deg, rgba(0,0,0,0.5) 0 1px, transparent 1px calc(100% / 5)),
+      repeating-linear-gradient(0deg,  rgba(0,0,0,0.5) 0 1px, transparent 1px calc(100% / 6)),
+      var(--paper);
+  }
+  .marumado-window {
+    /* Small enough that the paper panes read all the way around it. An opening
+       that touches the rails is a photograph in a box, not a window in a wall. */
+    width: min(58%, 400px);
+    box-shadow:
+      0 0 0 clamp(6px, 0.7vw, 10px) var(--ink),
+      0 0 0 calc(clamp(6px, 0.7vw, 10px) + 1px) rgba(255, 252, 204, 0.5),
+      inset 0 0 34px -12px rgba(0, 0, 0, 0.5);
+  }
+  /* The mullion. A post dead down the centre of a circle stops being joinery
+     and starts being a gunsight, so it runs at a third — where the screen's own
+     lattice would put it — and it is a rail, not a beam. */
+  .marumado-post {
+    left: 36%;
+    width: clamp(4px, 0.42vw, 6px);
+  }
+
+  /* Type inside the panes. Black on paper, the way the rest of the page reads —
+     the drama is the black room around the screen, not white text in it. */
+  .maru-pane .display {
+    margin: 0;
+    color: var(--ink);
+    font-size: clamp(38px, 4.2vw, 66px);
+    line-height: 0.98;
+  }
+  .maru-pane .lede { margin: 0; color: var(--ink-2); max-width: 42ch; }
+  .maru-pane .eyebrow { margin: 0; align-self: flex-start; color: var(--ink-3); }
+  .maru-pane--meta {
+    gap: 4px;
+    font-family: var(--mono);
+    font-size: var(--label);
+    letter-spacing: 0.06em;
+    color: var(--ink-3);
+  }
+  .maru-pane--cta .btn { margin: 0; align-self: flex-start; }
+
+  /* Below the fold of a laptop the twelve-column weave becomes a stack. The lit
+     pane goes last and thin — a strip of light at the base of the screen. */
+  @media (max-width: 900px) {
+    .maru-screen { grid-template-columns: minmax(0, 1fr); grid-template-rows: none; }
+    .maru-pane { grid-column: auto; grid-row: auto; }
+    .maru-pane--eyebrow { order: 1; }
+    .maru-pane--title   { order: 2; }
+    .maru-pane--view    { order: 3; min-height: 0; aspect-ratio: 1 / 1; }
+    .maru-pane--body    { order: 4; }
+    .maru-pane--cta     { order: 5; }
+    .maru-pane--meta    { order: 6; }
+    .maru-pane--lit     { order: 7; min-height: 40px; }
+  }
+
+  /* ==========================================================================
+     ONE YELLOW, INCLUDING THE ITALICS
+     ==========================================================================
+     Direction: everything in italics is light yellow. So the display italic
+     takes the accent on every ground, light and dark alike — no darker gold
+     standing in for it, and no outline propping it up.
+
+     Stated plainly, because it will come up: #FFFCCC on white measures 1.05:1.
+     On the dark scopes the same yellow reads at about 17:1 and is doing real
+     work; on white it is a tint, not an ink, and the emphasis word reads as a
+     ghost rather than as type. That is a deliberate call, not an oversight.
+
+     Scoped to the display italics — the big serif emphasis words. The small
+     functional italics stay ink: unit numbers, comparison table headers and the
+     saved-list rows are labels a renter has to read to use the page, and a
+     ghosted unit number is a broken control rather than a light touch. */
+  .display .italic,
+  .hero .display .italic,
+  .marumado .display .italic,
+  .marumado-copy .display .italic,
+  .shoji-head .display .italic,
+  .gallery-section .display .italic,
+  .pricing h2.display .italic,
+  .placeholder-title .italic,
+  .tw-title .italic,
+  .tw-success h3 .italic {
+    color: var(--accent);
+    text-shadow: none;
+  }
+
+  /* ==========================================================================
+     THE HANDOVER OUT OF THE ARRIVAL FILM
+     ==========================================================================
+     It was a flat 900ms opacity dip, and it dipped onto a hero whose own loop
+     had not started loading yet — so the film froze on its last frame, faded to
+     a still photograph, and the panel popped into video a second later. Three
+     separate cuts in one transition.
+
+     The buffering half of the fix is in public/app.js. This half is the motion:
+     the frame eases down and toward the panel it is handing over to while the
+     black ground goes, and the film keeps playing the whole way out. */
+  .arrival-film { transition: opacity 1200ms cubic-bezier(0.22, 0.61, 0.36, 1); }
+  .arrival-film-video {
+    transition: transform 1200ms cubic-bezier(0.22, 0.61, 0.36, 1);
+    will-change: transform;
+  }
+  /* Receding, not vanishing. Scale alone on a phone, where the hero stacks and
+     there is no sideways to go; on a laptop it also drifts right, because that
+     is where the half-screen panel is. */
+  .arrival-film.is-done .arrival-film-video { transform: scale(0.94); }
+  @media (min-width: 900px) {
+    .arrival-film.is-done .arrival-film-video { transform: translateX(9%) scale(0.9); }
+  }
+  /* The furniture goes first and quickly. A skip control still inviting a click
+     on a layer that is on its way out is the one thing here worth hurrying. */
+  .arrival-film-skip {
+    transition: opacity 220ms ease, background 200ms ease, border-color 200ms ease;
+  }
+  .arrival-film.is-done .arrival-film-skip,
+  .arrival-film.is-done .arrival-film-mark { opacity: 0; }
+  .arrival-film-mark { transition: opacity 260ms ease; }
+
+  /* Restated after the block above, which reopened these transitions. Someone
+     who has asked the system for less motion does not get a drifting frame. */
+  @media (prefers-reduced-motion: reduce) {
+    .arrival-film,
+    .arrival-film-video,
+    .arrival-film-mark,
+    .arrival-film-skip { transition: none; }
+    .arrival-film.is-done .arrival-film-video { transform: none; }
+  }
+
+  /* ==========================================================================
+     THE SHEET NUMBERS ACTUALLY COUNT NOW
+     ==========================================================================
+     The comment on the original block promised the numbering "can never leave
+     the page numbered 01, 02, 04". It did exactly that: the counter incremented
+     on every `section[id]`, but only four of them render it, so the page read
+     02 · 04 · 05 · 06 — starting at two, skipping three.
+
+     The count follows the *numbered heads* instead, in document order, which is
+     the only sequence a reader can check. And the two heads that were silently
+     unnumbered — the shoji panel and the marumado, both of which are section
+     heads in every sense except their class name — join the sequence, so the
+     page runs 01 through 06 with nothing missing and nothing counted twice.
+
+     `counter-increment` sits on the same element that renders the number: a
+     counter is incremented before that element's own ::before is generated, so
+     the first numbered head is 01 rather than 00. */
+  section[id] { counter-increment: none; }
+  .section-head .eyebrow,
+  .shoji-head .eyebrow,
+  .maru-pane--eyebrow .eyebrow { counter-increment: sheet; }
+
+  /* The two heads that were missing their number get the same treatment the
+     section heads already had: the counter replaces the leading dash, and the
+     dash moves to the far side of the label. */
+  .shoji-head .eyebrow::before,
+  .maru-pane--eyebrow .eyebrow::before {
+    content: counter(sheet, decimal-leading-zero);
+    width: auto;
+    height: auto;
+    background: none;
+    font-variant-numeric: tabular-nums;
+    color: var(--ink);
+    letter-spacing: 0.06em;
+  }
+  .shoji-head .eyebrow::after,
+  .maru-pane--eyebrow .eyebrow::after {
+    content: "";
+    width: 28px;
+    height: 1px;
+    background: var(--ink-3);
+    display: inline-block;
+    order: 1;
+  }
+  .shoji-head .eyebrow,
+  .maru-pane--eyebrow .eyebrow { gap: 12px; }
+
+  /* ==========================================================================
+     THE FILTER BAR STOPS PUSHING THE PAGE SIDEWAYS
+     ==========================================================================
+     At 320px — an iPhone SE, and the narrowest width worth supporting — the
+     bedroom pills came to 296px inside a 248px measure, so the whole document
+     scrolled horizontally: 333px of page in a 320px window. Every section on
+     the page paid for one control.
+
+     The segmented control wraps rather than scrolls. Only four options, and a
+     scroll rail would hide two of them behind an affordance nobody looks for;
+     wrapped, all four are on screen. The container radius comes down to match,
+     because a 999px stadium around two rows of pills reads as a mistake. */
+  @media (max-width: 560px) {
+    .filter-bar { padding: 18px 16px; gap: 18px; }
+    .filter-group { min-width: 0; width: 100%; }
+    .pill-toggle {
+      flex-wrap: wrap;
+      row-gap: 4px;
+      border-radius: 18px;
+      max-width: 100%;
+    }
+  }
+
+  /* ==========================================================================
+     THE CONSTRUCTION GRID KEEPS ITS RHYTHM AT EVERY WIDTH
+     ==========================================================================
+     The spacing was a percentage stepped down at two breakpoints, which meant
+     the "constant rhythm" it was aiming for was anything but. Below 700px the
+     step was 50% — two columns — so a phone got exactly one hairline straight
+     down the middle of the screen. At 320px that is a line 160px from either
+     edge with nothing to rhyme with, and it reads as a stray mark rather than
+     as a drafting grid. Which is the same complaint the section rail earned,
+     one layer further back. At the other end, 2560px spread six columns to
+     427px apart and the lattice stopped registering at all.
+
+     A length instead of a percentage, clamped. The spacing is now genuinely
+     constant across the range — about 92px on the narrowest phone, 230px on the
+     widest desktop — and there are never fewer than three lines on screen, which
+     is the point at which a repeat starts reading as a grid rather than as one
+     mark. The two breakpoints go with it; there is nothing left for them to do. */
+  body::before { --grid-col: clamp(92px, 13.5vw, 230px); }

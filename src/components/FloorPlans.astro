@@ -110,7 +110,10 @@ const disclaimer = sec.disclaimer ??
     <div class="section-head">
       <div class="reveal">
         <div class="eyebrow">{sec.eyebrow || 'Floor plans'}</div>
-        <h2 class="display">{heading} <span class="italic">{headingItalic}</span></h2>
+        {/* The space is explicit: Astro drops the literal whitespace between an
+            expression and the element after it, which set this as
+            "Three layouts,designed for living." */}
+        <h2 class="display">{heading}{' '}<span class="italic">{headingItalic}</span></h2>
       </div>
       {lede && <p class="lede reveal" data-delay="1">{lede}</p>}
     </div>
@@ -170,7 +173,7 @@ const disclaimer = sec.disclaimer ??
         {plans.map((p, i) => (
           <div class={`plan-content${i === 0 ? ' is-active' : ''}`} data-plan={p.key}>
             <span class="eyebrow">{p.eyebrow}</span>
-            <h3 class="display">{p.title} <span class="italic">{p.titleItalic}</span></h3>
+            <h3 class="display">{p.title}{' '}<span class="italic">{p.titleItalic}</span></h3>
             {p.description && <p>{p.description}</p>}
             <ul class="plan-stats">
               {p.sqft > 0 && <li><span>Square feet</span><strong>{fmtInt(p.sqft)}</strong></li>}

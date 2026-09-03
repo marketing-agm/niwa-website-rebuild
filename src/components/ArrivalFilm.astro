@@ -99,13 +99,26 @@ const markEmph = site.config.wordmark?.emph ?? (lastSpace === -1 ? '' : siteName
           window.removeEventListener('wheel', onIntent);
           window.removeEventListener('touchmove', onIntent);
           window.removeEventListener('keydown', onKey);
-          el.classList.add('is-done');
-          root.classList.remove('arrival-film-open');
-          try { video.pause(); } catch (e) {}
-          // The hero's background loop holds off until now rather than
-          // competing with the film for the same pipe.
+          // Hand over first, fade second. The hero's loop is told to play before
+          // anything starts moving, so the crossfade lands on live footage —
+          // dispatching this alongside the fade meant the film dissolved into a
+          // still photograph and the panel popped into video a beat later.
           document.dispatchEvent(new CustomEvent('niwa:arrival-film-done'));
-          setTimeout(function () { el.remove(); }, 1000);
+          root.classList.remove('arrival-film-open');
+          // Two frames: one for the browser to apply the class-free state, one
+          // for it to notice the change. Setting the class in the same tick as
+          // the layout above can be coalesced into the first paint, and the
+          // transition is skipped entirely — it snaps instead of fading.
+          requestAnimationFrame(function () {
+            requestAnimationFrame(function () { el.classList.add('is-done'); });
+          });
+          // The film plays the whole way out. Pausing on the way in froze the
+          // last frame and then dissolved a still — which is the cut this
+          // transition exists to avoid. It stops when the element goes.
+          setTimeout(function () {
+            try { video.pause(); } catch (e) {}
+            el.remove();
+          }, 1400);
         }
 
         function onIntent() { finish(); }
@@ -116,6 +129,24 @@ const markEmph = site.config.wordmark?.emph ?? (lastSpace === -1 ? '' : siteName
 
         var skip = el.querySelector('.arrival-film-skip');
         skip.addEventListener('click', finish);
+
+        // The nav sits over the film and stays live. Clicking it clears the film
+        // and then lets the link do exactly what it always does — a menu button
+        // that only dismisses a video and drops you back at the top reads as
+        // broken the first time anyone uses it.
+        //
+        // Not preventDefault and not a manual scroll: `finish()` releases the
+        // scroll lock synchronously, so the browser's own hash navigation lands
+        // correctly on the same click.
+        // Delegated on the document, not on `.nav`. This script runs inline at
+        // the top of <body>, so the nav has not been parsed yet and
+        // querySelector('.nav') returns null — the listener silently never
+        // attached, and clicking the menu scrolled the page underneath a film
+        // that stayed put. Caught by hit-testing the click, not by reading it.
+        document.addEventListener('click', function (e) {
+          var t = e.target;
+          if (t && t.closest && t.closest('.nav a, .nav button')) finish();
+        }, true);
         // The only thing on screen worth reaching, so put the caret on it — a
         // keyboard visitor shouldn't have to guess their way out of a film.
         try { skip.focus({ preventScroll: true }); } catch (e) { skip.focus(); }
@@ -125,16 +156,10 @@ const markEmph = site.config.wordmark?.emph ?? (lastSpace === -1 ? '' : siteName
         // only gives up once every source has been tried, and reports that on the
         // last child. Watching both covers a 404 and a missing codec.
         video.lastElementChild.addEventListener('error', finish);
-        // Scrolling is the clearest "I'm done watching" there is. The page
-        // itself is locked underneath, so these only ever mean dismiss.
-        window.addEventListener('wheel', onIntent, { passive: true });
-        window.addEventListener('touchmove', onIntent, { passive: true });
-        window.addEventListener('keydown', onKey);
-
         // Autoplay can still be refused, and the fetch can stall. Either way the
         // visitor must not be held on the poster frame indefinitely, so give it
-        // five seconds to actually start and hand over to the page if it hasn't.
-        startWatchdog = setTimeout(finish, 5000);
+        // five seconds from the moment it is asked to play, and hand over to the
+        // page if nothing has started by then.
         video.addEventListener('playing', function () {
           clearTimeout(startWatchdog);
           // And a second cap once the length is known, in case playback dies
@@ -143,7 +168,19 @@ const markEmph = site.config.wordmark?.emph ?? (lastSpace === -1 ? '' : siteName
           runWatchdog = setTimeout(finish, (d + 8) * 1000);
         }, { once: true });
 
-        video.play().catch(finish);
+        function start() {
+          // Scrolling is the clearest "I'm done watching" there is. The page is
+          // locked underneath, so these only ever mean dismiss — but they are
+          // only bound now, because while the door is still folding the same
+          // gestures mean "open it", and one flick of a wheel would otherwise
+          // open the screen and throw away the film behind it in one go.
+          window.addEventListener('wheel', onIntent, { passive: true });
+          window.addEventListener('touchmove', onIntent, { passive: true });
+          window.addEventListener('keydown', onKey);
+          startWatchdog = setTimeout(finish, 5000);
+          video.play().catch(finish);
+        }
+        start();
       })();
     </script>
   </>

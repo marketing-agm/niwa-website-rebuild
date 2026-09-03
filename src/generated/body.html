@@ -207,7 +207,13 @@
   </div>
 </section>
 
+<!-- ================= THE BUILDING (shoji panel) ================= -->
+{{SHOJI_PANEL}}
+
 <!-- ================= FLOOR PLANS ================= -->
+
+<!-- ================= BUILDING MAP ================= -->
+{{BUILDING_MAP}}
 
 <!-- ================= AVAILABLE UNITS ================= -->
 <section id="availability">
@@ -217,7 +223,7 @@
         <div class="eyebrow">Available homes</div>
         <h2 class="display">Find Your <span class="italic">New Home</span></h2>
       </div>
-      <p class="lede reveal" data-delay="1">Bright one-bedrooms and spacious two-bedroom, two-bath homes — every unit with a private deck. Filter by what matters to you — bedrooms, availability, price.</p>
+      <p class="lede reveal" data-delay="1">{{AVAILABILITY_LEDE}}</p>
     </div>
 
     <!-- Filter bar -->
@@ -226,6 +232,7 @@
         <span class="filter-label">Bedrooms</span>
         <div class="pill-toggle" role="tablist" aria-label="Filter by bedrooms">
           <button class="pill-tab is-active" data-filter="beds" data-value="all">All</button>
+          <button class="pill-tab" data-filter="beds" data-value="0">Studio</button>
           <button class="pill-tab" data-filter="beds" data-value="1">1 BR</button>
           <button class="pill-tab" data-filter="beds" data-value="2">2 BR</button>
         </div>
@@ -613,15 +620,15 @@
           All places <span class="nb-pill-count" data-count="all">—</span>
         </button>
         <button class="nb-pill" data-cat="parks">
-          <span class="nb-pill-dot" style="background:#F1E249"></span>
+          <span class="nb-pill-dot" style="background:#4A7A4E"></span>
           Parks & outdoors <span class="nb-pill-count" data-count="parks">—</span>
         </button>
         <button class="nb-pill" data-cat="food">
-          <span class="nb-pill-dot" style="background:#F1E249"></span>
+          <span class="nb-pill-dot" style="background:#B4552F"></span>
           Food & drink <span class="nb-pill-count" data-count="food">—</span>
         </button>
         <button class="nb-pill" data-cat="shopping">
-          <span class="nb-pill-dot" style="background:#8b6f47"></span>
+          <span class="nb-pill-dot" style="background:#8B6F47"></span>
           Shopping & grocery <span class="nb-pill-count" data-count="shopping">—</span>
         </button>
         <button class="nb-pill" data-cat="transit">
@@ -1140,6 +1147,9 @@
     </div>
   </div>
 </div>
+
+<!-- ================= MARUMADO ================= -->
+{{MARUMADO}}
 
 <footer>
   <div class="container">

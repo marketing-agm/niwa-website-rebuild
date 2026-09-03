@@ -88,22 +88,22 @@
   },
   "theme": {
     "colors": {
-      "--bg": "#ffffff",
+      "--bg": "#FFFFFF",
       "--bg-2": "#EDEDED",
-      "--paper": "#ffffff",
-      "--paper-2": "#ffffff",
+      "--paper": "#FFFFFF",
+      "--paper-2": "#FFFFFF",
       "--ink": "#000000",
-      "--ink-2": "#3a3733",
-      "--ink-3": "#6e6a63",
-      "--rule": "#ececea",
-      "--rule-2": "#f4f4f2",
-      "--accent": "#F1E249",
-      "--accent-2": "#F1E249",
+      "--ink-2": "#333333",
+      "--ink-3": "#666666",
+      "--rule": "#E0E0E0",
+      "--rule-2": "#EDEDED",
+      "--accent": "#FFFCCC",
+      "--accent-2": "#FFFCCC",
       "--warm": "#FFFCCC",
       "--on-accent": "#000000"
     },
-    "themeColor": "#F1E249",
-    "backgroundColor": "#ffffff"
+    "themeColor": "#FFFFFF",
+    "backgroundColor": "#FFFFFF"
   },
   "manifest": {
     "description": "Studio, 1BR & 2BR apartments in Lower Queen Anne, Seattle."
@@ -405,5 +405,37 @@
         "url": "https://my.matterport.com/show/?m=TJW1QP3fGHm"
       }
     ]
+  },
+  "marumado": {
+    "enabled": true,
+    "eyebrow": "Come and see",
+    "title": "The view is the",
+    "titleItalic": "point.",
+    "body": "Niwa means garden. Ours is the whole of Queen Anne — Elliott Bay and the ferries to the west, the Space Needle at the end of the block, and the city laid out from the roof.",
+    "cta": "Schedule a tour",
+    "image": "/images/gallery/neighborhood-elliott-bay.jpg",
+    "alt": "The view west from Niwa — a Washington State ferry crossing Elliott Bay, the port cranes beyond, and Queen Anne's autumn trees in the foreground"
+  },
+  "sightmap": {
+    "enabled": true,
+    "embedUrl": "https://sightmap.com/embed/rkwn11mnpd2",
+    "eyebrow": "The building",
+    "title": "Pick your home off the",
+    "titleItalic": "map.",
+    "lede": "Every home in the building, floor by floor. Click one to see its layout, its rent and when it's free.",
+    "iframeTitle": "SightMap interactive property map showing unit availability at Niwa Apartments",
+    "note": "Availability shown on the map comes from SightMap; the list below is refreshed from the leasing system. If the two ever disagree, the leasing team has the last word."
+  },
+  "availabilitySection": {
+    "lede": "Studios, one-bedrooms and two-bedrooms across floors two through eight. Filter by what matters to you — bedrooms, availability, price."
+  },
+  "shojiPanel": {
+    "enabled": true,
+    "eyebrow": "Inside",
+    "title": "Everything, in its",
+    "titleItalic": "place.",
+    "image": "/images/gallery/interior-clubroom.jpg",
+    "alt": "The rooftop clubroom at Niwa, looking out over Queen Anne",
+    "note": "Amenities are open 24 hours. Features marked as select-home vary by layout — ask the leasing team which homes have what."
   }
 }
