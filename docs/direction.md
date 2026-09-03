@@ -73,38 +73,54 @@ A marquee item may now be a plain string or `{ "text": "…", "offer": true }`.
 
 ---
 
-## Added later the same night, not yet specified
+## Added later the same night, and settled
 
-### A. Roundness, zen, yin-yang
+### A. Roundness — **done (the UI half)**
 
 Direct quote: *"we also want some more roundness zen stuff ying and yang
-energy"*.
+energy"*. Asked which of four readings; the answer was **soften the UI**.
 
-This reverses a decision made earlier in the build. The current stylesheet sets
+Radius is back on the tokens: `--radius: 10px` on things you press,
+`--radius-lg: 18px` on the surfaces they sit on (so a chip inside a card is not
+a smaller copy of the card's own corner), and `--radius-pill: 999px` kept for
+the segmented controls, which read as one object with a track. The lattice
+keeps its corners — a shoji with rounded panes is a bento box.
+
+The other three readings were **not** taken and remain open: the ensō as a
+motif, yin-yang as the page's dark/light structure, and circular photo crops.
+The yin-yang one is worth revisiting once the site is dark, because there it
+stops being decoration and becomes structure.
+
+This reversed a decision made earlier in the build. The stylesheet set
 `--radius: 0` everywhere with the note "there are no rounded corners in a tatami
 room", and the pills were squared off on that basis. That reasoning was about
 *joinery*; roundness in a Japanese garden is a different vocabulary — the ensō,
 the marumado, the raked circle around a stone — and the two can coexist. The
 lattice stays square. The things inside it need not.
 
-Open: whether this means corner radius comes back on the UI, or circular
-*motifs* enter the page as forms, or both. Yin-yang in particular wants
-settling, because on a dark site it is a strong idea rather than a decoration:
-two masses, one light one dark, each carrying a dot of the other.
-
-### B. Something moving from screen to screen
+### B. Screen to screen — **done**
 
 Direct quote: *"we also want something moving as you scroll screen to screen"*.
+Asked which of three shapes; the answer was **section-to-section transitions**,
+not the reverted pinned walk.
 
-Related to but not the same as the pinned walk that was built and reverted
-(commit `0c28198`, revert `bbc8410`). That one held the screen and moved
-content sideways. This reads as a transition or a persistent travelling element
-*between* sections rather than a hijack within one.
+A shoji slides across as each section arrives — four leaves parting from the
+centre, the inner two leading. Scrolling is untouched: no pinning, no hijack,
+no intercepted scroll event. An IntersectionObserver flips a class and CSS does
+the rest, and each panel removes itself once it has opened.
 
-Open: whether it is (a) a transition between sections — one screen giving way
-to the next as a wipe or a curtain, (b) a single element that persists and moves
-as you go — the ensō, the moon, a stone, and the sections change behind it, or
-(c) the reverted pinned walk, wanted back.
+Failure is invisible rather than fatal: the leaves are built in JS and only when
+the browser has both the observer and an appetite for motion, so with the script
+off or reduced motion on there is no panel at all.
+
+One thing learned building it, recorded because it will bite again: the leaves
+were flat `--paper` over sections that are themselves `--paper`. The panel was
+there, it moved, and it was completely invisible — a white sheet sliding across
+a white page is nothing but its own hairlines. They carry the marumado's fine
+lattice now, which is what makes the screen read as a screen whatever tone the
+ground behind it is. That also means it survives the page going dark.
+
+The reverted pinned walk (commit `0c28198`, revert `bbc8410`) stays reverted.
 
 ## Understood, not yet specified
 

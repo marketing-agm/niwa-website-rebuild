@@ -2613,3 +2613,98 @@
       btn.style.background = '';
     }, 2800);
   }
+/* ===========================================================================
+   Screen to screen
+   ===========================================================================
+   A shoji slides across as each section arrives. The panel is closed when the
+   section is still below the fold and opens — four leaves parting from the
+   centre — as it comes up, so moving from one screen to the next reads as
+   passing through a screen rather than as scrolling past a seam.
+
+   Scrolling is untouched. Nothing is pinned, nothing is hijacked, no scroll
+   event is intercepted: an IntersectionObserver flips a class and CSS does the
+   rest, so the page scrolls exactly as fast as the visitor asks it to.
+
+   Built so that failure is invisible rather than fatal. The leaves are created
+   here, not in the markup, and only when the browser has both the observer and
+   an appetite for motion — with the script off, or reduced motion on, there is
+   simply no panel and the page is what it was. Each panel also removes itself
+   once it has opened, so a section that has been seen costs nothing afterwards.
+   =========================================================================== */
+(function () {
+  if (!('IntersectionObserver' in window)) return;
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)');
+  if (reduce.matches) return;
+
+  // The hero is excluded: it is the first thing on screen, and a screen that
+  // opens on arrival competes with the arrival film for the same moment. The
+  // gallery is excluded while it is dark and full-bleed — a pale shoji over a
+  // black room reads as a flash, not as a door.
+  const sections = [...document.querySelectorAll('section[id]')]
+    .filter((s) => s.id !== 'top');
+  if (!sections.length) return;
+
+  const LEAVES = 4;
+  const panels = new Map();
+
+  function build(section) {
+    const panel = document.createElement('div');
+    panel.className = 'screen-shoji';
+    panel.setAttribute('aria-hidden', 'true');
+    for (let i = 0; i < LEAVES; i++) {
+      const leaf = document.createElement('span');
+      leaf.className = 'screen-shoji-leaf';
+      // Leaves part from the middle outward: the two inner ones lead, the
+      // outer two follow. Staggered by index distance from centre, so it
+      // reads as one screen opening rather than four things moving.
+      const fromCentre = Math.abs(i - (LEAVES - 1) / 2);
+      leaf.style.transitionDelay = (fromCentre * 70) + 'ms';
+      panel.appendChild(leaf);
+    }
+    // The section has to be a containing block for it. Every section that is
+    // not already positioned gets it here rather than in the stylesheet, so
+    // nothing is re-parented for sections this never touches — `position:
+    // relative` on a section has re-anchored absolutely positioned children
+    // twice in this project already.
+    if (getComputedStyle(section).position === 'static') {
+      section.style.position = 'relative';
+    }
+    section.appendChild(panel);
+    return panel;
+  }
+
+  const io = new IntersectionObserver((entries) => {
+    for (const e of entries) {
+      if (!e.isIntersecting) continue;
+      const section = e.target;
+      io.unobserve(section);
+      const panel = panels.get(section) || build(section);
+      panels.set(section, panel);
+      // One frame closed, then open. Appending and opening in the same tick is
+      // coalesced into a single paint and the transition is skipped entirely.
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => {
+          panel.classList.add('is-open');
+          // Longest leaf delay plus its own duration, plus a margin.
+          setTimeout(() => panel.remove(), 1600);
+        });
+      });
+    }
+  }, {
+    // Fires as the section's top edge comes up through the lower third of the
+    // screen — early enough that the screen is opening as you arrive rather
+    // than after you have already read the heading.
+    rootMargin: '0px 0px -34% 0px',
+    threshold: 0,
+  });
+
+  sections.forEach((s) => io.observe(s));
+
+  // Someone who turns reduced motion on mid-visit means it: stop opening new
+  // ones and clear anything still on screen.
+  reduce.addEventListener('change', (e) => {
+    if (!e.matches) return;
+    io.disconnect();
+    panels.forEach((p) => p.remove());
+  });
+})();

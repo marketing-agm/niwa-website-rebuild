@@ -6204,3 +6204,125 @@
     gap: 0;
   }
   .marquee-track .marquee-offer::after { content: none; }
+
+  /* ==========================================================================
+     ROUNDNESS COMES BACK
+     ==========================================================================
+     This reverses a decision made earlier in this file. The "Square" layer sets
+     `border-radius: 0` on every control on the page, on the stated grounds that
+     there are no rounded corners in a tatami room.
+
+     That argument was about joinery, and it is still right about joinery — the
+     lattice stays square, the panes stay square, the rails stay hairlines. But
+     a garden is not a tatami room. Roundness is the other half of the same
+     vocabulary: the marumado, the raked ring around a stone, the ensō. The
+     structure can be square while the things sitting inside it are not.
+
+     Two radii rather than one. Controls take a soft rectangle; the surfaces
+     they sit on take a larger one, so a chip inside a card does not read as a
+     smaller copy of the card's own corner. Set on the tokens so the whole page
+     moves together and the amount is one number to argue about. */
+  :root {
+    --radius: 10px;
+    --radius-lg: 18px;
+    /* Things that are meant to be stadiums rather than soft rectangles: the
+       segmented controls and the small round counters. */
+    --radius-pill: 999px;
+  }
+
+  /* Controls. */
+  .btn,
+  .nav-cta, .nav-login, .nav-links a, .nav .brand, .nav-toggle, .nav-mobile-cta,
+  .plan-view-tab, .plan-tour-chip,
+  .unit-card-cta, .ud-tab, .ud-tags li,
+  .amenity-tour, .gallery-tab,
+  .form-submit, .cw-form .form-submit, .field input, .field textarea, .field select,
+  .sl-btn, .tw-chip, .tw-back, .tw-continue, .tw-submit,
+  .unit-budget-tag, .unit-urgency, .badge-featured,
+  .hero-video-btn, .walk-toggle {
+    border-radius: var(--radius);
+  }
+
+  /* Surfaces the controls sit on. */
+  .unit-card, .feature-card, .gallery-item, .filter-bar, .summary-card,
+  .ledger, .plan-tour-frame, .building-map-frame, .maru-pane, .marumado-shoji,
+  .ud-stats, .ud-tags {
+    border-radius: var(--radius-lg);
+  }
+
+  /* Stadiums. A segmented control reads as one object with a track, and a
+     track with soft corners reads as a mistake rather than a choice. */
+  .pill-toggle, .pill-tab, .plan-view-toggle, .plan-tour-picker,
+  .strip-nav, .unit-fav, .unit-cmp, .video-modal-close, .arrival-film-skip,
+  .sticky-cta-btn {
+    border-radius: var(--radius-pill);
+  }
+
+  /* The lattice keeps its corners. This is the joinery, and it is the one place
+     the original argument still holds — a shoji with rounded panes is not a
+     shoji, it is a bento box. */
+  .shoji, .shoji-cell, .maru-screen, .marquee, .marquee-track .marquee-offer {
+    border-radius: 0;
+  }
+
+  /* ---- Screen to screen ----
+     The panel that slides across as each section arrives. Built by app.js, so
+     with the script off or reduced motion on there is nothing here at all and
+     the page is exactly what it was.
+
+     It sits over the section, never over the nav or the sticky CTA, and it is
+     `pointer-events: none` for its whole life — a full-bleed overlay that can
+     swallow a click is how a decoration becomes a bug. */
+  .screen-shoji {
+    position: absolute;
+    inset: 0;
+    z-index: 5;
+    display: flex;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  .screen-shoji-leaf {
+    flex: 1 1 0;
+    /* Paper, and the lattice on it. The first version was flat `--paper` over
+       sections that are themselves `--paper`: the panel was there, it moved,
+       and it was invisible, because a white sheet sliding across a white page
+       is nothing but its own three hairlines. The leaves carry the same fine
+       lattice the marumado's field does, so the screen reads as a screen
+       whatever tone the ground behind it is — which also means it survives the
+       page going dark. */
+    background:
+      repeating-linear-gradient(90deg, var(--rule) 0 1px, transparent 1px 25%),
+      repeating-linear-gradient(0deg,  var(--rule) 0 1px, transparent 1px 88px),
+      var(--paper);
+    /* The rail between leaves. A shoji is not one sheet, and at four leaves the
+       joins are what make it read as a screen rather than as a fade. */
+    box-shadow: inset -1px 0 0 var(--ink-3), inset 1px 0 0 var(--ink-3);
+    transform: translate3d(0, 0, 0);
+    /* Slow out, and the leaves carry their own stagger from app.js. */
+    transition: transform 900ms cubic-bezier(0.22, 0.61, 0.36, 1),
+                opacity 900ms cubic-bezier(0.22, 0.61, 0.36, 1);
+    will-change: transform;
+  }
+  /* Parting from the centre: the left half goes left, the right half goes
+     right. `nth-child(-n+2)` is the left pair at four leaves. */
+  .screen-shoji.is-open .screen-shoji-leaf { opacity: 0; }
+  .screen-shoji.is-open .screen-shoji-leaf:nth-child(-n+2) {
+    transform: translate3d(-102%, 0, 0);
+  }
+  .screen-shoji.is-open .screen-shoji-leaf:nth-child(n+3) {
+    transform: translate3d(102%, 0, 0);
+  }
+  /* On the dark scopes the screen is dark too, otherwise a pale sheet over a
+     black room reads as a camera flash. */
+  .gallery-section .screen-shoji-leaf,
+  .marumado .screen-shoji-leaf {
+    background:
+      repeating-linear-gradient(90deg, rgba(255,255,255,0.14) 0 1px, transparent 1px 25%),
+      repeating-linear-gradient(0deg,  rgba(255,255,255,0.14) 0 1px, transparent 1px 88px),
+      var(--ink);
+    box-shadow: inset -1px 0 0 rgba(255,255,255,0.34),
+                inset 1px 0 0 rgba(255,255,255,0.34);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .screen-shoji { display: none; }
+  }
