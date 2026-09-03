@@ -88,22 +88,22 @@
   },
   "theme": {
     "colors": {
-      "--bg": "#F6F2EA",
-      "--bg-2": "#EFEADE",
-      "--paper": "#F6F2EA",
-      "--paper-2": "#F6F2EA",
-      "--ink": "#26221C",
-      "--ink-2": "#4C463C",
-      "--ink-3": "#6B6353",
-      "--rule": "#D9D2C4",
-      "--rule-2": "#E6E0D2",
+      "--bg": "#FFFFFF",
+      "--bg-2": "#EDEDED",
+      "--paper": "#FFFFFF",
+      "--paper-2": "#FFFFFF",
+      "--ink": "#000000",
+      "--ink-2": "#333333",
+      "--ink-3": "#666666",
+      "--rule": "#E0E0E0",
+      "--rule-2": "#EDEDED",
       "--accent": "#F1E249",
       "--accent-2": "#F1E249",
-      "--warm": "#F1EAD3",
-      "--on-accent": "#26221C"
+      "--warm": "#FFFCCC",
+      "--on-accent": "#000000"
     },
-    "themeColor": "#F6F2EA",
-    "backgroundColor": "#F6F2EA"
+    "themeColor": "#FFFFFF",
+    "backgroundColor": "#FFFFFF"
   },
   "manifest": {
     "description": "Studio, 1BR & 2BR apartments in Lower Queen Anne, Seattle."

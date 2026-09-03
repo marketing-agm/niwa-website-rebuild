@@ -25,11 +25,8 @@
        temperature and depth — every one is within a few percent of white, on
        purpose, because the brief was that nothing here may take attention off
        the yellow that is already doing the work. */
-    --garden-paper: #FCFBF6;   /* the ground: white, very slightly warm */
-    --garden-leaf: #EDF1E8;    /* pale sage wash */
-    --garden-leaf-2: #DCE5D5;  /* the same, one step deeper — edges and veins */
-    --garden-stone: #F1EFE9;   /* raked gravel */
-    --garden-ink: #8C9384;     /* the green that reads as a line, not a fill */
+    --garden-paper: #FFFFFF;
+    --garden-stone: #F5F5F5;   /* raked gravel, as a surface */
     /* One knob for vertical rhythm between sections.
        Stepped rather than a single clamp across all widths: the values this
        replaces were 112px above 860, 80px down to 540 and 56px below that, and
@@ -47,7 +44,7 @@
     --container: 1280px;
     --nav-h: 64px;
     --serif: "Fraunces", "Source Serif 4", Georgia, serif;
-    --sans: "Geist", -apple-system, "Helvetica Neue", Arial, sans-serif;
+    --sans: "Montserrat", -apple-system, "Helvetica Neue", Arial, sans-serif;
     --mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
   }
 
@@ -5079,7 +5076,7 @@
        border at the edge of a card is invisible drawn across a whole viewport,
        and the first version of this was present in the DOM and unreadable on
        screen — confirmed by sampling pixels, not by squinting. */
-    --grid-ink: #D2C8B2;
+    --grid-ink: #DBDBDB;
     --label: 11px;
     --label-track: 0.16em;
     --measure: 62ch;
@@ -5259,15 +5256,15 @@
   .zen-path svg { width: 100%; height: 100%; display: block; }
   .zen-path .rake {
     fill: none;
-    stroke: #C6BAA0;
+    stroke: #DCDCDC;
     stroke-width: 1.3;
     vector-effect: non-scaling-stroke;
   }
-  .zen-path .rake { stroke: #C6BAA0; }
-  .zen-path .rake-2 { stroke: #D5CCB8; }
-  .zen-path .stone { fill: #B3A88E; }
-  .zen-path .stone-2 { fill: #C6BCA6; }
-  .zen-path .cross { stroke: #C0B49A; stroke-width: 1; vector-effect: non-scaling-stroke; }
+  .zen-path .rake { stroke: #DCDCDC; }
+  .zen-path .rake-2 { stroke: #EAEAEA; }
+  .zen-path .stone { fill: #D2D2D2; }
+  .zen-path .stone-2 { fill: #E2E2E2; }
+  .zen-path .cross { stroke: #D6D6D6; stroke-width: 1; vector-effect: non-scaling-stroke; }
   @media (max-width: 700px) { .zen-path { display: none; } }
 
   /* --------------------------------------------------------------------------
@@ -5276,7 +5273,18 @@
      Alternating anchors rather than a single centred column. Sections lean to
      one side or the other so the reading line moves across the page as it
      descends — the walk, without the page ever scrolling sideways. */
-  .container { position: relative; }
+  /* Deliberately NOT `.container { position: relative }`. Positioning the
+     container makes it the containing block for every absolutely positioned
+     descendant, and the hero's full-bleed video panel — which anchors to
+     `right: 0` of the viewport — silently pulled in to the container's edge
+     instead. Second time this exact mistake has been made in this stylesheet;
+     the first was `position: relative` on body. Only the sections that need a
+     stacking context get one, by name. */
+  /* The hero copy is lifted above the raked path by the copy column itself,
+     never by `.hero .container` — positioning the container makes it the
+     containing block for the full-bleed video panel, which anchors to the
+     viewport's right edge and quietly pulls in to the container's instead. */
+  .hero-grid > div:first-child, .section-head { position: relative; z-index: 1; }
   section[id]:nth-of-type(odd) .section-head { margin-left: 0; margin-right: auto; }
   section[id]:nth-of-type(even) .section-head {
     grid-template-columns: 1.4fr 1fr;
@@ -5306,7 +5314,7 @@
 
   /* The rake passes behind the headline, so it is pulled back where type sits
      and left alone in the margins. */
-  .hero .container, .section-head { position: relative; z-index: 1; }
+  /* (see above — the container must stay unpositioned) */
 
   /* `Walk the building` is a section heading, not a control — serif, and sized
      with the other section headings rather than with the labels. */
@@ -5380,3 +5388,72 @@
   /* Plus the hairline: the bar is --nav-h of content and 1px of border, so
      `top: var(--nav-h)` alone leaves the film a pixel under its own rule. */
   .arrival-film { top: calc(var(--nav-h) + 1px); }
+
+  /* Montserrat replaces Geist for prose and UI. It has a bigger x-height and
+     wider letterforms than the face it replaces, so the same nominal size reads
+     larger and tighter — line-height comes up and the display tracking comes in
+     a touch to compensate. */
+  body { font-family: var(--sans); }
+  p, .lede, li { line-height: 1.62; }
+  .lede { letter-spacing: -0.005em; }
+
+  /* ---- Legibility, restored ----
+     This block was written once and then silently deleted: removing the portal
+     was done by slicing the stylesheet between two comment markers, and this
+     had been appended between them. The palette change to white masked it —
+     most of the original failures were fixed incidentally by pure white and
+     black — so only the yellow survived to give it away. Re-measured after
+     restoring, not assumed. */
+  :root {
+    /* The brand yellow is a fill, not an ink. #F1E249 as text on white is
+       1.34:1 — not "low contrast", unreadable. Yellow type takes a darker gold
+       so it still reads as the brand; every yellow *surface* keeps the exact
+       brand value. */
+    --accent-ink: #8A7A0F;
+    --label: 12px;
+    --label-lg: 13px;
+  }
+  .display .italic,
+  .hero .display .italic,
+  .marumado-copy .display .italic { color: var(--accent-ink); }
+  /* Except on the inverted scopes, where the bright yellow is already right and
+     is the only thing entitled to be as bright as the photography. */
+  .gallery-section .display .italic,
+  .marumado .display .italic,
+  .unit-card .italic,
+  .pricing h2.display .italic { color: var(--accent); }
+
+  /* Controls read at 13px; only genuine micro-labels stay at 12. Labels had
+     been set at 11px across nav, buttons and meta alike, which made every
+     button on the site micro-type. */
+  .nav-links a, .nav-cta, .nav-login, .nav-mobile a, .nav-mobile-cta,
+  .btn, .pill-tab, .plan-view-tab, .gallery-tab, .unit-card-cta, .ud-tab,
+  .amenity-tour, .sticky-cta-btn, .sl-btn, .tw-chip, .tw-continue,
+  .tw-submit, .form-submit { font-size: var(--label-lg); }
+  .visual-tag, .g-count, .tab-meta, .placeholder-eyebrow,
+  .gallery-item-cat, .unit-card-specs span, .unit-card-features li,
+  .filter-meta, .sl-count, .ud-tags li, .avail, .avail.soon,
+  .unit-rail-hint, .unit-cmp { font-size: 12px; }
+  .plan-disclaimer, .building-map-note, .gallery-note { font-size: 13px; }
+
+  /* Scoped, because the rules that set these are scoped too: `.gallery-tab
+     .g-count` and `.plan-tab .tab-meta` are two-class selectors and beat a
+     bare `.g-count` no matter how late it appears. Specificity, not order. */
+  .gallery-tab .g-count { font-size: 12px; opacity: 0.75; }
+  .gallery-tab.is-active .g-count { opacity: 1; }
+  .plan-tab .tab-meta { font-size: 12px; opacity: 1; color: var(--ink-3); }
+  .plan-tab.is-active .tab-meta { color: rgba(255,255,255,0.82); }
+  .gallery-item .gallery-item-cat,
+  .unit-card .unit-card-specs span,
+  .unit-card .unit-card-features li,
+  .filter-bar .filter-meta,
+  .plan-placeholder .placeholder-eyebrow,
+  .plan-tour-placeholder .placeholder-eyebrow { font-size: 12px; }
+
+  /* The last six, all scoped by their own parents for the same reason. */
+  .unit-card .avail, .unit-card .avail.soon { font-size: 12px; }
+  .unit-card .unit-urgency { font-size: 12px; }
+  .shortlist-bar .sl-count, .sl-summary .sl-count { font-size: 12px; }
+  footer h6, .footer h6 { font-size: 12px; }
+  footer p, .footer p { font-size: 13px; }
+  .eho { font-size: 12px; }
