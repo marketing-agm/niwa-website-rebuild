@@ -4089,15 +4089,18 @@
   }
 
   /* ---------- Full-bleed hero visual ----------
-     The image anchors to the right edge of the viewport and spans from the top
-     of the page (behind the sticky nav) down to the bottom of the marquee — the
-     marquee lives inside .hero, so its bottom is the section's bottom. The left
-     edge stays roughly where the grid column started. */
+     Anchored to the right edge and running down to the bottom of the marquee,
+     which lives inside .hero so its bottom is the section's bottom.
+
+     It starts at the top of .hero rather than behind the nav. The nav is its
+     own strip now: a band with a surface and a hairline under it, and the
+     footage beneath, not behind. Layering the two meant the menu sat on moving
+     video and neither read cleanly. */
   @media (min-width: 961px) {
     .hero { position: relative; }
     .hero-visual {
       position: absolute;
-      top: calc(-1 * var(--nav-h, 64px));
+      top: 0;
       right: 0;
       bottom: 0;
       width: 47vw;
@@ -5315,132 +5318,6 @@
     text-transform: none;
   }
 
-  /* --------------------------------------------------------------------------
-     The portal
-     --------------------------------------------------------------------------
-     You enter through a window and you leave through one. The film opens
-     behind a round aperture in a shoji screen — the same marumado that closes
-     the page — and the opening grows until the frame is gone.
-
-     The aperture is `clip-path: circle()` on the film layer. That is one
-     compositable property: growing a real element behind a mask would repaint
-     the video every frame, which on a 1080p stream is exactly the kind of thing
-     that makes a site feel slow. The screen around it fades out on opacity.
-     Two properties, both cheap, no layout. */
-  .arrival-film[data-portal] .arrival-film-video,
-  .arrival-film[data-portal]::before {
-    clip-path: circle(19vmin at 50% 50%);
-    transition: clip-path 1500ms cubic-bezier(0.62, 0, 0.2, 1);
-  }
-  .arrival-film[data-portal].is-open .arrival-film-video,
-  .arrival-film[data-portal].is-open::before {
-    /* Past the far corner at any aspect ratio, so the circle is gone rather
-       than merely large. */
-    clip-path: circle(96vmax at 50% 50%);
-  }
-
-  /* The screen the opening is cut through. Same lattice as the closer, so the
-     two windows read as the same window. */
-  .portal-shoji {
-    position: absolute;
-    inset: 0;
-    z-index: 2;
-    pointer-events: none;
-    background:
-      repeating-linear-gradient(90deg, rgba(140,124,98,0.5) 0 2px, transparent 2px calc(100% / 14)),
-      repeating-linear-gradient(0deg,  rgba(140,124,98,0.5) 0 2px, transparent 2px calc(100% / 9)),
-      linear-gradient(165deg, #F7F1E2 0%, #E8DFC9 58%, #D5C8A9 100%);
-    /* Punched out where the film shows, and the hole grows with it. */
-    -webkit-mask-image: radial-gradient(circle at 50% 50%, transparent 19vmin, #000 calc(19vmin + 1px));
-    mask-image: radial-gradient(circle at 50% 50%, transparent 19vmin, #000 calc(19vmin + 1px));
-    transition: -webkit-mask-image 1500ms cubic-bezier(0.62, 0, 0.2, 1),
-                mask-image 1500ms cubic-bezier(0.62, 0, 0.2, 1),
-                opacity 700ms ease 900ms;
-  }
-  .arrival-film.is-open .portal-shoji {
-    -webkit-mask-image: radial-gradient(circle at 50% 50%, transparent 96vmax, #000 calc(96vmax + 1px));
-    mask-image: radial-gradient(circle at 50% 50%, transparent 96vmax, #000 calc(96vmax + 1px));
-    opacity: 0;
-  }
-  /* The screen's own centre post crossing the opening — the detail that says
-     the window is cut through the screen rather than hung beside it. */
-  .portal-post {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 50%;
-    width: clamp(8px, 1vw, 13px);
-    transform: translateX(-50%);
-    background: linear-gradient(90deg, #574733, #74604A 45%, #4C3E2D);
-    transition: opacity 600ms ease 700ms;
-  }
-  .arrival-film.is-open .portal-post { opacity: 0; }
-
-  /* The skip control has nothing to sit on until the aperture is open. */
-  .arrival-film[data-portal] .arrival-film-skip,
-  .arrival-film[data-portal] .arrival-film-mark {
-    opacity: 0;
-    transition: opacity 500ms ease 1100ms;
-  }
-  .arrival-film[data-portal].is-open .arrival-film-skip,
-  .arrival-film[data-portal].is-open .arrival-film-mark { opacity: 1; }
-
-  /* Motion sensitivity never reaches this — the whole sequence is skipped in
-     the component — but a stalled transition must not leave a visitor looking
-     at a keyhole, so the reduced case opens instantly. */
-  @media (prefers-reduced-motion: reduce) {
-    .arrival-film[data-portal] .arrival-film-video,
-    .arrival-film[data-portal]::before { clip-path: none; transition: none; }
-    .portal-shoji { display: none; }
-  }
-
-  /* ---- Legibility pass ----
-     Measured, not eyeballed. Every text node on the page was checked against
-     its own composited background; what follows is what failed.
-
-     --ink-3 landed at exactly 4.14:1 on the linen canvas — under the 4.5 body
-     text needs, and it carries the eyebrows, the meta lines, the disclaimers
-     and the filter labels. One value, twenty failures. */
-  :root {
-    --ink-3: #6B6353;
-    /* The brand yellow is a fill, not an ink. #F1E249 as text on the canvas is
-       1.2:1 — it does not merely fail, it is close to invisible, and it was
-       already doing this on white before the canvas changed. Yellow text needs
-       its own darker value; the fill keeps the brand colour untouched. */
-    --accent-ink: #8A7A0F;
-    /* Labels were set at 11px across nav, buttons and meta alike. Oakâme puts
-       tracked-out labels at 10–12px but its body at 18–20px; applying the label
-       size to controls made every button on the site micro-type. */
-    --label: 12px;
-    --label-lg: 13px;
-  }
-
-  /* Yellow as type takes the ink; yellow as a surface keeps the brand value. */
-  .display .italic,
-  .hero .display .italic,
-  .marumado-copy .display .italic { color: var(--accent-ink); }
-  /* Except on the dark scopes, where the bright yellow is already correct and
-     is the only thing entitled to be as bright as the photography. */
-  .gallery-section .display .italic,
-  .marumado .display .italic,
-  .unit-card .italic { color: var(--accent); }
-
-  /* Controls read at 13px; only genuine micro-labels stay at 12. */
-  .nav-links a, .nav-cta, .nav-login, .nav-mobile a, .nav-mobile-cta,
-  .btn, .pill-tab, .plan-view-tab, .gallery-tab, .unit-card-cta, .ud-tab,
-  .amenity-tour, .sticky-cta-btn, .sl-btn, .tw-chip, .tw-continue,
-  .tw-submit, .form-submit {
-    font-size: var(--label-lg);
-  }
-  /* Sub-11px type had no business existing. */
-  .g-count, .gallery-item-cat, .gallery-note, .avail, .avail.soon,
-  .unit-urgency, .unit-cmp, .filter-meta, .unit-rail-hint, .tab-meta,
-  .placeholder-eyebrow, .building-map-note, .plan-disclaimer {
-    font-size: max(12px, 1em);
-  }
-  .unit-cmp { font-size: 12px; }
-  .plan-disclaimer, .building-map-note { font-size: 13px; }
-
   /* The last of the micro-type. These are nested spans that inherit a size
      smaller than their parent, so they have to be named rather than caught by
      the rule above. Twelve pixels is the floor for anything a person is meant
@@ -5450,3 +5327,56 @@
   .filter-meta, .sl-count, .ud-tags li, .avail, .avail.soon {
     font-size: 12px;
   }
+
+  /* ---- The nav over the film ----
+     The film is a fixed layer at 300 and the nav is sticky at 50, so without
+     this the menu is underneath it and unclickable. Raised only while the film
+     is up, so nothing about the normal page changes. Its chips are canvas-toned
+     with dark type, which reads over footage exactly as it reads over the hero
+     photograph. */
+  html.arrival-film-open .nav { z-index: 320; }
+
+  /* ---- Expand, out of the middle ----
+     It was centred because the corner version kept being swallowed by the
+     marquee: the video panel runs full-bleed *behind* that yellow band, so
+     `bottom: 20px` puts the control underneath it. Bottom-right, lifted clear
+     of the band rather than tucked into the true corner. */
+  .hero-video-btn {
+    left: auto;
+    top: auto;
+    right: clamp(16px, 2vw, 28px);
+    bottom: clamp(88px, 12vh, 132px);
+    transform: none;
+  }
+  .hero-video-btn:hover { transform: scale(1.04); }
+  @media (max-width: 900px) {
+    /* Stacked layout: the panel is no longer behind the marquee, so the button
+       can sit where a corner control should. */
+    .hero-video-btn { bottom: clamp(16px, 3vh, 28px); }
+  }
+
+  /* ---- The nav is a strip, not a set of chips floating on the page ----
+     The reference is right: a bar with a surface of its own and the imagery
+     beneath it reads better than a menu sitting on moving footage. The bar
+     carries the surface now, so the individual chips give theirs up — they were
+     only ever there because there was no bar to sit on. The one exception is
+     the yellow CTA, which is a filled button by design. */
+  .nav {
+    background: var(--bg);
+    border-bottom: 1px solid var(--rule);
+  }
+  .nav.scrolled { background: var(--bg); }
+  .nav .brand, .nav-links, .nav-login {
+    background: transparent;
+    border: 0;
+    box-shadow: none;
+  }
+  .nav .brand:hover { border: 0; }
+  .nav-login { border: 1px solid var(--rule); }
+
+  /* The film gets the same treatment: it begins under the strip rather than
+     behind it, so the menu is legible on its own ground for the whole 30
+     seconds instead of fighting whatever frame is on screen. */
+  /* Plus the hairline: the bar is --nav-h of content and 1px of border, so
+     `top: var(--nav-h)` alone leaves the film a pixel under its own rule. */
+  .arrival-film { top: calc(var(--nav-h) + 1px); }
