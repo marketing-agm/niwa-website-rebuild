@@ -73,6 +73,39 @@ A marquee item may now be a plain string or `{ "text": "…", "offer": true }`.
 
 ---
 
+## Added later the same night, not yet specified
+
+### A. Roundness, zen, yin-yang
+
+Direct quote: *"we also want some more roundness zen stuff ying and yang
+energy"*.
+
+This reverses a decision made earlier in the build. The current stylesheet sets
+`--radius: 0` everywhere with the note "there are no rounded corners in a tatami
+room", and the pills were squared off on that basis. That reasoning was about
+*joinery*; roundness in a Japanese garden is a different vocabulary — the ensō,
+the marumado, the raked circle around a stone — and the two can coexist. The
+lattice stays square. The things inside it need not.
+
+Open: whether this means corner radius comes back on the UI, or circular
+*motifs* enter the page as forms, or both. Yin-yang in particular wants
+settling, because on a dark site it is a strong idea rather than a decoration:
+two masses, one light one dark, each carrying a dot of the other.
+
+### B. Something moving from screen to screen
+
+Direct quote: *"we also want something moving as you scroll screen to screen"*.
+
+Related to but not the same as the pinned walk that was built and reverted
+(commit `0c28198`, revert `bbc8410`). That one held the screen and moved
+content sideways. This reads as a transition or a persistent travelling element
+*between* sections rather than a hijack within one.
+
+Open: whether it is (a) a transition between sections — one screen giving way
+to the next as a wipe or a curtain, (b) a single element that persists and moves
+as you go — the ensō, the moon, a stone, and the sections change behind it, or
+(c) the reverted pinned walk, wanted back.
+
 ## Understood, not yet specified
 
 ### 5. "Apply the grid thing to everything"
