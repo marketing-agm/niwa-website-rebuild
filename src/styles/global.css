@@ -5649,40 +5649,9 @@
      decoration, and each section takes a different position in it. The grid
      stays constant; the composition inside it does not. */
 
-  /* ---- The rail ----
-     The sheet number set vertically down the left edge, the way a drawing is
-     labelled along its margin. Runs in the gutter outside the content measure,
-     so it costs no width and never collides with the text. Hidden where there
-     is no gutter to put it in. */
-  @media (min-width: 1180px) {
-    section[id]::before {
-      content: counter(sheet, decimal-leading-zero);
-      position: absolute;
-      left: clamp(18px, 3vw, 46px);
-      top: var(--section-y);
-      writing-mode: vertical-rl;
-      font-family: var(--mono);
-      font-size: 12px;
-      font-weight: 500;
-      letter-spacing: 0.42em;
-      text-transform: uppercase;
-      color: var(--ink-3);
-      opacity: 0.75;
-      pointer-events: none;
-    }
-    section[id]::after {
-      content: "";
-      position: absolute;
-      left: calc(clamp(18px, 3vw, 46px) + 6px);
-      top: calc(var(--section-y) + 46px);
-      bottom: var(--section-y);
-      width: 1px;
-      background: var(--rule);
-      pointer-events: none;
-    }
-    .gallery-section::before { color: rgba(255,255,255,0.62); }
-    .gallery-section::after { background: rgba(255,255,255,0.22); }
-  }
+  /* (A drawing-sheet margin used to live here — a vertical sheet number and a
+     hairline rule down the left edge. Both are gone; see "The drawing-sheet
+     margin comes out" further down for why. The lattice does that job now.) */
 
   /* ---- Section heads stop being one shape ----
      Three treatments, cycled, so no two adjacent sections announce themselves
@@ -5763,19 +5732,27 @@
      BACK IN BRAND
      ========================================================================== */
 
-  /* ---- The vertical sheet number comes out ----
-     It repeated the number already sitting in the eyebrow two inches to its
-     right, and at 12px rotated in a margin it was unreadable anyway — so it was
-     an illegible duplicate of a legible thing. On the floor-plans head the two
-     actually collided. The eyebrow keeps the number; the rail keeps the rule,
-     which is what was doing the architectural work. */
-  section[id]::before { content: none; }
-  @media (min-width: 1180px) {
-    section[id]::after {
-      top: calc(var(--section-y) + 8px);
-      opacity: 0.9;
-    }
-  }
+  /* ---- The drawing-sheet margin comes out, both halves of it ----
+     The idea was a technical drawing's margin: the sheet number set vertically
+     down the left edge with a rule beside it. Neither half survived contact.
+
+     The number went first — it repeated the number already sitting in the
+     eyebrow two inches to its right, and at 12px rotated in a margin it was
+     unreadable anyway, so it was an illegible duplicate of a legible thing. On
+     the floor-plans head the two collided outright.
+
+     The rule went next, and for the reason decoration usually goes: it did not
+     read as a margin rule, it read as a stray line. It only ever worked where
+     the section had a gutter to sit in, and the sections do not agree about
+     that — over the gallery, whose tab row starts further left than the rest of
+     the page, it ran straight down through the middle of the "All 18" chip. A
+     hairline crossing a button is a defect, whatever it was drawn for.
+
+     The architecture the rail was reaching for is in the lattice now — the
+     shoji panel and the marumado screen — where it is structure rather than a
+     mark in the margin. */
+  section[id]::before,
+  section[id]::after { content: none; }
 
   /* ---- The outlined headline is reverted ----
      Yellow type with a hard ink shadow was tried and rejected on sight: an
@@ -5870,10 +5847,9 @@
     color: #FFFFFF;
   }
   /* The drawn floor went with the timber room — the screen has a real frame
-     around it now, which is what was holding the composition down. And the
-     section rail goes with it: a grey hairline floating in the black margin
-     beside a framed screen is a stray mark. Both are the same `::after`, and
-     `section[id]::after` outranks a bare class — hence the attribute here. */
+     around it now, which is what was holding the composition down. (The section
+     rail shared this `::after` and used to need killing here too; it is gone
+     page-wide, so this is the floor alone.) */
   section[id].marumado::after { content: none; }
 
   /* The type inside the screen sits on paper, so the italic is ink here like
