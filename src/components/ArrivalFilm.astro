@@ -37,7 +37,12 @@ const markEmph = site.config.wordmark?.emph ?? (lastSpace === -1 ? '' : siteName
 ---
 {enabled && (
   <>
-    <div class="arrival-film" id="arrival-film" hidden style={v.poster ? `--film-backdrop: url(${v.poster})` : undefined}>
+    <div class="arrival-film" id="arrival-film" hidden data-portal={intro.portal === false ? undefined : ''} style={v.poster ? `--film-backdrop: url(${v.poster})` : undefined}>
+      {intro.portal !== false && (
+        <div class="portal-shoji" aria-hidden="true">
+          <div class="portal-post"></div>
+        </div>
+      )}
       {/* The space is explicit: Astro collapses the whitespace between two
           expressions across a line break, which ran this together as
           "NiwaApartments". */}
@@ -137,6 +142,19 @@ const markEmph = site.config.wordmark?.emph ?? (lastSpace === -1 ? '' : siteName
           runWatchdog = setTimeout(finish, (d + 8) * 1000);
         }, { once: true });
 
+        // The way in is the same window the page closes on. The opening starts at
+        // the size of a marumado and grows until the frame is gone — you do not
+        // watch a film that has appeared, you walk through an opening into one.
+        // `clip-path: circle()` is one composited property; growing a real
+        // element and masking would repaint every frame.
+        var portal = el.hasAttribute('data-portal');
+        function openAperture() {
+          if (!portal) return;
+          requestAnimationFrame(function () {
+            requestAnimationFrame(function () { el.classList.add('is-open'); });
+          });
+        }
+
         function start() {
           // Scrolling is the clearest "I'm done watching" there is. The page is
           // locked underneath, so these only ever mean dismiss — but they are
@@ -147,6 +165,7 @@ const markEmph = site.config.wordmark?.emph ?? (lastSpace === -1 ? '' : siteName
           window.addEventListener('touchmove', onIntent, { passive: true });
           window.addEventListener('keydown', onKey);
           startWatchdog = setTimeout(finish, 5000);
+          openAperture();
           video.play().catch(finish);
         }
         start();

@@ -145,7 +145,8 @@
       "modalHeading": "Niwa Apartments — the building film",
       "arrival": {
         "enabled": true,
-        "skipLabel": "Skip intro"
+        "skipLabel": "Skip intro",
+        "portal": true
       }
     }
   },

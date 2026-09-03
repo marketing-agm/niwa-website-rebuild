@@ -5308,3 +5308,82 @@
     letter-spacing: -0.025em;
     text-transform: none;
   }
+
+  /* --------------------------------------------------------------------------
+     The portal
+     --------------------------------------------------------------------------
+     You enter through a window and you leave through one. The film opens
+     behind a round aperture in a shoji screen — the same marumado that closes
+     the page — and the opening grows until the frame is gone.
+
+     The aperture is `clip-path: circle()` on the film layer. That is one
+     compositable property: growing a real element behind a mask would repaint
+     the video every frame, which on a 1080p stream is exactly the kind of thing
+     that makes a site feel slow. The screen around it fades out on opacity.
+     Two properties, both cheap, no layout. */
+  .arrival-film[data-portal] .arrival-film-video,
+  .arrival-film[data-portal]::before {
+    clip-path: circle(19vmin at 50% 50%);
+    transition: clip-path 1500ms cubic-bezier(0.62, 0, 0.2, 1);
+  }
+  .arrival-film[data-portal].is-open .arrival-film-video,
+  .arrival-film[data-portal].is-open::before {
+    /* Past the far corner at any aspect ratio, so the circle is gone rather
+       than merely large. */
+    clip-path: circle(96vmax at 50% 50%);
+  }
+
+  /* The screen the opening is cut through. Same lattice as the closer, so the
+     two windows read as the same window. */
+  .portal-shoji {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    background:
+      repeating-linear-gradient(90deg, rgba(140,124,98,0.5) 0 2px, transparent 2px calc(100% / 14)),
+      repeating-linear-gradient(0deg,  rgba(140,124,98,0.5) 0 2px, transparent 2px calc(100% / 9)),
+      linear-gradient(165deg, #F7F1E2 0%, #E8DFC9 58%, #D5C8A9 100%);
+    /* Punched out where the film shows, and the hole grows with it. */
+    -webkit-mask-image: radial-gradient(circle at 50% 50%, transparent 19vmin, #000 calc(19vmin + 1px));
+    mask-image: radial-gradient(circle at 50% 50%, transparent 19vmin, #000 calc(19vmin + 1px));
+    transition: -webkit-mask-image 1500ms cubic-bezier(0.62, 0, 0.2, 1),
+                mask-image 1500ms cubic-bezier(0.62, 0, 0.2, 1),
+                opacity 700ms ease 900ms;
+  }
+  .arrival-film.is-open .portal-shoji {
+    -webkit-mask-image: radial-gradient(circle at 50% 50%, transparent 96vmax, #000 calc(96vmax + 1px));
+    mask-image: radial-gradient(circle at 50% 50%, transparent 96vmax, #000 calc(96vmax + 1px));
+    opacity: 0;
+  }
+  /* The screen's own centre post crossing the opening — the detail that says
+     the window is cut through the screen rather than hung beside it. */
+  .portal-post {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 50%;
+    width: clamp(8px, 1vw, 13px);
+    transform: translateX(-50%);
+    background: linear-gradient(90deg, #574733, #74604A 45%, #4C3E2D);
+    transition: opacity 600ms ease 700ms;
+  }
+  .arrival-film.is-open .portal-post { opacity: 0; }
+
+  /* The skip control has nothing to sit on until the aperture is open. */
+  .arrival-film[data-portal] .arrival-film-skip,
+  .arrival-film[data-portal] .arrival-film-mark {
+    opacity: 0;
+    transition: opacity 500ms ease 1100ms;
+  }
+  .arrival-film[data-portal].is-open .arrival-film-skip,
+  .arrival-film[data-portal].is-open .arrival-film-mark { opacity: 1; }
+
+  /* Motion sensitivity never reaches this — the whole sequence is skipped in
+     the component — but a stalled transition must not leave a visitor looking
+     at a keyhole, so the reduced case opens instantly. */
+  @media (prefers-reduced-motion: reduce) {
+    .arrival-film[data-portal] .arrival-film-video,
+    .arrival-film[data-portal]::before { clip-path: none; transition: none; }
+    .portal-shoji { display: none; }
+  }
