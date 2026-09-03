@@ -5758,3 +5758,96 @@
     }
     .floor-plans .plan-disclaimer { clear: both; }
   }
+
+  /* ==========================================================================
+     BACK IN BRAND
+     ========================================================================== */
+
+  /* ---- The vertical sheet number comes out ----
+     It repeated the number already sitting in the eyebrow two inches to its
+     right, and at 12px rotated in a margin it was unreadable anyway — so it was
+     an illegible duplicate of a legible thing. On the floor-plans head the two
+     actually collided. The eyebrow keeps the number; the rail keeps the rule,
+     which is what was doing the architectural work. */
+  section[id]::before { content: none; }
+  @media (min-width: 1180px) {
+    section[id]::after {
+      top: calc(var(--section-y) + 8px);
+      opacity: 0.9;
+    }
+  }
+
+  /* ---- The yellow comes back to the headline ----
+     #FFFCCC on white is 1.07:1, so the fill cannot carry it alone. A hard
+     offset shadow in ink gives every letterform a defined edge — the glyph is
+     read from the black, the colour is read from the yellow. Offset in `em` so
+     it scales with the type instead of turning into a smudge at 100px and a
+     halo at 30px. */
+  .display .italic,
+  .hero .display .italic,
+  .marumado-copy .display .italic,
+  .shoji-head .display .italic {
+    color: var(--accent);
+    text-shadow:
+      0.028em 0.034em 0 var(--ink),
+      -0.006em 0 0 var(--ink),
+      0 -0.006em 0 var(--ink);
+  }
+  /* On the inverted scopes the yellow already reads at 17:1 against black. A
+     shadow there would only muddy it. */
+  .gallery-section .display .italic,
+  .marumado .display .italic,
+  .unit-card .italic,
+  .pricing h2.display .italic {
+    color: var(--accent);
+    text-shadow: none;
+  }
+
+  /* ---- The marumado stops being brown ----
+     A timber room was right when the page was warm linen. Against white, black
+     and one pale yellow it is the only thing on the site wearing a different
+     palette, which is exactly how it read. Same composition — screen, lattice,
+     centre post, round opening, the view as the brightest thing — rebuilt in
+     the three colours the rest of the page uses. */
+  .marumado {
+    color: #FFFFFF;
+    background: var(--ink);
+  }
+  .marumado::after {
+    background: linear-gradient(180deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0) 100%);
+    border-top: 1px solid rgba(255, 252, 204, 0.30);
+  }
+  .marumado-shoji {
+    background:
+      repeating-linear-gradient(90deg, rgba(0,0,0,0.55) 0 2px, transparent 2px calc(100% / 8)),
+      repeating-linear-gradient(0deg,  rgba(0,0,0,0.55) 0 2px, transparent 2px calc(100% / 11)),
+      #FFFFFF;
+    border: clamp(12px, 1.6vw, 20px) solid var(--ink);
+    border-image: none;
+    box-shadow: 0 0 0 1px rgba(255,252,204,0.28);
+  }
+  .marumado-post { background: var(--ink); }
+  .marumado-window {
+    box-shadow:
+      0 0 0 clamp(8px, 1.1vw, 14px) var(--ink),
+      0 0 0 calc(clamp(8px, 1.1vw, 14px) + 1px) rgba(255, 252, 204, 0.34),
+      inset 0 0 34px -12px rgba(0, 0, 0, 0.5);
+  }
+  .marumado-copy .lede { color: rgba(255,255,255,0.76); }
+  .marumado-copy .eyebrow { color: rgba(255,255,255,0.58); }
+  .marumado-copy .eyebrow::after { background: rgba(255,252,204,0.5); }
+
+  /* ---- And so does the koshi ----
+     Same brown, same problem, one band lower. The rail stays — it is what stops
+     the footer floating — but in ink with a yellow hairline instead of timber. */
+  footer::before {
+    background: var(--ink);
+    box-shadow:
+      inset 0 1px 0 var(--accent),
+      inset 0 -1px 0 rgba(255,255,255,0.10);
+  }
+  footer::after {
+    background-image: repeating-linear-gradient(90deg,
+      rgba(255,255,255,0.07) 0 1px, transparent 1px 7px);
+    opacity: 1;
+  }
