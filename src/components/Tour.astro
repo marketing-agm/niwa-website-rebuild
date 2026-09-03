@@ -21,24 +21,18 @@ const slots = [['Morning', 'morning'], ['Midday', 'midday'], ['Afternoon', 'afte
 
     <div class="tour-grid">
       <form class="tf" id="tour-form" novalidate data-tour-form data-reveal>
-        <p class="tf-line">
+        <p class="tf-sentence">
           <span class="tf-w">Hi, I'm</span>
           <span class="tf-field"><label class="sr-only" for="tf-first">First name</label><input id="tf-first" name="fname" type="text" placeholder="first name" autocomplete="given-name" required data-autosize /></span>
           <span class="tf-field"><label class="sr-only" for="tf-last">Last name</label><input id="tf-last" name="lname" type="text" placeholder="last name" autocomplete="family-name" data-autosize /><span class="tf-w">.</span></span>
-        </p>
-        <p class="tf-line">
           <span class="tf-w">I'm looking for</span>
           <span class="tf-chips" role="radiogroup" aria-label="Home type">
             {beds.map(([v, l]) => <label class="chip"><input type="radio" name="beds" value={v} /><span>{l}</span></label>)}
           </span>
-        </p>
-        <p class="tf-line">
           <span class="tf-w">to move in</span>
           <span class="tf-chips" role="radiogroup" aria-label="Move-in window">
             {windows.map(([v, l]) => <label class="chip"><input type="radio" name="movein" value={v} /><span>{l}</span></label>)}
-          </span>
-        </p>
-        <p class="tf-line">
+          </span><span class="tf-w">.</span>
           <span class="tf-w">I could visit</span>
           <span class="tf-chips" role="radiogroup" aria-label="Day to visit" data-tour-days>
             <label class="chip"><input type="radio" name="day" value="any" checked /><span>any weekday</span></label>
@@ -46,9 +40,7 @@ const slots = [['Morning', 'morning'], ['Midday', 'midday'], ['Afternoon', 'afte
           <span class="tf-w">in the</span>
           <span class="tf-chips" role="radiogroup" aria-label="Time of day">
             {slots.map(([v, l]) => <label class="chip"><input type="radio" name="slot" value={v} /><span>{l}</span></label>)}
-          </span>
-        </p>
-        <p class="tf-line">
+          </span><span class="tf-w">.</span>
           <span class="tf-w">Reach me at</span>
           <span class="tf-field"><label class="sr-only" for="tf-email">Email address</label><input id="tf-email" name="email" type="email" placeholder="email" autocomplete="email" required data-autosize /></span>
           <span class="tf-w">or</span>
@@ -107,20 +99,23 @@ const slots = [['Morning', 'morning'], ['Midday', 'midday'], ['Afternoon', 'afte
   .tf, .tf-done { grid-column: 1 / span 8; }
   .tour-rail { grid-column: 10 / span 3; display: grid; align-content: start; }
 
-  /* The sentence */
-  .tf-line { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.28em 0.4em; font-size: clamp(1.4rem, 0.9rem + 1.7vw, 2.8rem); line-height: 1.5; letter-spacing: -0.025em; font-weight: 400; margin-bottom: clamp(10px, 1.2vw, 20px); }
-  .tf-field { display: inline-flex; align-items: baseline; }
+  /* The sentence: one paragraph, every word, field and chip inline */
+  .tf-sentence { font-size: clamp(1.4rem, 0.9rem + 1.7vw, 2.8rem); line-height: 1.8; letter-spacing: -0.025em; font-weight: 400; margin-bottom: clamp(10px, 1.2vw, 20px); text-wrap: pretty; }
+  .tf-w { display: inline; }
+  .tf-field { display: inline; white-space: nowrap; }
   .tf input, .tf textarea { background: transparent; border: 0; border-bottom: 1px solid var(--ink); border-radius: 0; padding: 0 0.1em; min-width: 6ch; color: var(--ink); font-style: italic; font-weight: 400; transition: border-color 0.3s, background-color 0.3s; }
+  .tf input { display: inline-block; vertical-align: baseline; margin: 0 0.12em; }
   .tf input::placeholder, .tf textarea::placeholder { color: var(--ink-3); font-style: italic; }
   .tf input:focus, .tf textarea:focus { outline: none; border-bottom-color: var(--ink); background: rgba(255,255,255,0.22); }
   .tf .is-invalid { border-bottom: 2px solid #b3261e; }
-  .tf-chips { display: inline-flex; flex-wrap: wrap; gap: 0.32em; align-items: center; vertical-align: baseline; }
-  .tf :global(.chip) { position: relative; display: inline-flex; }
+  .tf-chips { display: inline; }
+  .tf :global(.chip) { position: relative; display: inline-block; vertical-align: baseline; margin: 0 0.1em; }
   .tf :global(.chip input) { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
   .tf :global(.chip span) { display: inline-block; border: 1px solid var(--ink); border-radius: 999px; padding: 0.08em 0.62em 0.12em; font-size: 0.66em; line-height: 1.25; letter-spacing: -0.01em; transition: background-color 0.35s var(--ease), color 0.35s var(--ease), transform 0.35s var(--ease); white-space: nowrap; }
   .tf :global(.chip:hover span) { background: rgba(11,11,11,0.08); }
   .tf :global(.chip input:checked + span) { background: var(--ink); color: var(--gold); }
   .tf :global(.chip input:focus-visible + span) { outline: 2px solid var(--ink); outline-offset: 3px; }
+  .tf-line--note { margin-top: clamp(14px, 1.6vw, 26px); font-size: clamp(1.4rem, 0.9rem + 1.7vw, 2.8rem); }
   .tf-line--note textarea { width: 100%; min-width: 0; resize: none; font-size: 0.7em; line-height: 1.4; font-style: normal; padding: 0.3em 0; overflow: hidden; }
   .tf-foot { display: flex; flex-wrap: wrap; align-items: center; gap: var(--gap); margin-top: clamp(20px, 2.6vw, 40px); }
   .tf-status { color: var(--ink-2); font-size: var(--t-small); }
@@ -150,6 +145,5 @@ const slots = [['Morning', 'morning'], ['Midday', 'midday'], ['Afternoon', 'afte
     .tour-rail { grid-template-columns: 1fr; }
     .rail-cell { border-top: 1px solid var(--ink-line); padding: 16px 0; }
     .rail-cell:first-child { border-top: 0; padding-top: 0; }
-    .tf-line { gap: 0.3em 0.36em; }
   }
 </style>

@@ -7,36 +7,45 @@ const a = c.address;
 const year = new Date().getFullYear();
 const hours = c.contact?.officeHours?.[0];
 const fmtHour = (t: string) => { const [h] = t.split(':').map(Number); return `${((h + 11) % 12) + 1}${h < 12 ? 'am' : 'pm'}`; };
-const links = [
-  ['#building', 'The building'],
-  ['#floor-plans', 'The homes'],
-  ['#availability', 'Availability'],
-  ['#neighborhood', 'Queen Anne'],
-  ['#faq', 'Questions'],
-  ['#tour', 'Schedule a tour'],
-];
 ---
 <footer class="foot" id="contact">
   <div class="foot-mark" data-footer-mark>
     <Wordmark class="foot-svg" label="Niwa Apartments" />
   </div>
-  <div class="foot-lines">
-    <p class="foot-line foot-line--lead">
-      {c.name} is at <a class="link" href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(`${c.name}, ${a.streetAddress}, ${a.addressLocality}, ${a.addressRegion} ${a.postalCode}`)}`} target="_blank" rel="noopener">{a.streetAddress}, {a.addressLocality}, {a.addressRegion} {a.postalCode}</a>.
-      Call <a class="link" href={c.contact?.phoneHref}>{formatPhone(c.contact?.phone)}</a> or write to <a class="link" href={`mailto:${c.contact?.email}`}>{c.contact?.email}</a>.
+  <div class="grid foot-grid">
+    <div class="cell foot-cell">
+      <span class="label label--dim">Address</span>
+      <p>{a.streetAddress}<br />{a.addressLocality}, {a.addressRegion} {a.postalCode}</p>
+      <p class="small">{a.placename}</p>
+    </div>
+    <div class="cell foot-cell">
+      <span class="label label--dim">Leasing</span>
+      <p><a class="link" href={c.contact?.phoneHref}>{formatPhone(c.contact?.phone)}</a></p>
+      <p><a class="link" href={`mailto:${c.contact?.email}`}>{c.contact?.email}</a></p>
+    </div>
+    <div class="cell foot-cell">
+      <span class="label label--dim">Hours</span>
+      {hours && <p>Monday – Friday<br />{fmtHour(hours.opens)} – {fmtHour(hours.closes)}</p>}
+      <p class="small">After hours: <a class="link" href={c.contact?.afterHours?.phoneHref}>{formatPhone(c.contact?.afterHours?.phone)}</a></p>
+    </div>
+    <div class="cell foot-cell">
+      <span class="label label--dim">Sections</span>
+      <ul class="foot-links">
+        <li><a class="link" href="#building">The building</a></li>
+        <li><a class="link" href="#floor-plans">The homes</a></li>
+        <li><a class="link" href="#availability">Availability</a></li>
+        <li><a class="link" href="#neighborhood">Queen Anne</a></li>
+        <li><a class="link" href="#tour">Schedule a tour</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="foot-bar">
+    <p class="label label--dim">© {year} {c.name}. {c.footerBlurb}</p>
+    <p class="label label--dim foot-eho">
+      <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 11.5 12 4l9 7.5M5 10v10h14V10M9 20v-6h6v6"/></svg>
+      Equal Housing Opportunity · MFTE / MHA and ADA homes available
     </p>
-    <p class="foot-line">
-      {hours && <>The leasing office is open Monday to Friday, {fmtHour(hours.opens)} to {fmtHour(hours.closes)}. </>}
-      After hours, call <a class="link" href={c.contact?.afterHours?.phoneHref}>{formatPhone(c.contact?.afterHours?.phone)}</a> and the Facilities Team will pick up.
-    </p>
-    <nav class="foot-nav" aria-label="Sections">
-      {links.map(([href, label]) => <a class="link" href={href}>{label}</a>)}
-    </nav>
-    <p class="foot-line foot-legal small">
-      <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M3 11.5 12 4l9 7.5M5 10v10h14V10M9 20v-6h6v6"/></svg>
-      Equal Housing Opportunity. MFTE, MHA and ADA homes available. © {year} {c.name}. {c.footerBlurb}
-      <a class="link foot-top" href="#top">Back to top ↑</a>
-    </p>
+    <a class="label label--dim foot-top" href="#top">Back to top ↑</a>
   </div>
 </footer>
 
@@ -44,13 +53,12 @@ const links = [
   .foot { background: var(--bg); color: var(--fg); border-top: 1px solid var(--line); }
   .foot-mark { padding: clamp(40px, 6vw, 110px) var(--gutter) clamp(28px, 4vw, 72px); }
   .foot-mark :global(.foot-svg) { width: 100%; height: auto; color: var(--fg); stroke-width: 22; }
-  .foot-lines { padding: clamp(24px, 3vw, 48px) var(--inset) clamp(28px, 3vw, 48px); border-top: 1px solid var(--line); display: grid; gap: clamp(14px, 1.6vw, 24px); }
-  .foot-line { max-width: 80ch; text-wrap: pretty; color: var(--fg-2); line-height: 1.55; }
-  .foot-line--lead { font-size: var(--t-lead); color: var(--fg); max-width: 40ch; line-height: 1.3; }
-  .foot-line--lead .link:hover { color: var(--gold); }
-  .foot-nav { display: flex; flex-wrap: wrap; gap: 8px clamp(18px, 2vw, 32px); padding: clamp(10px, 1.2vw, 18px) 0; border-top: 1px solid var(--line-2); border-bottom: 1px solid var(--line-2); font-size: var(--t-small); }
-  .foot-legal { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; max-width: none; color: var(--fg-3); }
-  .foot-legal svg { flex: none; }
-  .foot-top { margin-left: auto; color: var(--fg-2); }
-  .foot-top:hover { color: var(--gold); }
+  .foot-cell { grid-column: span 3; display: grid; gap: 10px; align-content: start; font-size: var(--t-body); }
+  .foot-links { display: grid; gap: 6px; }
+  .foot-bar { display: flex; justify-content: space-between; gap: var(--gap); flex-wrap: wrap; padding: clamp(16px, 1.6vw, 26px) var(--inset) clamp(24px, 2.4vw, 40px); }
+  .foot-bar p { max-width: 70ch; }
+  .foot-eho { display: inline-flex; align-items: center; gap: 8px; }
+  .foot-top { transition: color 0.3s; } .foot-top:hover { color: var(--gold); }
+  @media (max-width: 900px) { .foot-cell { grid-column: span 6; } }
+  @media (max-width: 520px) { .foot-cell { grid-column: 1 / -1; } .foot-bar { flex-direction: column; } }
 </style>
