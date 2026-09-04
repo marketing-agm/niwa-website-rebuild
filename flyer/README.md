@@ -4,7 +4,7 @@ A one-page, print-ready leasing flyer built on the same design system as the
 site: the dark ground, the hairline 12-column grid, Inter Tight, and the one
 gold held back for the end of the page.
 
-Two variants of the same system, both US Letter portrait (8.5 × 11 in), full
+Three variants of the same system, all US Letter portrait (8.5 × 11 in), full
 bleed, one page:
 
 - **A** — `leasing-flyer.html` / `niwa-leasing-flyer.pdf`. Type-led. The hero
@@ -17,15 +17,38 @@ bleed, one page:
   photograph needs, and the homes take the site's own display rows — name left,
   size, rent and availability in fixed columns — with the idea cell beside them.
 
-Both read the site's fonts (`public/fonts/`) and photography
-(`src/assets/gallery/`) straight off disk, so the flyers and the site cannot
-drift apart on type or imagery.
+- **C · Tatami** — `leasing-flyer-c.html` / `niwa-leasing-flyer-c.pdf`. No
+  photography at all. The sheet is a room: a fine shoji lattice across the whole
+  page, and over it five mats laid in the pinwheel of a 4½-mat tatami room, so
+  no four corners ever meet. Each mat holds one pocket of information and
+  nothing else, and the gold is the last mat on the page.
+
+A and B read the site's fonts (`public/fonts/`) and photography
+(`src/assets/gallery/`) straight off disk, so they and the site cannot drift
+apart on type or imagery. C uses the fonts only.
+
+### How variant C is built
+
+The room is set by five custom properties — `--col`, `--y0`…`--y3` — and every
+seam, mat and lattice step is derived from them, so the whole composition moves
+together if the proportions change. Three line weights carry the hierarchy, and
+they must stay in this order or the sheet flattens out:
+
+| Token       | Weight | What it draws                                |
+|-------------|--------|----------------------------------------------|
+| `--lattice` | 0.13   | the shoji ground, behind everything           |
+| `--rule`    | 0.18   | rules inside a pocket                         |
+| `--frame`   | 0.32   | the mat seams — the wooden frame of the room  |
+
+The seams are drawn as six positioned 1px elements rather than borders on the
+mats, so no edge is ever painted twice where two mats abut.
 
 ## Build
 
 ```
-node scripts/build-flyer.mjs                      # variant A
+node scripts/build-flyer.mjs                              # variant A
 node scripts/build-flyer.mjs flyer/leasing-flyer-b.html   # variant B
+node scripts/build-flyer.mjs flyer/leasing-flyer-c.html   # variant C
 ```
 
 Renders the PDF with the Chromium that ships with Playwright — no dev server
