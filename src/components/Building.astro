@@ -22,32 +22,18 @@ const sizes = '(max-width: 720px) 100vw, (max-width: 1024px) 50vw, 60vw';
       <Image src={roof.img} alt={roof.alt} widths={[640, 960, 1440, 2000]} sizes={sizes} format="webp" quality={76} />
       <figcaption class="b-cap label">{roof.title}</figcaption>
     </figure>
-    {f.slice(0, 2).map((x, i) => (
-      <div class={`cell b-feat b-f${i + 1}`} data-reveal>
-        <h3 class="h3">{x.title}</h3>
-        <p class="body">{x.body}</p>
-      </div>
-    ))}
-    <div class="cell b-feat b-f3" data-reveal>
-      <h3 class="h3">{f[2]?.title}</h3>
-      <p class="body">{f[2]?.body}</p>
+    <div class="b-feats rail-x">
+      {f.slice(0, 6).map((x, i) => (
+        <div class={`cell b-feat b-f${i + 1}`} data-reveal>
+          <h3 class="h3">{x.title}</h3>
+          <p class="body">{x.body}</p>
+        </div>
+      ))}
     </div>
     <figure class="cell cell--img b-img2" data-reveal>
       <Image src={club.img} alt={club.alt} widths={[640, 960, 1440]} sizes={sizes} format="webp" quality={76} />
       <figcaption class="b-cap label">{club.title}</figcaption>
     </figure>
-    <div class="cell b-feat b-f4" data-reveal>
-      <h3 class="h3">{f[3]?.title}</h3>
-      <p class="body">{f[3]?.body}</p>
-    </div>
-    <div class="cell b-feat b-f5" data-reveal>
-      <h3 class="h3">{f[4]?.title}</h3>
-      <p class="body">{f[4]?.body}</p>
-    </div>
-    <div class="cell b-feat b-f6" data-reveal>
-      <h3 class="h3">{f[5]?.title}</h3>
-      <p class="body">{f[5]?.body}</p>
-    </div>
     <figure class="cell cell--img b-img3" data-reveal>
       <Image src={lobby.img} alt={lobby.alt} widths={[640, 960, 1440]} sizes={sizes} format="webp" quality={76} />
       <figcaption class="b-cap label">{lobby.title}</figcaption>
@@ -104,15 +90,38 @@ const sizes = '(max-width: 720px) 100vw, (max-width: 1024px) 50vw, 60vw';
   .list-row { padding: 12px 0; border-top: 1px solid var(--line-2); font-size: var(--t-small); color: var(--fg-2); }
   @media (max-width: 1024px) {
     .bento { grid-template-columns: repeat(2, 1fr); grid-auto-rows: auto; }
-    .bento > * { grid-column: auto !important; grid-row: auto !important; }
+    /* .b-feats is display:contents here, so its children are grid items of
+       .bento but are not matched by `.bento > *`. Reset them explicitly or
+       they keep their twelve-column desktop placement. */
+    .bento > *, .b-feats > * { grid-column: auto !important; grid-row: auto !important; }
     .bento figure { min-height: 0 !important; aspect-ratio: 4 / 3; }
     .b-img1 { grid-column: 1 / -1 !important; aspect-ratio: 16 / 9; }
     .b-tours { grid-column: 1 / -1 !important; }
     .b-feat { min-height: clamp(180px, 26vw, 260px); }
     .list { grid-column: 1 / -1; }
   }
-  @media (max-width: 560px) {
+
+  /* Phones. Six feature cells stacked full width ran to roughly 1,400px — the
+     single biggest block on the page, and the section as a whole was taking
+     more than a quarter of the mobile document. They are six short blurbs of
+     70–96 characters, which is exactly what a swipe strip is for, so .rail-x
+     lays them side by side and the section stops being a scroll. The three
+     amenity lists get the same treatment. Nothing above 640px changes. */
+  @media (max-width: 640px) {
     .bento { grid-template-columns: 1fr; }
-    .b-feat { min-height: 0; gap: 16px; }
+    .b-feat { min-height: 0; gap: 12px; }
+    .b-feats { scroll-padding-left: 0; }
+    .b-feat .body { max-width: none; }
+    .b-feat .h3 { font-size: clamp(1.3rem, 1.1rem + 1.4vw, 1.7rem); }
+
+    .lists {
+      display: grid; grid-auto-flow: column; grid-auto-columns: 82%;
+      gap: 1px; overflow-x: auto; overscroll-behavior-x: contain;
+      scroll-snap-type: x proximity; scrollbar-width: none;
+    }
+    .lists::-webkit-scrollbar { display: none; }
+    .list { grid-column: auto; scroll-snap-align: start; }
+    .list-rows { margin-top: 14px; }
+    .list-row { padding: 10px 0; }
   }
 </style>

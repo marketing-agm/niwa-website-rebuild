@@ -180,6 +180,10 @@ em, .em { font-style: italic; font-weight: 400; }
   .sec-title > .h2 { grid-column: 1 / -1; }
   .sec-title > .sec-lede { grid-column: 1 / -1; max-width: 60ch; }
 }
+@media (max-width: 640px) {
+  .sec-title { padding: clamp(32px, 9vw, 48px) var(--gutter) clamp(24px, 6vw, 36px); gap: 14px; }
+  .cell { padding: 22px var(--gutter) 26px; }
+}
 
 /* ---------- Buttons ---------- */
 .btn {
@@ -237,6 +241,78 @@ em, .em { font-style: italic; font-weight: 400; }
   transition: background-size 0.5s var(--ease), color 0.3s;
 }
 .link:hover { background-size: 0 1px; background-position: 100% 100%; color: var(--gold); }
+
+/* ---------- Touch and small screens ----------
+   The desktop composition assumes a pointer that can hover and a viewport wide
+   enough for twelve columns. Neither holds on a phone, so three things are
+   corrected here rather than in every component:
+
+   1. Hover states. `.cell:hover` warms a cell to gold, which on a touch screen
+      either never fires or fires and sticks after a tap. Switched off where the
+      pointer cannot hover.
+   2. Tap targets. Anything you can press wants 44px of height; several controls
+      were landing at 36–40.
+   3. Tall stacks. A twelve-column bento collapsed to one column turns six cells
+      into six screens. `.rail-x` lays a group out as a horizontal snap strip
+      instead — the pattern Leary asked for — and is a no-op above 640px so the
+      desktop layout is untouched. Put it on a wrapper that is `display: contents`
+      at desktop width, and the children stay direct grid items up there. */
+
+@media (hover: none) {
+  .cell:not(.cell--img):hover, .hero-fact:hover, .home-row:hover {
+    --fg: #f2f1ec; --fg-2: rgba(242, 241, 236, 0.66); --fg-3: rgba(242, 241, 236, 0.42);
+    --line: rgba(242, 241, 236, 0.12); --line-2: rgba(242, 241, 236, 0.07);
+    background: var(--bg); color: var(--fg);
+  }
+  .bento figure:hover :global(img) { transform: none; }
+}
+
+@media (pointer: coarse) {
+  .btn { height: clamp(46px, 3.4vw, 58px); }
+  .btn--sm { height: 44px; padding: 0 16px; }
+
+  /* Standalone links that act as navigation or as a way to contact the
+     building — footer nav, the phone and email in the tour rail, "back to
+     top", "Directions". These were landing at 14–24px. Links running inside
+     a sentence are left alone: padding there would break the line box, and
+     they are read rather than aimed at. */
+  .foot-links a,
+  .foot-top,
+  .rail-link,
+  .rail-big a,
+  .rail-sm a,
+  .b-cap { display: inline-flex; align-items: center; min-height: 44px; }
+
+  .nav-brand { display: flex; align-items: center; min-height: 44px; }
+  .nav-burger { height: 44px; }
+  .hero-special { min-height: 44px; }
+}
+
+.rail-x { display: contents; }
+@media (max-width: 640px) {
+  .rail-x {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: 82%;
+    gap: 1px;
+    overflow-x: auto;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x proximity;
+    scrollbar-width: none;
+    background: var(--line);
+  }
+  .rail-x::-webkit-scrollbar { display: none; }
+  .rail-x > * { scroll-snap-align: start; }
+  /* A hint that there is more to the right, without a scrollbar. */
+  .rail-hint {
+    display: flex; align-items: center; gap: 8px;
+    padding: 12px var(--gutter) 0;
+    font-size: var(--t-label); letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--fg-3);
+  }
+  .rail-hint::after { content: '→'; letter-spacing: 0; }
+}
+@media (min-width: 641px) { .rail-hint { display: none; } }
 
 /* ---------- Motion helpers (GSAP takes over when it runs) ---------- */
 [data-reveal] { will-change: transform, opacity; }
