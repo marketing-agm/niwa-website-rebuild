@@ -1,5 +1,6 @@
 ---
 import { getHomes, money, int } from '../lib/homes';
+import UnitGrid from './UnitGrid.astro';
 const { site } = Astro.props as { site: any };
 const c = site.config;
 const homes = getHomes(c, site.data?.units ?? []);
@@ -95,8 +96,17 @@ const range = (a: number, b: number) => (a === b ? int(a) : `${int(a)}–${int(b
           {showMap && <a class="btn btn--ghost" href="#availability" data-dialog-close>See availability</a>}
         </div>
       </aside>
-      <div class="dlg-frame">
-        <iframe data-frame title={`${h.name} 3D tour`} allow="fullscreen; xr-spatial-tracking" allowfullscreen loading="lazy"></iframe>
+      <div class="hdlg-main">
+        <UnitGrid unitKey={h.key} unitName={h.name} />
+        <div class="hdlg-tour">
+          <div class="hdlg-tour-head">
+            <span class="label label--dim">Walk through it</span>
+            <p class="small">A three-dimensional tour of a {h.name.toLowerCase()}, room by room.</p>
+          </div>
+          <div class="dlg-frame">
+            <iframe data-frame title={`${h.name} 3D tour`} allow="fullscreen; xr-spatial-tracking" allowfullscreen loading="lazy"></iframe>
+          </div>
+        </div>
       </div>
     </div>
   </dialog>
@@ -136,6 +146,14 @@ const range = (a: number, b: number) => (a === b ? int(a) : `${int(a)}–${int(b
   .map-note { padding: 16px var(--inset) clamp(28px, 3vw, 48px); max-width: 70ch; }
 
   .hdlg-body { display: grid; grid-template-columns: minmax(300px, 30%) 1fr; min-height: 0; }
+  /* The right pane scrolls now: the gallery is what you land on, the
+     walkthrough sits under it. Previously this was a single full-height
+     iframe, which is why it needed no scroll of its own. */
+  .hdlg-main { min-width: 0; min-height: 0; overflow: auto; overscroll-behavior: contain; }
+  .hdlg-tour { display: grid; grid-template-rows: auto minmax(360px, 62vh); }
+  .hdlg-tour-head { padding: clamp(20px, 2.2vw, 34px) var(--inset) clamp(14px, 1.4vw, 20px); display: grid; gap: 6px; }
+  .hdlg-tour-head .small { color: var(--fg-2); }
+  .hdlg-main .dlg-frame { min-height: 0; }
   .hdlg-side { padding: var(--pad) var(--inset); display: grid; gap: clamp(18px, 2vw, 32px); align-content: start; overflow: auto; border-right: 1px solid var(--line); }
   .hdlg-facts { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(14px, 1.6vw, 24px); margin: 0; }
   .hdlg-facts div { display: grid; gap: 6px; }
@@ -147,6 +165,7 @@ const range = (a: number, b: number) => (a === b ? int(a) : `${int(a)}–${int(b
   @media (max-width: 1024px) {
     .note { grid-column: 1 / -1; }
     .hdlg-body { grid-template-columns: 1fr; grid-template-rows: auto 1fr; }
+    .hdlg-tour { grid-template-rows: auto minmax(300px, 52vh); }
     .hdlg-side { border-right: 0; border-bottom: 1px solid var(--line); overflow: visible; }
     .hdlg-side .h2 { display: none; }
     .hdlg-facts { grid-template-columns: repeat(4, 1fr); }
