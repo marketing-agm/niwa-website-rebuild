@@ -7,14 +7,15 @@
 //
 import { execFileSync } from 'node:child_process';
 import { existsSync, mkdirSync } from 'node:fs';
-import { dirname, resolve } from 'node:path';
+import { basename, dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
-const src = resolve(root, 'flyer/leasing-flyer.html');
-const pdf = resolve(root, 'flyer/niwa-leasing-flyer.pdf');   // the deliverable
+const src = resolve(root, process.argv[2] ?? 'flyer/leasing-flyer.html');
+const name = basename(src, '.html').replace(/^leasing-flyer/, 'niwa-leasing-flyer');
+const pdf = resolve(root, `flyer/${name}.pdf`);              // the deliverable
 const proofDir = resolve(root, 'flyer/dist');                // proofs, git-ignored
-const png = resolve(proofDir, 'proof.png');
+const png = resolve(proofDir, `${name}-proof.png`);
 
 const CHROME = [
   process.env.CHROME_PATH,

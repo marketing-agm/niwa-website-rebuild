@@ -4,16 +4,25 @@ A one-page, print-ready leasing flyer built on the same design system as the
 site: the dark ground, the hairline 12-column grid, Inter Tight, and the one
 gold held back for the end of the page.
 
-- `leasing-flyer.html` — the source. It reads the site's own fonts
-  (`public/fonts/`) and photography (`src/assets/gallery/`) straight off disk,
-  so the flyer and the site cannot drift apart on type or imagery.
-- `niwa-leasing-flyer.pdf` — the built artifact, US Letter portrait (8.5 × 11 in),
-  full bleed, one page.
+Two variants of the same system, both US Letter portrait (8.5 × 11 in), full
+bleed, one page:
+
+- **A** — `leasing-flyer.html` / `niwa-leasing-flyer.pdf`. Type-led. The hero
+  runs at 112px over open ground, and the building sits in an eight-column cell
+  beside the 庭 idea. The homes are three cells of big rent figures.
+- **B** — `leasing-flyer-b.html` / `niwa-leasing-flyer-b.pdf`. Image-led. The
+  hero drops to 76px so the building can go edge to edge at full width, and the
+  homes take the site's own display rows with the idea cell beside them.
+
+Both read the site's fonts (`public/fonts/`) and photography
+(`src/assets/gallery/`) straight off disk, so the flyers and the site cannot
+drift apart on type or imagery.
 
 ## Build
 
 ```
-node scripts/build-flyer.mjs
+node scripts/build-flyer.mjs                      # variant A
+node scripts/build-flyer.mjs flyer/leasing-flyer-b.html   # variant B
 ```
 
 Renders the PDF with the Chromium that ships with Playwright — no dev server
