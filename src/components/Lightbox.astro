@@ -57,10 +57,10 @@
      they never sit on top of the thing you opened them to look at. */
   .lbx-nav {
     position: absolute; top: 50%; transform: translateY(-50%);
-    width: 52px; height: 52px; border-radius: 999px;
+    width: clamp(46px, 3.2vw, 60px); height: clamp(46px, 3.2vw, 60px); border-radius: 999px;
     border: 1px solid var(--line);
     background: rgba(11, 11, 11, 0.7);
-    color: var(--fg); font-size: 17px;
+    color: var(--fg); font-size: var(--t-body);
     backdrop-filter: blur(6px);
     transition: border-color 0.3s, color 0.3s, background-color 0.3s;
   }
