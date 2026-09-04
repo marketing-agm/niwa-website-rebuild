@@ -79,6 +79,20 @@ they must stay in this order or the sheet flattens out:
 The seams are drawn as six positioned 1px elements rather than borders on the
 mats, so no edge is ever painted twice where two mats abut.
 
+## Print files
+
+| File | Size | For |
+|------|------|-----|
+| `niwa-leasing-flyer-d.pdf` | 8.5 × 11 | reference and screen |
+| `niwa-leasing-flyer-d-bleed.pdf` | 8.75 × 11.25 | a commercial run — 0.125in bleed all round |
+| `niwa-leasing-flyer-d-safe.pdf` | 8.5 × 11 | a desktop printer — 0.25in white margin, nothing clipped |
+| `postcard.pdf` | 4 × 6, 2pp | reference; front then back |
+| `postcard-bleed.pdf` | 4.25 × 6.25, 2pp | a commercial run |
+
+The bleed files carry no crop marks, which is what most printers want alongside
+a stated trim size. If yours asks for marks, say so and the sheet can grow a
+slug to hold them.
+
 ## Build
 
 ```
@@ -86,7 +100,31 @@ node scripts/build-flyer.mjs                              # variant A
 node scripts/build-flyer.mjs flyer/leasing-flyer-b.html   # variant B
 node scripts/build-flyer.mjs flyer/leasing-flyer-c.html   # variant C
 node scripts/build-flyer.mjs flyer/leasing-flyer-d.html   # variant D
+
+node scripts/build-flyer.mjs flyer/leasing-flyer-d.html bleed
+node scripts/build-flyer.mjs flyer/leasing-flyer-d.html safe
+node scripts/build-flyer.mjs flyer/postcard.html
+node scripts/build-flyer.mjs flyer/postcard.html bleed
 ```
+
+### The three modes
+
+A source declares its trim on `<html data-trim="8.5x11">`. The build script
+reads it, works out the sheet, and prints from a temp copy carrying
+`data-mode` and an injected `@page` size — one source, three outputs, nothing
+duplicated.
+
+- **trim** — the artwork at its trim size, edge to edge.
+- **bleed** — the sheet grows 0.125in on every side and everything that touches
+  a trim edge is carried over it. Only what is *not* already black needs a rule:
+  the photographs, the gold, and the rules that run out to an edge. Two traps
+  worth knowing: `.page`/`.card` clip at the trim by default, so bleed mode has
+  to set `overflow: visible` or the carried-over artwork is cut off exactly
+  where it must continue; and the bleed is only real if you check it — sample
+  pixels in the margin, don't eyeball a thumbnail.
+- **safe** — the artwork is scaled inside a white margin for a printer that
+  cannot reach the edge. It uses `zoom`, not `transform`: a transform leaves the
+  layout box at full size and Chromium paginates onto a second sheet.
 
 Renders the PDF with the Chromium that ships with Playwright — no dev server
 and no install step. It also writes a 2× proof to `flyer/dist/proof.png`

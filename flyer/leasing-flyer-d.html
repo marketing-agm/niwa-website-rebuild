@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" data-trim="8.5x11">
 <head>
 <meta charset="utf-8" />
 <title>Niwa Apartments — Leasing Flyer (variant D)</title>
@@ -154,6 +154,39 @@ img { display: block; }
   background: var(--ink); color: var(--gold);
   font-size: 8.5px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; white-space: nowrap;
 }
+
+/* ---------- Print modes ----------
+   trim   the sheet is the artwork, edge to edge (the default)
+   bleed  the sheet grows 0.125in on every side and everything that touches a
+          trim edge is carried over it, so a 1mm drift at the guillotine still
+          cuts through artwork and never through white
+   safe   the artwork is inset inside a white margin, for a desktop printer
+          that cannot print to the edge                                      */
+
+html[data-mode="bleed"] { background: var(--bg); }
+html[data-mode="bleed"] body { background: var(--bg); }
+/* .page clips at the trim by default; in bleed mode it must not, or the
+   carried-over artwork is cut off exactly where it needs to continue. */
+html[data-mode="bleed"] .page { margin: var(--bleed); overflow: visible; }
+
+/* Only what is not already black has to be carried over the trim: the three
+   photographs, the gold, and the rules that run out to an edge. */
+html[data-mode="bleed"] .m-shot2 { left: calc(var(--bleed) * -1); width: calc(var(--col) * 4 + var(--bleed)); }
+html[data-mode="bleed"] .m-shot1,
+html[data-mode="bleed"] .m-shot3 { width: calc(var(--col) * 4 + var(--bleed)); }
+html[data-mode="bleed"] .m-gold,
+html[data-mode="bleed"] .gold-ground { width: calc(var(--col) * 8 + var(--bleed)); }
+html[data-mode="bleed"] .seam--bl { left: calc(var(--bleed) * -1) !important; }
+html[data-mode="bleed"] .seam--br { right: calc(var(--bleed) * -1) !important; }
+html[data-mode="bleed"] .seam--bx { left: calc(var(--bleed) * -1) !important; width: calc(100% + var(--bleed) * 2) !important; }
+html[data-mode="bleed"] .lattice { left: calc(var(--bleed) * -1); right: calc(var(--bleed) * -1); background-position: var(--bleed) 0, var(--bleed) var(--y0); }
+
+html[data-mode="safe"] { background: #fff; }
+html[data-mode="safe"] body { background: #fff; }
+/* zoom, not transform: a transform leaves the layout box at full size and
+   Chromium paginates onto a second sheet. zoom scales the box itself. */
+html[data-mode="safe"] body { width: 8.5in; height: 11in; display: grid; place-items: center; }
+html[data-mode="safe"] .page { zoom: var(--safe-scale); }
 </style>
 </head>
 <body>
@@ -163,12 +196,12 @@ img { display: block; }
   <div class="gold-ground" aria-hidden="true"></div>
 
   <!-- Seams: no four corners meet -->
-  <div class="seam seam--h" style="left:0; top:var(--y0); width:100%"></div>
-  <div class="seam seam--h" style="left:0; top:var(--r3); width:calc(var(--col) * 8)"></div>
-  <div class="seam seam--h" style="left:calc(var(--col) * 8); top:var(--r4); right:0"></div>
-  <div class="seam seam--h" style="left:0; top:var(--r6); width:calc(var(--col) * 4)"></div>
-  <div class="seam seam--h" style="left:calc(var(--col) * 4); top:var(--r7); right:0"></div>
-  <div class="seam seam--h" style="left:0; top:var(--r9); width:100%"></div>
+  <div class="seam seam--h seam--bx" style="left:0; top:var(--y0); width:100%"></div>
+  <div class="seam seam--h seam--bl" style="left:0; top:var(--r3); width:calc(var(--col) * 8)"></div>
+  <div class="seam seam--h seam--br" style="left:calc(var(--col) * 8); top:var(--r4); right:0"></div>
+  <div class="seam seam--h seam--bl" style="left:0; top:var(--r6); width:calc(var(--col) * 4)"></div>
+  <div class="seam seam--h seam--br" style="left:calc(var(--col) * 4); top:var(--r7); right:0"></div>
+  <div class="seam seam--h seam--bx" style="left:0; top:var(--r9); width:100%"></div>
   <div class="seam seam--v" style="left:calc(var(--col) * 8); top:var(--y0); height:calc(var(--r7) - var(--y0))"></div>
   <div class="seam seam--v" style="left:calc(var(--col) * 4); top:var(--r3); height:calc(var(--r9) - var(--r3))"></div>
 

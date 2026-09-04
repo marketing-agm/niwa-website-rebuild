@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="en" data-trim="4x6">
+<head>
+<meta charset="utf-8" />
+<title>Niwa Apartments — Leasing Postcard</title>
+<style>
+/* ==========================================================================
+   Niwa — leasing postcard, 4 × 6 in, two sides.
+
+   Variant D's room at postcard scale: the same black ground, shoji lattice,
+   mat seams and single gold, on a twelve-bay module. Every word comes from
+   src/site/site.config.json; the rents, sizes and counts from units.json.
+   ========================================================================== */
+
+@font-face { font-family: 'Inter Tight'; font-style: normal; font-weight: 300 700; src: url('../public/fonts/inter-tight-latin.woff2') format('woff2'); }
+@font-face { font-family: 'Inter Tight'; font-style: italic; font-weight: 300 600; src: url('../public/fonts/inter-tight-italic-latin.woff2') format('woff2'); }
+
+:root {
+  --bg: #000000;
+  --fg: #f2f1ec;
+  --fg-2: rgba(242, 241, 236, 0.78);
+  --fg-3: rgba(242, 241, 236, 0.60);
+  --frame: rgba(242, 241, 236, 0.32);
+  --lattice: rgba(242, 241, 236, 0.13);
+  --rule: rgba(242, 241, 236, 0.18);
+  --gold: #f4c430;
+  --ink: #000000;
+  --ink-2: rgba(0, 0, 0, 0.74);
+  --ink-rule: rgba(0, 0, 0, 0.22);
+  --sans: 'Inter Tight', 'Inter', ui-sans-serif, system-ui, sans-serif;
+
+  --col: 32px;      /* twelve bays across four inches */
+  --bay-x: 64px;
+  --bay-y: 48px;
+}
+
+@page { size: 4in 6in; margin: 0; }
+
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: #000; }
+body {
+  font-family: var(--sans);
+  color: var(--fg);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  letter-spacing: -0.005em;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+h1, h2, h3, p, ul, li, figure { margin: 0; padding: 0; }
+ul { list-style: none; }
+b { font-weight: 500; }
+img { display: block; }
+
+.sheet { width: 4in; height: 6in; display: grid; place-items: center; break-after: page; }
+.sheet:last-child { break-after: auto; }
+.card { position: relative; width: 4in; height: 6in; overflow: hidden; background: var(--bg); }
+
+/* ---------- Type roles ---------- */
+.label { font-size: 8px; font-weight: 600; letter-spacing: 0.11em; text-transform: uppercase; line-height: 1.3; color: var(--fg-2); }
+.label--dim { color: var(--fg-3); }
+.mono { font-variant-numeric: tabular-nums; letter-spacing: 0.01em; }
+.em { font-style: italic; font-weight: 400; }
+
+.lattice {
+  position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background-image:
+    repeating-linear-gradient(to right, var(--lattice) 0 1px, transparent 1px var(--bay-x)),
+    repeating-linear-gradient(to bottom, var(--lattice) 0 1px, transparent 1px var(--bay-y));
+}
+.seam { position: absolute; z-index: 3; background: var(--frame); }
+.seam--h { height: 1px; }
+.seam--v { width: 1px; }
+
+.mat { position: absolute; z-index: 4; display: grid; }
+.mat--photo { z-index: 2; overflow: hidden; }
+.mat--photo img { width: 100%; height: 100%; object-fit: cover; }
+.gold-ground { position: absolute; z-index: 2; background: var(--gold); }
+
+.strip {
+  position: absolute; z-index: 4; left: 0; right: 0; top: 0; height: 48px;
+  display: flex; align-items: center; justify-content: space-between; padding: 0 22px;
+}
+.mark { height: 14px; width: auto; color: var(--fg); }
+
+/* ---------- Front ---------- */
+.f-photo { left: 0; top: 48px; width: 256px; height: 288px; }
+.f-facts { left: 256px; top: 48px; width: 128px; height: 288px; padding: 18px 16px 16px; align-content: space-between; }
+.fact { display: grid; gap: 2px; }
+.fact + .fact { border-top: 1px solid var(--rule); padding-top: 10px; margin-top: 10px; }
+.fact b { font-size: 13px; font-weight: 500; letter-spacing: -0.025em; color: var(--fg); }
+.f-head { left: 0; top: 336px; width: 384px; height: 192px; padding: 26px 24px 22px; align-content: center; gap: 15px; }
+.h1 { font-size: 44px; font-weight: 500; line-height: 0.9; letter-spacing: -0.048em; display: grid; }
+.h1 .l2 { font-style: italic; font-weight: 400; padding-left: 52px; }
+.lede { font-size: 10px; font-weight: 450; line-height: 1.45; letter-spacing: -0.01em; color: var(--fg-2); }
+.f-gold, .f-gold-ground { left: 0; top: 528px; width: 384px; height: 48px; }
+.f-gold { display: flex; align-items: center; justify-content: space-between; padding: 0 24px; color: var(--ink); }
+.f-gold .label { color: var(--ink-2); }
+.f-gold .tel { font-size: 14px; font-weight: 600; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; }
+
+/* ---------- Back ---------- */
+.b-homes { left: 0; top: 48px; width: 384px; height: 240px; padding: 20px 24px 18px; grid-template-rows: auto 1fr; }
+.rows { display: grid; grid-auto-rows: 1fr; margin-top: 12px; }
+.row { display: grid; grid-template-columns: 1fr auto auto; align-items: center; gap: 14px; }
+.row + .row { border-top: 1px solid var(--rule); }
+.row-name { font-size: 18px; font-weight: 500; letter-spacing: -0.03em; line-height: 1; }
+.row-spec { font-size: 7.5px; text-align: right; }
+.row-rent { font-size: 14px; font-weight: 500; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.b-build { left: 0; top: 288px; width: 256px; height: 144px; padding: 18px 20px 16px; align-content: start; }
+.b-head { font-size: 15px; font-weight: 500; letter-spacing: -0.03em; line-height: 1.05; margin: 5px 0 10px; }
+.b-build ul { display: grid; grid-template-columns: 1fr 1fr; gap: 4px 12px; }
+.b-build li { font-size: 8px; font-weight: 450; line-height: 1.35; color: var(--fg-2); }
+.b-scores { left: 256px; top: 288px; width: 128px; height: 144px; padding: 18px 16px 16px; align-content: space-between; }
+.score { display: flex; align-items: baseline; justify-content: space-between; }
+.score b { font-size: 17px; font-weight: 500; letter-spacing: -0.035em; font-variant-numeric: tabular-nums; }
+.b-gold, .b-gold-ground { left: 0; top: 432px; width: 384px; height: 96px; }
+.b-gold { grid-template-columns: 1fr auto; align-items: center; gap: 18px; padding: 0 24px; color: var(--ink); }
+.b-gold .label { color: var(--ink-2); }
+.offer { font-size: 24px; font-weight: 500; letter-spacing: -0.045em; line-height: 1; margin-top: 5px; }
+.b-contact { text-align: right; }
+.b-contact .tel { font-size: 17px; font-weight: 600; letter-spacing: -0.03em; line-height: 1.15; font-variant-numeric: tabular-nums; margin-top: 2px; }
+.b-contact .mail { font-size: 8.5px; font-weight: 450; color: var(--ink-2); }
+.b-foot {
+  position: absolute; z-index: 4; left: 0; right: 0; top: 528px; height: 48px;
+  display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 0 24px;
+}
+.b-foot .label { font-size: 7px; letter-spacing: 0.08em; }
+.eho { display: flex; align-items: center; gap: 5px; }
+
+/* ---------- Print modes (see scripts/build-flyer.mjs) ---------- */
+html[data-mode="bleed"] .sheet { width: calc(4in + var(--bleed) * 2); height: calc(6in + var(--bleed) * 2); }
+html[data-mode="bleed"] .card { overflow: visible; }
+html[data-mode="bleed"] .f-photo { left: calc(var(--bleed) * -1); width: calc(256px + var(--bleed)); }
+html[data-mode="bleed"] .f-gold-ground,
+html[data-mode="bleed"] .b-gold-ground {
+  left: calc(var(--bleed) * -1); width: calc(384px + var(--bleed) * 2);
+}
+html[data-mode="bleed"] .f-gold-ground { height: calc(48px + var(--bleed)); }
+html[data-mode="bleed"] .seam--bx { left: calc(var(--bleed) * -1) !important; width: calc(100% + var(--bleed) * 2) !important; }
+html[data-mode="bleed"] .lattice { left: calc(var(--bleed) * -1); right: calc(var(--bleed) * -1); background-position: var(--bleed) 0; }
+
+html[data-mode="safe"], html[data-mode="safe"] body { background: #fff; }
+html[data-mode="safe"] .card { zoom: var(--safe-scale); }
+</style>
+</head>
+<body>
+
+<!-- ================= FRONT ================= -->
+<div class="sheet"><div class="card">
+  <div class="lattice" aria-hidden="true"></div>
+  <div class="gold-ground f-gold-ground" aria-hidden="true"></div>
+
+  <div class="seam seam--h seam--bx" style="left:0; top:48px; width:100%"></div>
+  <div class="seam seam--h seam--bx" style="left:0; top:336px; width:100%"></div>
+  <div class="seam seam--h seam--bx" style="left:0; top:528px; width:100%"></div>
+  <div class="seam seam--v" style="left:256px; top:48px; height:288px"></div>
+
+  <header class="strip">
+    <svg class="mark" viewBox="0 0 560 200" fill="none" stroke="currentColor" stroke-width="26"
+         stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Niwa Apartments">
+      <path d="M22 178V22l128 156V22" /><path d="M208 22v156" />
+      <path d="M256 22l34 156 34-156 34 156 34-156" /><path d="M412 178l56-156 56 156" />
+    </svg>
+    <p class="label label--dim">Queen Anne, Seattle</p>
+  </header>
+
+  <figure class="mat mat--photo f-photo">
+    <img src="../src/assets/gallery/exterior-on-1st-ave-n.jpg" style="object-position: 60% 40%"
+         alt="Niwa Apartments on 1st Ave N, the yellow balconies rising against the sky" />
+  </figure>
+
+  <section class="mat f-facts">
+    <div class="fact"><span class="label label--dim">Homes on floors</span><b class="mono">2 – 8</b></div>
+    <div class="fact"><span class="label label--dim">Layouts</span><b class="mono">19</b></div>
+    <div class="fact"><span class="label label--dim">Sizes</span><b class="mono">349 – 745 sq ft</b></div>
+    <div class="fact"><span class="label label--dim">From</span><b class="mono">$1,569 /mo</b></div>
+  </section>
+
+  <section class="mat f-head">
+    <h1 class="h1"><span>Iconically,</span><span class="l2">Seattle.</span></h1>
+    <p class="lede">Studio, one and two bedroom apartments in Lower Queen Anne, a short walk from Seattle Center and the Space Needle.</p>
+  </section>
+
+  <div class="mat f-gold">
+    <p class="label">Now leasing · up to 4 weeks free</p>
+    <p class="tel">(206) 622-9991</p>
+  </div>
+</div></div>
+
+<!-- ================= BACK ================= -->
+<div class="sheet"><div class="card">
+  <div class="lattice" aria-hidden="true"></div>
+  <div class="gold-ground b-gold-ground" aria-hidden="true"></div>
+
+  <div class="seam seam--h seam--bx" style="left:0; top:48px; width:100%"></div>
+  <div class="seam seam--h seam--bx" style="left:0; top:288px; width:100%"></div>
+  <div class="seam seam--h seam--bx" style="left:0; top:432px; width:100%"></div>
+  <div class="seam seam--h seam--bx" style="left:0; top:528px; width:100%"></div>
+  <div class="seam seam--v" style="left:256px; top:288px; height:144px"></div>
+
+  <header class="strip">
+    <p class="label label--dim">513 1st Ave N, Seattle, WA 98109</p>
+    <p class="label label--dim">Now leasing</p>
+  </header>
+
+  <section class="mat b-homes">
+    <p class="label label--dim">The homes</p>
+    <div class="rows">
+      <div class="row">
+        <span class="row-name">Studio</span>
+        <span class="label label--dim mono row-spec">349 – 388 sq ft<br />5 available now</span>
+        <b class="row-rent">From $1,569</b>
+      </div>
+      <div class="row">
+        <span class="row-name">One bedroom</span>
+        <span class="label label--dim mono row-spec">703 – 717 sq ft<br />1 available now</span>
+        <b class="row-rent">From $2,820</b>
+      </div>
+      <div class="row">
+        <span class="row-name">Two bedroom</span>
+        <span class="label label--dim mono row-spec">661 – 745 sq ft<br />3 available now</span>
+        <b class="row-rent">From $2,700</b>
+      </div>
+    </div>
+  </section>
+
+  <section class="mat b-build">
+    <p class="label label--dim">The building</p>
+    <h2 class="b-head">Everything, in its <span class="em">place.</span></h2>
+    <ul>
+      <li>Rooftop clubroom</li>
+      <li>In-unit washer and dryer</li>
+      <li>Fitness center</li>
+      <li>Stainless steel appliances</li>
+      <li>Pet washing station</li>
+      <li>Parking and bike storage</li>
+    </ul>
+  </section>
+
+  <section class="mat b-scores">
+    <div class="score"><span class="label label--dim">Walk</span><b class="mono">92</b></div>
+    <div class="score"><span class="label label--dim">Bike</span><b class="mono">76</b></div>
+    <div class="score"><span class="label label--dim">Transit</span><b class="mono">69</b></div>
+  </section>
+
+  <section class="mat b-gold">
+    <div>
+      <p class="label">New Niwa resident special</p>
+      <p class="offer">Up to 4 weeks free</p>
+    </div>
+    <div class="b-contact">
+      <p class="label">Schedule a tour</p>
+      <p class="tel">(206) 622-9991</p>
+      <p class="mail">leasing@niwaapartments.com</p>
+    </div>
+  </section>
+
+  <footer class="b-foot">
+    <p class="label label--dim eho">
+      <svg viewBox="0 0 24 24" width="10" height="10" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 11.5 12 4l9 7.5M5 10v10h14V10M9 20v-6h6v6"/></svg>
+      Equal Housing Opportunity · MFTE / MHA
+    </p>
+    <p class="label label--dim">AGM Real Estate Group, LLC</p>
+  </footer>
+</div></div>
+
+</body>
+</html>
