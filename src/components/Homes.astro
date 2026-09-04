@@ -74,6 +74,10 @@ const range = (a: number, b: number) => (a === b ? int(a) : `${int(a)}–${int(b
     <div class="hdlg-body">
       <aside class="hdlg-side">
         <h3 class="h2">{h.name}</h3>
+        <nav class="hdlg-jump" aria-label="Jump to">
+          <button type="button" class="jump is-active" data-jump="gallery" aria-current="true">Photos</button>
+          <button type="button" class="jump" data-jump="tour">Walkthrough</button>
+        </nav>
         <dl class="hdlg-facts">
           <div><dt class="label label--dim">Size</dt><dd>{range(h.sqftMin, h.sqftMax)} sq ft</dd></div>
           <div><dt class="label label--dim">Bath</dt><dd>{h.baths}</dd></div>
@@ -162,6 +166,26 @@ const range = (a: number, b: number) => (a === b ? int(a) : `${int(a)}–${int(b
   .hdlg-facts div { display: grid; gap: 6px; }
   .hdlg-facts dd { margin: 0; font-size: var(--t-body); }
   .hdlg-side .small { max-width: 40ch; }
+  /* The same underline idiom as the home-type tabs and the tour tabs, at rail
+     scale, so it reads as navigation rather than as another pair of buttons
+     competing with "Schedule a tour". */
+  .hdlg-jump { display: flex; gap: clamp(16px, 1.6vw, 26px); }
+  .jump {
+    position: relative; padding: 9px 0;
+    font-size: var(--t-small); letter-spacing: -0.01em;
+    color: var(--fg-3); transition: color 0.3s;
+  }
+  .jump::after {
+    content: ''; position: absolute; left: 0; right: 0; bottom: 2px; height: 2px;
+    background: var(--gold); transform: scaleX(0); transform-origin: left;
+    transition: transform 0.45s var(--ease);
+  }
+  .jump:hover { color: var(--fg); }
+  .jump.is-active { color: var(--fg); }
+  .jump.is-active::after { transform: scaleX(1); }
+  .jump:focus-visible { outline: 2px solid var(--gold); outline-offset: 4px; }
+  @media (pointer: coarse) { .jump { padding: 13px 0; } }
+
   .hdlg-tours { display: grid; gap: 8px; }
   .hdlg-tabs { display: flex; gap: 20px; flex-wrap: wrap; }
   .hdlg-actions { display: flex; flex-wrap: wrap; gap: 10px; }
@@ -171,6 +195,7 @@ const range = (a: number, b: number) => (a === b ? int(a) : `${int(a)}–${int(b
     .hdlg-tour { min-height: calc(100dvh - var(--nav-h) - 1px); }
     .hdlg-side { border-right: 0; border-bottom: 1px solid var(--line); overflow: visible; }
     .hdlg-side .h2 { display: none; }
+    .hdlg-jump { order: -1; }
     .hdlg-facts { grid-template-columns: repeat(4, 1fr); }
     .hdlg-side .small { display: none; }
   }
