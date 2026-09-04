@@ -33,6 +33,19 @@ A and B read the site's fonts (`public/fonts/`) and photography
 (`src/assets/gallery/`) straight off disk, so they and the site cannot drift
 apart on type or imagery. C uses the fonts only.
 
+### The postcard
+
+6 × 4 landscape, two sides, on the same twelve-bay module — its lattice cell is
+96 × 48, a 2:1 tatami proportion. Front: the building down the left, the name
+and the numbers right, a gold rule along the foot. Back: the homes down the
+left, the building and the scores right, the offer and the legal line in the
+gold at the foot.
+
+The back is a **content back, not a mail panel**. Landscape is the orientation a
+4 × 6 is usually mailed in, so if these are going in the post the right half of
+the back has to be cleared for an address block and a stamp box, and the homes
+move. Say the word and it is one block to swap.
+
 ### Where D's copy comes from
 
 Nothing on that sheet is written for it. The mapping, so it can be re-checked:
@@ -86,8 +99,8 @@ mats, so no edge is ever painted twice where two mats abut.
 | `niwa-leasing-flyer-d.pdf` | 8.5 × 11 | reference and screen |
 | `niwa-leasing-flyer-d-bleed.pdf` | 8.75 × 11.25 | a commercial run — 0.125in bleed all round |
 | `niwa-leasing-flyer-d-safe.pdf` | 8.5 × 11 | a desktop printer — 0.25in white margin, nothing clipped |
-| `postcard.pdf` | 4 × 6, 2pp | reference; front then back |
-| `postcard-bleed.pdf` | 4.25 × 6.25, 2pp | a commercial run |
+| `postcard.pdf` | 6 × 4 landscape, 2pp | reference; front then back |
+| `postcard-bleed.pdf` | 6.25 × 4.25, 2pp | a commercial run |
 
 The bleed files carry no crop marks, which is what most printers want alongside
 a stated trim size. If yours asks for marks, say so and the sheet can grow a
