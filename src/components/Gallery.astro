@@ -22,10 +22,6 @@ const items = slugs.map(photo);
           <div class="gal-img">
             <Image src={p.img} alt={p.alt} widths={[640, 960, 1440]} sizes="(max-width: 720px) 86vw, 60vh" format="webp" quality={76} loading="lazy" />
           </div>
-          <figcaption class="gal-cap">
-            <span class="label">{p.title}</span>
-            <span class="small">{p.desc}</span>
-          </figcaption>
         </figure>
       ))}
     </div>
@@ -39,10 +35,11 @@ const items = slugs.map(photo);
   .gal-lede .small { grid-column: 9 / span 4; align-self: end; }
   .gal-viewport { position: relative; overflow: hidden; border-top: 1px solid var(--line); padding: var(--gap) 0 calc(var(--gap) + 14px); }
   .gal-track { display: flex; gap: var(--gap); padding: 0 var(--gutter); width: max-content; will-change: transform; }
-  .gal-item { --h: clamp(280px, 60vh, 760px); display: grid; gap: 12px; flex: 0 0 auto; width: calc(var(--h) * var(--ar)); max-width: calc(100vw - var(--gutter) * 2); }
+  /* The pictures carry no captions; the room name lives in the alt text so
+     screen readers still get it. One child, so no track gap to reserve. */
+  .gal-item { --h: clamp(280px, 60vh, 760px); display: block; flex: 0 0 auto; width: calc(var(--h) * var(--ar)); max-width: calc(100vw - var(--gutter) * 2); }
   .gal-img { height: var(--h); overflow: hidden; background: var(--bg-2); }
   .gal-img :global(img) { width: 100%; height: 100%; object-fit: cover; }
-  .gal-cap { display: grid; gap: 4px; }
   .gal-progress { position: absolute; left: var(--gutter); right: var(--gutter); bottom: 0; height: 1px; background: var(--line); }
   .gal-progress i { display: block; height: 100%; background: var(--fg); transform: scaleX(0); transform-origin: left; }
   /* Touch and small screens: native horizontal scroll with snap, no pinning. */
