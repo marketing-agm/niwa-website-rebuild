@@ -2,10 +2,10 @@
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-<title>Niwa Apartments — Leasing Flyer (Jisoo)</title>
+<title>Niwa Apartments — Leasing Flyer (variant D)</title>
 <style>
 /* ==========================================================================
-   Niwa — leasing flyer · Jisoo
+   Niwa — leasing flyer · variant D
 
    The tatami room from variant C, now with photography laid into it. Seven
    mats tile the sheet on a module of twelve bays by nine, arranged so no four
@@ -20,17 +20,17 @@
 @font-face { font-family: 'Inter Tight'; font-style: italic; font-weight: 300 600; src: url('../public/fonts/inter-tight-italic-latin.woff2') format('woff2'); }
 
 :root {
-  --bg: #0b0b0b;
+  --bg: #000000;
   --fg: #f2f1ec;
-  --fg-2: rgba(242, 241, 236, 0.66);
-  --fg-3: rgba(242, 241, 236, 0.42);
+  --fg-2: rgba(242, 241, 236, 0.78);
+  --fg-3: rgba(242, 241, 236, 0.60);
   --frame: rgba(242, 241, 236, 0.32);
   --lattice: rgba(242, 241, 236, 0.13);
   --rule: rgba(242, 241, 236, 0.18);
   --gold: #f4c430;
-  --ink: #0b0b0b;
-  --ink-2: rgba(11, 11, 11, 0.68);
-  --ink-rule: rgba(11, 11, 11, 0.2);
+  --ink: #000000;
+  --ink-2: rgba(0, 0, 0, 0.74);
+  --ink-rule: rgba(0, 0, 0, 0.22);
   --sans: 'Inter Tight', 'Inter', ui-sans-serif, system-ui, sans-serif;
 
   /* The room: twelve bays across, nine down. */
@@ -48,7 +48,7 @@
 @page { size: 8.5in 11in; margin: 0; }
 
 *, *::before, *::after { box-sizing: border-box; }
-html, body { margin: 0; padding: 0; background: #0b0b0b; }
+html, body { margin: 0; padding: 0; background: #000000; }
 body {
   font-family: var(--sans);
   color: var(--fg);
@@ -66,7 +66,7 @@ img { display: block; }
 .page { position: relative; width: 8.5in; height: 11in; overflow: hidden; background: var(--bg); }
 
 /* ---------- Type roles, as on the site ---------- */
-.label { font-size: 8px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; line-height: 1.3; color: var(--fg-2); }
+.label { font-size: 9px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; line-height: 1.3; color: var(--fg-2); }
 .label--dim { color: var(--fg-3); }
 .mono { font-variant-numeric: tabular-nums; letter-spacing: 0.01em; }
 .em { font-style: italic; font-weight: 400; }
@@ -112,47 +112,47 @@ img { display: block; }
 .strip { position: absolute; z-index: 4; left: 0; right: 0; display: flex; align-items: center; justify-content: space-between; padding: 0 32px; }
 .strip--top { top: 0; height: var(--y0); }
 .strip--foot { top: var(--r9); bottom: 0; }
-.strip--foot .label { font-size: 7.5px; white-space: nowrap; }
+.strip--foot .label { font-size: 8px; letter-spacing: 0.1em; white-space: nowrap; }
 .mark { height: 16px; width: auto; color: var(--fg); }
 .eho { display: flex; align-items: center; gap: 6px; }
 
 /* ---------- The headline ---------- */
 .h1 { font-size: 82px; font-weight: 500; line-height: 0.9; letter-spacing: -0.048em; display: grid; }
 .h1 .l2 { font-style: italic; font-weight: 400; padding-left: 96px; }
-.lede { font-size: 12.5px; line-height: 1.45; letter-spacing: -0.015em; color: var(--fg-2); max-width: 44ch; text-wrap: balance; }
+.lede { font-size: 13px; line-height: 1.45; letter-spacing: -0.015em; color: var(--fg-2); max-width: 44ch; text-wrap: balance; }
 
 /* ---------- The homes ---------- */
 .homes { display: grid; grid-auto-rows: 1fr; margin: 18px 0 16px; }
 .home { display: grid; align-content: center; }
 .home + .home { border-top: 1px solid var(--rule); }
 .home-name { font-size: 20px; font-weight: 500; letter-spacing: -0.03em; line-height: 1; }
-.home-spec { display: block; margin-top: 7px; }
-.home-rent { display: block; font-size: 26px; font-weight: 500; letter-spacing: -0.045em; line-height: 1; font-variant-numeric: tabular-nums; margin-top: 12px; }
-.home-rent i { font-style: normal; font-size: 9px; font-weight: 400; letter-spacing: -0.01em; color: var(--fg-3); margin-left: 3px; }
-.home-now { display: block; margin-top: 8px; }
-.mat-note { font-size: 8.5px; line-height: 1.55; color: var(--fg-3); border-top: 1px solid var(--rule); padding-top: 12px; }
+.home-spec { display: block; margin-top: 6px; }
+.home-rent { display: block; font-size: 26px; font-weight: 500; letter-spacing: -0.045em; line-height: 1; font-variant-numeric: tabular-nums; margin-top: 10px; }
+.home-rent i { font-style: normal; font-size: 10px; font-weight: 400; letter-spacing: -0.01em; color: var(--fg-3); margin-left: 3px; }
+.home-now { display: block; margin-top: 7px; }
+.mat-note { font-size: 9.5px; font-weight: 450; line-height: 1.5; color: var(--fg-3); border-top: 1px solid var(--rule); padding-top: 12px; }
 
 /* ---------- The building ---------- */
 .mat-h { font-size: 19px; font-weight: 500; letter-spacing: -0.032em; line-height: 1.05; margin-top: 6px; }
 .rooms { display: grid; grid-auto-rows: 1fr; margin: 16px 0 14px; }
-.rooms li { display: flex; align-items: center; gap: 0.4em; font-size: 9.5px; line-height: 1.35; color: var(--fg-2); border-bottom: 1px solid var(--rule); }
+.rooms li { display: flex; align-items: center; gap: 0.4em; font-size: 10.5px; font-weight: 450; line-height: 1.35; color: var(--fg-2); border-bottom: 1px solid var(--rule); }
 .rooms li:first-child { border-top: 1px solid var(--rule); }
 .rooms li span { color: var(--fg-3); }
 .scores { display: flex; justify-content: space-between; gap: 8px; }
-.scores b { font-size: 15px; font-weight: 500; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; margin-left: 5px; }
+.scores b { font-size: 17px; font-weight: 500; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; margin-left: 5px; }
 
 /* ---------- The gold ---------- */
 .m-gold .label { color: var(--ink-2); }
 .offer { font-size: 36px; font-weight: 500; letter-spacing: -0.048em; line-height: 1; color: var(--ink); margin-top: 7px; }
-.offer-note { font-size: 8.5px; line-height: 1.5; color: var(--ink-2); margin-top: 11px; max-width: 46ch; }
+.offer-note { font-size: 9.5px; font-weight: 450; line-height: 1.5; color: var(--ink-2); margin-top: 11px; max-width: 46ch; }
 .contact { text-align: right; color: var(--ink); }
 .contact .big { font-size: 21px; font-weight: 500; letter-spacing: -0.035em; line-height: 1.1; font-variant-numeric: tabular-nums; margin-top: 3px; }
-.contact .sub { font-size: 10px; color: var(--ink-2); margin-top: 2px; }
+.contact .sub { font-size: 11px; font-weight: 450; color: var(--ink-2); margin-top: 2px; }
 .pill {
   display: inline-flex; align-items: center; gap: 9px; margin-top: 13px;
   height: 32px; padding: 0 18px; border-radius: 999px;
   background: var(--ink); color: var(--gold);
-  font-size: 8px; font-weight: 500; letter-spacing: 0.13em; text-transform: uppercase; white-space: nowrap;
+  font-size: 8.5px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; white-space: nowrap;
 }
 </style>
 </head>

@@ -23,17 +23,17 @@ bleed, one page:
   no four corners ever meet. Each mat holds one pocket of information and
   nothing else, and the gold is the last mat on the page.
 
-- **Jisoo** — `leasing-flyer-jisoo.html` / `niwa-leasing-flyer-jisoo.pdf`. C's
-  room with the photography laid back into it. Seven mats on a module of twelve
-  bays by nine, still arranged so no four corners meet: four hold a pocket of
-  information, three hold a photograph, and the last is the gold. No Japanese
-  characters. Every word on the sheet comes from the site — see below.
+- **D** — `leasing-flyer-d.html` / `niwa-leasing-flyer-d.pdf`. C's room with the
+  photography laid back into it. Seven mats on a module of twelve bays by nine,
+  still arranged so no four corners meet: four hold a pocket of information,
+  three hold a photograph, and the last is the gold. Every word on the sheet
+  comes from the site — see below. This one is the current direction.
 
 A and B read the site's fonts (`public/fonts/`) and photography
 (`src/assets/gallery/`) straight off disk, so they and the site cannot drift
 apart on type or imagery. C uses the fonts only.
 
-### Where Jisoo's copy comes from
+### Where D's copy comes from
 
 Nothing on that sheet is written for it. The mapping, so it can be re-checked:
 
@@ -60,8 +60,8 @@ wide page and the mat is four bays across.
 
 Slack's PDF previewer shifts the colour of these dark pages badly (it comes out
 pink). The PDF itself is correct — rasterise it and the greys and gold are
-exactly right. `niwa-leasing-flyer-jisoo.png` is a true 2× raster of the PDF,
-kept next to it for posting in Slack.
+exactly right. `niwa-leasing-flyer-d.png` is a true 2× raster of the PDF, kept
+next to it for posting in Slack.
 
 ### How variant C is built
 
@@ -85,7 +85,7 @@ mats, so no edge is ever painted twice where two mats abut.
 node scripts/build-flyer.mjs                              # variant A
 node scripts/build-flyer.mjs flyer/leasing-flyer-b.html   # variant B
 node scripts/build-flyer.mjs flyer/leasing-flyer-c.html   # variant C
-node scripts/build-flyer.mjs flyer/leasing-flyer-jisoo.html  # Jisoo
+node scripts/build-flyer.mjs flyer/leasing-flyer-d.html   # variant D
 ```
 
 Renders the PDF with the Chromium that ships with Playwright — no dev server
@@ -100,6 +100,18 @@ Rents, square footage and the availability counts come from `src/site/units.json
 (the AppFolio feed), the Walk/Bike/Transit scores and the copy from
 `src/site/site.config.json`. They are transcribed by hand, so re-check them
 against the feed before a print run and update the "as of" date in the gold band.
+
+## Two rules that apply to every variant
+
+**No Japanese characters.** The character that once headed the garden pocket is
+gone from all four sheets; that pocket now carries "The idea", which is the
+site's own name for the section. Check with a scan for the CJK block before
+shipping a new one, not by eye.
+
+**D is black, the others are #0b0b0b.** The site's ground is `#0b0b0b`, which on
+paper prints as a washed grey. D uses true `#000000` so the sheet holds its
+depth in print and the gold reads harder against it. If you take a new variant
+to print, follow D.
 
 ## A note on the page grid
 
