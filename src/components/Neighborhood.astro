@@ -38,12 +38,14 @@ const nearby = [
         ))}
       </ul>
     </div>
-    {[crossing, arena, bay].map((p) => (
-      <figure class="cell cell--img hood-tile" data-reveal>
-        <Image src={p.img} alt={p.alt} widths={[480, 800, 1200]} sizes="(max-width: 640px) 100vw, 33vw" format="webp" quality={74} />
-        <figcaption class="hood-cap"><span class="label">{p.title}</span></figcaption>
-      </figure>
-    ))}
+    <div class="hood-tiles rail-x">
+      {[crossing, arena, bay].map((p) => (
+        <figure class="cell cell--img hood-tile" data-reveal>
+          <Image src={p.img} alt={p.alt} widths={[480, 800, 1200]} sizes="(max-width: 640px) 85vw, 33vw" format="webp" quality={74} />
+          <figcaption class="hood-cap"><span class="label">{p.title}</span></figcaption>
+        </figure>
+      ))}
+    </div>
   </div>
 </section>
 
@@ -65,5 +67,18 @@ const nearby = [
     .hood-list { grid-column: 1 / -1; }
     .hood-tile { grid-column: span 4; aspect-ratio: 4 / 3; min-height: 0; }
   }
-  @media (max-width: 640px) { .hood-tile { grid-column: 1 / -1; } .near-row .small { display: none; } }
+  /* Phones. Full-width stacked tiles ran the section to ~1,800px for what is
+     a set of glanceable neighbourhood cards, so they swipe instead. The
+     distance/detail line stays hidden here as before. */
+  /* Phones. Three full-width stacked tiles were most of this section's
+     1,800px for what are glanceable neighbourhood cards, so they swipe.
+     The distance line stays hidden here, as it was before. */
+  @media (max-width: 640px) {
+    /* .hood-grid stays twelve columns at every width, so the rail wrapper has
+       to claim the full row itself — left on auto it lands in one column and
+       collapses the tiles to 72px. */
+    .hood-tiles { grid-column: 1 / -1; }
+    .hood-tile { grid-column: auto; aspect-ratio: 3 / 2; }
+    .near-row .small { display: none; }
+  }
 </style>

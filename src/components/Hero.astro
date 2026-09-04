@@ -74,6 +74,7 @@ const facts = [
   .hero-title .hero-line { display: block; overflow: hidden; padding-bottom: 0.06em; margin-bottom: -0.06em; }
   .hero-line-in { display: block; will-change: transform; }
   .hero-title .hero-line:nth-child(2) { font-style: italic; font-weight: 400; padding-left: clamp(0px, 14vw, 22vw); }
+  @media (max-width: 1024px) { .hero-title .hero-line:nth-child(2) { padding-left: 8vw; } }
   .hero-row {
     display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: var(--gap); align-items: end;
     padding: clamp(28px, 4vw, 64px) var(--inset) clamp(28px, 3.4vw, 56px);
@@ -110,9 +111,30 @@ const facts = [
   @media (max-width: 720px) {
     .hero-top { flex-direction: column; gap: 6px; }
     .hero-top-r { text-align: left; }
-    .hero-special { text-align: left; }
-    .hero-title .hero-line:nth-child(2) { padding-left: 10vw; }
+    /* 44px of pressable height; it was 22 and it opens a dialog. */
+    .hero-special { text-align: left; padding: 12px 0; margin: -12px 0; }
     .hero-intro, .hero-cta { grid-column: 1 / -1; justify-content: flex-start; }
     .hero-facts { grid-template-columns: repeat(2, 1fr); }
+    /* The CTAs are the point of the hero — full width, and side by side only
+       while they both still fit. */
+    .hero-cta { gap: 10px; }
+    .hero-cta .btn { flex: 1 1 auto; justify-content: center; }
+  }
+
+  /* Phones. The composition was tight for two reasons that compound: the
+     italic second line carries a 10vw indent, which at 390px leaves "Seattle."
+     almost no track to sit in, and the block padding is still tuned for a
+     desktop measure. Indent goes, rhythm comes back. */
+  @media (max-width: 560px) {
+    .hero { padding-top: 20px; }
+    .hero-top { padding: 0 var(--gutter) 28px; }
+    .hero-title { padding: 0 var(--gutter); }
+    .hero-title .hero-line:nth-child(2) { padding-left: 0; }
+    .hero-row { padding: 32px var(--gutter) 34px; gap: 26px; }
+    .hero-intro { max-width: none; }
+    .hero-facts { border-left: 0; border-right: 0; }
+    .hero-fact { padding: 14px var(--gutter) 16px; }
+    /* 66vh of video pushes everything below it off a short screen. */
+    .hero-media-clip { height: clamp(260px, 46vh, 420px); }
   }
 </style>

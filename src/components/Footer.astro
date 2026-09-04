@@ -61,4 +61,11 @@ const fmtHour = (t: string) => { const [h] = t.split(':').map(Number); return `$
   .foot-top { transition: color 0.3s; } .foot-top:hover { color: var(--gold); }
   @media (max-width: 900px) { .foot-cell { grid-column: span 6; } }
   @media (max-width: 520px) { .foot-cell { grid-column: 1 / -1; } .foot-bar { flex-direction: column; } }
+  /* The phone and email here are how someone actually reaches the building
+     from a phone, so they get a real press target rather than an 18px line. */
+  @media (pointer: coarse) {
+    .foot-cell a[href^="tel:"], .foot-cell a[href^="mailto:"] {
+      display: inline-flex; align-items: center; min-height: 44px;
+    }
+  }
 </style>
