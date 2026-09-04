@@ -72,7 +72,8 @@ b, strong { font-weight: 500; }
   overflow: hidden;
   background: var(--bg);
   display: grid;
-  grid-template-rows: 36px 176px 118px minmax(0, 1fr) 162px 140px 120px 26px;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-rows: 36px 200px minmax(0, 1fr) 195px 175px 140px 30px;
 }
 
 /* ---------- 1 · Top bar ---------- */
@@ -87,50 +88,42 @@ b, strong { font-weight: 500; }
 .mark { height: 17px; width: auto; color: var(--fg); }
 .topbar-mid { flex: 1; text-align: center; }
 
-/* ---------- 2 · Hero type ---------- */
+/* ---------- 2 · Hero: two lines of type, the numbers and the lede ---------
+   The headline holds the left eight columns over two rows; the facts sit up
+   against the first line and the lede drops in beside the second, so neither
+   corner of the page is left empty. */
 .hero {
-  padding: 22px var(--inset) 0;
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  grid-template-rows: auto auto;
+  gap: 14px 16px;
+  align-content: center;
+  padding: 0 var(--inset);
   min-height: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
 }
 .h1 {
-  font-size: 76px;
+  display: contents;
+  font-size: 88px;
   font-weight: 500;
   line-height: 0.9;
   letter-spacing: -0.048em;
-  display: grid;
 }
+.h1 .line-1 { grid-column: 1 / span 8; grid-row: 1; }
 .h1 .line-2 {
+  grid-column: 1 / span 8; grid-row: 2;
   font-style: italic;
   font-weight: 400;
-  padding-left: 96px;
-}
-
-/* ---------- 3 · Hero row: lead + facts ---------- */
-.hero-row {
-  display: grid;
-  grid-template-columns: repeat(12, minmax(0, 1fr));
-  gap: 16px;
-  align-items: end;
-  padding: 0 var(--inset) 22px;
-}
-.hero-intro {
-  grid-column: 1 / span 6;
-  font-size: 15px;
-  line-height: 1.3;
-  letter-spacing: -0.02em;
-  color: var(--fg);
-  max-width: 34ch;
+  padding-left: 104px;
 }
 .hero-facts {
-  grid-column: 8 / span 5;
+  grid-column: 9 / span 4; grid-row: 1;
+  align-self: end;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 1px;
   background: var(--line);
   border: 1px solid var(--line);
+  margin: 0;
 }
 .hero-fact {
   background: var(--bg);
@@ -139,6 +132,14 @@ b, strong { font-weight: 500; }
   gap: 3px;
 }
 .hero-fact dd { font-size: 13px; font-weight: 500; letter-spacing: -0.02em; color: var(--fg); }
+.hero-intro {
+  grid-column: 9 / span 4; grid-row: 2;
+  align-self: start;
+  font-size: 12.5px;
+  line-height: 1.4;
+  letter-spacing: -0.015em;
+  color: var(--fg-2);
+}
 
 /* ---------- The hairline grid ---------- */
 .grid {
@@ -161,34 +162,36 @@ b, strong { font-weight: 500; }
 /* ---------- 5 · The homes, and the idea beside them ---------- */
 .homes-block { grid-column: span 8; padding: 0; display: grid; grid-template-rows: repeat(3, 1fr); }
 .home-row {
-  display: flex; align-items: center; justify-content: space-between; gap: 14px;
-  padding: 0 20px; min-width: 0;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 126px 108px 58px;
+  align-items: center;
+  gap: 14px;
+  padding: 0 22px;
 }
 .home-row + .home-row { border-top: 1px solid var(--line); }
-.home-name { font-size: 27px; font-weight: 400; letter-spacing: -0.04em; line-height: 0.95; white-space: nowrap; }
-.home-go { display: flex; align-items: baseline; gap: 12px; white-space: nowrap; }
-.home-go .label { font-size: 7.5px; }
-.home-rent { font-size: 15px; font-weight: 500; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
-.home-now { color: var(--fg); border: 1px solid var(--line); border-radius: 999px; padding: 3px 8px 4px; font-size: 7.5px; }
+.home-name { font-size: 28px; font-weight: 400; letter-spacing: -0.04em; line-height: 0.95; white-space: nowrap; }
+.home-spec { text-align: right; font-size: 7.5px; }
+.home-rent { text-align: right; font-size: 16px; font-weight: 500; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.home-now { justify-self: end; text-align: center; color: var(--fg); border: 1px solid var(--line); border-radius: 999px; padding: 4px 0 5px; width: 100%; font-size: 7.5px; }
 
 .idea {
   grid-column: span 4;
   display: grid;
   align-content: space-between;
-  padding: 14px 20px 13px;
+  padding: 20px 22px 18px;
 }
-.kanji { font-size: 34px; line-height: 1; font-weight: 400; color: var(--fg-3); }
-.idea-body { font-size: 10.5px; line-height: 1.34; letter-spacing: -0.018em; color: var(--fg); }
+.kanji { font-size: 44px; line-height: 1; font-weight: 400; color: var(--fg-3); }
+.idea-body { font-size: 12px; line-height: 1.34; letter-spacing: -0.018em; color: var(--fg); }
 .idea-body em { font-style: italic; }
 .scores { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-.score b { display: block; font-size: 18px; font-weight: 500; line-height: 1; letter-spacing: -0.04em; font-variant-numeric: tabular-nums; margin-top: 3px; }
+.score b { display: block; font-size: 22px; font-weight: 500; line-height: 1; letter-spacing: -0.04em; font-variant-numeric: tabular-nums; margin-top: 3px; }
 .score i { display: block; height: 1px; background: rgba(242,241,236,0.18); margin-top: 6px; position: relative; }
 .score i::after { content: ''; position: absolute; inset: 0; background: var(--fg); transform: scaleX(var(--p)); transform-origin: left; }
 
 /* ---------- 6 · The building ---------- */
-.band-build .feats { grid-column: span 5; padding: 13px 20px 12px; display: grid; align-content: space-between; }
-.feat-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 3px 14px; }
-.feat-cols li { font-size: 9px; line-height: 1.55; color: var(--fg-2); white-space: nowrap; }
+.band-build .feats { grid-column: span 5; padding: 20px 22px 18px; display: grid; align-content: space-between; }
+.feat-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 6px 14px; }
+.feat-cols li { font-size: 9.5px; line-height: 1.55; color: var(--fg-2); white-space: nowrap; }
 .feat-cols li::before { content: '—'; color: var(--fg-3); margin-right: 6px; }
 .band-build .shot-a { grid-column: span 4; }
 .band-build .shot-b { grid-column: span 3; }
@@ -206,15 +209,15 @@ b, strong { font-weight: 500; }
   padding: 0 var(--inset);
 }
 .cta .label { color: var(--ink-2); }
-.cta-offer { grid-column: 1 / span 5; }
-.cta-title { font-size: 33px; font-weight: 500; letter-spacing: -0.045em; line-height: 0.98; margin-top: 6px; }
-.cta-note { grid-column: 6 / span 3; font-size: 8.5px; line-height: 1.45; color: var(--ink-2); align-self: center; }
+.cta-offer { grid-column: 1 / span 7; }
+.cta-title { font-size: 38px; font-weight: 500; letter-spacing: -0.045em; line-height: 0.98; margin-top: 6px; }
+.cta-note { font-size: 8.5px; line-height: 1.5; color: var(--ink-2); margin-top: 10px; max-width: 62ch; }
 .cta-contact { grid-column: 9 / span 4; display: grid; gap: 2px; justify-items: end; text-align: right; }
-.cta-contact .big { font-size: 18px; font-weight: 500; letter-spacing: -0.03em; line-height: 1.15; font-variant-numeric: tabular-nums; }
-.cta-contact .sub { font-size: 10px; color: var(--ink-2); line-height: 1.35; }
+.cta-contact .big { font-size: 20px; font-weight: 500; letter-spacing: -0.03em; line-height: 1.15; font-variant-numeric: tabular-nums; }
+.cta-contact .sub { font-size: 10.5px; color: var(--ink-2); line-height: 1.35; }
 .cta-btn {
   display: inline-flex; align-items: center; gap: 8px;
-  height: 30px; padding: 0 15px; margin-top: 9px;
+  height: 32px; padding: 0 17px; margin-top: 12px;
   border: 1px solid var(--ink); border-radius: 999px;
   background: var(--ink); color: var(--gold);
   font-size: 8px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase;
@@ -250,23 +253,19 @@ b, strong { font-weight: 500; }
     <p class="label gold">Now leasing · up to 4 weeks free</p>
   </header>
 
-  <!-- 2 · Hero -->
+  <!-- 2 · Hero: the type, the numbers and the lede interlocked -->
   <section class="hero">
     <h1 class="h1">
       <span class="line-1">Iconically,</span>
       <span class="line-2">Seattle.</span>
     </h1>
-  </section>
-
-  <!-- 3 · Lead + facts -->
-  <section class="hero-row">
-    <p class="hero-intro">Studio, one and two bedroom apartments in Lower Queen Anne, a short walk from Seattle Center and the Space Needle.</p>
     <dl class="hero-facts">
       <div class="hero-fact"><dt class="label label--dim">Homes on floors</dt><dd class="mono">2 – 8</dd></div>
       <div class="hero-fact"><dt class="label label--dim">Distinct layouts</dt><dd class="mono">19</dd></div>
       <div class="hero-fact"><dt class="label label--dim">Available now</dt><dd class="mono">9 homes</dd></div>
       <div class="hero-fact"><dt class="label label--dim">Pets</dt><dd class="mono">Welcome</dd></div>
     </dl>
+    <p class="hero-intro">Studio, one and two bedroom apartments in Lower Queen Anne, a short walk from Seattle Center and the Space Needle.</p>
   </section>
 
   <!-- 4 · The building, edge to edge -->
@@ -279,30 +278,21 @@ b, strong { font-weight: 500; }
     <div class="cell homes-block">
         <div class="home-row">
           <span class="home-name">Studio</span>
-          <span class="home-go">
-            <span class="label label--dim mono">349 – 388 sq ft</span>
-            <span class="label label--dim">1 bath · 3D tour</span>
-            <b class="home-rent">From $1,569</b>
-            <span class="label mono home-now">5 now</span>
-          </span>
+          <span class="label label--dim mono home-spec">349 – 388 sq ft · 1 bath</span>
+          <b class="home-rent">From $1,569</b>
+          <span class="label mono home-now">5 now</span>
         </div>
         <div class="home-row">
           <span class="home-name">One bedroom</span>
-          <span class="home-go">
-            <span class="label label--dim mono">703 – 717 sq ft</span>
-            <span class="label label--dim">1 bath · 3D tour</span>
-            <b class="home-rent">From $2,820</b>
-            <span class="label mono home-now">1 now</span>
-          </span>
+          <span class="label label--dim mono home-spec">703 – 717 sq ft · 1 bath</span>
+          <b class="home-rent">From $2,820</b>
+          <span class="label mono home-now">1 now</span>
         </div>
         <div class="home-row">
           <span class="home-name">Two bedroom</span>
-          <span class="home-go">
-            <span class="label label--dim mono">661 – 745 sq ft</span>
-            <span class="label label--dim">1 bath · 3D tour</span>
-            <b class="home-rent">From $2,700</b>
-            <span class="label mono home-now">3 now</span>
-          </span>
+          <span class="label label--dim mono home-spec">661 – 745 sq ft · 1 bath</span>
+          <b class="home-rent">From $2,700</b>
+          <span class="label mono home-now">3 now</span>
         </div>
     </div>
     <div class="cell cell--tint idea">
@@ -321,17 +311,17 @@ b, strong { font-weight: 500; }
     <div class="cell feats">
       <div>
         <span class="label label--dim">The building</span>
-        <h2 style="font-size:21px;font-weight:500;letter-spacing:-0.035em;line-height:1.02;margin-top:6px;">Everything, in its <em style="font-style:italic;font-weight:400;">place.</em></h2>
+        <h2 style="font-size:24px;font-weight:500;letter-spacing:-0.035em;line-height:1.02;margin-top:6px;">Everything, in its <em style="font-style:italic;font-weight:400;">place.</em></h2>
       </div>
       <ul class="feat-cols">
-        <li>Rooftop terrace</li>
+        <li>3D tour of every layout</li>
         <li>In-unit washer &amp; dryer</li>
-        <li>Rooftop clubroom</li>
+        <li>Rooftop terrace</li>
         <li>Stainless steel kitchens</li>
-        <li>24-hour fitness center</li>
+        <li>Rooftop clubroom</li>
         <li>Balcony patio decks</li>
+        <li>24-hour fitness center</li>
         <li>Kitchen islands · select</li>
-        <li>Controlled access</li>
         <li>Pet wash · two pets</li>
         <li>Parking &amp; bike storage</li>
       </ul>
@@ -349,8 +339,8 @@ b, strong { font-weight: 500; }
     <div class="cta-offer">
       <span class="label">New Niwa resident special</span>
       <p class="cta-title">Up to 4 weeks free</p>
+      <p class="cta-note">On select homes — ask the leasing team which ones qualify and how long the offer runs. Rents and availability are current as of September 2026 and subject to change.</p>
     </div>
-    <p class="cta-note">On select homes — ask the leasing team which ones qualify and how long the offer runs. Rents and availability shown are current as of September 2026 and subject to change.</p>
     <div class="cta-contact">
       <span class="label">Schedule a tour</span>
       <p class="big">(206) 622-9991</p>
