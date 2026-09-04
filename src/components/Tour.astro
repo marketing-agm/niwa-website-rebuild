@@ -89,6 +89,18 @@ const slots = [['Morning', 'morning'], ['Midday', 'midday'], ['Afternoon', 'afte
           <p class="rail-sm"><a class="link" href={`mailto:${c.contact?.email}`}>{c.contact?.email}</a></p>
         </div>
         <div class="rail-cell">
+          <span class="label tour-label">Send this to someone</span>
+          <p class="rail-sm">The building on one page, or a postcard for the fridge.</p>
+          <div class="rail-files">
+            <a class="btn btn--ghost btn--sm rail-file" href="/print/niwa-leasing-flyer.pdf" download>
+              Leasing flyer <span class="rail-file-meta">PDF · 1.5&thinsp;MB</span>
+            </a>
+            <a class="btn btn--ghost btn--sm rail-file" href="/print/niwa-postcard.pdf" download>
+              Postcard <span class="rail-file-meta">PDF · 0.6&thinsp;MB</span>
+            </a>
+          </div>
+        </div>
+        <div class="rail-cell">
           <span class="label tour-label">Office hours</span>
           {hours && <p class="rail-big">Mon – Fri, {fmtHour(hours.opens)} – {fmtHour(hours.closes)}</p>}
           <p class="rail-sm">{after.note} <a class="link" href={after.phoneHref}>{formatPhone(after.phone)}</a>.</p>
@@ -143,6 +155,21 @@ const slots = [['Morning', 'morning'], ['Midday', 'midday'], ['Afternoon', 'afte
   .rail-big { font-size: var(--t-lead); line-height: 1.2; letter-spacing: -0.02em; }
   .rail-sm { font-size: var(--t-small); color: var(--ink-2); line-height: 1.5; }
   .rail-link { justify-self: start; margin-top: 6px; color: var(--ink); font-size: var(--t-label); letter-spacing: 0.08em; text-transform: uppercase; }
+
+  /* Two ways to take the building away with you. Ghost buttons sit on gold with
+     a stronger line than the default --ink-line hairline, which is nearly
+     invisible against this ground, and they fill with ink rather than the
+     gold the ghost style normally uses — a gold fill on a gold section is no
+     fill at all. */
+  .rail-files { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+  .rail-file {
+    --btn-line: rgba(11, 11, 11, 0.42);
+    --btn-hover: var(--ink);
+    --btn-hover-fg: var(--gold);
+    gap: 0.7em;
+  }
+  .rail-file:hover { --btn-line: var(--ink); }
+  .rail-file-meta { font-size: 0.82em; letter-spacing: 0.04em; opacity: 0.62; text-transform: none; }
   .tour .link:hover { color: var(--ink); opacity: 0.7; }
   .tour :focus-visible { outline-color: var(--ink); }
   .tour ::selection { background: var(--ink); color: var(--gold); }
