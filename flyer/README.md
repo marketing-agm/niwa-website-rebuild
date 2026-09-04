@@ -4,7 +4,7 @@ A one-page, print-ready leasing flyer built on the same design system as the
 site: the dark ground, the hairline 12-column grid, Inter Tight, and the one
 gold held back for the end of the page.
 
-Three variants of the same system, all US Letter portrait (8.5 × 11 in), full
+Four variants of the same system, all US Letter portrait (8.5 × 11 in), full
 bleed, one page:
 
 - **A** — `leasing-flyer.html` / `niwa-leasing-flyer.pdf`. Type-led. The hero
@@ -23,9 +23,45 @@ bleed, one page:
   no four corners ever meet. Each mat holds one pocket of information and
   nothing else, and the gold is the last mat on the page.
 
+- **Jisoo** — `leasing-flyer-jisoo.html` / `niwa-leasing-flyer-jisoo.pdf`. C's
+  room with the photography laid back into it. Seven mats on a module of twelve
+  bays by nine, still arranged so no four corners meet: four hold a pocket of
+  information, three hold a photograph, and the last is the gold. No Japanese
+  characters. Every word on the sheet comes from the site — see below.
+
 A and B read the site's fonts (`public/fonts/`) and photography
 (`src/assets/gallery/`) straight off disk, so they and the site cannot drift
 apart on type or imagery. C uses the fonts only.
+
+### Where Jisoo's copy comes from
+
+Nothing on that sheet is written for it. The mapping, so it can be re-checked:
+
+| On the flyer                  | Source                                        |
+|-------------------------------|-----------------------------------------------|
+| Iconically, / Seattle.        | `hero.title` + `hero.titleItalic`             |
+| The lede                      | `hero.intro`                                  |
+| Address, phone, email         | `address`, `contact`                          |
+| Rents, sizes, "N available"   | `units.json`, aggregated per plan             |
+| "Nineteen layouts across…"    | `homes.lede`, first sentence + the 3D mention |
+| Everything, in its place.     | `building.title` + `building.titleItalic`     |
+| The amenity list              | `featureLists`, shortened to fit the column   |
+| Walk / Bike / Transit         | `walkScores`                                  |
+| The offer and its note        | `special.eyebrow`, `.title`, `.note`          |
+| Schedule a tour               | `tour.eyebrow`                                |
+| See it in person this week    | `tour.title` + `tour.titleItalic`             |
+| Managed by AGM…               | `footerBlurb`                                 |
+| Equal Housing Opportunity…    | `Footer.astro`                                |
+
+The amenity lines are the only ones trimmed — `featureLists` is written for a
+wide page and the mat is four bays across.
+
+### Sharing in Slack
+
+Slack's PDF previewer shifts the colour of these dark pages badly (it comes out
+pink). The PDF itself is correct — rasterise it and the greys and gold are
+exactly right. `niwa-leasing-flyer-jisoo.png` is a true 2× raster of the PDF,
+kept next to it for posting in Slack.
 
 ### How variant C is built
 
@@ -49,6 +85,7 @@ mats, so no edge is ever painted twice where two mats abut.
 node scripts/build-flyer.mjs                              # variant A
 node scripts/build-flyer.mjs flyer/leasing-flyer-b.html   # variant B
 node scripts/build-flyer.mjs flyer/leasing-flyer-c.html   # variant C
+node scripts/build-flyer.mjs flyer/leasing-flyer-jisoo.html  # Jisoo
 ```
 
 Renders the PDF with the Chromium that ships with Playwright — no dev server
