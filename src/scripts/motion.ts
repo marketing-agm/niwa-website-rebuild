@@ -162,6 +162,16 @@ document.addEventListener('click', (e) => {
     $$('[data-frame-src]', d).forEach((b) => { b.classList.toggle('is-active', b === src); b.setAttribute('aria-selected', String(b === src)); });
     const f = $<HTMLIFrameElement>('[data-frame]', d);
     if (f) f.src = src.dataset.frameSrc!;
+    // The walkthrough sits below the gallery now, so switching tours changed
+    // something off screen. Carry the reader down to it. Measured against the
+    // scroll container rather than offsetTop, which depends on whichever
+    // ancestor happens to be positioned.
+    const tour = $<HTMLElement>('.hdlg-tour', d);
+    const main = $<HTMLElement>('.hdlg-main', d);
+    if (tour && main) {
+      const top = tour.getBoundingClientRect().top - main.getBoundingClientRect().top + main.scrollTop;
+      main.scrollTo({ top, behavior: reduce ? 'auto' : 'smooth' });
+    }
   }
 });
 $$<HTMLDialogElement>('dialog.hdlg').forEach((d) => {

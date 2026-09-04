@@ -150,7 +150,10 @@ const range = (a: number, b: number) => (a === b ? int(a) : `${int(a)}–${int(b
      walkthrough sits under it. Previously this was a single full-height
      iframe, which is why it needed no scroll of its own. */
   .hdlg-main { min-width: 0; min-height: 0; overflow: auto; overscroll-behavior: contain; }
-  .hdlg-tour { display: grid; grid-template-rows: auto minmax(360px, 62vh); }
+  /* A full pane tall, so scrolling to it can actually put it at the top of the
+     view. Sized shorter, the container runs out of scroll before the tour head
+     reaches the top and the walkthrough opens stranded halfway down. */
+  .hdlg-tour { display: grid; grid-template-rows: auto 1fr; min-height: calc(100dvh - var(--nav-h)); }
   .hdlg-tour-head { padding: clamp(20px, 2.2vw, 34px) var(--inset) clamp(14px, 1.4vw, 20px); display: grid; gap: 6px; }
   .hdlg-tour-head .small { color: var(--fg-2); }
   .hdlg-main .dlg-frame { min-height: 0; }
@@ -165,7 +168,7 @@ const range = (a: number, b: number) => (a === b ? int(a) : `${int(a)}–${int(b
   @media (max-width: 1024px) {
     .note { grid-column: 1 / -1; }
     .hdlg-body { grid-template-columns: 1fr; grid-template-rows: auto 1fr; }
-    .hdlg-tour { grid-template-rows: auto minmax(300px, 52vh); }
+    .hdlg-tour { min-height: calc(100dvh - var(--nav-h) - 1px); }
     .hdlg-side { border-right: 0; border-bottom: 1px solid var(--line); overflow: visible; }
     .hdlg-side .h2 { display: none; }
     .hdlg-facts { grid-template-columns: repeat(4, 1fr); }
