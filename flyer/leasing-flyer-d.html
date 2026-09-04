@@ -1,0 +1,316 @@
+<!doctype html>
+<html lang="en" data-trim="8.5x11">
+<head>
+<meta charset="utf-8" />
+<title>Niwa Apartments — Leasing Flyer (variant D)</title>
+<style>
+/* ==========================================================================
+   Niwa — leasing flyer · variant D
+
+   The tatami room from variant C, now with photography laid into it. Seven
+   mats tile the sheet on a module of twelve bays by nine, arranged so no four
+   corners ever meet: four mats hold a pocket of information, three hold a
+   photograph, and the last is the gold.
+
+   Every word on this sheet comes from the site — src/site/site.config.json
+   for the copy and src/site/units.json for the rents, sizes and counts.
+   ========================================================================== */
+
+@font-face { font-family: 'Inter Tight'; font-style: normal; font-weight: 300 700; src: url('../public/fonts/inter-tight-latin.woff2') format('woff2'); }
+@font-face { font-family: 'Inter Tight'; font-style: italic; font-weight: 300 600; src: url('../public/fonts/inter-tight-italic-latin.woff2') format('woff2'); }
+
+:root {
+  --bg: #000000;
+  --fg: #f2f1ec;
+  --fg-2: rgba(242, 241, 236, 0.78);
+  --fg-3: rgba(242, 241, 236, 0.60);
+  --frame: rgba(242, 241, 236, 0.32);
+  --lattice: rgba(242, 241, 236, 0.13);
+  --rule: rgba(242, 241, 236, 0.18);
+  --gold: #f4c430;
+  --ink: #000000;
+  --ink-2: rgba(0, 0, 0, 0.74);
+  --ink-rule: rgba(0, 0, 0, 0.22);
+  --sans: 'Inter Tight', 'Inter', ui-sans-serif, system-ui, sans-serif;
+
+  /* The room: twelve bays across, nine down. */
+  --col: 68px;
+  --r: 108.889px;
+  --y0: 44px;                              /* under the header  */
+  --r3: calc(var(--y0) + var(--r) * 3);
+  --r4: calc(var(--y0) + var(--r) * 4);
+  --r6: calc(var(--y0) + var(--r) * 6);
+  --r7: calc(var(--y0) + var(--r) * 7);
+  --r9: calc(var(--y0) + var(--r) * 9);    /* above the footer  */
+  --bay-x: 136px;
+}
+
+@page { size: 8.5in 11in; margin: 0; }
+
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: #000000; }
+body {
+  font-family: var(--sans);
+  color: var(--fg);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  letter-spacing: -0.005em;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+h1, h2, h3, p, ul, li, figure { margin: 0; padding: 0; }
+ul { list-style: none; }
+b { font-weight: 500; }
+img { display: block; }
+
+.page { position: relative; width: 8.5in; height: 11in; overflow: hidden; background: var(--bg); }
+
+/* ---------- Type roles, as on the site ---------- */
+.label { font-size: 9px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; line-height: 1.3; color: var(--fg-2); }
+.label--dim { color: var(--fg-3); }
+.mono { font-variant-numeric: tabular-nums; letter-spacing: 0.01em; }
+.em { font-style: italic; font-weight: 400; }
+
+/* ---------- The lattice ---------- */
+.lattice {
+  position: absolute; inset: 0; z-index: 1; pointer-events: none;
+  background-image:
+    repeating-linear-gradient(to right, var(--lattice) 0 1px, transparent 1px var(--bay-x)),
+    repeating-linear-gradient(to bottom, var(--lattice) 0 1px, transparent 1px var(--r));
+  background-size: 100% 100%, 100% calc(var(--r9) - var(--y0));
+  background-position: 0 0, 0 var(--y0);
+  background-repeat: repeat, no-repeat;
+}
+
+/* ---------- The mats ---------- */
+.mat { position: absolute; z-index: 4; display: grid; }
+.mat--photo { z-index: 2; overflow: hidden; }
+.mat--photo img { width: 100%; height: 100%; object-fit: cover; }
+
+.m-head  { left: 0;                     top: var(--y0); width: calc(var(--col) * 8); height: calc(var(--r3) - var(--y0)); padding: 36px 32px 32px; align-content: center; gap: 26px; }
+.m-shot1 { left: calc(var(--col) * 8);  top: var(--y0); width: calc(var(--col) * 4); height: calc(var(--r4) - var(--y0)); }
+.m-shot2 { left: 0;                     top: var(--r3); width: calc(var(--col) * 4); height: calc(var(--r6) - var(--r3)); }
+.m-homes { left: calc(var(--col) * 4);  top: var(--r3); width: calc(var(--col) * 4); height: calc(var(--r7) - var(--r3)); padding: 24px 24px 22px; grid-template-rows: auto 1fr auto; }
+.m-shot3 { left: calc(var(--col) * 8);  top: var(--r4); width: calc(var(--col) * 4); height: calc(var(--r7) - var(--r4)); }
+.m-build { left: 0;                     top: var(--r6); width: calc(var(--col) * 4); height: calc(var(--r9) - var(--r6)); padding: 24px 24px 22px; grid-template-rows: auto 1fr auto; }
+.m-gold  { left: calc(var(--col) * 4);  top: var(--r7); width: calc(var(--col) * 8); height: calc(var(--r9) - var(--r7)); padding: 26px 30px 26px;
+           grid-template-columns: 1fr auto; align-items: center; gap: 28px; }
+
+.gold-ground {
+  position: absolute; z-index: 2;
+  left: calc(var(--col) * 4); top: var(--r7);
+  width: calc(var(--col) * 8); height: calc(var(--r9) - var(--r7));
+  background: var(--gold);
+}
+
+/* ---------- Seams, each drawn once ---------- */
+.seam { position: absolute; z-index: 3; background: var(--frame); }
+.seam--h { height: 1px; }
+.seam--v { width: 1px; }
+
+/* ---------- Header and footer ---------- */
+.strip { position: absolute; z-index: 4; left: 0; right: 0; display: flex; align-items: center; justify-content: space-between; padding: 0 32px; }
+.strip--top { top: 0; height: var(--y0); }
+.strip--foot { top: var(--r9); bottom: 0; }
+.strip--foot .label { font-size: 8px; letter-spacing: 0.1em; white-space: nowrap; }
+.mark { height: 16px; width: auto; color: var(--fg); }
+.eho { display: flex; align-items: center; gap: 6px; }
+
+/* ---------- The headline ---------- */
+.h1 { font-size: 82px; font-weight: 500; line-height: 0.9; letter-spacing: -0.048em; display: grid; }
+.h1 .l2 { font-style: italic; font-weight: 400; padding-left: 96px; }
+.lede { font-size: 13px; line-height: 1.45; letter-spacing: -0.015em; color: var(--fg-2); max-width: 44ch; text-wrap: balance; }
+
+/* ---------- The homes ---------- */
+.homes { display: grid; grid-auto-rows: 1fr; margin: 18px 0 16px; }
+.home { display: grid; align-content: center; }
+.home + .home { border-top: 1px solid var(--rule); }
+.home-name { font-size: 20px; font-weight: 500; letter-spacing: -0.03em; line-height: 1; }
+.home-spec { display: block; margin-top: 6px; }
+.home-rent { display: block; font-size: 26px; font-weight: 500; letter-spacing: -0.045em; line-height: 1; font-variant-numeric: tabular-nums; margin-top: 10px; }
+.home-rent i { font-style: normal; font-size: 10px; font-weight: 400; letter-spacing: -0.01em; color: var(--fg-3); margin-left: 3px; }
+.home-now { display: block; margin-top: 7px; }
+.mat-note { font-size: 9.5px; font-weight: 450; line-height: 1.5; color: var(--fg-3); border-top: 1px solid var(--rule); padding-top: 12px; }
+
+/* ---------- The building ---------- */
+.mat-h { font-size: 19px; font-weight: 500; letter-spacing: -0.032em; line-height: 1.05; margin-top: 6px; }
+.rooms { display: grid; grid-auto-rows: 1fr; margin: 16px 0 14px; }
+.rooms li { display: flex; align-items: center; gap: 0.4em; font-size: 10.5px; font-weight: 450; line-height: 1.35; color: var(--fg-2); border-bottom: 1px solid var(--rule); }
+.rooms li:first-child { border-top: 1px solid var(--rule); }
+.rooms li span { color: var(--fg-3); }
+.scores { display: flex; justify-content: space-between; gap: 8px; }
+.scores b { font-size: 17px; font-weight: 500; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; margin-left: 5px; }
+
+/* ---------- The gold ---------- */
+.m-gold .label { color: var(--ink-2); }
+.offer { font-size: 36px; font-weight: 500; letter-spacing: -0.048em; line-height: 1; color: var(--ink); margin-top: 7px; }
+.offer-note { font-size: 9.5px; font-weight: 450; line-height: 1.5; color: var(--ink-2); margin-top: 11px; max-width: 46ch; }
+.contact { text-align: right; color: var(--ink); }
+.contact .big { font-size: 21px; font-weight: 500; letter-spacing: -0.035em; line-height: 1.1; font-variant-numeric: tabular-nums; margin-top: 3px; }
+.contact .sub { font-size: 11px; font-weight: 450; color: var(--ink-2); margin-top: 2px; }
+.pill {
+  display: inline-flex; align-items: center; gap: 9px; margin-top: 13px;
+  height: 32px; padding: 0 18px; border-radius: 999px;
+  background: var(--ink); color: var(--gold);
+  font-size: 8.5px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; white-space: nowrap;
+}
+
+/* ---------- Print modes ----------
+   trim   the sheet is the artwork, edge to edge (the default)
+   bleed  the sheet grows 0.125in on every side and everything that touches a
+          trim edge is carried over it, so a 1mm drift at the guillotine still
+          cuts through artwork and never through white
+   safe   the artwork is inset inside a white margin, for a desktop printer
+          that cannot print to the edge                                      */
+
+html[data-mode="bleed"] { background: var(--bg); }
+html[data-mode="bleed"] body { background: var(--bg); }
+/* .page clips at the trim by default; in bleed mode it must not, or the
+   carried-over artwork is cut off exactly where it needs to continue. */
+html[data-mode="bleed"] .page { margin: var(--bleed); overflow: visible; }
+
+/* Only what is not already black has to be carried over the trim: the three
+   photographs, the gold, and the rules that run out to an edge. */
+html[data-mode="bleed"] .m-shot2 { left: calc(var(--bleed) * -1); width: calc(var(--col) * 4 + var(--bleed)); }
+html[data-mode="bleed"] .m-shot1,
+html[data-mode="bleed"] .m-shot3 { width: calc(var(--col) * 4 + var(--bleed)); }
+html[data-mode="bleed"] .m-gold,
+html[data-mode="bleed"] .gold-ground { width: calc(var(--col) * 8 + var(--bleed)); }
+html[data-mode="bleed"] .seam--bl { left: calc(var(--bleed) * -1) !important; }
+html[data-mode="bleed"] .seam--br { right: calc(var(--bleed) * -1) !important; }
+html[data-mode="bleed"] .seam--bx { left: calc(var(--bleed) * -1) !important; width: calc(100% + var(--bleed) * 2) !important; }
+html[data-mode="bleed"] .lattice { left: calc(var(--bleed) * -1); right: calc(var(--bleed) * -1); background-position: var(--bleed) 0, var(--bleed) var(--y0); }
+
+html[data-mode="safe"] { background: #fff; }
+html[data-mode="safe"] body { background: #fff; }
+/* zoom, not transform: a transform leaves the layout box at full size and
+   Chromium paginates onto a second sheet. zoom scales the box itself. */
+html[data-mode="safe"] body { width: 8.5in; height: 11in; display: grid; place-items: center; }
+html[data-mode="safe"] .page { zoom: var(--safe-scale); }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="lattice" aria-hidden="true"></div>
+  <div class="gold-ground" aria-hidden="true"></div>
+
+  <!-- Seams: no four corners meet -->
+  <div class="seam seam--h seam--bx" style="left:0; top:var(--y0); width:100%"></div>
+  <div class="seam seam--h seam--bl" style="left:0; top:var(--r3); width:calc(var(--col) * 8)"></div>
+  <div class="seam seam--h seam--br" style="left:calc(var(--col) * 8); top:var(--r4); right:0"></div>
+  <div class="seam seam--h seam--bl" style="left:0; top:var(--r6); width:calc(var(--col) * 4)"></div>
+  <div class="seam seam--h seam--br" style="left:calc(var(--col) * 4); top:var(--r7); right:0"></div>
+  <div class="seam seam--h seam--bx" style="left:0; top:var(--r9); width:100%"></div>
+  <div class="seam seam--v" style="left:calc(var(--col) * 8); top:var(--y0); height:calc(var(--r7) - var(--y0))"></div>
+  <div class="seam seam--v" style="left:calc(var(--col) * 4); top:var(--r3); height:calc(var(--r9) - var(--r3))"></div>
+
+  <header class="strip strip--top">
+    <svg class="mark" viewBox="0 0 560 200" fill="none" stroke="currentColor" stroke-width="26"
+         stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Niwa Apartments">
+      <path d="M22 178V22l128 156V22" /><path d="M208 22v156" />
+      <path d="M256 22l34 156 34-156 34 156 34-156" /><path d="M412 178l56-156 56 156" />
+    </svg>
+    <p class="label label--dim">513 1st Ave N · Queen Anne, Seattle</p>
+    <p class="label label--dim">Now leasing</p>
+  </header>
+
+  <!-- The headline -->
+  <section class="mat m-head">
+    <h1 class="h1"><span>Iconically,</span><span class="l2">Seattle.</span></h1>
+    <p class="lede">Studio, one and two bedroom apartments in Lower Queen Anne, a short walk from Seattle Center and the Space Needle.</p>
+  </section>
+
+  <!-- The building on 1st Ave N -->
+  <figure class="mat mat--photo m-shot1">
+    <img src="../src/assets/gallery/exterior-on-1st-ave-n.jpg" style="object-position: 60% 40%"
+         alt="Niwa Apartments on 1st Ave N, the yellow balconies rising against the sky" />
+  </figure>
+
+  <!-- The rooftop terrace -->
+  <figure class="mat mat--photo m-shot2">
+    <img src="../src/assets/gallery/exterior-rooftop-terrace.jpg" style="object-position: 55% 42%"
+         alt="The rooftop terrace, with a fire table, planters and the Seattle skyline beyond" />
+  </figure>
+
+  <!-- The homes -->
+  <section class="mat m-homes">
+    <p class="label label--dim">The homes</p>
+    <div class="homes">
+      <article class="home">
+        <h2 class="home-name">Studio</h2>
+        <span class="label label--dim mono home-spec">349 – 388 sq ft · 1 bath</span>
+        <b class="home-rent">$1,569<i> /mo</i></b>
+        <span class="label mono home-now">5 available now</span>
+      </article>
+      <article class="home">
+        <h2 class="home-name">One bedroom</h2>
+        <span class="label label--dim mono home-spec">703 – 717 sq ft · 1 bath</span>
+        <b class="home-rent">$2,820<i> /mo</i></b>
+        <span class="label mono home-now">1 available now</span>
+      </article>
+      <article class="home">
+        <h2 class="home-name">Two bedroom</h2>
+        <span class="label label--dim mono home-spec">661 – 745 sq ft · 1 bath</span>
+        <b class="home-rent">$2,700<i> /mo</i></b>
+        <span class="label mono home-now">3 available now</span>
+      </article>
+    </div>
+    <p class="mat-note">Nineteen layouts across floors two through eight, each with a 3D walkthrough.</p>
+  </section>
+
+  <!-- The rooftop clubroom -->
+  <figure class="mat mat--photo m-shot3">
+    <img src="../src/assets/gallery/interior-clubroom.jpg" style="object-position: 38% 62%"
+         alt="The rooftop clubroom, with a kitchen, bar seating and a lounge" />
+  </figure>
+
+  <!-- The building -->
+  <section class="mat m-build">
+    <div>
+      <p class="label label--dim">The building</p>
+      <h2 class="mat-h">Everything, in its <span class="em">place.</span></h2>
+    </div>
+    <ul class="rooms">
+      <li>Rooftop clubroom and patio grill</li>
+      <li>Fitness center, cardio and weights</li>
+      <li>In-unit washer and dryer</li>
+      <li>Stainless steel appliances</li>
+      <li>Balcony patio decks</li>
+      <li>Standing pet washing station</li>
+      <li>Off-street parking and bike storage</li>
+    </ul>
+    <p class="scores label label--dim">
+      <span>Walk <b class="mono">92</b></span>
+      <span>Bike <b class="mono">76</b></span>
+      <span>Transit <b class="mono">69</b></span>
+    </p>
+  </section>
+
+  <!-- The gold -->
+  <section class="mat m-gold">
+    <div>
+      <p class="label">New Niwa resident special</p>
+      <p class="offer">Up to 4 weeks free</p>
+      <p class="offer-note">On select homes. Ask the leasing team which homes qualify and how long the offer runs.</p>
+    </div>
+    <div class="contact">
+      <p class="label">Schedule a tour</p>
+      <p class="big">(206) 622-9991</p>
+      <p class="sub">leasing@niwaapartments.com</p>
+      <span class="pill">See it in person this week →</span>
+    </div>
+  </section>
+
+  <footer class="strip strip--foot">
+    <p class="label label--dim">513 1st Ave N, Seattle, WA 98109</p>
+    <p class="label label--dim eho">
+      <svg viewBox="0 0 24 24" width="11" height="11" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 11.5 12 4l9 7.5M5 10v10h14V10M9 20v-6h6v6"/></svg>
+      Equal Housing Opportunity · MFTE / MHA and ADA homes
+    </p>
+    <p class="label label--dim">Professionally managed by AGM Real Estate Group, LLC</p>
+  </footer>
+
+</div>
+</body>
+</html>

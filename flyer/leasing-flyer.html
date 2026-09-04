@@ -1,0 +1,370 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<title>Niwa Apartments — Leasing Flyer</title>
+<style>
+/* ==========================================================================
+   Niwa — leasing flyer, one page, US Letter.
+   Same design system as the site: dark, monochrome, hairline grid, one gold
+   held back for the end of the page.
+   ========================================================================== */
+
+@font-face { font-family: 'Inter Tight'; font-style: normal; font-weight: 300 700; src: url('../public/fonts/inter-tight-latin.woff2') format('woff2'); }
+@font-face { font-family: 'Inter Tight'; font-style: italic; font-weight: 300 600; src: url('../public/fonts/inter-tight-italic-latin.woff2') format('woff2'); }
+
+:root {
+  --bg: #0b0b0b;
+  --bg-2: #101010;
+  --fg: #f2f1ec;
+  --paper: #f2f1ec;
+  --fg-2: rgba(242, 241, 236, 0.66);
+  --fg-3: rgba(242, 241, 236, 0.42);
+  --line: rgba(242, 241, 236, 0.14);
+  --gold: #f4c430;
+  --ink: #0b0b0b;
+  --ink-2: rgba(11, 11, 11, 0.68);
+  --ink-3: rgba(11, 11, 11, 0.46);
+  --ink-line: rgba(11, 11, 11, 0.18);
+  --sans: 'Inter Tight', 'Inter', ui-sans-serif, system-ui, sans-serif;
+
+  --inset: 40px;   /* the one side margin, as on the site */
+  --pad: 20px;     /* inside a grid cell */
+}
+
+@page { size: 8.5in 11in; margin: 0; }
+
+*, *::before, *::after { box-sizing: border-box; }
+html, body { margin: 0; padding: 0; background: #0b0b0b; }
+body {
+  font-family: var(--sans);
+  color: var(--fg);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  letter-spacing: -0.005em;
+  -webkit-print-color-adjust: exact;
+  print-color-adjust: exact;
+}
+img { display: block; max-width: 100%; }
+h1, h2, h3, p, ul, li, dl, dd, dt, figure { margin: 0; padding: 0; }
+ul { list-style: none; }
+b, strong { font-weight: 500; }
+
+/* ---------- Type roles ---------- */
+.label {
+  font-size: 8px;
+  font-weight: 500;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  line-height: 1.3;
+  color: var(--fg-2);
+}
+.label--dim { color: var(--fg-3); }
+.mono { font-variant-numeric: tabular-nums; letter-spacing: 0.01em; }
+.small { font-size: 9px; line-height: 1.5; color: var(--fg-3); }
+.body { font-size: 10px; line-height: 1.5; color: var(--fg-2); }
+
+/* ---------- Page shell ---------- */
+.page {
+  width: 8.5in;
+  height: 11in;
+  overflow: hidden;
+  background: var(--bg);
+  display: grid;
+  grid-template-rows: 36px minmax(0, 1fr) 124px 218px 130px 152px 122px 26px;
+}
+
+/* ---------- 1 · Top bar ---------- */
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 var(--inset);
+  border-bottom: 1px solid var(--line);
+}
+.topbar .gold { color: var(--gold); }
+.mark { height: 17px; width: auto; color: var(--fg); }
+.topbar-mid { flex: 1; text-align: center; }
+
+/* ---------- 2 · Hero type ---------- */
+.hero {
+  padding: 24px var(--inset) 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.h1 {
+  font-size: 112px;
+  font-weight: 500;
+  line-height: 0.9;
+  letter-spacing: -0.048em;
+  display: grid;
+}
+.h1 .line-2 {
+  font-style: italic;
+  font-weight: 400;
+  padding-left: 142px;
+}
+
+/* ---------- 3 · Hero row: lead + facts ---------- */
+.hero-row {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 16px;
+  align-items: end;
+  padding: 0 var(--inset) 24px;
+}
+.hero-intro {
+  grid-column: 1 / span 6;
+  font-size: 15px;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+  color: var(--fg);
+  max-width: 34ch;
+}
+.hero-facts {
+  grid-column: 8 / span 5;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+}
+.hero-fact {
+  background: var(--bg);
+  padding: 8px 12px 10px;
+  display: grid;
+  gap: 3px;
+}
+.hero-fact dd { font-size: 13px; font-weight: 500; letter-spacing: -0.02em; color: var(--fg); }
+
+/* ---------- The hairline grid ---------- */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 1px;
+  background: var(--line);
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+.cell { background: var(--bg); min-width: 0; position: relative; padding: var(--pad); }
+.cell--img { padding: 0; overflow: hidden; }
+.cell--img img { width: 100%; height: 100%; object-fit: cover; }
+.cell--tint { background: var(--bg-2); }
+
+/* ---------- 4 · The building + the idea ---------- */
+.band-idea .shot { grid-column: span 8; }
+.band-idea .shot img { object-position: 50% 62%; }
+.idea {
+  grid-column: span 4;
+  display: grid;
+  align-content: space-between;
+  padding: 18px 22px 16px;
+}
+.idea-body { font-size: 12.5px; line-height: 1.34; letter-spacing: -0.018em; color: var(--fg); }
+.idea-body em { font-style: italic; }
+.scores { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.score b { display: block; font-size: 22px; font-weight: 500; line-height: 1; letter-spacing: -0.04em; font-variant-numeric: tabular-nums; margin-top: 3px; }
+.score i { display: block; height: 1px; background: rgba(242,241,236,0.18); margin-top: 7px; position: relative; }
+.score i::after { content: ''; position: absolute; inset: 0; background: var(--fg); transform: scaleX(var(--p)); transform-origin: left; }
+
+/* ---------- 5 · The homes ---------- */
+.band-homes .home { grid-column: span 4; display: grid; align-content: space-between; padding: 17px 20px 15px; }
+.home-head { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; }
+.home-name { font-size: 19px; font-weight: 500; letter-spacing: -0.03em; line-height: 1; }
+.home-rent { font-size: 31px; font-weight: 500; letter-spacing: -0.045em; line-height: 1; font-variant-numeric: tabular-nums; margin-top: 3px; }
+.home-rent span { font-size: 10px; font-weight: 400; letter-spacing: -0.01em; color: var(--fg-3); margin-left: 3px; }
+.home-from { margin-top: 16px; }
+.home-meta { display: flex; justify-content: space-between; gap: 10px; padding-top: 9px; border-top: 1px solid var(--line); }
+
+/* ---------- 6 · The building ---------- */
+.band-build .feats { grid-column: span 5; padding: 15px 20px 14px; display: grid; align-content: space-between; }
+.feat-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 3px 14px; }
+.feat-cols li { font-size: 9px; line-height: 1.55; color: var(--fg-2); white-space: nowrap; }
+.feat-cols li::before { content: '—'; color: var(--fg-3); margin-right: 6px; }
+.band-build .shot-a { grid-column: span 4; }
+.band-build .shot-b { grid-column: span 3; }
+.band-build .shot-a img { object-position: 50% 58%; }
+.band-build .shot-b img { object-position: 42% 72%; }
+
+/* ---------- 7 · The gold ---------- */
+.cta {
+  background: var(--gold);
+  color: var(--ink);
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 16px;
+  align-items: center;
+  padding: 0 var(--inset);
+}
+.cta .label { color: var(--ink-2); }
+.cta-offer { grid-column: 1 / span 5; }
+.cta-title { font-size: 33px; font-weight: 500; letter-spacing: -0.045em; line-height: 0.98; margin-top: 6px; }
+.cta-note { grid-column: 6 / span 3; font-size: 8.5px; line-height: 1.45; color: var(--ink-2); align-self: center; }
+.cta-contact { grid-column: 9 / span 4; display: grid; gap: 2px; justify-items: end; text-align: right; }
+.cta-contact .big { font-size: 18px; font-weight: 500; letter-spacing: -0.03em; line-height: 1.15; font-variant-numeric: tabular-nums; }
+.cta-contact .sub { font-size: 10px; color: var(--ink-2); line-height: 1.35; }
+.cta-btn {
+  display: inline-flex; align-items: center; gap: 8px;
+  height: 30px; padding: 0 15px; margin-top: 9px;
+  border: 1px solid var(--ink); border-radius: 999px;
+  background: var(--ink); color: var(--gold);
+  font-size: 8px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase;
+}
+
+/* ---------- 8 · Footer ---------- */
+.foot {
+  background: var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 0 var(--inset);
+  border-top: 1px solid var(--line);
+}
+.foot .eho { display: flex; align-items: center; gap: 6px; }
+.foot .label { white-space: nowrap; font-size: 7.5px; }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- 1 · Top bar -->
+  <header class="topbar">
+    <svg class="mark" viewBox="0 0 560 200" fill="none" stroke="currentColor" stroke-width="26"
+         stroke-linecap="round" stroke-linejoin="round" role="img" aria-label="Niwa Apartments">
+      <path d="M22 178V22l128 156V22" />
+      <path d="M208 22v156" />
+      <path d="M256 22l34 156 34-156 34 156 34-156" />
+      <path d="M412 178l56-156 56 156" />
+    </svg>
+    <p class="label topbar-mid">513 1st Ave N · Queen Anne, Seattle</p>
+    <p class="label gold">Now leasing · up to 4 weeks free</p>
+  </header>
+
+  <!-- 2 · Hero -->
+  <section class="hero">
+    <h1 class="h1">
+      <span class="line-1">Iconically,</span>
+      <span class="line-2">Seattle.</span>
+    </h1>
+  </section>
+
+  <!-- 3 · Lead + facts -->
+  <section class="hero-row">
+    <p class="hero-intro">Studio, one and two bedroom apartments in Lower Queen Anne, a short walk from Seattle Center and the Space Needle.</p>
+    <dl class="hero-facts">
+      <div class="hero-fact"><dt class="label label--dim">Homes on floors</dt><dd class="mono">2 – 8</dd></div>
+      <div class="hero-fact"><dt class="label label--dim">Distinct layouts</dt><dd class="mono">19</dd></div>
+      <div class="hero-fact"><dt class="label label--dim">Available now</dt><dd class="mono">9 homes</dd></div>
+      <div class="hero-fact"><dt class="label label--dim">Pets</dt><dd class="mono">Welcome</dd></div>
+    </dl>
+  </section>
+
+  <!-- 4 · The building + the idea -->
+  <section class="grid band-idea">
+    <figure class="cell cell--img shot">
+      <img src="../src/assets/gallery/exterior-aerial-space-needle.jpg" alt="Niwa Apartments, the yellow and grey facade at 513 1st Ave N with the Space Needle and downtown Seattle behind it" />
+    </figure>
+    <div class="cell cell--tint idea">
+      <span class="label label--dim">The idea</span>
+      <p class="idea-body">Niwa means <em>garden</em>. Ours is Queen Anne itself: Elliott Bay and the ferries to the west, the Space Needle at the end of the block, and the whole city laid out from the roof.</p>
+      <div class="scores">
+        <div class="score"><span class="label label--dim">Walk</span><b>92</b><i style="--p:0.92"></i></div>
+        <div class="score"><span class="label label--dim">Bike</span><b>76</b><i style="--p:0.76"></i></div>
+        <div class="score"><span class="label label--dim">Transit</span><b>69</b><i style="--p:0.69"></i></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 · The homes -->
+  <section class="grid band-homes">
+    <article class="cell home">
+      <div>
+        <div class="home-head"><h3 class="home-name">Studio</h3><span class="label label--dim mono">349 – 388 sq ft</span></div>
+        <div class="home-from">
+          <span class="label label--dim">From</span>
+          <p class="home-rent">$1,569<span>/mo</span></p>
+        </div>
+      </div>
+      <div class="home-meta"><span class="label label--dim">1 bath · 3D tour</span><span class="label mono">5 available now</span></div>
+    </article>
+    <article class="cell home">
+      <div>
+        <div class="home-head"><h3 class="home-name">One bedroom</h3><span class="label label--dim mono">703 – 717 sq ft</span></div>
+        <div class="home-from">
+          <span class="label label--dim">From</span>
+          <p class="home-rent">$2,820<span>/mo</span></p>
+        </div>
+      </div>
+      <div class="home-meta"><span class="label label--dim">1 bath · 3D tour</span><span class="label mono">1 available now</span></div>
+    </article>
+    <article class="cell home">
+      <div>
+        <div class="home-head"><h3 class="home-name">Two bedroom</h3><span class="label label--dim mono">661 – 745 sq ft</span></div>
+        <div class="home-from">
+          <span class="label label--dim">From</span>
+          <p class="home-rent">$2,700<span>/mo</span></p>
+        </div>
+      </div>
+      <div class="home-meta"><span class="label label--dim">1 bath · 3D tour</span><span class="label mono">3 available now</span></div>
+    </article>
+  </section>
+
+  <!-- 6 · Everything, in its place -->
+  <section class="grid band-build">
+    <div class="cell feats">
+      <div>
+        <span class="label label--dim">The building</span>
+        <h2 style="font-size:21px;font-weight:500;letter-spacing:-0.035em;line-height:1.02;margin-top:6px;">Everything, in its <em style="font-style:italic;font-weight:400;">place.</em></h2>
+      </div>
+      <ul class="feat-cols">
+        <li>Rooftop terrace</li>
+        <li>In-unit washer &amp; dryer</li>
+        <li>Rooftop clubroom</li>
+        <li>Stainless steel kitchens</li>
+        <li>24-hour fitness center</li>
+        <li>Balcony patio decks</li>
+        <li>Kitchen islands · select</li>
+        <li>Controlled access</li>
+        <li>Pet wash · two pets</li>
+        <li>Parking &amp; bike storage</li>
+      </ul>
+    </div>
+    <figure class="cell cell--img shot-a">
+      <img src="../src/assets/gallery/exterior-rooftop-terrace.jpg" alt="The rooftop terrace at Niwa, with a fire table, planters and the Seattle skyline beyond" />
+    </figure>
+    <figure class="cell cell--img shot-b">
+      <img src="../src/assets/gallery/interior-clubroom.jpg" alt="The rooftop clubroom at Niwa, with a kitchen, bar seating and lounge" />
+    </figure>
+  </section>
+
+  <!-- 7 · The gold -->
+  <section class="cta">
+    <div class="cta-offer">
+      <span class="label">New Niwa resident special</span>
+      <p class="cta-title">Up to 4 weeks free</p>
+    </div>
+    <p class="cta-note">On select homes — ask the leasing team which ones qualify and how long the offer runs. Rents and availability shown are current as of September 2026 and subject to change.</p>
+    <div class="cta-contact">
+      <span class="label">Schedule a tour</span>
+      <p class="big">(206) 622-9991</p>
+      <p class="sub">leasing@niwaapartments.com</p>
+      <span class="cta-btn">See it in person this week →</span>
+    </div>
+  </section>
+
+  <!-- 8 · Footer -->
+  <footer class="foot">
+    <p class="label label--dim">Niwa Apartments · 513 1st Ave N, Seattle, WA 98109</p>
+    <p class="label label--dim eho">
+      <svg viewBox="0 0 24 24" width="11" height="11" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 11.5 12 4l9 7.5M5 10v10h14V10M9 20v-6h6v6"/></svg>
+      Equal Housing Opportunity · MFTE / MHA and ADA homes
+    </p>
+    <p class="label label--dim">Managed by AGM Real Estate Group, LLC</p>
+  </footer>
+
+</div>
+</body>
+</html>
