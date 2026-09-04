@@ -70,8 +70,16 @@
   .lbx-nav[hidden] { display: none; }
 
   @media (max-width: 640px) {
-    .lbx-stage { padding: 10px var(--gutter) 16px; }
-    .lbx-nav { width: 46px; height: 46px; top: auto; bottom: 84px; transform: none; }
+    /* Every photo here is landscape and the phone is portrait, so `contain`
+       can only ever fill about a third of the height. Going full-bleed
+       horizontally buys back what little there is. The controls stay centred
+       on the picture rather than being parked at a fixed offset from the
+       bottom, where they read as floating in the empty half of the screen. */
+    .lbx-stage { padding: 8px 0 14px; }
+    .lbx-cap { padding-inline: var(--gutter); }
+    .lbx-nav { width: 44px; height: 44px; }
+    .lbx-prev { left: 10px; }
+    .lbx-next { right: 10px; }
   }
   @media (prefers-reduced-motion: reduce) {
     .lbx-stage img { transition: none; }
