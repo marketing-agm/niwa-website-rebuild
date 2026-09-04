@@ -5,9 +5,17 @@
        The N is drawn in the wordmark's own manner — a single continuous
        geometric stroke with round caps — rather than set in a typeface, and it
        is heavier than the lockup's hairline because a 2px stroke disappears at
-       16 pixels. Square, like everything else, and on the brand yellow. -->
-  <rect width="64" height="64" fill="#FFFCCC"/>
-  <path d="M18 46V18l28 28V18"
-        fill="none" stroke="#0A0A0A" stroke-width="7"
+       16 pixels.
+
+       Round rather than square now, to match the pill buttons, and bleeding to
+       all four edges. The letter is the one that shipped before, scaled to 80%
+       about the centre: a circle's tightest clearance falls on the diagonals,
+       where the round caps reach furthest out, so at full size the N had only
+       8.7 units of air there against the square's 14.5. At 80% it has 13.4 —
+       near enough the room the square was giving it. Path and stroke scale
+       together, so the letterform itself is unchanged. -->
+  <circle cx="32" cy="32" r="32" fill="#FFFCCC"/>
+  <path d="M20.8 43.2V20.8l22.4 22.4V20.8"
+        fill="none" stroke="#0A0A0A" stroke-width="5.6"
         stroke-linecap="round" stroke-linejoin="round"/>
 </svg>
