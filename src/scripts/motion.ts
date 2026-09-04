@@ -142,6 +142,13 @@ function openDialog(id: string) {
   const first = $<HTMLElement>('[data-frame-src]', d);
   if (f && first && !f.src.startsWith('http')) f.src = first.dataset.frameSrc!;
   d.showModal();
+  // A dialog keeps its scroll position while closed, so reopening one that was
+  // left at the walkthrough would skip the gallery it is supposed to open on.
+  // This has to run after showModal(): a display:none element has no scroll box
+  // to write to, and the browser restores the old offset when it gets one.
+  const main = $<HTMLElement>('.hdlg-main', d);
+  if (main) main.scrollTop = 0;
+  syncJump(d);
   lenis?.stop();
 }
 function closeDialog(d: HTMLDialogElement) {
@@ -150,6 +157,49 @@ function closeDialog(d: HTMLDialogElement) {
   if (f) f.src = 'about:blank';
   lenis?.start();
 }
+/* The right pane holds two blocks — the gallery and the walkthrough — and the
+   rail navigates between them. Offsets are measured against the scroll
+   container's own rect rather than offsetTop, which resolves against whichever
+   ancestor happens to be positioned; inside a modal dialog that is not the one
+   you would guess. */
+function paneOf(d: Element) {
+  return {
+    main: $<HTMLElement>('.hdlg-main', d),
+    tour: $<HTMLElement>('.hdlg-tour', d),
+  };
+}
+function tourOffset(main: HTMLElement, tour: HTMLElement) {
+  return tour.getBoundingClientRect().top - main.getBoundingClientRect().top + main.scrollTop;
+}
+function jumpTo(d: Element, which: 'gallery' | 'tour') {
+  const { main, tour } = paneOf(d);
+  if (!main) return;
+  const top = which === 'tour' && tour ? tourOffset(main, tour) : 0;
+  main.scrollTo({ top, behavior: reduce ? 'auto' : 'smooth' });
+}
+function syncJump(d: Element) {
+  const { main, tour } = paneOf(d);
+  if (!main || !tour) return;
+  // Switch once the walkthrough owns most of the view, not the instant it
+  // peeks in — otherwise the marker flickers on a short scroll.
+  const atTour = main.scrollTop >= tourOffset(main, tour) - main.clientHeight * 0.45;
+  $$('[data-jump]', d).forEach((b) => {
+    const on = ((b as HTMLElement).dataset.jump === 'tour') === atTour;
+    b.classList.toggle('is-active', on);
+    b.setAttribute('aria-current', String(on));
+  });
+}
+$$<HTMLElement>('.hdlg-main').forEach((main) => {
+  const d = main.closest('dialog');
+  if (!d) return;
+  let queued = false;
+  main.addEventListener('scroll', () => {
+    if (queued) return;
+    queued = true;
+    requestAnimationFrame(() => { queued = false; syncJump(d); });
+  }, { passive: true });
+});
+
 document.addEventListener('click', (e) => {
   const el = e.target as Element;
   const opener = el.closest<HTMLElement>('[data-open-dialog]');
@@ -162,6 +212,14 @@ document.addEventListener('click', (e) => {
     $$('[data-frame-src]', d).forEach((b) => { b.classList.toggle('is-active', b === src); b.setAttribute('aria-selected', String(b === src)); });
     const f = $<HTMLIFrameElement>('[data-frame]', d);
     if (f) f.src = src.dataset.frameSrc!;
+    // The walkthrough sits below the gallery, so switching tours would
+    // otherwise change something off screen.
+    jumpTo(d, 'tour');
+  }
+  const jump = el.closest<HTMLElement>('[data-jump]');
+  if (jump) {
+    const d = jump.closest('dialog');
+    if (d) jumpTo(d, jump.dataset.jump === 'tour' ? 'tour' : 'gallery');
   }
 });
 $$<HTMLDialogElement>('dialog.hdlg').forEach((d) => {

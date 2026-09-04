@@ -11,6 +11,7 @@ import Gallery from '../components/Gallery.astro';
 import Faq from '../components/Faq.astro';
 import Tour from '../components/Tour.astro';
 import Footer from '../components/Footer.astro';
+import Lightbox from '../components/Lightbox.astro';
 import { getSite } from '../lib/site';
 
 const site = getSite();
@@ -37,4 +38,5 @@ const marquee: string[] = [
     <Tour site={site} />
   </main>
   <Footer site={site} />
+  <Lightbox />
 </BaseLayout>
