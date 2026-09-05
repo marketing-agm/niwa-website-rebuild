@@ -13,10 +13,6 @@
 
   <figure class="lbx-stage">
     <img data-lbx-img alt="" />
-    <figcaption class="lbx-cap">
-      <span class="label" data-lbx-title></span>
-      <span class="small" data-lbx-desc></span>
-    </figcaption>
   </figure>
 
   <button type="button" class="lbx-nav lbx-prev" data-lbx-prev aria-label="Previous photo">←</button>
@@ -40,18 +36,18 @@
   }
   .lbx-count { color: var(--fg-3); font-variant-numeric: tabular-nums; }
 
+  /* No caption under the picture — the room name is in the image's alt, and
+     the counter in the bar says where you are in the set. One row, so the
+     photograph takes the whole stage. */
   .lbx-stage {
     margin: 0; min-height: 0; position: relative;
-    display: grid; grid-template-rows: 1fr auto;
+    display: grid; grid-template-rows: 1fr;
     padding: clamp(14px, 2vw, 34px) var(--inset) clamp(16px, 2vw, 30px);
-    gap: 14px;
   }
   .lbx-stage img {
     min-height: 0; width: 100%; height: 100%;
     object-fit: contain; object-position: center;
   }
-  .lbx-cap { display: grid; gap: 4px; justify-items: start; }
-  .lbx-cap .small { color: var(--fg-2); max-width: 70ch; }
 
   /* Placed against the stage edges rather than floating over the picture, so
      they never sit on top of the thing you opened them to look at. */
@@ -76,7 +72,6 @@
        on the picture rather than being parked at a fixed offset from the
        bottom, where they read as floating in the empty half of the screen. */
     .lbx-stage { padding: 8px 0 14px; }
-    .lbx-cap { padding-inline: var(--gutter); }
     .lbx-nav { width: 44px; height: 44px; }
     .lbx-prev { left: 10px; }
     .lbx-next { right: 10px; }
