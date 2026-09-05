@@ -9,8 +9,6 @@ const $ = <T extends Element>(sel: string, root: ParentNode = document) => root.
 const dlg = $<HTMLDialogElement>('[data-lbx]');
 if (dlg) {
   const img = $<HTMLImageElement>('[data-lbx-img]', dlg)!;
-  const elTitle = $<HTMLElement>('[data-lbx-title]', dlg)!;
-  const elDesc = $<HTMLElement>('[data-lbx-desc]', dlg)!;
   const elCount = $<HTMLElement>('[data-lbx-count]', dlg)!;
   const btnPrev = $<HTMLButtonElement>('[data-lbx-prev]', dlg)!;
   const btnNext = $<HTMLButtonElement>('[data-lbx-next]', dlg)!;
@@ -24,8 +22,6 @@ if (dlg) {
     const el = items[i];
     img.src = el.dataset.lbxSrc || '';
     img.alt = el.dataset.lbxAlt || '';
-    elTitle.textContent = el.dataset.lbxTitle || '';
-    elDesc.textContent = el.dataset.lbxDesc || '';
     elCount.textContent = `${i + 1} / ${items.length}`;
     const solo = items.length < 2;
     btnPrev.hidden = solo;

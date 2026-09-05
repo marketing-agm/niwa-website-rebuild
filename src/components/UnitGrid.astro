@@ -38,13 +38,10 @@ const sizes = '(max-width: 640px) 50vw, (max-width: 1100px) 50vw, 40vw';
         data-wide={cs >= 4 ? '' : undefined}
         data-lbx-open
         data-lbx-src={full[i]!.src}
-        data-lbx-title={c.photo.title}
-        data-lbx-desc={c.photo.desc}
         data-lbx-alt={c.photo.alt}
         aria-label={`View ${c.photo.title} full size`}
       >
         <Image src={c.photo.img} alt={c.photo.alt} widths={[400, 700, 1100]} sizes={sizes} format="webp" quality={76} />
-        <span class="ug-cap label">{c.photo.title}</span>
       </button>
     );
   })}
@@ -80,27 +77,6 @@ const sizes = '(max-width: 640px) 50vw, (max-width: 1100px) 50vw, 40vw';
   .ug-photo:hover :global(img) { transform: scale(1.04); }
   .ug-photo:focus-visible { outline: 2px solid var(--gold); outline-offset: -4px; }
 
-  /* The caption sits on the picture, so it needs its own ground rather than
-     relying on whatever happens to be behind it. */
-  /* A scrim rather than a text shadow: these photos are bright and a shadow
-     alone does not hold a label over a white kitchen wall. */
-  .ug-photo::after {
-    content: ''; position: absolute; inset: auto 0 0 0; height: 68%;
-    background: linear-gradient(180deg,
-      rgba(11,11,11,0) 0%,
-      rgba(11,11,11,0.16) 38%,
-      rgba(11,11,11,0.55) 72%,
-      rgba(11,11,11,0.9) 100%);
-    pointer-events: none;
-  }
-  .ug-cap {
-    position: absolute; left: 14px; right: 14px; bottom: 11px;
-    color: var(--paper); text-align: left;
-    text-shadow: 0 1px 10px rgba(11, 11, 11, 0.55);
-    transition: opacity 0.4s var(--ease);
-  }
-  .ug-photo:hover .ug-cap, .ug-photo:focus-visible .ug-cap { opacity: 1; }
-
   .ug-note {
     background: var(--bg-2);
     padding: clamp(16px, 1.6vw, 26px);
@@ -115,7 +91,6 @@ const sizes = '(max-width: 640px) 50vw, (max-width: 1100px) 50vw, 40vw';
     .ug { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: minmax(112px, 19vh); }
     .ug-cell { grid-column: span 1; grid-row: span 1; }
     .ug-cell[data-wide] { grid-column: span 2; }
-    .ug-cap { left: 11px; right: 11px; bottom: 9px; }
   }
 
   @media (hover: none) {
