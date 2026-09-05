@@ -98,7 +98,6 @@ const sizes = '(max-width: 720px) 100vw, (max-width: 1024px) 50vw, 60vw';
     .b-img1 { grid-column: 1 / -1 !important; aspect-ratio: 16 / 9; }
     .b-tours { grid-column: 1 / -1 !important; }
     .b-feat { min-height: clamp(180px, 26vw, 260px); }
-    .list { grid-column: 1 / -1; }
   }
 
   /* Phones. Six feature cells stacked full width ran to roughly 1,400px — the
@@ -114,14 +113,34 @@ const sizes = '(max-width: 720px) 100vw, (max-width: 1024px) 50vw, 60vw';
     .b-feat .body { max-width: none; }
     .b-feat .h3 { font-size: clamp(1.3rem, 1.1rem + 1.4vw, 1.7rem); }
 
+    .list-rows { margin-top: 14px; }
+    .list-row { padding: 10px 0; }
+  }
+
+  /* The three amenity lists, everywhere below the three-up desktop layout.
+  
+     Two things were wrong. The rail never actually railed: .lists carries
+     .grid, whose twelve-track template stayed in force, so grid-auto-flow:
+     column dropped the lists into 1/12-width tracks — 46px wide at 560px,
+     which is why the section stayed tall instead of turning into a strip.
+     grid-template-columns has to be cleared for grid-auto-columns to govern.
+     
+     And it only applied below 640. Between 641 and 1024 the lists were three
+     full-width blocks stacked: about 1,200px, more than a tenth of the page,
+     against 570px once they go three-up at 1100. That band is what Leary
+     screenshotted. The rail now covers the whole range below the three-up
+     layout, and the cards cap at 420px so they do not become unreadably wide
+     at the top of it. */
+  @media (max-width: 1024px) {
     .lists {
-      display: grid; grid-auto-flow: column; grid-auto-columns: 82%;
+      display: grid;
+      grid-template-columns: none;
+      grid-auto-flow: column;
+      grid-auto-columns: min(82%, 420px);
       gap: 1px; overflow-x: auto; overscroll-behavior-x: contain;
       scroll-snap-type: x proximity; scrollbar-width: none;
     }
     .lists::-webkit-scrollbar { display: none; }
     .list { grid-column: auto; scroll-snap-align: start; }
-    .list-rows { margin-top: 14px; }
-    .list-row { padding: 10px 0; }
   }
 </style>
