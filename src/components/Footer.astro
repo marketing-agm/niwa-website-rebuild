@@ -81,6 +81,10 @@ const fmtHour = (t: string) => { const [h] = t.split(':').map(Number); return `$
      underline one of them. background-size animates per line fragment, so both
      lines draw together. */
   .foot :global(.link) { --link-rule: var(--gold); background-size: 0 1px; background-position: 0 100%; }
+  /* The cell warms to gold under the pointer, so the rule drawn on top of it
+     is ink. Gold on gold is the disappearing act this whole treatment exists
+     to avoid. */
+  .foot :global(.cell:hover .link) { --link-rule: var(--ink); }
   @media (hover: hover) {
     .foot :global(.link:hover) { background-size: 100% 1px; }
   }

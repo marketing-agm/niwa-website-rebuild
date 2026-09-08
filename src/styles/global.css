@@ -183,9 +183,7 @@ em, .em { font-style: italic; font-weight: 400; }
    turned a tapped tour button into ink on ink. Opting in beats undoing it
    afterwards: there is nothing to forget to undo. */
 @media (hover: hover) {
-  /* .foot-cell is out: the footer's hover is the nav's drawn gold rule, and a
-     cell flooding gold underneath it would leave the rule nowhere to go. */
-  .cell:not(.cell--img):not(.foot-cell):hover, .hero-fact:hover, .home-row:hover {
+  .cell:not(.cell--img):hover, .hero-fact:hover, .home-row:hover {
     --fg: var(--ink); --fg-2: var(--ink-2); --fg-3: var(--ink-3); --line: var(--ink-line); --line-2: rgba(11, 11, 11, 0.12);
     background: var(--gold); color: var(--ink);
     transition-duration: 0.55s;
