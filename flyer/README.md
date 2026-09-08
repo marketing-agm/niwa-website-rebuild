@@ -19,7 +19,8 @@ bleed, one page:
 
 - **C · Tatami** — `leasing-flyer-c.html` / `niwa-leasing-flyer-c.pdf`. No
   photography at all. The sheet is a room: a fine shoji lattice across the whole
-  page, and over it five mats laid in the pinwheel of a 4½-mat tatami room, so
+  page (kept here as the lattice study; D and the postcard dropped it — see
+  below), and over it five mats laid in the pinwheel of a 4½-mat tatami room, so
   no four corners ever meet. Each mat holds one pocket of information and
   nothing else, and the gold is the last mat on the page.
 
@@ -88,6 +89,21 @@ they must stay in this order or the sheet flattens out:
 | `--lattice` | 0.13   | the shoji ground, behind everything           |
 | `--rule`    | 0.18   | rules inside a pocket                         |
 | `--frame`   | 0.32   | the mat seams — the wooden frame of the room  |
+
+**The lattice never printed.** Chromium's PDF backend does not tile the
+`repeating-linear-gradient` the lattice was built from — it shows on screen and
+is simply absent from the PDF. Proof: a raster of the PDF built *with* the
+lattice CSS is byte-identical to one built without it. D and the postcard have
+dropped it, since it only ever misled anyone previewing the HTML. C keeps it as
+the on-screen lattice study. If a printed ground texture is ever wanted, draw it
+as real elements per pocket, around the content — not as a page-wide mesh, which
+cannot avoid running through type.
+
+**Give every rule ~10px of air.** The homes blocks were centred in their rows
+and left only ~4px between a separator rule and the cap of the name below it,
+which at print size reads as the rule cutting into the word. There is now
+~9.5px on both sides of every rule. If you add a line to that pocket, re-measure
+rather than trusting it to look fine on screen.
 
 The seams are drawn as six positioned 1px elements rather than borders on the
 mats, so no edge is ever painted twice where two mats abut.
