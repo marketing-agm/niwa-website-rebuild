@@ -99,36 +99,54 @@ node scripts/grid-lines.mjs flyer/leasing-flyer-d.html
 node scripts/grid-lines.mjs flyer/postcard.html
 ```
 
-A real grid, both axes, at the pitch of the layout module — so every mat seam
-falls on a grid line and the whole thing reads as one system instead of marks
-placed by hand. Legibility comes from subtraction, not from choosing positions:
-each line is drawn only over the spans where it touches nothing.
+A grid at the pitch of the layout module, so every mat seam falls on a grid
+line. Two rules keep it from looking like a mistake, and both were learned the
+hard way:
 
-It loads the source in Chromium, measures every run of text via its Range
-rects — a tight box around the glyphs, not the element — adds the photographs
-and the gold as solid no-go areas, then walks every line of the grid removing
-the blocked spans and writes what survives back between the `GRID:START` /
-`GRID:END` markers as real 1px elements.
+**A line may only end at something you can see** — a seam, the edge of a
+photograph or the gold, or the edge of the sheet. Never in mid-air and never at
+a word. A run that text interrupts is trimmed back to the last real boundary,
+and if nothing is left it is not drawn at all. Without this you get "half
+lines": short segments floating in open space that read as a failed attempt at
+a full grid.
+
+**No line is drawn where one already exists.** Seams and pocket rules are
+collected first; a grid line within 10px of one is suppressed over that span —
+butting up against it when exactly collinear, standing 8px clear when merely
+near. Without this you get double lines: two hairlines 4px apart running
+together for hundreds of pixels, and grid lines drawn on top of seams, which
+composite brighter over the overlap and make a seam look like it changes weight
+halfway along.
+
+**The horizontal members of this grid are the mat seams themselves.** They
+already sit on the module. On a sheet this full of type, no horizontal can cross
+a pocket without hitting a word, so the derived lines supply the verticals and
+the seams supply the horizontals. Trying to add horizontals inside the pockets
+is exactly what produced the floating ticks.
+
+It loads the source in Chromium, measures every run of text via its Range rects
+— a tight box around the glyphs, not the element — adds the photographs and the
+gold as solid no-go areas, then walks every line of the grid removing the
+blocked spans, trims what is left back to real boundaries, and writes the
+survivors between the `GRID:START` / `GRID:END` markers as real 1px elements.
 
 Tuned per source on `<html>`:
 
 | Source | Pitch | Anchor | Min run |
 |--------|-------|--------|---------|
-| flyer D | 136 × 108.889 (2 columns × 1 row) | `y0=44` | 22px |
-| postcard | 96 × 48 | `y0=0` | 18px |
+| flyer D | 68 × 108.889 | `y0=44` | 26px |
+| postcard | 48 × 48 | `y0=0` | 24px |
 
-The pitches are chosen so the cells are proportionally alike — a sixth of the
-width on both pieces — and so that **every** seam lands on the module. The
-postcard's back seam moved from x=336 to x=384 for exactly that reason; a
-structural member off the grid undermines the whole claim.
-
+Keep the pitch a whole divisor of the module or the seams drift off the grid.
 Clearance is deliberately generous — 14px across a glyph's width, 12px above and
 below — because a rule 4px off a cap-height reads as cutting the word.
 
 **The grid is generated, not authored.** Edit between the markers by hand and
 the next run overwrites you. Re-run after any layout change, then verify: no
-`.gline` rect may intersect any text rect. Last checked, zero intersections and
-the closest approach was 11.7px on the flyer, 11.3px on the postcard.
+`.gline` rect may intersect any text rect, and no two parallel lines may sit
+within 8px of each other over a shared span. Last checked: zero text
+intersections with the closest approach 16.8px on the flyer and 13.3px on the
+postcard, and zero near-duplicate pairs on either piece.
 
 **The lattice never printed.** Chromium's PDF backend does not tile the
 `repeating-linear-gradient` the lattice was built from — it shows on screen and
