@@ -49,6 +49,14 @@ const CHROME = [
 ].find((p) => p && existsSync(p));
 
 const html = readFileSync(src, 'utf8');
+
+// `off` clears the grid without touching anything else. Re-run without it to
+// derive the lines again.
+if (process.argv[3] === 'off') {
+  writeFileSync(src, html.replace(/(<!-- GRID:START -->)[\s\S]*?(<!-- GRID:END -->)/g, '$1\n    $2'));
+  console.log(`grid cleared → ${basename(src)}`);
+  process.exit(0);
+}
 const attr = (name, fallback) => Number(html.match(new RegExp(`data-grid-${name}="([\\d.]+)"`))?.[1] ?? fallback);
 const cfg = { x: attr('x', 136), y: attr('y', 108.889), y0: attr('y0', 0), min: attr('min', 20),
               long: attr('long', 200), H_CLEAR, V_CLEAR, DUP_TOL, DUP_PAD };

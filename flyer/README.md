@@ -90,7 +90,22 @@ they must stay in this order or the sheet flattens out:
 | `--rule`    | 0.18   | rules inside a pocket                         |
 | `--frame`   | 0.32   | the mat seams — the wooden frame of the room  |
 
-### The grid
+### The grid — currently off
+
+The shipped files carry **no derived grid lines**. The structure is the mat
+seams, which is where it was when the sheet was signed off; the derived grid
+went several rounds and ended up overwhelming the page.
+
+Turn it off or on with one command — the layout is untouched either way:
+
+```
+node scripts/grid-lines.mjs flyer/leasing-flyer-d.html off   # clear
+node scripts/grid-lines.mjs flyer/leasing-flyer-d.html       # derive again
+```
+
+Then rebuild. If it comes back, start sparser than feels right: `data-grid-x`
+and `data-grid-y` halve the pitch, and `data-grid-long` raises the bar an
+unanchored run has to clear.
 
 `scripts/grid-lines.mjs` derives it:
 
