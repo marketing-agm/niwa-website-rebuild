@@ -83,7 +83,7 @@ const facts = [
   .hero-cta { grid-column: 6 / span 3; display: flex; flex-wrap: wrap; gap: 10px; align-self: end; }
   .hero-facts { grid-column: 9 / span 4; display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); margin: 0; }
   .hero-fact { background: var(--bg); padding: clamp(12px, 1.2vw, 18px) clamp(14px, 1.3vw, 22px) clamp(14px, 1.4vw, 22px); display: grid; gap: 6px; transition: background-color 0.28s cubic-bezier(0.2, 0, 0, 1), color 0.28s cubic-bezier(0.2, 0, 0, 1); }
-  .hero-fact:hover { background: var(--gold); transition-duration: 0.55s; }
+  @media (hover: hover) { .hero-fact:hover { background: var(--gold); transition-duration: 0.55s; } }
   .hero-special { color: var(--gold); cursor: pointer; text-align: right; padding: 4px 0; transition: opacity 0.3s; }
   .hero-special:hover { opacity: 0.8; }
   .hero-special[aria-expanded="true"] { opacity: 0.8; }

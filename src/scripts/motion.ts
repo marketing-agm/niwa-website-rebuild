@@ -257,6 +257,90 @@ $$('[data-faq-toggle]').forEach((btn) => {
   });
 });
 
+/* ---------- Mobile rails advance as the page scrolls ----------
+
+   On a phone the feature cards, the neighbourhood tiles and the amenity lists
+   are horizontal strips. Asking for a sideways swipe in the middle of a
+   vertical read is a gear change nobody makes, so the strip is driven by the
+   page instead: scrolling down walks it to the right, the way the gallery is
+   driven on desktop.
+
+   It steps between whole cards rather than scrubbing a fraction of one. A
+   scrub would leave the strip parked mid-card whenever you stopped, which is
+   the sliced-sentence problem again — "Stainless st / range and". Stepping
+   means the strip is only ever between cards while it is moving. The card
+   scroll is the rail's own scrollLeft, a different scroller from the page, so
+   it never argues with Lenis. Swiping by hand still works and the next
+   vertical scroll picks the strip back up.
+
+   gsap.matchMedia builds these only at the widths where the rails exist, and
+   tears them down again above: at desktop width .rail-x is display:contents,
+   which has no box to measure or scroll. */
+function scrollRail(rail: HTMLElement, cards: HTMLElement[], onIndex?: (i: number) => void) {
+  if (cards.length < 2) return null;
+  let index = -1;
+  const originOf = (i: number) => cards[i].offsetLeft - cards[0].offsetLeft;
+  const step = (self: { progress: number }) => {
+    if (!rail.clientWidth || rail.scrollWidth <= rail.clientWidth) return;
+    const i = Math.max(0, Math.min(cards.length - 1, Math.round(self.progress * (cards.length - 1))));
+    if (i === index) return;
+    index = i;
+    rail.scrollTo({ left: originOf(i), behavior: reduce ? 'auto' : 'smooth' });
+    onIndex?.(i);
+  };
+  return ScrollTrigger.create({
+    trigger: rail,
+    // Not pinned. Pinning is what the gallery does, but the gallery viewport
+    // is most of a screen tall; the feature strip is 134px, so pinning it put
+    // one small card in the middle of an otherwise empty screen for 1,500px of
+    // scroll. The run is instead the whole time the strip is on screen — from
+    // entering at the bottom to sitting a fifth of the way up — which is 767px
+    // for the six feature cards, about 150px of page each, and adds nothing to
+    // the height of the document.
+    start: 'top 95%',
+    end: 'bottom 20%',
+    invalidateOnRefresh: true,
+    onRefresh: (self) => { index = -1; step(self); },
+    onUpdate: step,
+  });
+}
+
+if (!reduce) {
+  const mm = gsap.matchMedia();
+
+  // The feature cards. .rail-x is display:contents above 640 — no box to
+  // measure, nothing to scroll — hence the query. The neighbourhood tiles are
+  // deliberately not in here: they are photographs, they keep their peek, and
+  // a third pinned run on one phone page is a lot of thumb.
+  mm.add('(max-width: 640px)', () => {
+    const feats = $('.b-feats');
+    if (feats) scrollRail(feats, $$<HTMLElement>(':scope > *', feats));
+  });
+
+  // The amenity lists rail one breakpoint wider, where its chip row lives.
+  mm.add('(max-width: 1024px)', () => {
+    const rail = $('[data-lists]');
+    const chips = $$<HTMLButtonElement>('[data-list-jump]');
+    if (!rail || !chips.length) return;
+    const cards = $$<HTMLElement>('.list', rail);
+    const paint = (i: number) => chips.forEach((chip, n) => {
+      const on = n === i;
+      chip.classList.toggle('is-active', on);
+      chip.setAttribute('aria-current', String(on));
+    });
+    const st = scrollRail(rail, cards, paint);
+    // A chip moves the page to the point in the pinned run where the strip has
+    // walked to that card, rather than scrolling the strip out from under it.
+    chips.forEach((chip) => chip.addEventListener('click', () => {
+      if (!st || st.end <= st.start) return;
+      const i = Number(chip.dataset.listJump);
+      const y = st.start + (st.end - st.start) * (i / (cards.length - 1));
+      if (lenis) lenis.scrollTo(y, { duration: 0.9 });
+      else window.scrollTo({ top: y, behavior: 'smooth' });
+    }));
+  });
+}
+
 /* ---------- Gallery: pinned horizontal scroll on desktop, native on touch ---------- */
 const gal = $('[data-gallery]');
 const track = $('[data-gallery-track]');

@@ -102,7 +102,14 @@ const emailjsConfigured = !!(c.integrations?.emailjs?.publicKey && c.integration
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content={c.seo.title} />
 <meta name="twitter:description" content={c.seo.twitterDescription || c.seo.description} />
+{/* The SVG is the real mark and every current browser prefers it. The .ico
+    is for the ones that ask for /favicon.ico regardless of what is declared —
+    and for the bare request a browser makes to the site root before it has
+    parsed any of this. The apple-touch-icon is flattened onto the disc's own
+    pale yellow because iOS ignores transparency and rounds the tile itself. */}
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="icon" href="/favicon.ico" sizes="48x48" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 <link rel="manifest" href="/site.webmanifest" />
 <meta name="theme-color" content={c.theme?.themeColor ?? '#0b0b0b'} />
 <script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd)} />
