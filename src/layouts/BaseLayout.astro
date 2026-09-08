@@ -107,9 +107,15 @@ const emailjsConfigured = !!(c.integrations?.emailjs?.publicKey && c.integration
     and for the bare request a browser makes to the site root before it has
     parsed any of this. The apple-touch-icon is flattened onto the disc's own
     pale yellow because iOS ignores transparency and rounds the tile itself. */}
-<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-<link rel="icon" href="/favicon.ico" sizes="48x48" />
-<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+{/* ?v=2 is a cache buster, not decoration. The mark went from a square to a
+    circle in #30, but a browser keeps favicons in a store of its own, keyed by
+    origin and not cleared by a hard reload — so anyone who had loaded the site
+    before that kept being served the square off their own disk, indefinitely.
+    A changed URL is the only thing that reliably forces the re-fetch. Bump it
+    whenever the mark itself changes. */}
+<link rel="icon" type="image/svg+xml" href="/favicon.svg?v=2" />
+<link rel="icon" href="/favicon.ico?v=2" sizes="48x48" />
+<link rel="apple-touch-icon" href="/apple-touch-icon.png?v=2" />
 <link rel="manifest" href="/site.webmanifest" />
 <meta name="theme-color" content={c.theme?.themeColor ?? '#0b0b0b'} />
 <script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd)} />
