@@ -50,7 +50,12 @@ const sizes = '(max-width: 720px) 100vw, (max-width: 1024px) 50vw, 60vw';
     </div>
   </div>
 
-  <div class="grid lists">
+  <nav class="lists-jump" aria-label="Amenity lists" data-lists-jump>
+    {lists.map((l, i) => (
+      <button type="button" class={`ljump${i === 0 ? ' is-active' : ''}`} data-list-jump={i} aria-current={i === 0 ? 'true' : 'false'}>{l.heading}</button>
+    ))}
+  </nav>
+  <div class="grid lists" data-lists>
     {lists.map((l) => (
       <div class="cell list" data-reveal>
         <h3 class="label">{l.heading}</h3>
@@ -86,6 +91,9 @@ const sizes = '(max-width: 720px) 100vw, (max-width: 1024px) 50vw, 60vw';
   .b-tour-btns { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
   .lists { margin-top: 1px; }
   .list { grid-column: span 4; }
+  /* The chip row only exists for the rail, so it is absent at desktop width
+     where all three lists are visible at once and there is nothing to jump to. */
+  .lists-jump { display: none; }
   .list-rows { margin-top: clamp(18px, 2vw, 32px); }
   .list-row { padding: 12px 0; border-top: 1px solid var(--line-2); font-size: var(--t-small); color: var(--fg-2); }
   @media (max-width: 1024px) {
@@ -132,15 +140,54 @@ const sizes = '(max-width: 720px) 100vw, (max-width: 1024px) 50vw, 60vw';
      layout, and the cards cap at 420px so they do not become unreadably wide
      at the top of it. */
   @media (max-width: 1024px) {
+    /* Cards are the full width of the rail rather than 82% of it. The peek was
+       meant to advertise that the strip scrolls, but what it actually showed
+       was the next list's sentences sliced down the middle — "In-unit was",
+       "Stainless st / range and" — which reads as a broken layout, not as an
+       invitation. The chip row above does the advertising instead, and says
+       what is in each card while it is at it. Mandatory snap so a card is
+       never left straddling the edge. */
     .lists {
       display: grid;
       grid-template-columns: none;
       grid-auto-flow: column;
-      grid-auto-columns: min(82%, 420px);
-      gap: 1px; overflow-x: auto; overscroll-behavior-x: contain;
-      scroll-snap-type: x proximity; scrollbar-width: none;
+      grid-auto-columns: 100%;
+      gap: 0; overflow-x: auto; overscroll-behavior-x: contain;
+      scroll-snap-type: x mandatory; scrollbar-width: none;
     }
     .lists::-webkit-scrollbar { display: none; }
     .list { grid-column: auto; scroll-snap-align: start; }
+    /* The chip above the rail already names the card, so the card's own
+       heading would print it twice. Hidden from the eye, kept for the
+       accessibility tree so each list still has a heading of its own. */
+    .list > .label {
+      position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+      overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+    }
+    .list-rows { margin-top: 0; }
+
+    .lists-jump {
+      display: flex; gap: 22px;
+      padding: clamp(20px, 3vw, 30px) var(--inset) 0;
+      overflow-x: auto; scrollbar-width: none;
+      border-top: 1px solid var(--line);
+    }
+    .lists-jump::-webkit-scrollbar { display: none; }
+    .ljump {
+      position: relative; flex: 0 0 auto;
+      padding: 10px 0; background: none; border: 0; cursor: pointer;
+      font-family: inherit; font-size: var(--t-label);
+      text-transform: uppercase; letter-spacing: 0.06em;
+      color: var(--fg-3); transition: color 0.3s;
+    }
+    .ljump::after {
+      content: ''; position: absolute; left: 0; right: 0; bottom: 2px; height: 2px;
+      background: var(--gold); transform: scaleX(0); transform-origin: left;
+      transition: transform 0.45s var(--ease);
+    }
+    .ljump.is-active { color: var(--fg); }
+    .ljump.is-active::after { transform: scaleX(1); }
+    .ljump:focus-visible { outline: 2px solid var(--gold); outline-offset: 4px; }
+    @media (pointer: coarse) { .ljump { padding: 13px 0; } }
   }
 </style>

@@ -19,6 +19,7 @@ export const GET: APIRoute = () => {
       // with 2.3 units to spare; it is the ground that does not. A dedicated
       // maskable icon drawn inside r = 25.6 could be added back later.
       { src: '/favicon.svg', sizes: 'any', type: 'image/svg+xml', purpose: 'any' },
+      { src: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png', purpose: 'any' },
     ],
   };
   return new Response(JSON.stringify(manifest, null, 2), {

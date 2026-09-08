@@ -257,6 +257,39 @@ $$('[data-faq-toggle]').forEach((btn) => {
   });
 });
 
+/* ---------- Amenity lists: chip row drives the rail, and follows it ---------- */
+const listsRail = $('[data-lists]');
+const listChips = $$<HTMLButtonElement>('[data-list-jump]');
+if (listsRail && listChips.length) {
+  const cards = $$<HTMLElement>('.list', listsRail);
+  // offsetLeft is measured against the rail's own padding box, so the first
+  // card is not necessarily at 0 — subtract it rather than assuming.
+  const originOf = (i: number) => cards[i].offsetLeft - cards[0].offsetLeft;
+  listChips.forEach((chip) => chip.addEventListener('click', () => {
+    const i = Number(chip.dataset.listJump);
+    if (!cards[i]) return;
+    listsRail.scrollTo({ left: originOf(i), behavior: reduce ? 'auto' : 'smooth' });
+  }));
+  const syncChips = () => {
+    let best = 0, near = Infinity;
+    cards.forEach((_, i) => {
+      const d = Math.abs(originOf(i) - listsRail.scrollLeft);
+      if (d < near) { near = d; best = i; }
+    });
+    listChips.forEach((chip, i) => {
+      const on = i === best;
+      chip.classList.toggle('is-active', on);
+      chip.setAttribute('aria-current', String(on));
+    });
+  };
+  let pending = false;
+  listsRail.addEventListener('scroll', () => {
+    if (pending) return;
+    pending = true;
+    requestAnimationFrame(() => { pending = false; syncChips(); });
+  }, { passive: true });
+}
+
 /* ---------- Gallery: pinned horizontal scroll on desktop, native on touch ---------- */
 const gal = $('[data-gallery]');
 const track = $('[data-gallery-track]');

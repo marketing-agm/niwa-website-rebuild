@@ -52,7 +52,7 @@ const nearby = [
 <style>
   .hood-grid figure { position: relative; }
   .hood-grid figure :global(img) { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 1.2s var(--ease); }
-  .hood-grid figure:hover :global(img) { transform: scale(1.03); }
+  @media (hover: hover) { .hood-grid figure:hover :global(img) { transform: scale(1.03); } }
   .hood-cap { position: absolute; left: var(--pad); right: var(--pad); bottom: calc(var(--pad) * 0.8); display: grid; gap: 4px; text-shadow: 0 1px 12px rgba(0,0,0,0.65); }
   .hood-cap .label { color: var(--fg); }
   .hood-cap .small { color: var(--fg); opacity: 0.8; max-width: 40ch; }

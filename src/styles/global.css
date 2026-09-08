@@ -177,12 +177,19 @@ em, .em { font-style: italic; font-weight: 400; }
   transition: background-color 0.28s cubic-bezier(0.2, 0, 0, 1), color 0.28s cubic-bezier(0.2, 0, 0, 1);
 }
 /* Any text cell warms to gold under the pointer and eases straight back out. */
-.cell:not(.cell--img):hover, .hero-fact:hover, .home-row:hover {
-  --fg: var(--ink); --fg-2: var(--ink-2); --fg-3: var(--ink-3); --line: var(--ink-line); --line-2: rgba(11, 11, 11, 0.12);
-  background: var(--gold); color: var(--ink);
-  transition-duration: 0.55s;
+/* Hover is declared only where a pointer can actually hover. A touch browser
+   leaves :hover latched on whatever was last tapped, so a rule written for a
+   mouse becomes a permanent state on a phone — and these two in particular
+   turned a tapped tour button into ink on ink. Opting in beats undoing it
+   afterwards: there is nothing to forget to undo. */
+@media (hover: hover) {
+  .cell:not(.cell--img):hover, .hero-fact:hover, .home-row:hover {
+    --fg: var(--ink); --fg-2: var(--ink-2); --fg-3: var(--ink-3); --line: var(--ink-line); --line-2: rgba(11, 11, 11, 0.12);
+    background: var(--gold); color: var(--ink);
+    transition-duration: 0.55s;
+  }
+  .cell:hover .btn--ghost { --btn-fg: var(--ink); --btn-line: var(--ink); --btn-hover: var(--ink); --btn-hover-fg: var(--paper); }
 }
-.cell:hover .btn--ghost { --btn-fg: var(--ink); --btn-line: var(--ink); --btn-hover: var(--ink); --btn-hover-fg: var(--paper); }
 .cell--tint { background: var(--bg-2); }
 .cell--img { padding: 0; overflow: hidden; }
 .cell--img img { width: 100%; height: 100%; object-fit: cover; }
@@ -247,15 +254,20 @@ em, .em { font-style: italic; font-weight: 400; }
   z-index: -1;
   border-radius: inherit;
 }
-.btn:hover::before, .btn:focus-visible::before { transform: translateY(0); }
-.btn:hover { color: var(--btn-hover-fg, var(--ink)); border-color: var(--btn-hover, var(--gold)); }
+.btn:focus-visible::before { transform: translateY(0); }
 .btn .arr { display: inline-block; transition: transform 0.45s var(--ease); }
-.btn:hover .arr { transform: translateX(0.35em); }
+@media (hover: hover) {
+  .btn:hover::before { transform: translateY(0); }
+  .btn:hover { color: var(--btn-hover-fg, var(--ink)); border-color: var(--btn-hover, var(--gold)); }
+  .btn:hover .arr { transform: translateX(0.35em); }
+}
 .btn--ghost { --btn-bg: transparent; --btn-fg: var(--fg); --btn-line: var(--line); --btn-hover: var(--gold); }
-.btn--ghost:hover { --btn-line: var(--gold); }
 .btn--paper { --btn-bg: var(--paper); --btn-fg: var(--ink); --btn-line: var(--paper); --btn-hover: var(--gold); }
 .btn--ink { --btn-bg: var(--ink); --btn-fg: var(--gold); --btn-line: var(--ink); --btn-hover: var(--paper); }
-.btn--ink:hover { color: var(--ink); border-color: var(--ink); }
+@media (hover: hover) {
+  .btn--ghost:hover { --btn-line: var(--gold); }
+  .btn--ink:hover { color: var(--ink); border-color: var(--ink); }
+}
 .btn--sm { height: clamp(36px, 2.6vw, 44px); padding: 0 clamp(14px, 1.2vw, 20px); }
 
 /* Text link with a drawn underline */
@@ -266,16 +278,17 @@ em, .em { font-style: italic; font-weight: 400; }
   background: linear-gradient(currentColor, currentColor) no-repeat 0 100% / 100% 1px;
   transition: background-size 0.5s var(--ease), color 0.3s;
 }
-.link:hover { background-size: 0 1px; background-position: 100% 100%; color: var(--gold); }
+@media (hover: hover) {
+  .link:hover { background-size: 0 1px; background-position: 100% 100%; color: var(--gold); }
+}
 
 /* ---------- Touch and small screens ----------
    The desktop composition assumes a pointer that can hover and a viewport wide
    enough for twelve columns. Neither holds on a phone, so three things are
    corrected here rather than in every component:
 
-   1. Hover states. `.cell:hover` warms a cell to gold, which on a touch screen
-      either never fires or fires and sticks after a tap. Switched off where the
-      pointer cannot hover.
+   1. Hover states. Handled at the source now — every :hover rule sits inside
+      `@media (hover: hover)`, so a touch browser never latches one after a tap.
    2. Tap targets. Anything you can press wants 44px of height; several controls
       were landing at 36–40.
    3. Tall stacks. A twelve-column bento collapsed to one column turns six cells
@@ -285,11 +298,8 @@ em, .em { font-style: italic; font-weight: 400; }
       at desktop width, and the children stay direct grid items up there. */
 
 @media (hover: none) {
-  .cell:not(.cell--img):hover, .hero-fact:hover, .home-row:hover {
-    --fg: #f2f1ec; --fg-2: rgba(242, 241, 236, 0.66); --fg-3: rgba(242, 241, 236, 0.42);
-    --line: rgba(242, 241, 236, 0.12); --line-2: rgba(242, 241, 236, 0.07);
-    background: var(--bg); color: var(--fg);
-  }
+  /* The cell and button repaints that used to be undone here are no longer
+     declared on a touch pointer at all, so only the image zoom is left. */
   .bento figure:hover :global(img) { transform: none; }
 }
 
