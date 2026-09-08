@@ -1,5 +1,20 @@
 ---
+import { statSync } from 'node:fs';
 import { formatPhone } from '../lib/site';
+// The two print pieces get re-cut whenever the rents or the special change,
+// and their sizes were typed into the markup by hand — which meant the label
+// was right the day it was written and drifting from then on. Read it off the
+// file at build time instead. Astro renders this once, at build, so there is
+// no runtime cost and no way for the number to disagree with the download.
+// 1024-based, to agree with the figure the browser's own download shelf puts
+// next to the file. Decimal MB would call the flyer 1.6 while Chrome calls it
+// 1.5, and the label sitting next to the button is the one that looks wrong.
+const pdfSize = (name: string) => {
+  try { return (statSync(`public/print/${name}`).size / 1024 / 1024).toFixed(1); }
+  catch { return null; }
+};
+const flyerMB = pdfSize('niwa-leasing-flyer.pdf');
+const cardMB = pdfSize('niwa-postcard.pdf');
 const { site } = Astro.props as { site: any };
 const c = site.config;
 const a = c.address;
@@ -93,10 +108,10 @@ const slots = [['Morning', 'morning'], ['Midday', 'midday'], ['Afternoon', 'afte
           <p class="rail-sm">The building on one page, or a postcard for the fridge.</p>
           <div class="rail-files">
             <a class="btn btn--ghost btn--sm rail-file" href="/print/niwa-leasing-flyer.pdf" download>
-              Leasing flyer <span class="rail-file-meta">PDF · 1.5&thinsp;MB</span>
+              Leasing flyer <span class="rail-file-meta">PDF{flyerMB && <Fragment> · {flyerMB}<span set:html="&thinsp;" />MB</Fragment>}</span>
             </a>
             <a class="btn btn--ghost btn--sm rail-file" href="/print/niwa-postcard.pdf" download>
-              Postcard <span class="rail-file-meta">PDF · 0.6&thinsp;MB</span>
+              Postcard <span class="rail-file-meta">PDF{cardMB && <Fragment> · {cardMB}<span set:html="&thinsp;" />MB</Fragment>}</span>
             </a>
           </div>
         </div>
