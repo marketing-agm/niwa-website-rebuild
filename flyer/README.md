@@ -90,30 +90,45 @@ they must stay in this order or the sheet flattens out:
 | `--rule`    | 0.18   | rules inside a pocket                         |
 | `--frame`   | 0.32   | the mat seams — the wooden frame of the room  |
 
-### Vertical grid lines
+### The grid
 
-`scripts/grid-lines.mjs` derives them:
+`scripts/grid-lines.mjs` derives it:
 
 ```
 node scripts/grid-lines.mjs flyer/leasing-flyer-d.html
 node scripts/grid-lines.mjs flyer/postcard.html
 ```
 
+A real grid, both axes, at the pitch of the layout module — so every mat seam
+falls on a grid line and the whole thing reads as one system instead of marks
+placed by hand. Legibility comes from subtraction, not from choosing positions:
+each line is drawn only over the spans where it touches nothing.
+
 It loads the source in Chromium, measures every run of text via its Range
 rects — a tight box around the glyphs, not the element — adds the photographs
-and the gold as solid no-go areas, then walks each column of the module
-subtracting the blocked spans and writes what survives back between the
-`GRID:START` / `GRID:END` markers as real 1px elements. So a line never crosses
-a word, a photograph or the gold, and short leftovers are dropped as stubs.
+and the gold as solid no-go areas, then walks every line of the grid removing
+the blocked spans and writes what survives back between the `GRID:START` /
+`GRID:END` markers as real 1px elements.
 
-Tuned per source on `<html>`: `data-grid-step` is the column pitch (68px on the
-flyer, 48px on the postcard) and `data-grid-min` the shortest run worth drawing
-(110px and 120px — lower values scatter ticks that read as arbitrary).
+Tuned per source on `<html>`:
 
-**The lines are generated, not authored.** Edit between the markers by hand and
+| Source | Pitch | Anchor | Min run |
+|--------|-------|--------|---------|
+| flyer D | 136 × 108.889 (2 columns × 1 row) | `y0=44` | 22px |
+| postcard | 96 × 48 | `y0=0` | 18px |
+
+The pitches are chosen so the cells are proportionally alike — a sixth of the
+width on both pieces — and so that **every** seam lands on the module. The
+postcard's back seam moved from x=336 to x=384 for exactly that reason; a
+structural member off the grid undermines the whole claim.
+
+Clearance is deliberately generous — 14px across a glyph's width, 12px above and
+below — because a rule 4px off a cap-height reads as cutting the word.
+
+**The grid is generated, not authored.** Edit between the markers by hand and
 the next run overwrites you. Re-run after any layout change, then verify: no
-`.gline` rect may intersect any text rect. Last checked, the closest approach
-was 23.5px on the flyer and 11px on the postcard.
+`.gline` rect may intersect any text rect. Last checked, zero intersections and
+the closest approach was 11.7px on the flyer, 11.3px on the postcard.
 
 **The lattice never printed.** Chromium's PDF backend does not tile the
 `repeating-linear-gradient` the lattice was built from — it shows on screen and
