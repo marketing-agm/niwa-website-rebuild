@@ -1,15 +1,16 @@
 // Photography for the per-unit-type galleries.
 //
-// A caveat worth stating plainly, because it shapes everything below: there is
-// no interior unit photography in this repo. Every interior we have is a shared
-// space — clubroom, lobby, vestibule, elevator hall, fitness room. So these
-// sets are honest about what they show. A studio's grid is the studio's
-// building, not the studio, and every caption names the real room.
+// The interiors arrived, so each set now opens with the home itself and falls
+// back to the shared rooms to fill the tile. They are virtually staged — the
+// rooms and finishes are real, the furniture is not — which the note cell says
+// out loud rather than leaving a visitor to work out.
 //
-// When unit interiors do arrive, drop them in src/assets/gallery, add them to
-// photos.json, and list their slugs here. Nothing else has to change: the grid
-// pattern is fixed and independent of the photo count, so the layout does not
-// shift underneath the new pictures.
+// Two of them are the same shell staged twice: interior-2br-kitchen and
+// interior-studio-kitchen are one camera position, with a sofa behind it in
+// one and a bed behind it in the other. That is what the staging was made for,
+// so both are used, in different sets. An eighth frame that came with them was
+// a second staging of the studio main room, identical but for the lamps, and
+// is left out.
 
 import { photo, type Photo } from './photos';
 
@@ -43,19 +44,19 @@ export const SPANS: Array<[number, number]> = [
 // shown three times.
 const SETS: Record<string, string[]> = {
   studio: [
-    'interior-lobby', 'interior-vestibule', 'interior-elevator-hall',
-    'interior-clubroom', 'interior-clubroom-kitchen',
+    'interior-studio-main', 'interior-studio-kitchen',
+    'interior-lobby', 'interior-clubroom', 'interior-clubroom-kitchen',
     'exterior-rooftop-terrace', 'interior-fitness-room',
   ],
   '1br': [
-    'interior-clubroom', 'interior-clubroom-kitchen', 'interior-clubroom-terrace',
-    'exterior-rooftop-terrace', 'interior-lobby',
-    'interior-fitness-room', 'exterior-paseo',
+    'interior-1br-living', 'interior-1br-bedroom',
+    'interior-clubroom', 'interior-clubroom-terrace',
+    'exterior-rooftop-terrace', 'interior-lobby', 'interior-fitness-room',
   ],
   '2br': [
-    'interior-clubroom-terrace', 'exterior-rooftop-terrace', 'interior-clubroom',
-    'interior-lobby', 'interior-elevator-hall',
-    'interior-fitness-room', 'exterior-entrance',
+    'interior-2br-living', 'interior-2br-bedroom', 'interior-2br-kitchen',
+    'interior-clubroom-terrace', 'exterior-rooftop-terrace',
+    'interior-lobby', 'interior-fitness-room',
   ],
 };
 
@@ -66,16 +67,16 @@ const SETS: Record<string, string[]> = {
 // the two sit on screen together.
 const NOTES: Record<string, { label: string; body: string }> = {
   studio: {
-    label: 'The rest of it',
-    body: 'Lobby, clubroom, rooftop and gym — the parts of the building every studio shares. For the home itself, take the walkthrough below.',
+    label: 'About these rooms',
+    body: 'The studio is virtually staged: the room, the finishes and the view are real, the furniture is not. Lobby, clubroom, rooftop and gym are photographs of the building as it stands. The walkthrough below is unstaged.',
   },
   '1br': {
-    label: 'The rest of it',
-    body: 'The shared rooms a one bedroom opens onto: clubroom, kitchen, terrace and the walk along the paseo. The home itself is in the walkthrough below.',
+    label: 'About these rooms',
+    body: 'The one bedroom is virtually staged: the rooms, the finishes and the light are real, the furniture is not. Clubroom, terrace, lobby and gym are photographs of the building as it stands. The walkthrough below is unstaged.',
   },
   '2br': {
-    label: 'The rest of it',
-    body: 'Terrace, clubroom, lobby and gym — what a two bedroom shares with the rest of the building. For the home itself, take the walkthrough below.',
+    label: 'About these rooms',
+    body: 'The two bedroom is virtually staged: the rooms, the finishes and the glass are real, the furniture is not. Terrace, clubroom, lobby and gym are photographs of the building as it stands. The walkthrough below is unstaged.',
   },
 };
 

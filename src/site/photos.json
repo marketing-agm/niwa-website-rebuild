@@ -125,6 +125,55 @@
       "src": "/images/gallery/neighborhood-elliott-bay.jpg",
       "title": "Elliott Bay",
       "desc": "Ferries, cranes and the Olympics, west from the roof"
+    },
+    {
+      "id": 19,
+      "cat": "unit",
+      "src": "/images/gallery/interior-studio-main.jpg",
+      "title": "Studio, the main room",
+      "desc": "The kitchen wall, the bed and the windows, all one room"
+    },
+    {
+      "id": 20,
+      "cat": "unit",
+      "src": "/images/gallery/interior-studio-kitchen.jpg",
+      "title": "Studio kitchen and dining",
+      "desc": "A full range, a dishwasher and room for a table for four"
+    },
+    {
+      "id": 21,
+      "cat": "unit",
+      "src": "/images/gallery/interior-1br-bedroom.jpg",
+      "title": "One bedroom, the bedroom",
+      "desc": "A room of its own, with the kitchen through the doorway"
+    },
+    {
+      "id": 22,
+      "cat": "unit",
+      "src": "/images/gallery/interior-1br-living.jpg",
+      "title": "One bedroom, the living room",
+      "desc": "The front door, the coat closet and the kitchen down the hall"
+    },
+    {
+      "id": 23,
+      "cat": "unit",
+      "src": "/images/gallery/interior-2br-bedroom.jpg",
+      "title": "Two bedroom, a bedroom",
+      "desc": "A barn door that slides back onto the living room"
+    },
+    {
+      "id": 24,
+      "cat": "unit",
+      "src": "/images/gallery/interior-2br-living.jpg",
+      "title": "Two bedroom, the living room",
+      "desc": "Floor-to-ceiling glass and a balcony off the corner"
+    },
+    {
+      "id": 25,
+      "cat": "unit",
+      "src": "/images/gallery/interior-2br-kitchen.jpg",
+      "title": "Two bedroom, kitchen and dining",
+      "desc": "A full range and a dishwasher, with the living room beyond"
     }
   ]
 }
