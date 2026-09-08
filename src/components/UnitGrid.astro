@@ -1,12 +1,11 @@
 ---
 // The unit-type gallery: an irregular grid with hairline rules between cells.
 //
-// The rhythm is fixed (see SPANS in lib/unitPhotos.ts) rather than derived per
-// photo, which is what keeps it from turning into a ragged masonry wall — every
-// gallery has the same eight-cell tile, so the composition is designed once and
-// the pictures move through it.
+// The composition comes from spansFor() in lib/unitPhotos.ts, chosen for the
+// number of pictures rather than derived per photo — which is what keeps it
+// from turning into a ragged masonry wall.
 import { Image, getImage } from 'astro:assets';
-import { unitCells, SPANS, type Cell } from '../lib/unitPhotos';
+import { unitCells, spansFor, type Cell } from '../lib/unitPhotos';
 
 const { unitKey, unitName } = Astro.props as { unitKey: string; unitName: string };
 const cells: Cell[] = unitCells(unitKey);
@@ -14,34 +13,28 @@ const cells: Cell[] = unitCells(unitKey);
 // A large rendition per photo for the lightbox, resolved at build time so the
 // viewer is not loading the cropped grid thumbnail blown up.
 const full = await Promise.all(
-  cells.map((c) => (c.kind === 'photo' ? getImage({ src: c.photo.img, width: 1800, format: 'webp', quality: 82 }) : null)),
+  cells.map((c) => getImage({ src: c.photo.img, width: 1800, format: 'webp', quality: 82 })),
 );
-const sizes = '(max-width: 640px) 50vw, (max-width: 1100px) 50vw, 40vw';
+const spans = spansFor(cells.length);
+// The frames are far bigger than they were under the eight-cell tile, so the
+// browser is told to expect most of the panel rather than half of it.
+const sizes = '(max-width: 640px) 100vw, (max-width: 1100px) 70vw, 55vw';
 ---
 <div class="ug" data-lbx-group={`unit-${unitKey}`} aria-label={`${unitName} photography`}>
   {cells.map((c, i) => {
-    const [cs, rs] = SPANS[i % SPANS.length];
-    const style = `--cs:${cs};--rs:${rs}`;
-    if (c.kind === 'note') {
-      return (
-        <div class="ug-cell ug-note" style={style} data-wide>
-          <span class="label label--dim">{c.label}</span>
-          <p class="ug-note-body">{c.body}</p>
-        </div>
-      );
-    }
+    const [cs, rs] = spans[i % spans.length];
     return (
       <button
         type="button"
         class="ug-cell ug-photo"
-        style={style}
+        style={`--cs:${cs};--rs:${rs}`}
         data-wide={cs >= 4 ? '' : undefined}
         data-lbx-open
         data-lbx-src={full[i]!.src}
         data-lbx-alt={c.photo.alt}
         aria-label={`View ${c.photo.title} full size`}
       >
-        <Image src={c.photo.img} alt={c.photo.alt} widths={[400, 700, 1100]} sizes={sizes} format="webp" quality={76} />
+        <Image src={c.photo.img} alt={c.photo.alt} widths={[600, 1000, 1600]} sizes={sizes} format="webp" quality={78} />
       </button>
     );
   })}
@@ -77,20 +70,20 @@ const sizes = '(max-width: 640px) 50vw, (max-width: 1100px) 50vw, 40vw';
   .ug-photo:hover :global(img) { transform: scale(1.04); }
   .ug-photo:focus-visible { outline: 2px solid var(--gold); outline-offset: -4px; }
 
-  .ug-note {
-    background: var(--bg-2);
-    padding: clamp(16px, 1.6vw, 26px);
-    display: grid; gap: 10px; align-content: center;
-  }
-  .ug-note-body { font-size: var(--t-small); color: var(--fg-2); line-height: 1.5; text-wrap: pretty; }
-
   /* A six-column irregular grid at phone width is unreadable, so it folds to
      two columns. The wide cells (the 4-span photo and the note) keep the full
      row, which preserves the irregularity — eight cells still tile exactly. */
-  @media (max-width: 640px) {
-    .ug { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-auto-rows: minmax(112px, 19vh); }
-    .ug-cell { grid-column: span 1; grid-row: span 1; }
-    .ug-cell[data-wide] { grid-column: span 2; }
+  /* Narrow: one column, every frame at the ratio the camera shot it.
+     The old rule here folded to two columns and flattened every cell to a
+     single row, which was right for an eight-cell tile of small pictures and
+     wrong for two or three large ones — the full-width frame came out at 2.43
+     against a 1.50 source, a third of the room cropped away, and the half-width
+     pair landed at 195px across, too small to read a room in. Rows are sized by
+     the cells here instead of by the viewport, so the ratio holds at every
+     width in the band. */
+  @media (max-width: 900px) {
+    .ug { grid-template-columns: 1fr; grid-auto-rows: auto; }
+    .ug-cell { grid-column: 1; grid-row: auto; aspect-ratio: 3 / 2; }
   }
 
   @media (hover: none) {
