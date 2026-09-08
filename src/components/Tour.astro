@@ -1,6 +1,6 @@
 ---
 import { statSync } from 'node:fs';
-import { formatPhone } from '../lib/site';
+import { formatPhone, mapsUrl } from '../lib/site';
 // The two print pieces get re-cut whenever the rents or the special change,
 // and their sizes were typed into the markup by hand — which meant the label
 // was right the day it was written and drifting from then on. Read it off the
@@ -96,7 +96,7 @@ const slots = [['Morning', 'morning'], ['Midday', 'midday'], ['Afternoon', 'afte
           <span class="label tour-label">Visit</span>
           <p class="rail-big">{a.streetAddress}</p>
           <p class="rail-sm">{a.addressLocality}, {a.addressRegion} {a.postalCode}</p>
-          <a class="link mono rail-link" href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(`${c.name}, ${a.streetAddress}, ${a.addressLocality}, ${a.addressRegion} ${a.postalCode}`)}`} target="_blank" rel="noopener">Directions ↗</a>
+          <a class="link mono rail-link" href={mapsUrl(c, 'directions')} target="_blank" rel="noopener">Directions ↗</a>
         </div>
         <div class="rail-cell">
           <span class="label tour-label">Call or write</span>

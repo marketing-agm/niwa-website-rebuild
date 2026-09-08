@@ -1,6 +1,6 @@
 ---
 import Wordmark from './Wordmark.astro';
-import { formatPhone } from '../lib/site';
+import { formatPhone, mapsUrl } from '../lib/site';
 const { site } = Astro.props as { site: any };
 const c = site.config;
 const a = c.address;
@@ -15,7 +15,11 @@ const fmtHour = (t: string) => { const [h] = t.split(':').map(Number); return `$
   <div class="grid foot-grid">
     <div class="cell foot-cell">
       <span class="label label--dim">Address</span>
-      <p>{a.streetAddress}<br />{a.addressLocality}, {a.addressRegion} {a.postalCode}</p>
+      <p>
+        <a class="link foot-addr" href={mapsUrl(c)} target="_blank" rel="noopener"
+           aria-label={`Open ${a.streetAddress}, ${a.addressLocality} in Google Maps`}
+        >{a.streetAddress}<br />{a.addressLocality}, {a.addressRegion} {a.postalCode}</a>
+      </p>
       <p class="small">{a.placename}</p>
     </div>
     <div class="cell foot-cell">
