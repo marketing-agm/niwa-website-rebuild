@@ -1,6 +1,6 @@
 ---
 import { statSync } from 'node:fs';
-import { formatPhone } from '../lib/site';
+import { formatPhone, mapsUrl } from '../lib/site';
 // The two print pieces get re-cut whenever the rents or the special change,
 // and their sizes were typed into the markup by hand — which meant the label
 // was right the day it was written and drifting from then on. Read it off the
@@ -96,7 +96,7 @@ const slots = [['Morning', 'morning'], ['Midday', 'midday'], ['Afternoon', 'afte
           <span class="label tour-label">Visit</span>
           <p class="rail-big">{a.streetAddress}</p>
           <p class="rail-sm">{a.addressLocality}, {a.addressRegion} {a.postalCode}</p>
-          <a class="link mono rail-link" href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(`${c.name}, ${a.streetAddress}, ${a.addressLocality}, ${a.addressRegion} ${a.postalCode}`)}`} target="_blank" rel="noopener">Directions ↗</a>
+          <a class="link mono rail-link" href={mapsUrl(c, 'directions')} target="_blank" rel="noopener">Directions ↗</a>
         </div>
         <div class="rail-cell">
           <span class="label tour-label">Call or write</span>
@@ -127,7 +127,7 @@ const slots = [['Morning', 'morning'], ['Midday', 'midday'], ['Afternoon', 'afte
 
 <style>
   .tour { --fg: var(--ink); --fg-2: var(--ink-2); --fg-3: var(--ink-3); --line: var(--ink-line); --line-2: rgba(11,11,11,0.1);
-    background: var(--gold); color: var(--ink); border-radius: var(--radius) var(--radius) 0 0; margin-top: calc(var(--section) * 0.5); color-scheme: light; }
+    background: var(--gold); color: var(--ink); border-radius: var(--radius) var(--radius) 0 0; margin-top: calc(var(--section) * 0.3); color-scheme: light; }
   .tour-inner { padding: clamp(40px, 5vw, 96px) var(--inset) clamp(56px, 7vw, 128px); }
   .tour-label { color: var(--ink-2); }
   .tour-head { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: var(--gap); align-items: end; padding-bottom: clamp(36px, 5vw, 88px); }
@@ -185,7 +185,7 @@ const slots = [['Morning', 'morning'], ['Midday', 'midday'], ['Afternoon', 'afte
   }
   .rail-file:hover { --btn-line: var(--ink); }
   .rail-file-meta { font-size: 0.82em; letter-spacing: 0.04em; opacity: 0.62; text-transform: none; }
-  .tour .link:hover { color: var(--ink); opacity: 0.7; }
+  /* The rule handles it now; fading the words was the same disappearing act. */
   .tour :focus-visible { outline-color: var(--ink); }
   .tour ::selection { background: var(--ink); color: var(--gold); }
 

@@ -360,7 +360,7 @@
   },
   "gallery": {
     "lede": "The building, the roof and the neighborhood, photographed this autumn.",
-    "note": "Photography of individual homes is coming. In the meantime, every layout can be toured in 3D."
+    "note": "Each home type has its own photographs and a 3D walkthrough under The homes."
   },
   "amenityTours": {
     "heading": "Walk the building",
@@ -387,8 +387,7 @@
     "title": "Pick your home off the",
     "titleItalic": "map.",
     "lede": "Every home in the building, floor by floor. Select one to see its layout, rent and move-in date.",
-    "iframeTitle": "SightMap interactive property map showing unit availability at Niwa Apartments",
-    "note": "Availability on the map comes from SightMap and refreshes from the leasing system. If anything on this page disagrees with it, the leasing team has the final word."
+    "iframeTitle": "SightMap interactive property map showing unit availability at Niwa Apartments"
   },
   "idea": {
     "body": "Capturing the pulse of the city, Niwa Apartments is perfectly positioned to elevate your quality of life — with all the community amenities and activities of Seattle right outside your door."

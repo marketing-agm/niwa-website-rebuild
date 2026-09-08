@@ -42,8 +42,18 @@ document.addEventListener('click', (e) => {
   if (hash.length < 2) return;
   e.preventDefault();
   closeMenu();
+  // A link inside an open dialog has to close it before it can scroll.
+  // openDialog stops Lenis to lock the page behind the modal, and a scrollTo
+  // issued while Lenis is stopped is dropped on the floor. Both this listener
+  // and the dialog one are on document, and this one is registered first, so
+  // "Schedule a tour" in a home type was asking a stopped scroller to move and
+  // only then closing the dialog: the modal shut and the page stayed put.
+  const dlg = a.closest('dialog') as HTMLDialogElement | null;
+  if (dlg?.open) closeDialog(dlg);
   revealHashTarget(hash);
-  if (scrollToHash(hash)) history.replaceState(null, '', hash);
+  const go = () => { if (scrollToHash(hash)) history.replaceState(null, '', hash); };
+  // One frame for the close to land and Lenis to be running again.
+  if (dlg) requestAnimationFrame(go); else go();
 });
 
 /* ---------- Tabs (the homes / availability) ---------- */
@@ -449,7 +459,11 @@ if (!reduce) {
 
   // The gold section lifts into view
   const tour = $('[data-tour-section]');
-  if (tour) gsap.from(tour, { y: 60, ease: 'none', scrollTrigger: { trigger: tour, start: 'top bottom', end: 'top 60%', scrub: true } });
+    // 32, not 60. The lift is what makes the gold panel arrive rather than
+  // appear, but it is also dark space that opens above it while you are
+  // looking straight at the gap, and 60 of those on top of the layout's own
+  // spacing was most of what read as a hole under the last question.
+  if (tour) gsap.from(tour, { y: 32, ease: 'none', scrollTrigger: { trigger: tour, start: 'top bottom', end: 'top 60%', scrub: true } });
 }
 
 // Layout can shift as web fonts and lazy images arrive.

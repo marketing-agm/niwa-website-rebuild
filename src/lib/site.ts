@@ -25,6 +25,28 @@ export function formatPhone(raw: string | undefined): string {
     : raw;
 }
 
+/**
+ * Google Maps links for the property, built from the address in the config so
+ * a corrected address cannot leave a stale pin behind.
+ *
+ *   place  — drops you on the building. What an address block should open.
+ *   directions — routes from wherever the visitor is. What a "Directions"
+ *                link should open.
+ *
+ * The name goes in the query alongside the street address: searching the
+ * address alone can land on the parcel next door, while the name pins the
+ * listing Google already holds.
+ */
+export function mapsUrl(config: any, kind: 'place' | 'directions' = 'place'): string {
+  const a = config?.address ?? {};
+  const q = [config?.name, a.streetAddress, a.addressLocality, a.addressRegion, a.postalCode]
+    .filter(Boolean).join(', ');
+  const base = kind === 'directions'
+    ? 'https://www.google.com/maps/dir/?api=1&destination='
+    : 'https://www.google.com/maps/search/?api=1&query=';
+  return base + encodeURIComponent(q);
+}
+
 export function getSite() {
   return {
     id: 'niwa',
