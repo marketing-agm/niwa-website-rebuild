@@ -1,90 +1,67 @@
 // Photography for the per-unit-type galleries.
 //
-// A caveat worth stating plainly, because it shapes everything below: there is
-// no interior unit photography in this repo. Every interior we have is a shared
-// space — clubroom, lobby, vestibule, elevator hall, fitness room. So these
-// sets are honest about what they show. A studio's grid is the studio's
-// building, not the studio, and every caption names the real room.
+// Only the homes themselves. The shared rooms used to fill these grids out —
+// lobby, clubroom, gym — were standing in while there was no unit photography,
+// and a placeholder that has outlived its reason is just a wrong picture. They
+// are still in the page gallery and the building section, where they belong.
 //
-// When unit interiors do arrive, drop them in src/assets/gallery, add them to
-// photos.json, and list their slugs here. Nothing else has to change: the grid
-// pattern is fixed and independent of the photo count, so the layout does not
-// shift underneath the new pictures.
+// The pictures are virtually staged: the rooms and finishes are real, the
+// furniture is not.
+//
+// Two of them are the same shell staged twice: interior-2br-kitchen and
+// interior-studio-kitchen are one camera position, with a sofa behind it in
+// one and a bed behind it in the other. That is what the staging was made for,
+// so both are used, in different sets.
 
 import { photo, type Photo } from './photos';
 
-export type Cell =
-  | { kind: 'photo'; photo: Photo }
-  | { kind: 'note'; label: string; body: string };
+export type Cell = { photo: Photo };
 
-// The grid is a fixed rhythm rather than per-photo spans, so adding or removing
-// a picture can never leave a hole. Eight cells tile a six-column grid across
-// five rows exactly:
+// The composition is chosen for the number of pictures rather than repeating
+// one tile, because with two or three frames there is no repetition to hide
+// behind — each one has to be placed.
 //
-//   ┌───────────┬─────┐   A 4x2   E 3x1
-//   │     A     │  B  │   B 2x1   F 2x2
-//   │           ├─────┤   C 2x1   G 4x1
-//   │           │  C  │   D 3x1   H 4x1
-//   ├──────┬────┴─────┤
-//   │  D   │    E     │
-//   ├───┬──┴──────────┤
-//   │ F │      G      │
-//   │   ├─────────────┤
-//   │   │      H      │
-//   └───┴─────────────┘
+// It stays irregular: unequal widths, unequal heights, cells beside each other
+// rather than a column of full-width bands. That asymmetry is the whole look,
+// and it is worth a crop. A bento is not a contact sheet — a tall cell showing
+// a slice of a room, next to a wide one showing all of it, is the point. What
+// it must not do is stack, which is what a set of one-per-row frames does.
 //
-// 4·2 + 2·1 + 2·1 + 3·1 + 3·1 + 2·2 + 4·1 + 4·1 = 30 = 6 columns × 5 rows.
-export const SPANS: Array<[number, number]> = [
+//   one          two              three
+//   ┌───────┐    ┌──────┬───┐     ┌──────────┐
+//   │       │    │  A   │ B │     │    A     │   A 6x3
+//   │   A   │    └──────┴───┘     ├──────┬───┤
+//   │       │    A 4x2, B 2x2     │  B   │ C │   B 4x2, C 2x2
+//   └───────┘                     └──────┴───┘
+//
+// The small cell is two rows, not three. Three made it a sliver: rows are
+// sized in vh and columns in a share of the panel, so as the panel narrows the
+// cells grow taller relative to their width, and a 2x3 that measures 0.73 on a
+// 1440 falls to 0.50 by 700px — a vertical strip of wall. At 2x2 the same cell
+// holds between 0.76 and 1.21 across the whole range.
+//
+// Two tiles two rows, three tiles five, one tiles four — no holes at any
+// count. Anything larger falls back to the original eight-cell tile.
+const TILE: Array<[number, number]> = [
   [4, 2], [2, 1], [2, 1], [3, 1], [3, 1], [2, 2], [4, 1], [4, 1],
 ];
-
-// Seven photos and one note per type — eight cells, one whole tile of the
-// pattern. The orders differ so the three galleries do not read as one gallery
-// shown three times.
-const SETS: Record<string, string[]> = {
-  studio: [
-    'interior-lobby', 'interior-vestibule', 'interior-elevator-hall',
-    'interior-clubroom', 'interior-clubroom-kitchen',
-    'exterior-rooftop-terrace', 'interior-fitness-room',
-  ],
-  '1br': [
-    'interior-clubroom', 'interior-clubroom-kitchen', 'interior-clubroom-terrace',
-    'exterior-rooftop-terrace', 'interior-lobby',
-    'interior-fitness-room', 'exterior-paseo',
-  ],
-  '2br': [
-    'interior-clubroom-terrace', 'exterior-rooftop-terrace', 'interior-clubroom',
-    'interior-lobby', 'interior-elevator-hall',
-    'interior-fitness-room', 'exterior-entrance',
-  ],
+const PATTERNS: Record<number, Array<[number, number]>> = {
+  1: [[6, 4]],
+  2: [[4, 2], [2, 2]],
+  3: [[6, 3], [4, 2], [2, 2]],
 };
 
-// The note cell earns its place by carrying what the pictures cannot. Every
-// photograph in these grids is a shared space, so the note says so plainly and
-// points at the walkthrough, which is the only look inside a home we can
-// currently offer. It also must not repeat the paragraph in the left rail —
-// the two sit on screen together.
-const NOTES: Record<string, { label: string; body: string }> = {
-  studio: {
-    label: 'The rest of it',
-    body: 'Lobby, clubroom, rooftop and gym — the parts of the building every studio shares. For the home itself, take the walkthrough below.',
-  },
-  '1br': {
-    label: 'The rest of it',
-    body: 'The shared rooms a one bedroom opens onto: clubroom, kitchen, terrace and the walk along the paseo. The home itself is in the walkthrough below.',
-  },
-  '2br': {
-    label: 'The rest of it',
-    body: 'Terrace, clubroom, lobby and gym — what a two bedroom shares with the rest of the building. For the home itself, take the walkthrough below.',
-  },
+export function spansFor(count: number): Array<[number, number]> {
+  return PATTERNS[count] ?? TILE;
+}
+
+const SETS: Record<string, string[]> = {
+  studio: ['interior-studio-main', 'interior-studio-kitchen'],
+  '1br': ['interior-1br-living', 'interior-1br-bedroom'],
+  '2br': ['interior-2br-living', 'interior-2br-bedroom', 'interior-2br-kitchen'],
 };
 
 export function unitCells(key: string): Cell[] {
   const slugs = SETS[key] ?? SETS.studio;
-  const note = NOTES[key] ?? NOTES.studio;
-  const cells: Cell[] = slugs.map((s) => ({ kind: 'photo' as const, photo: photo(s) }));
-  // The note lands in the F slot — the 2x2 — where a tall block of text sits
-  // comfortably and gives the eye somewhere to rest between pictures.
-  cells.splice(5, 0, { kind: 'note', ...note });
-  return cells;
+  return slugs.map((s) => ({ photo: photo(s) }));
 }
