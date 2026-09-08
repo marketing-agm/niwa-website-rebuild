@@ -42,8 +42,18 @@ document.addEventListener('click', (e) => {
   if (hash.length < 2) return;
   e.preventDefault();
   closeMenu();
+  // A link inside an open dialog has to close it before it can scroll.
+  // openDialog stops Lenis to lock the page behind the modal, and a scrollTo
+  // issued while Lenis is stopped is dropped on the floor. Both this listener
+  // and the dialog one are on document, and this one is registered first, so
+  // "Schedule a tour" in a home type was asking a stopped scroller to move and
+  // only then closing the dialog: the modal shut and the page stayed put.
+  const dlg = a.closest('dialog') as HTMLDialogElement | null;
+  if (dlg?.open) closeDialog(dlg);
   revealHashTarget(hash);
-  if (scrollToHash(hash)) history.replaceState(null, '', hash);
+  const go = () => { if (scrollToHash(hash)) history.replaceState(null, '', hash); };
+  // One frame for the close to land and Lenis to be running again.
+  if (dlg) requestAnimationFrame(go); else go();
 });
 
 /* ---------- Tabs (the homes / availability) ---------- */

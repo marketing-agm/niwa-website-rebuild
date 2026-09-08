@@ -72,4 +72,21 @@ const fmtHour = (t: string) => { const [h] = t.split(':').map(Number); return `$
       display: inline-flex; align-items: center; min-height: 44px;
     }
   }
+  /* The footer takes the nav's treatment rather than the body's: nothing at
+     rest, a gold rule drawing in from the left on hover. Same gesture as THE
+     IDEA up top, so the two ends of the page agree.
+
+     Done with the link's own gradient rather than a ::after, because the
+     address wraps to two lines and an absolutely positioned bar can only ever
+     underline one of them. background-size animates per line fragment, so both
+     lines draw together. */
+  .foot :global(.link) { --link-rule: var(--gold); background-size: 0 1px; background-position: 0 100%; }
+  @media (hover: hover) {
+    .foot :global(.link:hover) { background-size: 100% 1px; }
+  }
+  @media (hover: none) {
+    /* No hover to reveal them, so on touch they keep a resting rule. */
+    .foot :global(.link) { --link-rule: currentColor; background-size: 100% 1px; }
+  }
+
 </style>

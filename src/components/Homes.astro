@@ -36,7 +36,42 @@ const range = (a: number, b: number) => (a === b ? int(a) : `${int(a)}–${int(b
       <div class="cell note" data-reveal>
         <span class="label label--dim">Pets</span>
         <p class="note-lead">Up to {pets.maxPerHome} pets per home.</p>
-        <p class="small">{pets.deposit} and {pets.types?.[0]?.rent} per pet. Cats up to 20 lb, dogs up to 75 lb combined. Dogs are interviewed and some breeds are restricted. There is a pet wash in the building.</p>
+        {/* One row per animal, each with its own limits, rather than a single
+            sentence that made you hold both sets of numbers at once. The
+            figures come from the config so they cannot drift from the terms
+            table; the sentence used to hard-code 20 and 75. */}
+        <ul class="pet-rows">
+          {(pets.types ?? []).map((t: any) => (
+            <li class="pet-row">
+              <svg class="pet-ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"
+                   stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+                {t.name === 'Cats' ? (
+                  <Fragment>
+                    <path d="M4.6 9.2 4.1 4.6l3.7 2.5" />
+                    <path d="M19.4 9.2l.5-4.6-3.7 2.5" />
+                    <path d="M4.6 9.2a7.4 7.4 0 0 0-.6 2.9c0 4 3.6 7.1 8 7.1s8-3.1 8-7.1a7.4 7.4 0 0 0-.6-2.9" />
+                    <path d="M9.6 12.2h.01M14.4 12.2h.01" />
+                    <path d="M12 14.6v1.1M12 15.7c-.5.7-1.3 1-2 1M12 15.7c.5.7 1.3 1 2 1" />
+                    <path d="M2.6 13.6h3.1M18.3 13.6h3.1" />
+                  </Fragment>
+                ) : (
+                  <Fragment>
+                    <path d="M6.4 8.1C4.6 8.4 3.4 10.2 3.7 12.3c.3 1.8 1.6 3 3 2.9" />
+                    <path d="M17.6 8.1c1.8.3 3 2.1 2.7 4.2-.3 1.8-1.6 3-3 2.9" />
+                    <path d="M6.4 8.1C7 6.2 9.2 4.9 12 4.9s5 1.3 5.6 3.2c.3 1 .4 2 .4 3.1 0 4-2.6 6.7-6 6.7s-6-2.7-6-6.7c0-1.1.1-2.1.4-3.1Z" />
+                    <path d="M9.9 11.6h.01M14.1 11.6h.01" />
+                    <path d="M12 14.1v1.2" />
+                    <path d="M10.3 15.5a2 2 0 0 0 3.4 0" />
+                  </Fragment>
+                )}
+              </svg>
+              <span class="small pet-txt">
+                <b>{t.name}</b> · {t.limit} · {t.rent}{t.note ? ` · ${t.note.toLowerCase()}` : ''}
+              </span>
+            </li>
+          ))}
+        </ul>
+        <p class="small">{pets.deposit}, charged per pet. Some breeds are restricted. There is a pet wash in the building.</p>
       </div>
       <div class="cell note" data-reveal>
         <span class="label label--dim">Income-restricted homes</span>
@@ -60,7 +95,6 @@ const range = (a: number, b: number) => (a === b ? int(a) : `${int(a)}–${int(b
       <div class="map-frame" data-lenis-prevent>
         <iframe data-src={s.embedUrl} title={s.iframeTitle} loading="lazy" allow="fullscreen" referrerpolicy="strict-origin-when-cross-origin"></iframe>
       </div>
-      <p class="small map-note">{s.note}</p>
     </div>
   )}
 </section>
@@ -139,6 +173,11 @@ const range = (a: number, b: number) => (a === b ? int(a) : `${int(a)}–${int(b
   .home-row:hover .home-go .arr { transform: translateX(0.4em); }
   .home-notes { margin-top: -1px; }
   .note { grid-column: span 4; display: grid; gap: 12px; align-content: start; }
+  .pet-rows { display: grid; gap: 10px; margin: 2px 0 2px; }
+  .pet-row { display: grid; grid-template-columns: 22px 1fr; gap: 10px; align-items: start; }
+  .pet-ico { width: 22px; height: 22px; color: var(--fg-3); margin-top: -1px; flex: none; }
+  .pet-txt { color: var(--fg-2); }
+  .pet-txt b { color: var(--fg); font-weight: 400; }
   .note-lead { font-size: var(--t-lead); line-height: 1.2; letter-spacing: -0.02em; max-width: 20ch; }
   .note .small { max-width: 44ch; }
 
