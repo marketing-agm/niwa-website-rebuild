@@ -21,36 +21,34 @@ export type Cell = { photo: Photo };
 // one tile, because with two or three frames there is no repetition to hide
 // behind — each one has to be placed.
 //
-// Every cell is sized to stay near the 3:2 of the source. Measured on a 1440
-// desktop the panel is 1008px across, so a column is 168px and a row 154px:
+// It stays irregular: unequal widths, unequal heights, cells beside each other
+// rather than a column of full-width bands. That asymmetry is the whole look,
+// and it is worth a crop. A bento is not a contact sheet — a tall cell showing
+// a slice of a room, next to a wide one showing all of it, is the point. What
+// it must not do is stack, which is what a set of one-per-row frames does.
 //
-//   6x4 -> 1.64   3x2 -> 1.64      the two shapes used
-//   6x3 -> 2.18   a third of the height cropped off a room
-//   2x2 -> 1.09   2x3 -> 0.73      would cut the sides off one
+//   one          two              three
+//   ┌───────┐    ┌──────┬───┐     ┌──────────┐
+//   │       │    │  A   │ B │     │    A     │   A 6x3
+//   │   A   │    └──────┴───┘     ├──────┬───┤
+//   │       │    A 4x2, B 2x2     │  B   │ C │   B 4x2, C 2x2
+//   └───────┘                     └──────┴───┘
 //
-// So both shapes sit just above the source ratio and crop a sliver of ceiling,
-// nothing more. The hierarchy comes from scale instead of from stretching one
-// frame into a letterbox: one picture at full width, the rest at half.
+// The small cell is two rows, not three. Three made it a sliver: rows are
+// sized in vh and columns in a share of the panel, so as the panel narrows the
+// cells grow taller relative to their width, and a 2x3 that measures 0.73 on a
+// 1440 falls to 0.50 by 700px — a vertical strip of wall. At 2x2 the same cell
+// holds between 0.76 and 1.21 across the whole range.
 //
-//   one            two              three
-//   ┌─────────┐    ┌─────────┐      ┌─────────┐
-//   │    A    │    │    A    │      │    A    │   A 6x4
-//   │         │    ├─────────┤      ├────┬────┤
-//   └─────────┘    │    B    │      │ B  │ C  │   B, C 3x2
-//                  └─────────┘      └────┴────┘
-//
-// Three tiles six columns by six rows exactly. Two runs to eight: a pair of
-// landscapes at a size worth looking at costs that much height, and squeezing
-// them into one screen would be the wrong economy — the Photos / Walkthrough
-// rail is there so nobody has to scroll past them to reach the tour.
-// Anything larger falls back to the original eight-cell tile.
+// Two tiles two rows, three tiles five, one tiles four — no holes at any
+// count. Anything larger falls back to the original eight-cell tile.
 const TILE: Array<[number, number]> = [
   [4, 2], [2, 1], [2, 1], [3, 1], [3, 1], [2, 2], [4, 1], [4, 1],
 ];
 const PATTERNS: Record<number, Array<[number, number]>> = {
   1: [[6, 4]],
-  2: [[6, 4], [6, 4]],
-  3: [[6, 4], [3, 2], [3, 2]],
+  2: [[4, 2], [2, 2]],
+  3: [[6, 3], [4, 2], [2, 2]],
 };
 
 export function spansFor(count: number): Array<[number, number]> {
