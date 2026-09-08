@@ -103,12 +103,18 @@ A grid at the pitch of the layout module, so every mat seam falls on a grid
 line. Two rules keep it from looking like a mistake, and both were learned the
 hard way:
 
-**A line may only end at something you can see** — a seam, the edge of a
-photograph or the gold, or the edge of the sheet. Never in mid-air and never at
-a word. A run that text interrupts is trimmed back to the last real boundary,
-and if nothing is left it is not drawn at all. Without this you get "half
-lines": short segments floating in open space that read as a failed attempt at
-a full grid.
+**Every run must reach a boundary at one end** — a seam, the edge of a
+photograph or the gold, or the edge of the sheet. Then the line reads as one
+grid line passing *behind* the type, broken where the words are, which is what
+makes the sheet look gridded. A run floating between two blocks of text,
+touching nothing, is the "half line" — dropped. Long runs (`data-grid-long`)
+are kept regardless, since at that length they read as a grid line whatever
+they end on.
+
+Requiring a boundary at *both* ends is too strict — it starves the grid down to
+a handful of lines. Snapping runs to grid crossings starves it further, and
+drawing only whole clear cells produces a ladder of stacked boxes. The
+one-anchored-end rule is the one that works.
 
 **No line is drawn where one already exists.** Seams and pocket rules are
 collected first; a grid line within 10px of one is suppressed over that span —
@@ -118,11 +124,8 @@ together for hundreds of pixels, and grid lines drawn on top of seams, which
 composite brighter over the overlap and make a seam look like it changes weight
 halfway along.
 
-**The horizontal members of this grid are the mat seams themselves.** They
-already sit on the module. On a sheet this full of type, no horizontal can cross
-a pocket without hitting a word, so the derived lines supply the verticals and
-the seams supply the horizontals. Trying to add horizontals inside the pockets
-is exactly what produced the floating ticks.
+The mat seams are themselves horizontal members of the same grid — they sit on
+the module — so the derived lines and the seams read as one system.
 
 It loads the source in Chromium, measures every run of text via its Range rects
 — a tight box around the glyphs, not the element — adds the photographs and the
@@ -134,8 +137,8 @@ Tuned per source on `<html>`:
 
 | Source | Pitch | Anchor | Min run |
 |--------|-------|--------|---------|
-| flyer D | 68 × 108.889 | `y0=44` | 26px |
-| postcard | 48 × 48 | `y0=0` | 24px |
+| flyer D | 68 × 108.889 | `y0=44` | 26px (long 200px) |
+| postcard | 48 × 48 | `y0=0` | 24px (long 140px) |
 
 Keep the pitch a whole divisor of the module or the seams drift off the grid.
 Clearance is deliberately generous — 14px across a glyph's width, 12px above and

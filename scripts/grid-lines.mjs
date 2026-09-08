@@ -51,7 +51,7 @@ const CHROME = [
 const html = readFileSync(src, 'utf8');
 const attr = (name, fallback) => Number(html.match(new RegExp(`data-grid-${name}="([\\d.]+)"`))?.[1] ?? fallback);
 const cfg = { x: attr('x', 136), y: attr('y', 108.889), y0: attr('y0', 0), min: attr('min', 20),
-              H_CLEAR, V_CLEAR, DUP_TOL, DUP_PAD };
+              long: attr('long', 200), H_CLEAR, V_CLEAR, DUP_TOL, DUP_PAD };
 
 const browser = await chromium.launch({ executablePath: CHROME, args: ['--no-sandbox', '--allow-file-access-from-files'] });
 const page = await browser.newPage({ viewport: { width: 1400, height: 1200 } });
@@ -150,13 +150,17 @@ const perCard = await page.evaluate((cfg) => {
       bounds.h.push({ c: t, a: l, b: ri }, { c: bo, a: l, b: ri });
       bounds.v.push({ c: l, a: t, b: bo }, { c: ri, a: t, b: bo });
     });
-    // Trim a run back to the outermost boundaries that actually exist there.
-    const trim = (a, b, list, at) => {
+    // A run is kept when it reaches a real boundary at either end: then it
+    // reads as one grid line passing behind the type, broken where the words
+    // are. A run floating between two blocks of text, touching nothing, is the
+    // "half line" — dropped. Long runs are kept regardless, since at that
+    // length they read as a grid line whatever they end on.
+    const keep = (a, b, list, at) => {
+      if (b - a < cfg.min) return null;
       const cs = list.filter((L) => L.a - 1.5 <= at && at <= L.b + 1.5).map((L) => L.c);
-      const lo = Math.min(...cs.filter((c) => c >= a - 1.5));
-      const hi = Math.max(...cs.filter((c) => c <= b + 1.5));
-      if (!Number.isFinite(lo) || !Number.isFinite(hi) || hi - lo < cfg.min) return null;
-      return [lo, hi];
+      const anchored = cs.some((c) => Math.abs(c - a) < 2) || cs.some((c) => Math.abs(c - b) < 2);
+      if (!anchored && b - a < cfg.long) return null;
+      return [a, b];
     };
 
     const lines = [];
@@ -164,7 +168,7 @@ const perCard = await page.evaluate((cfg) => {
       const cut = blocks.filter((b) => x > b.x1 && x < b.x2).map((b) => [Math.max(0, b.y1), Math.min(H, b.y2)]);
       cut.push(...dupes(already.v, x));
       for (const [a, b] of runs(cut, H, cfg.min)) {
-        const t = trim(a, b, bounds.h, x);
+        const t = keep(a, b, bounds.h, x);
         if (t) lines.push({ v: true, x, y: t[0], len: t[1] - t[0] });
       }
     }
@@ -172,7 +176,7 @@ const perCard = await page.evaluate((cfg) => {
       const cut = blocks.filter((b) => y > b.y1 && y < b.y2).map((b) => [Math.max(0, b.x1), Math.min(W, b.x2)]);
       cut.push(...dupes(already.h, y));
       for (const [a, b] of runs(cut, W, cfg.min)) {
-        const t = trim(a, b, bounds.v, y);
+        const t = keep(a, b, bounds.v, y);
         if (t) lines.push({ v: false, y, x: t[0], len: t[1] - t[0] });
       }
     }
