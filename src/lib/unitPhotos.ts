@@ -8,10 +8,10 @@
 // The pictures are virtually staged: the rooms and finishes are real, the
 // furniture is not.
 //
-// Two of them are the same shell staged twice: interior-2br-kitchen and
-// interior-studio-kitchen are one camera position, with a sofa behind it in
-// one and a bed behind it in the other. That is what the staging was made for,
-// so both are used, in different sets.
+// The studio has one frame. Its second was a kitchen-and-dining shot taken
+// from the same camera position as interior-2br-kitchen — the same shell,
+// staged with a bed behind it rather than a sofa — so a visitor who opened
+// both types saw one room twice. It is out of the final set.
 
 import { photo, type Photo } from './photos';
 
@@ -56,7 +56,7 @@ export function spansFor(count: number): Array<[number, number]> {
 }
 
 const SETS: Record<string, string[]> = {
-  studio: ['interior-studio-main', 'interior-studio-kitchen'],
+  studio: ['interior-studio-main'],
   '1br': ['interior-1br-living', 'interior-1br-bedroom'],
   '2br': ['interior-2br-living', 'interior-2br-bedroom', 'interior-2br-kitchen'],
 };

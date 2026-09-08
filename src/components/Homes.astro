@@ -101,10 +101,11 @@ const range = (a: number, b: number) => (a === b ? int(a) : `${int(a)}–${int(b
         </div>
       </aside>
       <div class="hdlg-main">
+        <div class="hdlg-pane-head"><span class="label label--dim">Photos</span></div>
         <UnitGrid unitKey={h.key} unitName={h.name} />
         <div class="hdlg-tour">
           <div class="hdlg-tour-head">
-            <span class="label label--dim">Walk through it</span>
+            <span class="label label--dim">Walkthrough</span>
             <p class="small">A three-dimensional tour of a {h.name.toLowerCase()}, room by room.</p>
           </div>
           <div class="dlg-frame">
@@ -158,7 +159,11 @@ const range = (a: number, b: number) => (a === b ? int(a) : `${int(a)}–${int(b
      view. Sized shorter, the container runs out of scroll before the tour head
      reaches the top and the walkthrough opens stranded halfway down. */
   .hdlg-tour { display: grid; grid-template-rows: auto 1fr; min-height: calc(100dvh - var(--nav-h)); }
-  .hdlg-tour-head { padding: clamp(20px, 2.2vw, 34px) var(--inset) clamp(14px, 1.4vw, 20px); display: grid; gap: 6px; }
+  /* The two panes of the main column each get the same head, so the grid and
+     the frame are introduced the same way rather than one arriving bare. The
+     photos one carries the label only — there is nothing to say about a
+     picture that the picture does not. */
+  .hdlg-tour-head, .hdlg-pane-head { padding: clamp(20px, 2.2vw, 34px) var(--inset) clamp(14px, 1.4vw, 20px); display: grid; gap: 6px; }
   .hdlg-tour-head .small { color: var(--fg-2); }
   .hdlg-main .dlg-frame { min-height: 0; }
   .hdlg-side { padding: var(--pad) var(--inset); display: grid; gap: clamp(18px, 2vw, 32px); align-content: start; overflow: auto; border-right: 1px solid var(--line); }
