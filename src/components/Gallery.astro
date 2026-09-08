@@ -1,8 +1,6 @@
 ---
 import { Image } from 'astro:assets';
 import { photo } from '../lib/photos';
-const { site } = Astro.props as { site: any };
-const g = site.config.gallery ?? {};
 const slugs = [
   'exterior-on-1st-ave-n', 'exterior-entrance', 'exterior-paseo', 'exterior-monument-sign',
   'interior-vestibule', 'interior-elevator-hall', 'interior-clubroom-terrace',
@@ -10,10 +8,11 @@ const slugs = [
 ];
 const items = slugs.map(photo);
 ---
-<section class="section gallery" id="gallery" data-gallery>
-  <div class="gal-lede">
-    <p class="lead" data-reveal>{g.lede}</p>
-  </div>
+{/* No heading. The strip is photographs of the building and its streets and
+    says so by being them; a line introducing them was the page narrating
+    itself. The section keeps a label for the accessibility tree, which is the
+    one reader that cannot see what the pictures are. */}
+<section class="section gallery" id="gallery" data-gallery aria-label="The building and the neighborhood, photographed">
   <div class="gal-viewport">
     <div class="gal-track" data-gallery-track>
       {items.map((p) => (
@@ -29,8 +28,6 @@ const items = slugs.map(photo);
 </section>
 
 <style>
-  .gal-lede { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: var(--gap); padding: clamp(40px, 5.5vw, 104px) var(--inset) clamp(32px, 4vw, 72px); border-top: 1px solid var(--line); }
-  .gal-lede .lead { grid-column: 1 / span 7; max-width: 30ch; }
   .gal-viewport { position: relative; overflow: hidden; border-top: 1px solid var(--line); padding: var(--gap) 0 calc(var(--gap) + 14px); }
   .gal-track { display: flex; gap: var(--gap); padding: 0 var(--gutter); width: max-content; will-change: transform; }
   /* The pictures carry no captions; the room name lives in the alt text so
@@ -45,6 +42,5 @@ const items = slugs.map(photo);
   .gallery.is-native .gal-viewport::-webkit-scrollbar { display: none; }
   .gallery.is-native .gal-item { scroll-snap-align: start; scroll-margin-left: var(--gutter); }
   .gallery.is-native .gal-progress { display: none; }
-  @media (max-width: 1024px) { .gal-lede .lead { grid-column: 1 / -1; } }
   @media (max-width: 720px) { .gal-item { --h: clamp(240px, 48vh, 420px); } }
 </style>
