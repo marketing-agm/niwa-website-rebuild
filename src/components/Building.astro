@@ -117,7 +117,12 @@ const sizes = '(max-width: 720px) 100vw, (max-width: 1024px) 50vw, 60vw';
   @media (max-width: 640px) {
     .bento { grid-template-columns: 1fr; }
     .b-feat { min-height: 0; gap: 12px; }
-    .b-feats { scroll-padding-left: 0; }
+    /* Full width, unlike the shared .rail-x peek. These are sentences, and
+       the sliver showed the next one cut down the middle — "24-ho",
+       "Cardio, f" — which reads as a broken column rather than an invitation
+       to swipe. The page walks the strip instead (scrollRail in motion.ts),
+       so the movement is the affordance and each card gets the whole width. */
+    .b-feats { scroll-padding-left: 0; grid-auto-columns: 100%; scroll-snap-type: x mandatory; }
     .b-feat .body { max-width: none; }
     .b-feat .h3 { font-size: clamp(1.3rem, 1.1rem + 1.4vw, 1.7rem); }
 

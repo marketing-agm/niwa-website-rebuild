@@ -326,6 +326,10 @@ em, .em { font-style: italic; font-weight: 400; }
 
 .rail-x { display: contents; }
 @media (max-width: 640px) {
+  /* The peek stays here. .rail-x's other user is the neighbourhood tiles,
+     which are photographs — half a photograph still reads as a photograph and
+     the sliver is a fair way to say the strip scrolls. Prose is the case that
+     breaks, and .b-feats overrides this below. */
   .rail-x {
     display: grid;
     grid-auto-flow: column;
