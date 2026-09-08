@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" data-trim="6x4">
+<html lang="en" data-trim="6x4" data-grid-step="48" data-grid-min="120">
 <head>
 <meta charset="utf-8" />
 <title>Niwa Apartments — Leasing Postcard</title>
@@ -21,6 +21,7 @@
   --fg-2: rgba(242, 241, 236, 0.78);
   --fg-3: rgba(242, 241, 236, 0.60);
   --frame: rgba(242, 241, 236, 0.32);
+  --gridline: rgba(242, 241, 236, 0.18);
   --rule: rgba(242, 241, 236, 0.18);
   --gold: #f4c430;
   --ink: #000000;
@@ -58,6 +59,7 @@ img { display: block; }
 .mono { font-variant-numeric: tabular-nums; letter-spacing: 0.01em; }
 .em { font-style: italic; font-weight: 400; }
 
+.gline { position: absolute; z-index: 3; width: 1px; background: var(--gridline); }
 .seam { position: absolute; z-index: 3; background: var(--frame); }
 .seam--h { height: 1px; }
 .seam--v { width: 1px; }
@@ -145,6 +147,11 @@ html[data-mode="safe"] .card { zoom: var(--safe-scale); }
 <div class="sheet"><div class="card">
   <div class="gold-ground f-gold-ground" aria-hidden="true"></div>
 
+  <!-- GRID:START -->
+    <i class="gline" style="left:384px; top:203px; height:133px"></i>
+    <i class="gline" style="left:528px; top:38px; height:123px"></i>
+    <!-- GRID:END -->
+
   <div class="seam seam--h seam--bx" style="left:0; top:48px; width:100%"></div>
   <div class="seam seam--h seam--bx" style="left:0; top:336px; width:100%"></div>
   <div class="seam seam--h" style="left:288px; top:240px; right:0"></div>
@@ -184,6 +191,14 @@ html[data-mode="safe"] .card { zoom: var(--safe-scale); }
 <!-- ================= BACK ================= -->
 <div class="sheet"><div class="card">
   <div class="gold-ground b-gold-ground" aria-hidden="true"></div>
+
+  <!-- GRID:START -->
+    <i class="gline" style="left:96px; top:38px; height:122px"></i>
+    <i class="gline" style="left:144px; top:38px; height:250px"></i>
+    <i class="gline" style="left:336px; top:0px; height:288px"></i>
+    <i class="gline" style="left:480px; top:140px; height:148px"></i>
+    <i class="gline" style="left:528px; top:38px; height:177px"></i>
+    <!-- GRID:END -->
 
   <div class="seam seam--h seam--bx" style="left:0; top:48px; width:100%"></div>
   <div class="seam seam--h seam--bx" style="left:0; top:288px; width:100%"></div>

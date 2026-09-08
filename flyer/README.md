@@ -90,6 +90,31 @@ they must stay in this order or the sheet flattens out:
 | `--rule`    | 0.18   | rules inside a pocket                         |
 | `--frame`   | 0.32   | the mat seams — the wooden frame of the room  |
 
+### Vertical grid lines
+
+`scripts/grid-lines.mjs` derives them:
+
+```
+node scripts/grid-lines.mjs flyer/leasing-flyer-d.html
+node scripts/grid-lines.mjs flyer/postcard.html
+```
+
+It loads the source in Chromium, measures every run of text via its Range
+rects — a tight box around the glyphs, not the element — adds the photographs
+and the gold as solid no-go areas, then walks each column of the module
+subtracting the blocked spans and writes what survives back between the
+`GRID:START` / `GRID:END` markers as real 1px elements. So a line never crosses
+a word, a photograph or the gold, and short leftovers are dropped as stubs.
+
+Tuned per source on `<html>`: `data-grid-step` is the column pitch (68px on the
+flyer, 48px on the postcard) and `data-grid-min` the shortest run worth drawing
+(110px and 120px — lower values scatter ticks that read as arbitrary).
+
+**The lines are generated, not authored.** Edit between the markers by hand and
+the next run overwrites you. Re-run after any layout change, then verify: no
+`.gline` rect may intersect any text rect. Last checked, the closest approach
+was 23.5px on the flyer and 11px on the postcard.
+
 **The lattice never printed.** Chromium's PDF backend does not tile the
 `repeating-linear-gradient` the lattice was built from — it shows on screen and
 is simply absent from the PDF. Proof: a raster of the PDF built *with* the
