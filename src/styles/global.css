@@ -270,16 +270,28 @@ em, .em { font-style: italic; font-weight: 400; }
 }
 .btn--sm { height: clamp(36px, 2.6vw, 44px); padding: 0 clamp(14px, 1.2vw, 20px); }
 
-/* Text link with a drawn underline */
+/* Text link with a drawn underline.
+   The rule is a variable rather than currentColor so hover can move the line
+   instead of the text. It used to retract the underline and turn the words
+   gold, which on the dark ground read as a highlight and on any gold ground —
+   the tour section, a cell warmed by its own hover — painted gold on gold and
+   deleted the link outright. Underneath a warmed footer cell that meant the
+   email address simply was not there while you were pointing at it.
+   Text colour now holds still and the line does the work: gold on the dark,
+   ink on the gold, and 1px to 2px either way. */
 .link {
+  --link-rule: currentColor;
+  --link-rule-hover: var(--gold);
   position: relative;
   display: inline;
   padding-bottom: 2px;
-  background: linear-gradient(currentColor, currentColor) no-repeat 0 100% / 100% 1px;
-  transition: background-size 0.5s var(--ease), color 0.3s;
+  background: linear-gradient(var(--link-rule), var(--link-rule)) no-repeat 0 100% / 100% 1px;
+  transition: background-size 0.35s var(--ease), background-image 0.3s, color 0.3s;
 }
+/* Grounds where gold would vanish into the background. */
+.tour .link, .cell:hover .link, .hero-fact:hover .link, .home-row:hover .link { --link-rule-hover: var(--ink); }
 @media (hover: hover) {
-  .link:hover { background-size: 0 1px; background-position: 100% 100%; color: var(--gold); }
+  .link:hover { --link-rule: var(--link-rule-hover); background-size: 100% 2px; }
 }
 
 /* ---------- Touch and small screens ----------

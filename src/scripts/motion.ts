@@ -449,7 +449,11 @@ if (!reduce) {
 
   // The gold section lifts into view
   const tour = $('[data-tour-section]');
-  if (tour) gsap.from(tour, { y: 60, ease: 'none', scrollTrigger: { trigger: tour, start: 'top bottom', end: 'top 60%', scrub: true } });
+    // 32, not 60. The lift is what makes the gold panel arrive rather than
+  // appear, but it is also dark space that opens above it while you are
+  // looking straight at the gap, and 60 of those on top of the layout's own
+  // spacing was most of what read as a hole under the last question.
+  if (tour) gsap.from(tour, { y: 32, ease: 'none', scrollTrigger: { trigger: tour, start: 'top bottom', end: 'top 60%', scrub: true } });
 }
 
 // Layout can shift as web fonts and lazy images arrive.
