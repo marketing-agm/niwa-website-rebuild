@@ -182,7 +182,16 @@ function syncJump(d: Element) {
   if (!main || !tour) return;
   // Switch once the walkthrough owns most of the view, not the instant it
   // peeks in — otherwise the marker flickers on a short scroll.
-  const atTour = main.scrollTop >= tourOffset(main, tour) - main.clientHeight * 0.45;
+  //
+  // The viewport-relative rule alone broke when the galleries shrank to two or
+  // three pictures. A one bedroom grid is about 308px against a 836px pane, so
+  // "a screen-and-a-bit before the tour" landed at a negative scroll position
+  // and the dialog opened with Walkthrough already lit while you were looking
+  // at the photos. The floor at 60% of the distance keeps Photos marked until
+  // you have actually travelled most of the way there, whatever the grid's
+  // height, and leaves the old behaviour untouched on a tall one.
+  const to = tourOffset(main, tour);
+  const atTour = main.scrollTop >= Math.max(to - main.clientHeight * 0.45, to * 0.6);
   $$('[data-jump]', d).forEach((b) => {
     const on = ((b as HTMLElement).dataset.jump === 'tour') === atTour;
     b.classList.toggle('is-active', on);
@@ -276,33 +285,36 @@ $$('[data-faq-toggle]').forEach((btn) => {
    gsap.matchMedia builds these only at the widths where the rails exist, and
    tears them down again above: at desktop width .rail-x is display:contents,
    which has no box to measure or scroll. */
-function scrollRail(rail: HTMLElement, cards: HTMLElement[], onIndex?: (i: number) => void) {
+function scrollRail(
+  rail: HTMLElement,
+  cards: HTMLElement[],
+  opts: { start?: string; end?: string; onIndex?: (i: number) => void } = {},
+) {
   if (cards.length < 2) return null;
   let index = -1;
   const originOf = (i: number) => cards[i].offsetLeft - cards[0].offsetLeft;
-  const step = (self: { progress: number }) => {
-    if (!rail.clientWidth || rail.scrollWidth <= rail.clientWidth) return;
-    const i = Math.max(0, Math.min(cards.length - 1, Math.round(self.progress * (cards.length - 1))));
-    if (i === index) return;
-    index = i;
-    rail.scrollTo({ left: originOf(i), behavior: reduce ? 'auto' : 'smooth' });
-    onIndex?.(i);
+  const live = () => rail.clientWidth > 0 && rail.scrollWidth > rail.clientWidth;
+  const goto = (i: number) => {
+    if (!live() || i === index) return;
+    index = Math.max(0, Math.min(cards.length - 1, i));
+    rail.scrollTo({ left: originOf(index), behavior: reduce ? 'auto' : 'smooth' });
+    opts.onIndex?.(index);
   };
-  return ScrollTrigger.create({
+  const step = (self: { progress: number }) =>
+    goto(Math.round(self.progress * (cards.length - 1)));
+  const st = ScrollTrigger.create({
     trigger: rail,
-    // Not pinned. Pinning is what the gallery does, but the gallery viewport
-    // is most of a screen tall; the feature strip is 134px, so pinning it put
-    // one small card in the middle of an otherwise empty screen for 1,500px of
-    // scroll. The run is instead the whole time the strip is on screen — from
-    // entering at the bottom to sitting a fifth of the way up — which is 767px
-    // for the six feature cards, about 150px of page each, and adds nothing to
-    // the height of the document.
-    start: 'top 95%',
-    end: 'bottom 20%',
+    // Not pinned. Pinning is what the gallery does, but the gallery viewport is
+    // most of a screen tall; the feature strip is 134px, so pinning it put one
+    // small card in the middle of an otherwise empty screen for 1,500px of
+    // scroll, and added 3,400px to the document.
+    start: opts.start ?? 'top 95%',
+    end: opts.end ?? 'bottom 20%',
     invalidateOnRefresh: true,
     onRefresh: (self) => { index = -1; step(self); },
     onUpdate: step,
   });
+  return { st, goto };
 }
 
 if (!reduce) {
@@ -317,6 +329,10 @@ if (!reduce) {
     if (feats) scrollRail(feats, $$<HTMLElement>(':scope > *', feats));
   });
 
+  // The neighbourhood tiles are deliberately not in here: they are
+  // photographs, they keep their peek, and a third driven strip on one phone
+  // page is a lot of thumb.
+
   // The amenity lists rail one breakpoint wider, where its chip row lives.
   mm.add('(max-width: 1024px)', () => {
     const rail = $('[data-lists]');
@@ -328,15 +344,21 @@ if (!reduce) {
       chip.classList.toggle('is-active', on);
       chip.setAttribute('aria-current', String(on));
     });
-    const st = scrollRail(rail, cards, paint);
-    // A chip moves the page to the point in the pinned run where the strip has
-    // walked to that card, rather than scrolling the strip out from under it.
+    // A tighter run than the feature strip gets. The default window walks a
+    // strip from entering at the bottom to leaving past the top, which is fine
+    // for a 134px band and wrong for a 418px one: the last card only arrived
+    // once the list was 40% off the top of the screen. Between 'top 55%' and
+    // 'top 8%' the whole walk happens with the list fully in view.
+    const railed = scrollRail(rail, cards, { start: 'top 55%', end: 'top 8%', onIndex: paint });
+
+    // A chip scrolls the strip. It used to scroll the page instead — to the
+    // point in the run that maps to that card — which meant tapping "Parking
+    // & storage" threw the page 525px down and left the list 249px above the
+    // top edge, and "Community" threw it 1,051px up with a tenth of the list
+    // showing. Nobody taps a label to be taken away from the thing it labels:
+    // you are already looking at the list, so only the list should move.
     chips.forEach((chip) => chip.addEventListener('click', () => {
-      if (!st || st.end <= st.start) return;
-      const i = Number(chip.dataset.listJump);
-      const y = st.start + (st.end - st.start) * (i / (cards.length - 1));
-      if (lenis) lenis.scrollTo(y, { duration: 0.9 });
-      else window.scrollTo({ top: y, behavior: 'smooth' });
+      railed?.goto(Number(chip.dataset.listJump));
     }));
   });
 }
