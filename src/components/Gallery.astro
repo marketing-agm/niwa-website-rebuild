@@ -13,7 +13,6 @@ const items = slugs.map(photo);
 <section class="section gallery" id="gallery" data-gallery>
   <div class="gal-lede">
     <p class="lead" data-reveal>{g.lede}</p>
-    <p class="small" data-reveal>{g.note}</p>
   </div>
   <div class="gal-viewport">
     <div class="gal-track" data-gallery-track>
@@ -32,7 +31,6 @@ const items = slugs.map(photo);
 <style>
   .gal-lede { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: var(--gap); padding: clamp(40px, 5.5vw, 104px) var(--inset) clamp(32px, 4vw, 72px); border-top: 1px solid var(--line); }
   .gal-lede .lead { grid-column: 1 / span 7; max-width: 30ch; }
-  .gal-lede .small { grid-column: 9 / span 4; align-self: end; }
   .gal-viewport { position: relative; overflow: hidden; border-top: 1px solid var(--line); padding: var(--gap) 0 calc(var(--gap) + 14px); }
   .gal-track { display: flex; gap: var(--gap); padding: 0 var(--gutter); width: max-content; will-change: transform; }
   /* The pictures carry no captions; the room name lives in the alt text so
@@ -47,6 +45,6 @@ const items = slugs.map(photo);
   .gallery.is-native .gal-viewport::-webkit-scrollbar { display: none; }
   .gallery.is-native .gal-item { scroll-snap-align: start; scroll-margin-left: var(--gutter); }
   .gallery.is-native .gal-progress { display: none; }
-  @media (max-width: 1024px) { .gal-lede .lead { grid-column: 1 / -1; } .gal-lede .small { grid-column: 1 / span 8; } }
+  @media (max-width: 1024px) { .gal-lede .lead { grid-column: 1 / -1; } }
   @media (max-width: 720px) { .gal-item { --h: clamp(240px, 48vh, 420px); } }
 </style>
