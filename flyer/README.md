@@ -19,7 +19,8 @@ bleed, one page:
 
 - **C · Tatami** — `leasing-flyer-c.html` / `niwa-leasing-flyer-c.pdf`. No
   photography at all. The sheet is a room: a fine shoji lattice across the whole
-  page, and over it five mats laid in the pinwheel of a 4½-mat tatami room, so
+  page (kept here as the lattice study; D and the postcard dropped it — see
+  below), and over it five mats laid in the pinwheel of a 4½-mat tatami room, so
   no four corners ever meet. Each mat holds one pocket of information and
   nothing else, and the gold is the last mat on the page.
 
@@ -88,6 +89,97 @@ they must stay in this order or the sheet flattens out:
 | `--lattice` | 0.13   | the shoji ground, behind everything           |
 | `--rule`    | 0.18   | rules inside a pocket                         |
 | `--frame`   | 0.32   | the mat seams — the wooden frame of the room  |
+
+### The grid — currently off
+
+The shipped files carry **no derived grid lines**. The structure is the mat
+seams, which is where it was when the sheet was signed off; the derived grid
+went several rounds and ended up overwhelming the page.
+
+Turn it off or on with one command — the layout is untouched either way:
+
+```
+node scripts/grid-lines.mjs flyer/leasing-flyer-d.html off   # clear
+node scripts/grid-lines.mjs flyer/leasing-flyer-d.html       # derive again
+```
+
+Then rebuild. If it comes back, start sparser than feels right: `data-grid-x`
+and `data-grid-y` halve the pitch, and `data-grid-long` raises the bar an
+unanchored run has to clear.
+
+`scripts/grid-lines.mjs` derives it:
+
+```
+node scripts/grid-lines.mjs flyer/leasing-flyer-d.html
+node scripts/grid-lines.mjs flyer/postcard.html
+```
+
+A grid at the pitch of the layout module, so every mat seam falls on a grid
+line. Two rules keep it from looking like a mistake, and both were learned the
+hard way:
+
+**Every run must reach a boundary at one end** — a seam, the edge of a
+photograph or the gold, or the edge of the sheet. Then the line reads as one
+grid line passing *behind* the type, broken where the words are, which is what
+makes the sheet look gridded. A run floating between two blocks of text,
+touching nothing, is the "half line" — dropped. Long runs (`data-grid-long`)
+are kept regardless, since at that length they read as a grid line whatever
+they end on.
+
+Requiring a boundary at *both* ends is too strict — it starves the grid down to
+a handful of lines. Snapping runs to grid crossings starves it further, and
+drawing only whole clear cells produces a ladder of stacked boxes. The
+one-anchored-end rule is the one that works.
+
+**No line is drawn where one already exists.** Seams and pocket rules are
+collected first; a grid line within 10px of one is suppressed over that span —
+butting up against it when exactly collinear, standing 8px clear when merely
+near. Without this you get double lines: two hairlines 4px apart running
+together for hundreds of pixels, and grid lines drawn on top of seams, which
+composite brighter over the overlap and make a seam look like it changes weight
+halfway along.
+
+The mat seams are themselves horizontal members of the same grid — they sit on
+the module — so the derived lines and the seams read as one system.
+
+It loads the source in Chromium, measures every run of text via its Range rects
+— a tight box around the glyphs, not the element — adds the photographs and the
+gold as solid no-go areas, then walks every line of the grid removing the
+blocked spans, trims what is left back to real boundaries, and writes the
+survivors between the `GRID:START` / `GRID:END` markers as real 1px elements.
+
+Tuned per source on `<html>`:
+
+| Source | Pitch | Anchor | Min run |
+|--------|-------|--------|---------|
+| flyer D | 68 × 108.889 | `y0=44` | 26px (long 200px) |
+| postcard | 48 × 48 | `y0=0` | 24px (long 140px) |
+
+Keep the pitch a whole divisor of the module or the seams drift off the grid.
+Clearance is deliberately generous — 14px across a glyph's width, 12px above and
+below — because a rule 4px off a cap-height reads as cutting the word.
+
+**The grid is generated, not authored.** Edit between the markers by hand and
+the next run overwrites you. Re-run after any layout change, then verify: no
+`.gline` rect may intersect any text rect, and no two parallel lines may sit
+within 8px of each other over a shared span. Last checked: zero text
+intersections with the closest approach 16.8px on the flyer and 13.3px on the
+postcard, and zero near-duplicate pairs on either piece.
+
+**The lattice never printed.** Chromium's PDF backend does not tile the
+`repeating-linear-gradient` the lattice was built from — it shows on screen and
+is simply absent from the PDF. Proof: a raster of the PDF built *with* the
+lattice CSS is byte-identical to one built without it. D and the postcard have
+dropped it, since it only ever misled anyone previewing the HTML. C keeps it as
+the on-screen lattice study. If a printed ground texture is ever wanted, draw it
+as real elements per pocket, around the content — not as a page-wide mesh, which
+cannot avoid running through type.
+
+**Give every rule ~10px of air.** The homes blocks were centred in their rows
+and left only ~4px between a separator rule and the cap of the name below it,
+which at print size reads as the rule cutting into the word. There is now
+~9.5px on both sides of every rule. If you add a line to that pocket, re-measure
+rather than trusting it to look fine on screen.
 
 The seams are drawn as six positioned 1px elements rather than borders on the
 mats, so no edge is ever painted twice where two mats abut.
