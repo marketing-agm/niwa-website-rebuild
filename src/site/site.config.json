@@ -99,7 +99,13 @@
     "description": "Studio, 1BR & 2BR apartments in Lower Queen Anne, Seattle."
   },
   "sitemap": {
-    "pages": []
+    "pages": [
+      {
+        "path": "/events",
+        "changefreq": "weekly",
+        "priority": 0.8
+      }
+    ]
   },
   "hero": {
     "image": "/images/hero.jpg",

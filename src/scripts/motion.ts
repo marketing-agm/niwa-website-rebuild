@@ -116,10 +116,14 @@ window.matchMedia('(min-width: 721px)').addEventListener('change', (e) => { if (
 const tourSec = $('[data-tour-section]');
 if (tourSec) ScrollTrigger.create({ trigger: tourSec, start: () => `top ${navH()}px`, end: () => `bottom ${navH()}px`, onToggle: (s) => nav?.classList.toggle('is-gold', s.isActive) });
 
-// Active section in the nav
+// Active section in the nav. An href is only a selector when it is a bare
+// hash: off the homepage the same links read "/#about", and on a route with no
+// sections at all some of them point at another page entirely.
 const navLinks = $$<HTMLAnchorElement>('.nav-link');
 navLinks.forEach((a) => {
-  const sec = $(a.getAttribute('href')!);
+  const href = a.getAttribute('href') || '';
+  if (!href.startsWith('#')) return;
+  const sec = $(href);
   if (!sec) return;
   ScrollTrigger.create({
     trigger: sec, start: () => `top ${navH() + 40}px`, end: () => `bottom ${navH() + 40}px`,

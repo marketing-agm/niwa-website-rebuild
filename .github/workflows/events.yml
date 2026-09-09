@@ -1,0 +1,102 @@
+name: Events feed
+
+# Refreshes src/site/events.json from the Ticketmaster Discovery API and commits
+# the result, so /events is current without anyone touching it.
+#
+# Mondays at 13:00 UTC — 6am in Seattle — which puts the week's listings up
+# before anyone looks. A run that finds nothing new writes nothing, commits
+# nothing and triggers no deploy.
+#
+# One-time setup: add a repository secret named TICKETMASTER_API_KEY.
+#   Settings → Secrets and variables → Actions → New repository secret
+#   A free key: https://developer-acct.ticketmaster.com/user/register
+# Until that exists every run finishes green and says it was skipped, rather
+# than sending a red X every Monday morning for a thing nobody has broken.
+
+on:
+  schedule:
+    - cron: '0 13 * * 1'
+  workflow_dispatch:
+    inputs:
+      radius:
+        description: 'Search radius in miles from the building'
+        required: false
+        default: '3'
+      days:
+        description: 'How many days ahead to look'
+        required: false
+        default: '30'
+
+# The job writes a commit back to the branch it ran on.
+permissions:
+  contents: write
+
+concurrency:
+  group: events-feed
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - name: Pull the feed
+        id: pull
+        env:
+          TICKETMASTER_API_KEY: ${{ secrets.TICKETMASTER_API_KEY }}
+        run: |
+          set +e
+          node scripts/refresh-events.mjs \
+            --radius "${{ inputs.radius || '3' }}" \
+            --days "${{ inputs.days || '30' }}" | tee /tmp/events.log
+          code=${PIPESTATUS[0]}
+          set -e
+          # 78 is the script's "no API key configured" exit. Not a failure.
+          if [ "$code" = "78" ]; then
+            echo "skipped=true" >> "$GITHUB_OUTPUT"
+            echo "### Events feed skipped" >> "$GITHUB_STEP_SUMMARY"
+            echo "\`TICKETMASTER_API_KEY\` is not set on this repository, so there was nothing to fetch." >> "$GITHUB_STEP_SUMMARY"
+            echo "Add it under Settings → Secrets and variables → Actions. A free key: <https://developer-acct.ticketmaster.com/user/register>" >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          exit $code
+
+      # The site has to still build with the new data before it is committed —
+      # a malformed feed should fail here, not on the live site.
+      - name: Build with the new feed
+        if: steps.pull.outputs.skipped != 'true'
+        run: npm run build
+
+      - name: Commit
+        if: steps.pull.outputs.skipped != 'true'
+        run: |
+          if git diff --quiet -- src/site/events.json; then
+            echo "No change to the feed this week." >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          n=$(node -e "console.log(JSON.parse(require('fs').readFileSync('src/site/events.json','utf8')).events.length)")
+          git config user.name  'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add src/site/events.json
+          git commit -m "Events feed: ${n} listings within reach of the building
+
+          Written by .github/workflows/events.yml from the Ticketmaster
+          Discovery API. Nothing here is hand-edited."
+          git push
+          {
+            echo "### Events feed updated"
+            echo ""
+            echo "${n} listings committed."
+            echo ""
+            echo '```'
+            cat /tmp/events.log
+            echo '```'
+          } >> "$GITHUB_STEP_SUMMARY"

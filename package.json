@@ -7,7 +7,8 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "refresh": "node scripts/refresh-availability.mjs"
+    "refresh": "node scripts/refresh-availability.mjs",
+    "events": "node scripts/refresh-events.mjs"
   },
   "devDependencies": {
     "astro": "^5.6.1",

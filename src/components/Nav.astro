@@ -1,19 +1,24 @@
 ---
 import Wordmark from './Wordmark.astro';
 import { formatPhone } from '../lib/site';
-const { site } = Astro.props as { site: any };
+// `base` is '' on the homepage, where every section link is a same-page hash,
+// and '/' on any other route, where the same hashes have to travel home first.
+const { site, base = '' } = Astro.props as { site: any; base?: string };
 const c = site.config;
 const phone = formatPhone(c.contact?.phone);
 const links = [
-  ['#about', 'The idea'],
-  ['#building', 'The building'],
-  ['#floor-plans', 'The homes'],
-  ['#neighborhood', 'Queen Anne'],
-  ['#faq', 'Questions'],
+  [`${base}#about`, 'The idea'],
+  [`${base}#building`, 'The building'],
+  [`${base}#floor-plans`, 'The homes'],
+  [`${base}#neighborhood`, 'Queen Anne'],
+  ['/events', "What's on"],
+  [`${base}#faq`, 'Questions'],
 ];
+const tourHref = `${base}#tour`;
+const topHref = base || '#top';
 ---
 <header class="nav" data-nav>
-  <a class="nav-brand" href="#top" aria-label={`${c.name} — top of page`}>
+  <a class="nav-brand" href={topHref} aria-label={`${c.name} — top of page`}>
     <Wordmark decorative />
   </a>
   <nav class="nav-links" aria-label="Sections">
@@ -21,7 +26,7 @@ const links = [
   </nav>
   <div class="nav-right">
     <a class="nav-phone mono" href={c.contact?.phoneHref}>{phone}</a>
-    <a class="btn btn--sm" href="#tour">Schedule a tour</a>
+    <a class="btn btn--sm" href={tourHref}>Schedule a tour</a>
     <button class="nav-burger" type="button" aria-expanded="false" aria-controls="menu" data-menu-toggle>
       <span class="nav-burger-l" aria-hidden="true"><i></i><i></i></span>
       <span class="mono">Menu</span>
@@ -35,7 +40,7 @@ const links = [
       {links.map(([href, label]) => (
         <a href={href} class="menu-link" data-menu-item><span class="h2">{label}</span></a>
       ))}
-      <a href="#tour" class="menu-link menu-link--cta" data-menu-item><span class="h2">Schedule a tour</span></a>
+      <a href={tourHref} class="menu-link menu-link--cta" data-menu-item><span class="h2">Schedule a tour</span></a>
     </nav>
     <div class="menu-foot" data-menu-item>
       <p class="label">{c.address.streetAddress}, {c.address.addressLocality}, {c.address.addressRegion} {c.address.postalCode}</p>

@@ -1,0 +1,81 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Nav from '../components/Nav.astro';
+import Events from '../components/Events.astro';
+import Footer from '../components/Footer.astro';
+import { getSite } from '../lib/site';
+import { getEvents } from '../lib/events';
+
+const site = getSite();
+const c = site.config;
+const feed = getEvents();
+const origin = c.domain.replace(/\/$/, '');
+
+// The whole point of the page, as far as a search engine is concerned. An
+// ItemList of real Event records is what earns an events rich result; it is
+// generated from the same feed the page renders, so it can't drift from it,
+// and an empty feed emits no list rather than an empty one.
+const eventLd = feed.events.map((e, i) => ({
+  '@type': 'ListItem',
+  position: i + 1,
+  item: {
+    '@type': 'Event',
+    name: e.title,
+    startDate: e.start,
+    ...(e.end ? { endDate: e.end } : {}),
+    eventStatus: 'https://schema.org/EventScheduled',
+    eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+    ...(e.url ? { url: e.url } : {}),
+    location: {
+      '@type': 'Place',
+      name: e.venue.name,
+      ...(e.venue.address
+        ? { address: { '@type': 'PostalAddress', streetAddress: e.venue.address, addressLocality: 'Seattle', addressRegion: 'WA', addressCountry: 'US' } }
+        : { address: { '@type': 'PostalAddress', addressLocality: 'Seattle', addressRegion: 'WA', addressCountry: 'US' } }),
+      ...(e.venue.lat != null && e.venue.lng != null
+        ? { geo: { '@type': 'GeoCoordinates', latitude: e.venue.lat, longitude: e.venue.lng } }
+        : {}),
+    },
+    ...(e.priceFrom != null
+      ? { offers: { '@type': 'Offer', price: e.priceFrom, priceCurrency: 'USD', availability: 'https://schema.org/InStock', ...(e.url ? { url: e.url } : {}) } }
+      : {}),
+  },
+}));
+
+const jsonLd: any[] = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: c.name, item: origin + '/' },
+      { '@type': 'ListItem', position: 2, name: "What's on near Niwa", item: origin + '/events' },
+    ],
+  },
+];
+if (eventLd.length) {
+  jsonLd.push({
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    name: `Events near ${c.name}, ${c.address.addressLocality}`,
+    numberOfItems: eventLd.length,
+    itemListElement: eventLd,
+  });
+}
+
+const page = {
+  path: '/events',
+  title: `What's on near Queen Anne · Events by ${c.name}, Seattle`,
+  description: `Concerts, theatre, sport and festivals within ${feed.window.radiusMiles} miles of ${c.address.streetAddress} in Queen Anne — Climate Pledge Arena, Seattle Center, Belltown and downtown. Refreshed weekly.`,
+  jsonLd,
+};
+---
+<BaseLayout site={site} page={page}>
+  <Nav site={site} base="/" />
+  <main id="main">
+    <Events site={site} />
+  </main>
+  <Footer site={site} />
+  <script>
+    import '../scripts/events.ts';
+  </script>
+</BaseLayout>
