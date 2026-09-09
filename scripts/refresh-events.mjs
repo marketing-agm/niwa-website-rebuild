@@ -11,10 +11,14 @@
 //                        Center's halls, the Paramount, the Moore, the
 //                        Crocodile. Needs a free key. Carries coordinates,
 //                        which is what the map is plotted from.
-//   queen-anne-chamber   the neighbourhood's own calendar — the Farmers
-//                        Market, Trick or Treat on the Ave, the Wine Walk, the
-//                        Tree Lighting. No key. This is the half that makes
-//                        the page about Queen Anne rather than about arenas.
+//   visit-seattle        the neighbourhood's cultural calendar, filtered to
+//                        their own "Queen Anne / Seattle Center" region — the
+//                        Festal festivals, the museums, the theatres. No key.
+//                        This is the half that makes the page about Queen Anne
+//                        rather than about arenas. No coordinates, so these
+//                        list on the page and not on the map.
+//   queen-anne-chamber    the best listings there are, and unreachable: see
+//                        the note at the top of that file.
 //
 // A source that fails or is unconfigured is reported and skipped; the others
 // still run. Deterministic for a given response, so it is safe on a schedule
@@ -34,8 +38,9 @@ import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 import * as ticketmaster from './sources/ticketmaster.mjs';
 import * as queenAnneChamber from './sources/queen-anne-chamber.mjs';
+import * as visitSeattle from './sources/visit-seattle.mjs';
 
-const SOURCES = [queenAnneChamber, ticketmaster];
+const SOURCES = [visitSeattle, queenAnneChamber, ticketmaster];
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const configPath = join(root, 'src/site/site.config.json');
@@ -71,24 +76,8 @@ const MAX = Number(arg('max', 60));
 // script can rely on sight unseen, so rather than guess at one, `--probe`
 // asks all of them what they actually serve and prints the answers.
 const PROBE = {
-  'queen-anne-chamber': {
-    base: 'https://www.queenannechamber.org',
-    extra: [
-      // The Chamber runs Modern Events Calendar, not The Events Calendar.
-      // wp/v2/mec-events returns a WordPress *post* — its `date` is when the
-      // listing was published, not when the event happens — so the only
-      // endpoint that can carry a start date is MEC's own.
-      'https://www.queenannechamber.org/wp-json/mec/v1/events',
-    ],
-  },
-  'visit-seattle': {
-    base: 'https://visitseattle.org',
-    extra: [
-      'https://visitseattle.org/wp-json/visitseattle/v1/events',
-      'https://visitseattle.org/wp-json/visitseattle/v1/neighborhoods',
-      'https://visitseattle.org/wp-json/visitwidget/v1/events',
-    ],
-  },
+  'queen-anne-chamber': { base: 'https://www.queenannechamber.org', extra: queenAnneChamber.probeUrls },
+  'visit-seattle': { base: 'https://visitseattle.org', extra: visitSeattle.probeUrls },
 };
 
 const grab = async (url, accept = 'application/json') => {

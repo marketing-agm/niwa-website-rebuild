@@ -116,8 +116,9 @@ Two sources, in `scripts/sources/`:
 
 | Source | Key? | What it brings |
 |---|---|---|
-| `queen-anne-chamber` | no | The neighbourhood's own calendar — the Farmers Market, Trick or Treat on the Ave, the Wine Walk, the Grand Tree Lighting. This is the half that makes the page about Queen Anne. |
+| `visit-seattle` | no | Their `visitseattle/v1/events` endpoint, filtered to their own **"Queen Anne / Seattle Center"** region — the Festal festivals, the museums, the theatres. No coordinates, so these list on the page and not on the map. |
 | `ticketmaster` | yes | The ticketed rooms — Climate Pledge Arena, Seattle Center's halls, the Paramount, the Moore, the Crocodile. Carries coordinates, which is what the map is plotted from. |
+| `queen-anne-chamber` | — | The best listings there are, and unreachable. Their Modern Events Calendar endpoint answers but returns nothing to an anonymous caller; four rounds of `--probe` found no other way in. Kept and called weekly, because the day it starts answering is the day this page gets much better. See the note at the top of that file. |
 
 ```bash
 npm run events                                # every source
