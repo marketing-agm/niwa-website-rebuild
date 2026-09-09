@@ -111,6 +111,23 @@ async function discover(name, base) {
     console.log(`  /wp-json/ → ${root.status || root.error} — the REST API looks switched off`);
   }
 
+  // A namespace is a plugin's front door. Listing its routes says exactly what
+  // that plugin will answer, which beats guessing at paths under it.
+  if (root.ok) {
+    let ns = [];
+    try { ns = JSON.parse(root.text)?.namespaces ?? []; } catch { /* handled above */ }
+    for (const one of ns.filter((n) => /event|mec|calendar|tribe|visitseattle|spc|visitwidget/i.test(n))) {
+      const r = await grab(`${base}/wp-json/${one}`);
+      if (!r.ok) { console.log(`  ${one} → ${r.status || r.error}`); continue; }
+      try {
+        const routes = Object.keys(JSON.parse(r.text)?.routes ?? {}).filter((x) => x !== `/${one}`);
+        console.log(`  ${one} routes: ${routes.length ? routes.join(', ') : '(none)'}`);
+      } catch {
+        console.log(`  ${one} answered ${r.status} ${r.type}, but not with JSON`);
+      }
+    }
+  }
+
   const types = await grab(`${base}/wp-json/wp/v2/types`);
   if (types.ok) {
     try {
@@ -126,7 +143,22 @@ async function discover(name, base) {
         const url = `${base}/wp-json/${r.ns ?? 'wp/v2'}/${r.rest}?per_page=1`;
         const hit = await grab(url);
         console.log(`    ${String(hit.status).padEnd(4)} ${hit.type.padEnd(20)} ${url}`);
-        if (hit.ok) console.log(`         ${hit.text.slice(0, 220).replace(/\s+/g, ' ')}`);
+        if (hit.ok) {
+          try {
+            const first = JSON.parse(hit.text)?.[0] ?? JSON.parse(hit.text);
+            console.log(`         fields: ${Object.keys(first).join(', ')}`);
+            if (first?.meta && typeof first.meta === 'object') {
+              const m = Object.keys(first.meta);
+              console.log(`         meta: ${m.length ? m.join(', ') : '(empty — dates are not exposed here)'}`);
+            }
+            // Whatever carries the date is the field this whole thing turns on.
+            for (const k of Object.keys(first)) {
+              if (/date|time|start|end/i.test(k)) console.log(`         ${k} = ${JSON.stringify(first[k]).slice(0, 120)}`);
+            }
+          } catch {
+            console.log(`         ${hit.text.slice(0, 200).replace(/\s+/g, ' ')}`);
+          }
+        }
       }
     } catch {
       console.log('  /wp-json/wp/v2/types did not parse');
