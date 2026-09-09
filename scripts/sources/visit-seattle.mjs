@@ -13,6 +13,13 @@ import { getJson, plain, utcFromLocal, DEFAULT_TZ } from './lib.mjs';
 
 const ENDPOINT = 'https://visitseattle.org/wp-json/visitseattle/v1/events';
 
+// Longer than this and it is an attraction, not an event. The line is drawn at
+// three months because that is where the two kinds actually separate: a
+// touring exhibition or a theatre season runs weeks, the permanent galleries
+// run years — "Nirvana: Taking Punk To the Masses" has been up since 2011. Six
+// weeks was the first attempt and it threw out a two-month play with them.
+const RUN_LIMIT_DAYS = 90;
+
 // The region the building is in, as Visit Seattle spells it.
 const REGION = /queen\s*anne|seattle\s*center/i;
 
@@ -69,16 +76,23 @@ export function normalise(raw, { days = 30 } = {}) {
     const startDay = String(ev?.start_date ?? '').slice(0, 10);
     if (!title || !/^\d{4}-\d{2}-\d{2}$/.test(startDay)) continue;
 
-    // An exhibition that opened in June and runs to December is "ongoing", not
-    // something on this week. Clamp a run that has already started to today, so
-    // it lists once, on the day someone could go — and drop anything whose run
-    // ended before now.
     const endDay = /^\d{4}-\d{2}-\d{2}$/.test(String(ev?.end_date ?? '').slice(0, 10))
       ? String(ev.end_date).slice(0, 10) : null;
     const startMs = Date.parse(`${startDay}T00:00:00Z`);
     const endMs = endDay ? Date.parse(`${endDay}T00:00:00Z`) : startMs;
     if (endMs < day0.getTime()) continue;
     if (startMs > cutoff.getTime()) continue;
+
+    // Most of what this feed carries is not an event. "Guitar Gallery",
+    // "Chihuly Garden and Glass", "Nirvana: Taking Punk To the Masses" — these
+    // are standing exhibitions with a run measured in years, and the first run
+    // put fourteen of them on today's date in a row, burying the two festivals
+    // that were actually on. A page called What's on is about things that
+    // start; the museums themselves are already on the neighbourhood section.
+    if ((endMs - startMs) / 864e5 > RUN_LIMIT_DAYS) continue;
+
+    // A limited run already under way is clamped to today, so it lists once, on
+    // a day someone could go, rather than at a start date in the past.
     const showDay = startMs < day0.getTime() ? day0.toISOString().slice(0, 10) : startDay;
 
     const key = `${title.toLowerCase()}|${showDay}`;
