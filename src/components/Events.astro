@@ -149,6 +149,23 @@ const miles = (e: SiteEvent) => (e.miles == null ? '' : e.miles < 0.15 ? 'next d
             {/* East of the axis, now that the ring labels have the west side. */}
             <text class="ev-ring-t ev-n" x={CX + 10} y={CY - RMAX - 8}>N</text>
           </g>
+          {/* Ripples in a layer of their own, under the pins and clipped to the
+              plate, so one can cross the whole raked field without escaping
+              it. Inside a pin they could only ever be a halo: a clip path
+              resolves in the user space of the element that references it, and
+              inside a translated group that space moves with the pin. */}
+          <defs>
+            <clipPath id="ev-plate"><circle cx={CX} cy={CY} r={RMAX} /></clipPath>
+          </defs>
+          <g class="ev-ripples" clip-path="url(#ev-plate)" aria-hidden="true">
+            {clusters.map((cl, ci) => (
+              <g class="ev-fx" data-ev-fx={`c${ci}`} transform={`translate(${cl.x} ${cl.y})`}>
+                <circle class="ev-ripple" r="12" />
+                <circle class="ev-ripple ev-ripple--2" r="12" />
+                <circle class="ev-ripple ev-ripple--3" r="12" />
+              </g>
+            ))}
+          </g>
           {clusters.map((cl, ci) => {
             const n = cl.ids.length;
             const r = n > 1 ? Math.min(15, Math.max(9, 6 + n)) : 6;
@@ -163,9 +180,6 @@ const miles = (e: SiteEvent) => (e.miles == null ? '' : e.miles < 0.15 ? 'next d
                 <circle class="ev-pin-hit" r="21" />
                 {/* Two rings that spread and fade, the way a stone set down in
                     a raked garden sends one out through the sand. */}
-                <circle class="ev-ripple" r={r} />
-                <circle class="ev-ripple ev-ripple--2" r={r} />
-                <circle class="ev-ripple ev-ripple--3" r={r} />
                 <circle class="ev-pin-dot" r={r} />
                 {n > 1 && <text class="ev-pin-n" y="4">{n}</text>}
               </g>
@@ -316,19 +330,22 @@ const miles = (e: SiteEvent) => (e.miles == null ? '' : e.miles < 0.15 ? 'next d
      line through the sand. They exist only while the pin is live, and reduced
      motion gets none of it. */
   .ev-ripple {
-    fill: none; stroke: var(--gold); stroke-width: 1.4;
+    fill: none; stroke: var(--gold); stroke-width: 1.2;
+    /* The stroke would otherwise be multiplied by the scale below and arrive
+       at the rim forty times too thick. */
+    vector-effect: non-scaling-stroke;
     transform-box: fill-box; transform-origin: center;
     opacity: 0; pointer-events: none;
   }
-  .ev-pin.is-lit .ev-ripple, .ev-pin.is-on .ev-ripple, .ev-pin:focus-visible .ev-ripple {
-    animation: ev-rake 3.2s cubic-bezier(0.16, 0.6, 0.3, 1) infinite;
-  }
-  .ev-ripple--2 { animation-delay: 1.06s !important; }
-  .ev-ripple--3 { animation-delay: 2.13s !important; }
+  /* 12 units out to about 500 — from the dot to the far side of the plate, so
+     it is a ripple crossing water rather than a ring around a pin. */
+  .ev-fx.is-lit .ev-ripple { animation: ev-rake 5s cubic-bezier(0.12, 0.5, 0.25, 1) infinite; }
+  .ev-ripple--2 { animation-delay: 1.66s !important; }
+  .ev-ripple--3 { animation-delay: 3.33s !important; }
   @keyframes ev-rake {
-    0%   { opacity: 0.34; transform: scale(1);   stroke-width: 1.4; }
-    55%  { opacity: 0.1; }
-    100% { opacity: 0;    transform: scale(3.6); stroke-width: 0.4; }
+    0%   { opacity: 0;    transform: scale(1); }
+    3%   { opacity: 0.32; }
+    100% { opacity: 0;    transform: scale(42); }
   }
 
   /* And the plate itself answers. Hovering the map sends a wave out through
@@ -355,7 +372,7 @@ const miles = (e: SiteEvent) => (e.miles == null ? '' : e.miles < 0.15 ? 'next d
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .ev-pin.is-lit .ev-ripple, .ev-pin.is-on .ev-ripple, .ev-pin:focus-visible .ev-ripple,
+    .ev-fx.is-lit .ev-ripple,
     .ev-map:hover .ev-rings circle, .ev-map.is-live .ev-rings circle { animation: none; }
   }
   .ev-pin-n { fill: var(--ink); text-anchor: middle; font-family: var(--sans); font-size: 12px; font-weight: 600; pointer-events: none; }

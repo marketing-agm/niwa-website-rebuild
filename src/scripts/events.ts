@@ -96,6 +96,7 @@ if (root) {
       if (on && p.dataset.evPin) chosen.add(p.dataset.evPin);
     }
     for (const [k, l] of labels) l.classList.toggle('is-lit', chosen.has(k));
+    for (const [k, f] of fx) f.classList.toggle('is-lit', chosen.has(k));
   };
 
   const clearVenue = () => {
@@ -147,6 +148,10 @@ if (root) {
   const labels = new Map<string, Element>(
     $$('[data-ev-label]').map((l) => [(l as HTMLElement).dataset.evLabel!, l]),
   );
+  // Ripples sit in their own clipped layer under the pins, keyed the same way.
+  const fx = new Map<string, Element>(
+    $$('[data-ev-fx]').map((f) => [(f as HTMLElement).dataset.evFx!, f]),
+  );
   const map = root.querySelector<SVGElement>('[data-ev-map]');
   const light = (pin: Element | null) => {
     const ids = pin ? pinIds.get(pin)! : null;
@@ -156,6 +161,7 @@ if (root) {
     for (const el of items()) el.classList.toggle('is-lit', !!ids && ids.has(el.dataset.evItem!));
     for (const p of pins) p.classList.toggle('is-lit', p === pin);
     for (const [k, l] of labels) l.classList.toggle('is-lit', k === key || chosen.has(k));
+    for (const [k, f] of fx) f.classList.toggle('is-lit', k === key || chosen.has(k));
   };
 
   for (const el of items()) {
