@@ -174,7 +174,7 @@ const miles = (e: SiteEvent) => (e.miles == null ? '' : e.miles < 0.15 ? 'next d
             {/* Each ring is drawn twice, the second a hair inside it and
                 fainter — a rake leaves a furrow, not a line. */}
             {RINGS.map((r, i) => (
-              <g class="ev-ring-turn" style={`--i:${i};--turn:${13 + i * 2.5}s;--dir:${i % 2 ? -1 : 1}`}>
+              <g class="ev-ring-turn" style={`--i:${i};--turn:${10 + i * 2}s;--dir:${i % 2 ? -1 : 1}`}>
                 <g class="ev-ring-swell">
                   <path class="ev-ring-a" d={wavyRing(rPx(r), i)} />
                   <path class="ev-ring-b" d={wavyRing(rPx(r), i, 3.5)} />
@@ -198,6 +198,14 @@ const miles = (e: SiteEvent) => (e.miles == null ? '' : e.miles < 0.15 ? 'next d
               it. Inside a pin they could only ever be a halo: a clip path
               resolves in the user space of the element that references it, and
               inside a translated group that space moves with the pin. */}
+          {/* The call. Every few seconds the building sends one out: a ring
+              that crosses the plate, keeps going past the rim and off the map
+              entirely, thinning until the page absorbs it. This layer is the
+              one thing here that is deliberately not clipped. */}
+          <g class="ev-call" aria-hidden="true">
+            <circle class="ev-call-r" cx={CX} cy={CY} r="10" />
+            <circle class="ev-call-r ev-call-r--2" cx={CX} cy={CY} r="10" />
+          </g>
           <defs>
             <clipPath id="ev-plate"><circle cx={CX} cy={CY} r={RMAX} /></clipPath>
           </defs>
@@ -344,7 +352,11 @@ const miles = (e: SiteEvent) => (e.miles == null ? '' : e.miles < 0.15 ? 'next d
 </section>
 
 <style>
-  .ev { padding-top: clamp(28px, 4vw, 64px); }
+  /* clip, not hidden, and on one axis only: the call is meant to spill up and
+     down the page, but scrollable overflow to the sides would hand the
+     document a horizontal scrollbar. overflow-x: clip is the one value that
+     stops that without forcing the other axis to scroll. */
+  .ev { padding-top: clamp(28px, 4vw, 64px); overflow-x: clip; }
   .ev-head { padding: 0 var(--inset) clamp(28px, 3.4vw, 52px); display: grid; gap: 14px; }
   .ev-title { max-width: 16ch; }
   .ev-title em { font-style: italic; font-weight: 400; }
@@ -400,38 +412,40 @@ const miles = (e: SiteEvent) => (e.miles == null ? '' : e.miles < 0.15 ? 'next d
   /* The surface is never quite still. Each ring turns at its own pace and the
      one outside it turns the other way, so the crests drift past each other
      and the figure moves the way water does when nothing has touched it —
-     thirteen to twenty-five seconds a revolution, which is slow enough to
-     read as drift rather than as a spinner. */
-  .ev-ring-turn { animation: ev-drift var(--turn, 18s) linear infinite; }
+     ten to eighteen seconds a revolution, which is quick enough to feel
+     alive and slow enough not to read as a spinner. */
+  .ev-ring-turn { animation: ev-drift var(--turn, 14s) linear infinite; }
   @keyframes ev-drift {
     to { transform: rotate(calc(var(--dir, 1) * 360deg)); }
   }
 
-  /* And when something touches it, a wave crosses the whole figure. Each ring
-     swells, brightens and settles a beat after the one inside it, so the
-     wave travels from the building out to the rim. */
+  /* A wave crosses the whole figure, always, not only when touched. Each ring
+     swells and settles a third of a second after the one inside it, so what
+     you see is one pulse travelling from the building out to the rim — the
+     same shape as the call, read off the sand instead of the water. */
+  .ev-ring-swell { animation: ev-sand 3.2s ease-in-out infinite; }
+  /* Touching the map quickens the pulse and lights the leading line. The
+     ghost inside it is the furrow's far wall and stays put, which is what
+     keeps the pair reading as one rake stroke rather than as two rings. */
   @media (hover: hover) {
-    .ev-map:hover .ev-ring-swell { animation: ev-sand 4.2s ease-in-out infinite; }
-    .ev-map:hover .ev-ring-a { animation: ev-sand-lit 4.2s ease-in-out infinite; }
+    .ev-map:hover .ev-ring-swell { animation-duration: 2.1s; }
+    .ev-map:hover .ev-ring-a { animation: ev-sand-lit 2.1s ease-in-out infinite; }
   }
-  .ev-map.is-live .ev-ring-swell { animation: ev-sand 4.2s ease-in-out infinite; }
-  .ev-map.is-live .ev-ring-a { animation: ev-sand-lit 4.2s ease-in-out infinite; }
-  /* Only the leading line brightens. The ghost inside it is the furrow's far
-     wall and stays put, which is what keeps the pair reading as one rake
-     stroke rather than as two rings. */
-  .ev-ring-swell, .ev-ring-a { animation-delay: calc(var(--i, 0) * 0.26s) !important; }
+  .ev-map.is-live .ev-ring-swell { animation-duration: 2.1s; }
+  .ev-map.is-live .ev-ring-a { animation: ev-sand-lit 2.1s ease-in-out infinite; }
+  .ev-ring-swell, .ev-ring-a { animation-delay: calc(var(--i, 0) * 0.32s) !important; }
 
-  /* The swell is 2% — about five units at the rim and less on every ring
+  /* The swell is 2.8% — about seven units at the rim and less on every ring
      inside it. Water, not a distance error: the ring that reads three miles
-     moves by a fiftieth of one. The undershoot at 70% is the settle; without
-     it the ring breathes instead of rippling. The bright peak is derived from
-     the palette rather than typed in, and lands a little under twice the
-     rings' resting weight — enough that the eye catches something crossing,
-     not enough to look like the map is signalling. */
+     moves by a thirty-fifth of one. The undershoot at 70% is the settle;
+     without it the ring breathes instead of rippling. The bright peak is
+     derived from the palette rather than typed in, and lands a little under
+     twice the rings' resting weight — enough that the eye catches something
+     crossing, not enough to look like the map is signalling. */
   @keyframes ev-sand {
     0%   { transform: scale(1); }
-    35%  { transform: scale(1.02); }
-    70%  { transform: scale(0.996); }
+    35%  { transform: scale(1.028); }
+    70%  { transform: scale(0.993); }
     100% { transform: scale(1); }
   }
   @keyframes ev-sand-lit {
@@ -439,9 +453,34 @@ const miles = (e: SiteEvent) => (e.miles == null ? '' : e.miles < 0.15 ? 'next d
     35%      { stroke: color-mix(in srgb, var(--fg) 22%, transparent); }
   }
 
+  /* The call itself. It starts at the building, crosses the plate in about a
+     second and then spends five more thinning out across the page — which is
+     why the fade is nearly all of the keyframe and the growth is nearly none
+     of it. Two of them, half a cycle apart, so one is always somewhere on
+     screen and there is never a crowd. Opacity holds on a plateau rather
+     than decaying with the growth: a ring spread across the page has its
+     light spread with it, so a straight fade left it invisible by the time it
+     mattered. It tops out at 0.2 — this line gets drawn across the lede and
+     the listings, and it has to pass over them without competing. */
+  .ev-call-r {
+    fill: none; stroke: var(--gold); stroke-width: 1.1;
+    vector-effect: non-scaling-stroke;
+    transform-box: fill-box; transform-origin: center;
+    opacity: 0; pointer-events: none;
+    animation: ev-call 7.2s cubic-bezier(0.16, 0.62, 0.3, 1) infinite;
+  }
+  .ev-call-r--2 { animation-delay: 3.6s; }
+  @keyframes ev-call {
+    0%   { opacity: 0;    transform: scale(1); }
+    4%   { opacity: 0.2; }
+    30%  { opacity: 0.15; }
+    60%  { opacity: 0.075; }
+    100% { opacity: 0;    transform: scale(78); }
+  }
+
   @media (prefers-reduced-motion: reduce) {
     .ev-fx.is-lit .ev-ripple,
-    .ev-ring-turn, .ev-ring-swell, .ev-ring-a { animation: none; }
+    .ev-ring-turn, .ev-ring-swell, .ev-ring-a, .ev-call-r { animation: none; }
   }
   .ev-pin-n { fill: var(--ink); text-anchor: middle; font-family: var(--sans); font-size: 12px; font-weight: 600; pointer-events: none; }
   .ev-pin-label {
