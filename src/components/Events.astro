@@ -47,6 +47,66 @@ const at = (p: { east: number; north: number }) => {
 };
 const ringLabel = (r: number) => (r < 1 ? `${r === 0.25 ? '¼' : '½'} mi` : `${r} mi`);
 
+// Venues that land on top of each other become one pin.
+//
+// Clustered by where they are drawn, not by where they are: the square-root
+// scale means two venues the same distance apart can sit very differently on
+// the plate, and what matters here is only whether their dots collide. Eleven
+// of the fifteen fall inside a mile to the south-east — the whole of downtown
+// from this doorstep — and on a phone that was a knot nobody could tap apart.
+//
+// Agglomerative and run to a fixed point rather than in one pass, so the
+// result does not depend on the order the venues arrive in. Fifteen pins, so
+// the cost of doing it properly is nothing.
+// Also the floor on how far apart two pins can end up, which is what lets the
+// invisible tap circles below be sized without overlapping: at 44 units apart
+// a 21-unit hit radius can never reach into its neighbour. Two pins did reach,
+// at first, and the covered one could not be tapped at all.
+const COLLIDE = 44; // viewBox units
+type Cluster = { x: number; y: number; venues: Pin[]; ids: string[]; miles: number };
+
+let clusters: Cluster[] = pins.map((p) => {
+  const { x, y } = at(p);
+  return { x, y, venues: [p], ids: [...p.ids], miles: p.miles };
+});
+
+for (let guard = 0; guard < 200; guard++) {
+  let best: [number, number, number] | null = null;
+  for (let i = 0; i < clusters.length; i++) {
+    for (let j = i + 1; j < clusters.length; j++) {
+      const d = Math.hypot(clusters[i].x - clusters[j].x, clusters[i].y - clusters[j].y);
+      if (d < COLLIDE && (!best || d < best[2])) best = [i, j, d];
+    }
+  }
+  if (!best) break;
+  const [i, j] = best;
+  const a = clusters[i], b = clusters[j];
+  // Weighted by how much is on at each, so the dot sits nearer the busier room.
+  const wa = a.ids.length, wb = b.ids.length, wt = wa + wb;
+  clusters[i] = {
+    x: (a.x * wa + b.x * wb) / wt,
+    y: (a.y * wa + b.y * wb) / wt,
+    venues: [...a.venues, ...b.venues].sort((m, n) => n.ids.length - m.ids.length),
+    ids: [...a.ids, ...b.ids],
+    miles: Math.min(a.miles, b.miles),
+  };
+  clusters.splice(j, 1);
+}
+clusters.sort((a, b) => a.ids.length - b.ids.length); // busiest drawn last, on top
+
+/** Up to two venue names, then a count. One line each. */
+const clusterLines = (cl: Cluster): string[] => {
+  if (cl.venues.length === 1) return [cl.venues[0].name];
+  const shown = cl.venues.slice(0, 2).map((v) => v.name);
+  const rest = cl.venues.length - shown.length;
+  return rest > 0 ? [...shown, `and ${rest} more`] : shown;
+};
+const clusterLabel = (cl: Cluster) => {
+  const n = cl.ids.length;
+  const where = cl.venues.length === 1 ? cl.venues[0].name : `${cl.venues.length} venues`;
+  return `${n} event${n === 1 ? '' : 's'} at ${where}, ${cl.miles.toFixed(1)} miles away`;
+};
+
 const groups = byDay(events);
 const updated = feed.updated
   ? new Intl.DateTimeFormat('en-US', { timeZone: 'America/Los_Angeles', month: 'long', day: 'numeric' }).format(new Date(feed.updated))
@@ -74,7 +134,7 @@ const miles = (e: SiteEvent) => (e.miles == null ? '' : e.miles < 0.15 ? 'next d
   {events.length > 0 && (
     <>
       <div class="ev-map-wrap">
-        <svg class="ev-map" viewBox={`0 0 ${W} ${H}`} role="img" aria-label={`Map of ${pins.length} venues within ${fitMiles} miles of ${c.name}`} data-ev-map>
+        <svg class="ev-map" viewBox={`0 0 ${W} ${H}`} role="img" aria-label={`Map of ${pins.length} venue${pins.length === 1 ? '' : 's'} within ${fitMiles} miles of ${c.name}`} data-ev-map>
           <g class="ev-rings" aria-hidden="true">
             {RINGS.map((r) => <circle cx={CX} cy={CY} r={rPx(r)} />)}
             {/* West of the axis, not east: the pins fall where the city is,
@@ -86,17 +146,34 @@ const miles = (e: SiteEvent) => (e.miles == null ? '' : e.miles < 0.15 ? 'next d
             {/* East of the axis, now that the ring labels have the west side. */}
             <text class="ev-ring-t ev-n" x={CX + 10} y={CY - RMAX - 8}>N</text>
           </g>
-          {pins.map((p) => {
-            const { x, y } = at(p);
+          {clusters.map((cl, ci) => {
+            const n = cl.ids.length;
+            const r = n > 1 ? Math.min(15, Math.max(9, 6 + n)) : 6;
+            const lines = clusterLines(cl);
             return (
-              <g class="ev-pin" data-ev-pin={p.key} data-ev-pin-ids={p.ids.join(' ')} transform={`translate(${x} ${y})`} tabindex="0" role="button"
-                 aria-label={`${p.name}, ${p.ids.length} event${p.ids.length === 1 ? '' : 's'}, ${p.miles.toFixed(1)} miles away`}>
-                <circle class="ev-pin-hit" r="20" />
-                {/* A dot carrying a count needs room for it: at two events the
-                    radius was 8 and the numeral was taller than the circle. */}
-                <circle class="ev-pin-dot" r={p.ids.length > 1 ? Math.min(13, Math.max(9, 6 + p.ids.length)) : 6} />
-                {p.ids.length > 1 && <text class="ev-pin-n" y="4">{p.ids.length}</text>}
-                <text class="ev-pin-label" y="-20">{p.name}</text>
+              <g class="ev-pin" data-ev-pin={`c${ci}`} data-ev-pin-ids={cl.ids.join(' ')}
+                 transform={`translate(${cl.x} ${cl.y})`} tabindex="0" role="button" aria-label={clusterLabel(cl)}>
+                {/* 21 units: half of COLLIDE, so hit areas tile rather than
+                    steal. About 24px across on a phone, which is the smallest
+                    target WCAG asks for — and the cards below carry everything
+                    a pin does, for anyone who would rather not aim. */}
+                <circle class="ev-pin-hit" r="21" />
+                <circle class="ev-pin-dot" r={r} />
+                {n > 1 && <text class="ev-pin-n" y="4">{n}</text>}
+                {/* Below the dot when the pin is south of the building, above
+                    when it is north — the label reads outward, away from the
+                    crowded middle, instead of over its neighbours. */}
+                {(() => {
+                  const below = cl.y > CY;
+                  const y = below ? r + 26 : -r - 10;
+                  return (
+                    <text class="ev-pin-label" y={y}>
+                      {lines.map((line, i) => (
+                        <tspan x="0" dy={i === 0 ? (below ? 0 : -(lines.length - 1) * 17) : 17}>{line}</tspan>
+                      ))}
+                    </text>
+                  );
+                })()}
               </g>
             );
           })}
@@ -107,7 +184,7 @@ const miles = (e: SiteEvent) => (e.miles == null ? '' : e.miles < 0.15 ? 'next d
           </g>
         </svg>
         <p class="ev-map-note small">
-          Distances are straight-line from {c.address.streetAddress}. Tap a venue to jump to its events.
+          Distances are straight-line from {c.address.streetAddress}. Tap a pin to jump to its events{pins.length > clusters.length ? '; venues that fall on the same spot share one' : ''}.
           {feed.unpinned > 0 && ` ${feed.unpinned} ${feed.unpinned === 1 ? 'listing gives' : 'listings give'} no location, so ${feed.unpinned === 1 ? 'it is' : 'they are'} below but not on the map.`}
         </p>
       </div>

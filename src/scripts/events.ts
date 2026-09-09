@@ -77,26 +77,44 @@ if (root) {
   }));
 
   // ---- the map answers to the cards, and the cards to the map -------------
-  const light = (venue: string | null) => {
-    for (const el of items()) el.classList.toggle('is-lit', !!venue && el.dataset.evVenue === venue);
-    for (const p of pins) p.classList.toggle('is-lit', !!venue && p.dataset.evPin === venue);
+  //
+  // Matched on event ids rather than venue names, because a pin can now stand
+  // for several venues at once: the ones whose dots would otherwise overlap
+  // are drawn as one. A pin owns a set of ids; a card belongs to whichever pin
+  // owns its own.
+  const idsOf = (pin: Element) => new Set((pin as HTMLElement).dataset.evPinIds?.split(' ').filter(Boolean) ?? []);
+  const pinIds = new Map<Element, Set<string>>(pins.map((p) => [p, idsOf(p)]));
+  const pinFor = (id: string) => pins.find((p) => pinIds.get(p)!.has(id)) ?? null;
+
+  const light = (pin: Element | null) => {
+    const ids = pin ? pinIds.get(pin)! : null;
+    for (const el of items()) el.classList.toggle('is-lit', !!ids && ids.has(el.dataset.evItem!));
+    for (const p of pins) p.classList.toggle('is-lit', p === pin);
+    // SVG has no z-index: what is painted last is on top. A lit pin's label is
+    // wider than the pin, so without this it can be drawn underneath whichever
+    // pins happen to come after it in the markup.
+    if (pin?.parentNode) pin.parentNode.appendChild(pin);
   };
+
   for (const el of items()) {
-    el.addEventListener('mouseenter', () => light(el.dataset.evVenue ?? null));
+    const mine = () => pinFor(el.dataset.evItem!);
+    el.addEventListener('mouseenter', () => light(mine()));
     el.addEventListener('mouseleave', () => light(null));
-    el.addEventListener('focusin', () => light(el.dataset.evVenue ?? null));
+    el.addEventListener('focusin', () => light(mine()));
     el.addEventListener('focusout', () => light(null));
   }
+
   for (const pin of pins) {
-    const venue = pin.dataset.evPin ?? null;
-    pin.addEventListener('mouseenter', () => light(venue));
+    pin.addEventListener('mouseenter', () => light(pin));
     pin.addEventListener('mouseleave', () => light(null));
-    pin.addEventListener('focus', () => light(venue));
+    pin.addEventListener('focus', () => light(pin));
     pin.addEventListener('blur', () => light(null));
     const jump = () => {
-      const target = items().find((el) => el.dataset.evVenue === venue && !el.hidden);
+      const ids = pinIds.get(pin)!;
+      // The soonest of this pin's events that the current filter is showing.
+      const target = items().find((el) => ids.has(el.dataset.evItem!) && !el.hidden);
       if (!target) return;
-      light(venue);
+      light(pin);
       // The page scroller is Lenis on desktop; scrollIntoView is what it wraps,
       // and 'center' keeps the card clear of the fixed nav either way.
       target.scrollIntoView({ behavior: 'smooth', block: 'center' });
