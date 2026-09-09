@@ -19,7 +19,8 @@ export type RawEvent = {
   url?: string | null;
   image?: string | null;
   priceFrom?: number | null;
-  note?: string | null;
+  /** Which calendar this came from — see scripts/sources/. */
+  source?: string | null;
 };
 
 export type SiteEvent = RawEvent & {
@@ -79,10 +80,18 @@ export function localDay(iso: string): string {
   return `${get('year')}-${get('month')}-${get('day')}`;
 }
 
+// Number(null) is 0, not NaN, so a feed that gives no coordinates would place
+// the event at 0°N 0°E — the Gulf of Guinea, 7,679 miles from Queen Anne, with
+// a pin to match. A missing coordinate has to read as missing.
+const coord = (v: unknown) => (v === null || v === undefined || v === '' ? NaN : Number(v));
+
 function decorate(e: RawEvent): SiteEvent {
-  const hasGeo = Number.isFinite(Number(e.venue?.lat)) && Number.isFinite(Number(e.venue?.lng));
-  const miles = hasGeo ? milesBetween(HOME.lat, HOME.lng, Number(e.venue.lat), Number(e.venue.lng)) : null;
-  const en = hasGeo ? eastNorth(Number(e.venue.lat), Number(e.venue.lng)) : null;
+  const lat = coord(e.venue?.lat);
+  const lng = coord(e.venue?.lng);
+  // 0,0 is the other way a feed says "I don't know": a real venue is never there.
+  const hasGeo = Number.isFinite(lat) && Number.isFinite(lng) && !(lat === 0 && lng === 0);
+  const miles = hasGeo ? milesBetween(HOME.lat, HOME.lng, lat, lng) : null;
+  const en = hasGeo ? eastNorth(lat, lng) : null;
   return {
     ...e,
     miles,
@@ -100,12 +109,15 @@ function decorate(e: RawEvent): SiteEvent {
 
 export type EventsFeed = {
   updated: string | null;
-  source: string | null;
+  /** The calendars that contributed, for the credit line. */
+  sources: string[];
   window: { days: number; radiusMiles: number };
   events: SiteEvent[];
   categories: string[];
   /** Farthest event, in miles — what the map has to fit. */
   maxMiles: number;
+  /** Events the feed gave no coordinates for, so they carry no pin. */
+  unpinned: number;
 };
 
 export function getEvents(): EventsFeed {
@@ -119,11 +131,12 @@ export function getEvents(): EventsFeed {
   const maxMiles = events.reduce((m, e) => Math.max(m, e.miles ?? 0), 0);
   return {
     updated: feed.updated ?? null,
-    source: feed.source ?? null,
+    sources: Array.isArray(feed.sources) ? feed.sources : (feed.source ? [feed.source] : []),
     window: feed.window ?? { days: 30, radiusMiles: 3 },
     events,
     categories,
     maxMiles,
+    unpinned: events.filter((e) => e.miles == null).length,
   };
 }
 

@@ -1,6 +1,6 @@
 {
   "updated": null,
-  "source": null,
+  "sources": [],
   "window": { "days": 30, "radiusMiles": 3 },
   "events": []
 }

@@ -48,6 +48,12 @@ const groups = byDay(events);
 const updated = feed.updated
   ? new Intl.DateTimeFormat('en-US', { timeZone: 'America/Los_Angeles', month: 'long', day: 'numeric' }).format(new Date(feed.updated))
   : null;
+// "A and B", "A, B and C" — a credit line, not a list of vendors.
+const credit = feed.sources.length
+  ? feed.sources.length === 1
+    ? feed.sources[0]
+    : `${feed.sources.slice(0, -1).join(', ')} and ${feed.sources[feed.sources.length - 1]}`
+  : null;
 const miles = (e: SiteEvent) => (e.miles == null ? '' : e.miles < 0.15 ? 'next door' : `${e.miles.toFixed(1)} mi`);
 ---
 <section class="section ev" id="events" data-events>
@@ -56,10 +62,10 @@ const miles = (e: SiteEvent) => (e.miles == null ? '' : e.miles < 0.15 ? 'next d
     <h1 class="h1 ev-title" data-reveal>What's on, <em>close to home.</em></h1>
     <p class="lead ev-lede" data-reveal>
       {events.length > 0
-        ? `Everything on sale within ${win.radiusMiles} miles of the front door over the next ${win.days} days. Climate Pledge Arena is at the end of the block; most of the rest is a walk.`
+        ? `The neighbourhood's own calendar and everything on sale within ${win.radiusMiles} miles of the front door, over the next ${win.days} days. Climate Pledge Arena is at the end of the block; most of the rest is a walk.`
         : `This page lists what's on within ${win.radiusMiles} miles of the front door. The feed refreshes every Monday — nothing is listed right now.`}
     </p>
-    {updated && <p class="mono ev-updated">Updated {updated}{feed.source ? ` · ${feed.source}` : ''}</p>}
+    {updated && <p class="mono ev-updated">Updated {updated}{credit ? ` · ${credit}` : ''}</p>}
   </div>
 
   {events.length > 0 && (
@@ -91,7 +97,10 @@ const miles = (e: SiteEvent) => (e.miles == null ? '' : e.miles < 0.15 ? 'next d
             <text class="ev-home-t" y="30">{c.name.replace(' Apartments', '')}</text>
           </g>
         </svg>
-        <p class="ev-map-note small">Distances are straight-line from {c.address.streetAddress}. Tap a venue to jump to its events.</p>
+        <p class="ev-map-note small">
+          Distances are straight-line from {c.address.streetAddress}. Tap a venue to jump to its events.
+          {feed.unpinned > 0 && ` ${feed.unpinned} ${feed.unpinned === 1 ? 'listing gives' : 'listings give'} no location, so ${feed.unpinned === 1 ? 'it is' : 'they are'} below but not on the map.`}
+        </p>
       </div>
 
       <div class="ev-bar">
@@ -157,7 +166,7 @@ const miles = (e: SiteEvent) => (e.miles == null ? '' : e.miles < 0.15 ? 'next d
   {events.length === 0 && (
     <div class="ev-none">
       <p class="h3">The feed is empty.</p>
-      <p class="body">It refreshes automatically every Monday morning. If it stays empty, the key behind it needs renewing.</p>
+      <p class="body">It refreshes automatically every Monday morning, from the Queen Anne Chamber of Commerce calendar and from Ticketmaster. If it stays empty, one of the two needs looking at.</p>
     </div>
   )}
 </section>

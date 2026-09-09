@@ -1,34 +1,41 @@
-// Refresh src/site/events.json from the Ticketmaster Discovery API.
+// Refresh src/site/events.json from every configured events source.
 //
 // The events page is only as good as this file, and this file is only ever
 // written by this script — nothing on that page is typed by hand, because a
 // leasing site inventing an event is worse than a leasing site with no events
 // page at all.
 //
-// Source: Ticketmaster Discovery API. It is free, it needs one key, and it is
-// the only feed that covers the venues this building actually sits between —
-// Climate Pledge Arena is at the end of the block, and Seattle Center's halls,
-// the Paramount, the Neptune, the Moore and the Crocodile are all inside a
-// three-mile circle. It returns a venue latitude and longitude with every
-// event, which is what the map is plotted from.
+// Sources live in scripts/sources/ and each returns records in one shape:
 //
-// Deterministic for a given response: same input, same output, so it is safe on
-// a schedule and a no-op diff means nothing changed.
+//   ticketmaster         the ticketed rooms — Climate Pledge Arena, Seattle
+//                        Center's halls, the Paramount, the Moore, the
+//                        Crocodile. Needs a free key. Carries coordinates,
+//                        which is what the map is plotted from.
+//   queen-anne-chamber   the neighbourhood's own calendar — the Farmers
+//                        Market, Trick or Treat on the Ave, the Wine Walk, the
+//                        Tree Lighting. No key. This is the half that makes
+//                        the page about Queen Anne rather than about arenas.
 //
-// Discovery allows 5,000 calls a day and 5 a second. This makes at most two,
-// once a week.
+// A source that fails or is unconfigured is reported and skipped; the others
+// still run. Deterministic for a given response, so it is safe on a schedule
+// and a no-op diff means nothing changed.
 //
 // Usage:
-//   TICKETMASTER_API_KEY=… npm run events
-//   npm run events -- --dry-run                        # report only, no write
-//   npm run events -- --source-file /tmp/tm.json       # offline, from a saved response
-//   npm run events -- --radius 5 --days 45             # widen the net
-//
-// A free key: https://developer-acct.ticketmaster.com/user/register
+//   npm run events                                   # every source
+//   npm run events -- --dry-run                      # report only, no write
+//   npm run events -- --only queen-anne-chamber      # one source
+//   npm run events -- --source-file f.json --source ticketmaster
+//   npm run events -- --fixtures test/fixtures        # all sources, offline
+//   npm run events -- --radius 5 --days 45           # widen the net
+//   npm run events -- --probe                        # what is each site serving?
 
 import { readFileSync, writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
+import * as ticketmaster from './sources/ticketmaster.mjs';
+import * as queenAnneChamber from './sources/queen-anne-chamber.mjs';
+
+const SOURCES = [queenAnneChamber, ticketmaster];
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const configPath = join(root, 'src/site/site.config.json');
@@ -40,225 +47,105 @@ const arg = (name, fallback) => {
   return i !== -1 && args[i + 1] ? args[i + 1] : fallback;
 };
 const dryRun = args.includes('--dry-run');
+const probe = args.includes('--probe');
+const only = arg('only', null);
 const sourceFile = arg('source-file', null);
+const sourceFileFor = arg('source', null);
+// A directory of saved responses named <source-id>.json. The offline way to
+// exercise the merge across sources, which one --source-file cannot do.
+const fixtures = arg('fixtures', null);
 
 const config = JSON.parse(readFileSync(configPath, 'utf8'));
-const HOME = { lat: Number(config.geo?.latitude), lng: Number(config.geo?.longitude) };
-if (!Number.isFinite(HOME.lat) || !Number.isFinite(HOME.lng)) {
+const home = { lat: Number(config.geo?.latitude), lng: Number(config.geo?.longitude) };
+if (!Number.isFinite(home.lat) || !Number.isFinite(home.lng)) {
   throw new Error('[events] src/site/site.config.json has no geo.latitude / geo.longitude to search around');
 }
 
-const RADIUS = Number(arg('radius', 3));      // miles
-const DAYS = Number(arg('days', 30));         // how far ahead to look
-const MAX = Number(arg('max', 60));           // how many to keep
-const PAGE_SIZE = 100;                        // Discovery API's cap per page
+const radiusMiles = Number(arg('radius', 3));
+const days = Number(arg('days', 30));
+const MAX = Number(arg('max', 60));
 
-// ---- fetch ----------------------------------------------------------------
-const iso = (d) => d.toISOString().replace(/\.\d{3}Z$/, 'Z');
-
-// Discovery marks `latlong` deprecated — "may be removed in a future release,
-// please use geoPoint instead" — and geoPoint wants a geohash, not a pair of
-// decimals. Nine characters is a box about five metres across, which is the
-// front door; `radius` does the rest of the work.
-const B32 = '0123456789bcdefghjkmnpqrstuvwxyz';
-function geohash(lat, lng, precision = 9) {
-  let idx = 0, bit = 0, even = true, hash = '';
-  let latMin = -90, latMax = 90, lngMin = -180, lngMax = 180;
-  while (hash.length < precision) {
-    if (even) {
-      const m = (lngMin + lngMax) / 2;
-      if (lng >= m) { idx = idx * 2 + 1; lngMin = m; } else { idx *= 2; lngMax = m; }
-    } else {
-      const m = (latMin + latMax) / 2;
-      if (lat >= m) { idx = idx * 2 + 1; latMin = m; } else { idx *= 2; latMax = m; }
-    }
-    even = !even;
-    if (++bit === 5) { hash += B32[idx]; bit = 0; idx = 0; }
-  }
-  return hash;
-}
-
-async function fetchPages(key) {
-  const start = new Date();
-  const end = new Date(start.getTime() + DAYS * 864e5);
-  const out = [];
-  // Two pages is 200 events before filtering, which is more than a three-mile
-  // circle produces in a month; the loop stops early when it can. Discovery
-  // only pages to the 1000th item (size × page < 1000), so at a size of 100
-  // there are eight more pages in hand if the window is ever widened.
-  for (let page = 0; page < 2; page++) {
-    const url = new URL('https://app.ticketmaster.com/discovery/v2/events.json');
-    url.searchParams.set('apikey', key);
-    url.searchParams.set('geoPoint', geohash(HOME.lat, HOME.lng));
-    url.searchParams.set('radius', String(Math.ceil(RADIUS)));
-    url.searchParams.set('unit', 'miles');
-    url.searchParams.set('countryCode', 'US');
-    url.searchParams.set('startDateTime', iso(start));
-    url.searchParams.set('endDateTime', iso(end));
-    // Discovery defaults these to "no" once a date range is sent, but a page
-    // that prints a date cannot carry an event whose date is a question mark,
-    // so they are stated rather than assumed.
-    url.searchParams.set('includeTBA', 'no');
-    url.searchParams.set('includeTBD', 'no');
-    url.searchParams.set('includeTest', 'no');
-    url.searchParams.set('size', String(PAGE_SIZE));
-    url.searchParams.set('page', String(page));
-    url.searchParams.set('sort', 'date,asc');
-
-    // Logged with the key removed, so a run that comes back empty can be
-    // diagnosed from the Actions log without pasting a secret into it.
-    if (page === 0) console.log(`[events] GET ${String(url).replace(/apikey=[^&]*/, 'apikey=…')}`);
-    const res = await fetch(url, { headers: { accept: 'application/json' } });
-    if (!res.ok) throw new Error(`[events] Ticketmaster returned ${res.status} ${res.statusText}`);
-    const body = await res.json();
-    const batch = body?._embedded?.events ?? [];
-    out.push(...batch);
-    const totalPages = body?.page?.totalPages ?? 1;
-    if (batch.length < PAGE_SIZE || page + 1 >= totalPages) break;
-  }
-  return out;
-}
-
-// ---- normalise -------------------------------------------------------------
-const R_MILES = 3958.7613;
-const rad = (d) => (d * Math.PI) / 180;
-const milesBetween = (aLat, aLng, bLat, bLng) => {
-  const dLat = rad(bLat - aLat), dLng = rad(bLng - aLng);
-  const h = Math.sin(dLat / 2) ** 2 + Math.cos(rad(aLat)) * Math.cos(rad(bLat)) * Math.sin(dLng / 2) ** 2;
-  return 2 * R_MILES * Math.asin(Math.min(1, Math.sqrt(h)));
+// ---- probe -----------------------------------------------------------------
+// Two of the three calendars worth having publish a documented JSON endpoint.
+// The third — Visit Seattle — has a filterable events index but no API this
+// script can rely on sight unseen, so rather than guess at one, `--probe`
+// asks all of them what they actually serve and prints the answers.
+const PROBE = {
+  'queen-anne-chamber': queenAnneChamber.probeUrls,
+  'visit-seattle': [
+    'https://visitseattle.org/wp-json/wp/v2/types',
+    'https://visitseattle.org/wp-json/wp/v2/events?per_page=1',
+    'https://visitseattle.org/wp-json/tribe/events/v1/events?per_page=1',
+    'https://visitseattle.org/events/feed/',
+    'https://visitseattle.org/things-to-do/events/feed/',
+  ],
 };
 
-// The API's own segments, mapped to words a person reading a leasing site would
-// use. Anything unrecognised keeps the segment name rather than being dropped.
-const SEGMENTS = {
-  Music: 'Music',
-  Sports: 'Sports',
-  'Arts & Theatre': 'Arts & theatre',
-  Film: 'Film',
-  Miscellaneous: 'Other',
+async function runProbe() {
+  for (const [name, urls] of Object.entries(PROBE)) {
+    console.log(`\n=== ${name}`);
+    for (const url of urls) {
+      const ctl = new AbortController();
+      const t = setTimeout(() => ctl.abort(), 15000);
+      try {
+        const res = await fetch(url, { signal: ctl.signal, headers: { accept: 'application/json, text/calendar, application/rss+xml, */*' } });
+        const type = (res.headers.get('content-type') || '').split(';')[0];
+        const text = (await res.text()).slice(0, 400);
+        let shape = '';
+        if (type.includes('json')) {
+          try {
+            const j = JSON.parse(text.length < 400 ? text : text + '');
+            shape = ` keys: ${Object.keys(j).slice(0, 8).join(', ')}`;
+          } catch { shape = ` starts: ${text.slice(0, 90).replace(/\s+/g, ' ')}`; }
+        } else {
+          shape = ` starts: ${text.slice(0, 90).replace(/\s+/g, ' ')}`;
+        }
+        console.log(`  ${String(res.status).padEnd(4)} ${type.padEnd(26)} ${url}`);
+        if (res.ok) console.log(`      ${shape.trim()}`);
+      } catch (err) {
+        console.log(`  ERR  ${'-'.padEnd(26)} ${url}`);
+        console.log(`      ${err instanceof Error ? err.message : err}`);
+      } finally {
+        clearTimeout(t);
+      }
+    }
+  }
+  console.log('\nAn endpoint that answers 200 with JSON can be wired up as a source in scripts/sources/.');
+}
+
+// ---- merge -----------------------------------------------------------------
+const localDay = (iso) => {
+  const p = new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Los_Angeles', year: 'numeric', month: '2-digit', day: '2-digit' })
+    .formatToParts(new Date(iso));
+  const get = (t) => p.find((x) => x.type === t)?.value ?? '';
+  return `${get('year')}-${get('month')}-${get('day')}`;
 };
 
-/** Widest image that is landscape and not enormous. Null if none qualifies. */
-function pickImage(images) {
-  const usable = (images ?? [])
-    .filter((i) => i?.url && i.width && i.height && i.width / i.height > 1.3 && i.width <= 1200)
-    .sort((a, b) => b.width - a.width);
-  return usable[0]?.url ?? null;
-}
+// The same festival can appear in two calendars. Match on the title and the
+// day, and keep the fuller record — the one that can be pinned on the map and
+// priced beats the one that cannot.
+const dedupeKey = (e) => `${e.title.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()}|${localDay(e.start)}`;
+const richness = (e) => (e.venue?.lat != null ? 4 : 0) + (e.url ? 2 : 0) + (e.priceFrom != null ? 1 : 0);
 
-// A wall-clock time in a named zone, resolved to the actual instant.
-//
-// Discovery does not always send `dateTime`: an event with a time still to be
-// announced has only `localDate`, and some sources send `localDate` and
-// `localTime` and nothing else. Emitting "2026-09-12T00:00:00" for those would
-// be read as UTC, which in Seattle is five in the evening on the 11th — the
-// page would print the wrong day. So the offset is worked out rather than
-// assumed, from the venue's own zone where Discovery gives one.
-//
-// Two passes: guess the offset at the naive instant, then re-read it at the
-// corrected one, which settles everything except a time inside a DST gap.
-const zoneCache = new Map();
-function utcFromLocal(zone, localDate, localTime) {
-  let dtf = zoneCache.get(zone);
-  if (!dtf) {
-    try {
-      dtf = new Intl.DateTimeFormat('en-US', {
-        timeZone: zone, hour12: false,
-        year: 'numeric', month: '2-digit', day: '2-digit',
-        hour: '2-digit', minute: '2-digit', second: '2-digit',
-      });
-    } catch {
-      return null; // a zone Node doesn't know; caller falls back
-    }
-    zoneCache.set(zone, dtf);
+function merge(all) {
+  const best = new Map();
+  for (const e of all) {
+    const k = dedupeKey(e);
+    const prev = best.get(k);
+    if (!prev || richness(e) > richness(prev)) best.set(k, e);
   }
-  const [y, mo, d] = localDate.split('-').map(Number);
-  const [h = 0, mi = 0, sec = 0] = (localTime || '00:00:00').split(':').map(Number);
-  if (!Number.isFinite(y) || !Number.isFinite(mo) || !Number.isFinite(d)) return null;
-  const naive = Date.UTC(y, mo - 1, d, h, mi, sec);
-  const readBack = (ms) => {
-    const p = Object.fromEntries(dtf.formatToParts(ms).map((x) => [x.type, x.value]));
-    const hh = p.hour === '24' ? 0 : Number(p.hour);
-    return Date.UTC(Number(p.year), Number(p.month) - 1, Number(p.day), hh, Number(p.minute), Number(p.second));
-  };
-  // Each pass measures the offset at the instant it is refining, not at the
-  // naive one — reusing `naive` in the second pass cancels the first and hands
-  // back the wall clock read as UTC, which is the bug this function exists for.
-  let ts = naive - (readBack(naive) - naive);
-  ts = naive - (readBack(ts) - ts);
-  return Number.isFinite(ts) ? new Date(ts).toISOString().replace(/\.\d{3}Z$/, 'Z') : null;
-}
+  const out = [...best.values()]
+    .sort((a, b) => Date.parse(a.start) - Date.parse(b.start) || a.title.localeCompare(b.title));
 
-const DEFAULT_TZ = 'America/Los_Angeles';
-
-/** Ticketmaster splits the date and the time, and marks TBA/TBD explicitly. */
-function startOf(ev) {
-  const d = ev?.dates?.start;
-  if (!d?.localDate) return null;
-  if (d.dateTBA || d.dateTBD) return null;
-  if (ev?.dates?.status?.code === 'cancelled') return null;
-  // dateTime, when present, is already the instant, in UTC with a Z.
-  if (d.dateTime) return { start: d.dateTime, allDay: false };
-
-  const zone = ev?.dates?.timezone || ev?._embedded?.venues?.[0]?.timezone || DEFAULT_TZ;
-  const allDay = !!d.timeTBA || !d.localTime;
-  const wall = allDay ? '00:00:00' : d.localTime;
-  const start = utcFromLocal(zone, d.localDate, wall) ?? utcFromLocal(DEFAULT_TZ, d.localDate, wall);
-  return start ? { start, allDay } : null;
-}
-
-function normalise(raw) {
-  const seen = new Set();
-  const out = [];
-  for (const ev of raw) {
-    if (ev?.test === true) continue;
-    const when = startOf(ev);
-    if (!when) continue;
-    const v = ev?._embedded?.venues?.[0];
-    const lat = Number(v?.location?.latitude);
-    const lng = Number(v?.location?.longitude);
-    const hasGeo = Number.isFinite(lat) && Number.isFinite(lng);
-    // The API's radius is generous at the edge; hold it to the circle we asked
-    // for so "near the building" stays true.
-    if (hasGeo && milesBetween(HOME.lat, HOME.lng, lat, lng) > RADIUS + 0.25) continue;
-
-    // One entry per show. A run of the same production on the same night at the
-    // same room comes back more than once when tickets are sold in tiers.
-    const key = `${ev.name}|${when.start}|${v?.name ?? ''}`.toLowerCase();
-    if (seen.has(key)) continue;
-    seen.add(key);
-
-    const seg = ev?.classifications?.[0]?.segment?.name;
-    const prices = (ev?.priceRanges ?? []).map((p) => Number(p.min)).filter((n) => Number.isFinite(n) && n > 0);
-
-    out.push({
-      id: String(ev.id),
-      title: String(ev.name).trim(),
-      start: when.start,
-      end: ev?.dates?.end?.dateTime ?? null,
-      allDay: when.allDay,
-      venue: {
-        name: v?.name ? String(v.name).trim() : 'Venue to be announced',
-        address: v?.address?.line1 ? String(v.address.line1).trim() : null,
-        lat: hasGeo ? Number(lat.toFixed(6)) : null,
-        lng: hasGeo ? Number(lng.toFixed(6)) : null,
-      },
-      category: seg ? (SEGMENTS[seg] ?? seg) : null,
-      url: ev?.url ?? null,
-      image: pickImage(ev?.images),
-      priceFrom: prices.length ? Math.min(...prices) : null,
-    });
-  }
-  // Sorted by start, then trimmed — a month of one venue's season should not
-  // crowd out everything else, so no single venue takes more than a fifth.
-  out.sort((a, b) => Date.parse(a.start) - Date.parse(b.start) || a.title.localeCompare(b.title));
+  // A season at one hall should not crowd out the rest of the month.
   const cap = Math.max(3, Math.ceil(MAX / 5));
   const perVenue = new Map();
   const kept = [];
   for (const e of out) {
-    const n = perVenue.get(e.venue.name) ?? 0;
+    const key = `${e.source}|${e.venue.name.toLowerCase()}`;
+    const n = perVenue.get(key) ?? 0;
     if (n >= cap) continue;
-    perVenue.set(e.venue.name, n + 1);
+    perVenue.set(key, n + 1);
     kept.push(e);
     if (kept.length >= MAX) break;
   }
@@ -266,55 +153,95 @@ function normalise(raw) {
 }
 
 // ---- run -------------------------------------------------------------------
-const key = process.env.TICKETMASTER_API_KEY;
-let raw;
-if (sourceFile) {
-  const body = JSON.parse(readFileSync(sourceFile, 'utf8'));
-  raw = body?._embedded?.events ?? (Array.isArray(body) ? body : []);
-  console.log(`[events] reading ${raw.length} event(s) from ${sourceFile}`);
-} else {
-  if (!key) {
-    console.error('[events] TICKETMASTER_API_KEY is not set.');
-    console.error('[events] Get a free key at https://developer-acct.ticketmaster.com/user/register');
-    console.error('[events] and add it to the repository as a secret named TICKETMASTER_API_KEY.');
-    process.exit(78); // EX_CONFIG — "not configured", not "broken"
-  }
-  try {
-    raw = await fetchPages(key);
-  } catch (err) {
-    // Red, because a feed that cannot be reached is something to look at — but
-    // a legible line rather than a stack trace in the Actions log.
-    console.error(`[events] ${err instanceof Error ? err.message : err}`);
-    process.exit(1);
-  }
-  console.log(`[events] fetched ${raw.length} event(s) within ${RADIUS} miles over the next ${DAYS} days`);
+if (probe) {
+  await runProbe();
+  process.exit(0);
 }
 
-const events = normalise(raw);
+const chosen = only ? SOURCES.filter((s) => s.id === only) : SOURCES;
+if (only && !chosen.length) {
+  console.error(`[events] no source called "${only}". Known: ${SOURCES.map((s) => s.id).join(', ')}`);
+  process.exit(2);
+}
+
+const collected = [];
+const used = [];
+const notes = [];
+
+for (const src of chosen) {
+  const log = (m) => console.log(`[${src.id}] ${m}`);
+  try {
+    let result;
+    if (fixtures) {
+      let body;
+      try {
+        body = JSON.parse(readFileSync(join(fixtures, `${src.id}.json`), 'utf8'));
+      } catch {
+        notes.push(`${src.label}: no fixture in ${fixtures}`);
+        log(`no fixture — skipped`);
+        continue;
+      }
+      const raw = src.fromSaved(body);
+      log(`reading ${raw.length} record(s) from fixture`);
+      result = { events: src.normalise(raw, { home, radiusMiles }) };
+    } else if (sourceFile && (!sourceFileFor || sourceFileFor === src.id)) {
+      const body = JSON.parse(readFileSync(sourceFile, 'utf8'));
+      const raw = src.fromSaved(body);
+      log(`reading ${raw.length} record(s) from ${sourceFile}`);
+      // Every source exposes the same normalise(), so the offline path is the
+      // live path with the network taken out — not a second implementation.
+      result = { events: src.normalise(raw, { home, radiusMiles }) };
+    } else if (sourceFile) {
+      continue; // a saved file was named for a different source
+    } else {
+      result = await src.fetchEvents({ home, radiusMiles, days, log });
+    }
+    if (result.skipped) {
+      notes.push(`${src.label}: skipped — ${result.skipped}`);
+      log(`skipped — ${result.skipped}`);
+      continue;
+    }
+    log(`${result.events.length} event(s)`);
+    collected.push(...result.events);
+    if (result.events.length) used.push(src.label);
+  } catch (err) {
+    // One calendar being down is not a reason to publish nothing.
+    notes.push(`${src.label}: failed — ${err instanceof Error ? err.message : err}`);
+    console.error(`[${src.id}] failed — ${err instanceof Error ? err.message : err}`);
+  }
+}
+
+const events = merge(collected);
 
 const before = JSON.parse(readFileSync(eventsPath, 'utf8'));
 const beforeIds = new Set((before.events ?? []).map((e) => e.id));
-const afterIds = new Set(events.map((e) => e.id));
 const added = events.filter((e) => !beforeIds.has(e.id));
+const afterIds = new Set(events.map((e) => e.id));
 const gone = (before.events ?? []).filter((e) => !afterIds.has(e.id));
 
 console.log(`[events] ${events.length} kept — ${added.length} new, ${gone.length} dropped`);
-for (const e of added.slice(0, 10)) console.log(`  + ${e.start.slice(0, 10)}  ${e.title} — ${e.venue.name}`);
-if (added.length > 10) console.log(`  + …and ${added.length - 10} more`);
+for (const e of added.slice(0, 12)) console.log(`  + ${localDay(e.start)}  ${e.title} — ${e.venue.name}`);
+if (added.length > 12) console.log(`  + …and ${added.length - 12} more`);
+for (const n of notes) console.log(`  ! ${n}`);
 
-// `updated` only moves when the events themselves do, so a week with no change
-// produces no diff and no deploy.
+if (!events.length && notes.length === chosen.length) {
+  console.error('[events] every source was skipped or failed; leaving the feed as it was');
+  process.exit(1);
+}
+
+// `updated` only moves when the events do, so a week with no change produces no
+// diff and no deploy.
 const sameEvents = JSON.stringify(before.events ?? []) === JSON.stringify(events);
 const next = {
   updated: sameEvents ? (before.updated ?? new Date().toISOString()) : new Date().toISOString(),
-  source: 'Ticketmaster Discovery API',
-  window: { days: DAYS, radiusMiles: RADIUS },
+  sources: used,
+  window: { days, radiusMiles },
   events,
 };
 
 if (dryRun) {
   console.log('[events] --dry-run: nothing written');
-} else if (sameEvents && before.window?.days === DAYS && before.window?.radiusMiles === RADIUS) {
+} else if (sameEvents && before.window?.days === days && before.window?.radiusMiles === radiusMiles) {
   console.log('[events] no change');
 } else {
   writeFileSync(eventsPath, JSON.stringify(next, null, 2) + '\n');
