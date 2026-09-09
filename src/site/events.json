@@ -1,5 +1,5 @@
 {
-  "updated": "2026-09-09T18:09:52.352Z",
+  "updated": "2026-09-09T18:19:10.376Z",
   "sources": [
     "Visit Seattle",
     "Ticketmaster"
@@ -316,42 +316,6 @@
       "source": "ticketmaster"
     },
     {
-      "id": "tm-vvG1HZ_eEqqzQq",
-      "title": "Seattle Mariners Ballpark Tour",
-      "start": "2026-09-11T07:00:00Z",
-      "end": null,
-      "allDay": true,
-      "venue": {
-        "name": "T-Mobile Park",
-        "address": "1250 1st Ave S.",
-        "lat": 47.590333,
-        "lng": -122.33285
-      },
-      "category": "Community",
-      "url": "https://www.ticketmaster.com/seattle-mariners-ballpark-tour-seattle-washington-09-11-2026/event/0F006429DD77869D",
-      "image": "https://s1.ticketm.net/dam/a/1a6/5487c2cb-fc09-4cf4-8f7f-f29e74fa71a6_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": null,
-      "source": "ticketmaster"
-    },
-    {
-      "id": "tm-vvG1HZ_1RlKX-E",
-      "title": "Harry Potter and the Cursed Child (Touring)",
-      "start": "2026-09-11T20:30:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "Paramount Theatre",
-        "address": "911 Pine St",
-        "lat": 47.613566,
-        "lng": -122.33191
-      },
-      "category": "Arts & theatre",
-      "url": "https://www.ticketmaster.com/harry-potter-and-the-cursed-child-seattle-washington-09-11-2026/event/0F0064ABEB4FE867",
-      "image": "https://s1.ticketm.net/dam/a/db0/e3e63d22-f43c-43cb-8e4a-972b9b4d9db0_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": null,
-      "source": "ticketmaster"
-    },
-    {
       "id": "tm-vvG1HZ_2MPNmKv",
       "title": "Anthony Jeselnik: Wrath of Man",
       "start": "2026-09-12T02:30:00Z",
@@ -420,24 +384,6 @@
       "category": "Music",
       "url": "https://www.ticketweb.com/event/sorry-for-party-rocking-2010-chop-suey-tickets/14995743",
       "image": "https://s1.ticketm.net/dam/c/df8/81eadad8-4449-412e-a2b1-3d8bbb78edf8_106181_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": null,
-      "source": "ticketmaster"
-    },
-    {
-      "id": "tm-vvG1HZ_1Rlpm-M",
-      "title": "Harry Potter and the Cursed Child (Touring)",
-      "start": "2026-09-12T20:30:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "Paramount Theatre",
-        "address": "911 Pine St",
-        "lat": 47.613566,
-        "lng": -122.33191
-      },
-      "category": "Arts & theatre",
-      "url": "https://www.ticketmaster.com/harry-potter-and-the-cursed-child-seattle-washington-09-12-2026/event/0F0064ABEB5AE877",
-      "image": "https://s1.ticketm.net/dam/a/db0/e3e63d22-f43c-43cb-8e4a-972b9b4d9db0_RETINA_LANDSCAPE_16_9.jpg",
       "priceFrom": null,
       "source": "ticketmaster"
     },
@@ -597,7 +543,7 @@
         "lat": 47.610802,
         "lng": -122.302803
       },
-      "category": "Undefined",
+      "category": null,
       "url": "https://www.ticketmaster.com/event/Z7r9jZ1A7P40I",
       "image": "https://s1.ticketm.net/dam/c/f51/ee785ed6-f806-4195-98f4-69f67e09df51_106201_RETINA_LANDSCAPE_16_9.jpg",
       "priceFrom": null,
@@ -615,7 +561,7 @@
         "lat": 47.610802,
         "lng": -122.302803
       },
-      "category": "Undefined",
+      "category": null,
       "url": "https://www.ticketmaster.com/event/Z7r9jZ1A7P3Po",
       "image": "https://s1.ticketm.net/dam/c/f51/ee785ed6-f806-4195-98f4-69f67e09df51_106201_RETINA_LANDSCAPE_16_9.jpg",
       "priceFrom": null,
@@ -676,24 +622,6 @@
       "source": "ticketmaster"
     },
     {
-      "id": "tm-vvG1HZ_eEqLFQ-",
-      "title": "Seattle Mariners Ballpark Tour",
-      "start": "2026-09-14T07:00:00Z",
-      "end": null,
-      "allDay": true,
-      "venue": {
-        "name": "T-Mobile Park",
-        "address": "1250 1st Ave S.",
-        "lat": 47.590333,
-        "lng": -122.33285
-      },
-      "category": "Community",
-      "url": "https://www.ticketmaster.com/seattle-mariners-ballpark-tour-seattle-washington-09-14-2026/event/0F006429DD7C86A1",
-      "image": "https://s1.ticketm.net/dam/a/1a6/5487c2cb-fc09-4cf4-8f7f-f29e74fa71a6_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": null,
-      "source": "ticketmaster"
-    },
-    {
       "id": "tm-Z7r9jZ1AAZA16",
       "title": "greek",
       "start": "2026-09-15T02:00:00Z",
@@ -745,24 +673,6 @@
       "url": "https://www.ticketweb.com/event/boys-go-to-jupiter-alt-baba-yaga-tickets/14880263",
       "image": "https://s1.ticketm.net/dam/a/e28/ee2232a1-dd03-472c-be58-cc04969c1e28_RETINA_LANDSCAPE_16_9.jpg",
       "priceFrom": 28.7,
-      "source": "ticketmaster"
-    },
-    {
-      "id": "tm-vvG1HZ_eEqObQ0",
-      "title": "Seattle Mariners Ballpark Tour",
-      "start": "2026-09-15T07:00:00Z",
-      "end": null,
-      "allDay": true,
-      "venue": {
-        "name": "T-Mobile Park",
-        "address": "1250 1st Ave S.",
-        "lat": 47.590333,
-        "lng": -122.33285
-      },
-      "category": "Community",
-      "url": "https://www.ticketmaster.com/seattle-mariners-ballpark-tour-seattle-washington-09-15-2026/event/0F006429DD8186A4",
-      "image": "https://s1.ticketm.net/dam/a/1a6/5487c2cb-fc09-4cf4-8f7f-f29e74fa71a6_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": null,
       "source": "ticketmaster"
     },
     {
@@ -834,24 +744,6 @@
       "category": "Music",
       "url": "https://www.ticketmaster.com/event/Z7r9jZ1AAZ8GI",
       "image": "https://s1.ticketm.net/dam/a/b05/86458cb4-3b36-4038-a164-665231047b05_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": null,
-      "source": "ticketmaster"
-    },
-    {
-      "id": "tm-vvG1HZ_eEq-zQt",
-      "title": "Seattle Mariners Ballpark Tour",
-      "start": "2026-09-16T07:00:00Z",
-      "end": null,
-      "allDay": true,
-      "venue": {
-        "name": "T-Mobile Park",
-        "address": "1250 1st Ave S.",
-        "lat": 47.590333,
-        "lng": -122.33285
-      },
-      "category": "Community",
-      "url": "https://www.ticketmaster.com/seattle-mariners-ballpark-tour-seattle-washington-09-16-2026/event/0F006429DD8786A9",
-      "image": "https://s1.ticketm.net/dam/a/1a6/5487c2cb-fc09-4cf4-8f7f-f29e74fa71a6_RETINA_LANDSCAPE_16_9.jpg",
       "priceFrom": null,
       "source": "ticketmaster"
     },
@@ -957,27 +849,9 @@
         "lat": 47.6157,
         "lng": -122.344498
       },
-      "category": "Undefined",
+      "category": null,
       "url": "https://www.ticketmaster.com/event/Z7r9jZ1AAvx-o",
       "image": "https://s1.ticketm.net/dam/c/f51/ee785ed6-f806-4195-98f4-69f67e09df51_106201_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": null,
-      "source": "ticketmaster"
-    },
-    {
-      "id": "tm-rZ7HnEZ1Af0y_S",
-      "title": "Loe Shimmy, Lakeyah",
-      "start": "2026-09-17T03:00:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "The Crocodile",
-        "address": "2505 1st Ave",
-        "lat": 47.61458,
-        "lng": -122.34915
-      },
-      "category": "Music",
-      "url": "https://www.ticketweb.com/event/loe-shimmy-lakeyah-the-crocodile-tickets/14939673",
-      "image": "https://s1.ticketm.net/dam/a/c36/f8b74099-ece4-4543-97a4-6b632d62cc36_RETINA_LANDSCAPE_16_9.jpg",
       "priceFrom": null,
       "source": "ticketmaster"
     },
@@ -1000,24 +874,6 @@
       "source": "ticketmaster"
     },
     {
-      "id": "tm-vvG1HZ_eEqNFQi",
-      "title": "Seattle Mariners Ballpark Tour",
-      "start": "2026-09-17T07:00:00Z",
-      "end": null,
-      "allDay": true,
-      "venue": {
-        "name": "T-Mobile Park",
-        "address": "1250 1st Ave S.",
-        "lat": 47.590333,
-        "lng": -122.33285
-      },
-      "category": "Community",
-      "url": "https://www.ticketmaster.com/seattle-mariners-ballpark-tour-seattle-washington-09-17-2026/event/0F006429DD8C86AC",
-      "image": "https://s1.ticketm.net/dam/a/1a6/5487c2cb-fc09-4cf4-8f7f-f29e74fa71a6_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": null,
-      "source": "ticketmaster"
-    },
-    {
       "id": "tm-vvG1HZ_knaHVM5",
       "title": "Seattle Storm vs. Las Vegas Aces",
       "start": "2026-09-18T02:00:00Z",
@@ -1032,24 +888,6 @@
       "category": "Sports",
       "url": "https://www.ticketmaster.com/seattle-storm-vs-las-vegas-aces-seattle-washington-09-17-2026/event/0F00646A89F34DCB",
       "image": "https://s1.ticketm.net/dam/a/07e/0d8dc1e9-9b70-48dc-a193-def5ae41b07e_1701481_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": null,
-      "source": "ticketmaster"
-    },
-    {
-      "id": "tm-Z7r9jZ1AAZJ1a",
-      "title": "A Chorus Line",
-      "start": "2026-09-18T02:30:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "5th Avenue Theatre",
-        "address": "1308 5th Ave",
-        "lat": 47.6115,
-        "lng": -122.334297
-      },
-      "category": "Arts & theatre",
-      "url": "https://www.ticketmaster.com/event/Z7r9jZ1AAZJ1a",
-      "image": "https://s1.ticketm.net/dam/a/1d1/30fb5437-e219-4e3f-b317-f30027f071d1_521301_RETINA_LANDSCAPE_16_9.jpg",
       "priceFrom": null,
       "source": "ticketmaster"
     },
@@ -1072,21 +910,183 @@
       "source": "ticketmaster"
     },
     {
-      "id": "tm-rZ7HnEZ1Afada0",
-      "title": "Tio Nacho's House, Como Qué, Cal Osten",
+      "id": "tm-Z7r9jZ1A70Ejg",
+      "title": "Waylon Wyatt",
       "start": "2026-09-18T03:00:00Z",
       "end": null,
       "allDay": false,
       "venue": {
-        "name": "Chop Suey",
-        "address": "1325 E Madison St.",
-        "lat": 47.613485,
-        "lng": -122.314457
+        "name": "The Showbox",
+        "address": "1426 1st Ave.",
+        "lat": 47.602402,
+        "lng": -122.325996
+      },
+      "category": null,
+      "url": "https://www.ticketmaster.com/event/Z7r9jZ1A70Ejg",
+      "image": "https://s1.ticketm.net/dam/c/f51/ee785ed6-f806-4195-98f4-69f67e09df51_106201_RETINA_LANDSCAPE_16_9.jpg",
+      "priceFrom": null,
+      "source": "ticketmaster"
+    },
+    {
+      "id": "tm-rZ7HnEZ1Af4oJK",
+      "title": "When Chai Met Toast: Joy of Little Things Tour",
+      "start": "2026-09-19T01:00:00Z",
+      "end": "2026-09-19T04:00:00Z",
+      "allDay": false,
+      "venue": {
+        "name": "The Fremont Abbey",
+        "address": "4272 Fremont Ave N",
+        "lat": 47.659189,
+        "lng": -122.349682
       },
       "category": "Music",
-      "url": "https://www.ticketweb.com/event/tio-nachos-house-como-qu-chop-suey-tickets/14243264",
-      "image": "https://s1.ticketm.net/dam/c/797/5e693c26-2881-4776-8f0c-3aa94bfa3797_106511_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": 15.47,
+      "url": "https://www.ticketweb.com/event/when-chai-met-toast-joy-the-fremont-abbey-tickets/14551993",
+      "image": "https://s1.ticketm.net/dam/c/779/d4bc7e11-1b50-4aa4-a2be-0a21569f5779_106531_RETINA_LANDSCAPE_16_9.jpg",
+      "priceFrom": 51.36,
+      "source": "ticketmaster"
+    },
+    {
+      "id": "tm-Z7r9jZ1A7r6P-",
+      "title": "Marlon Magnee",
+      "start": "2026-09-19T01:30:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "Barboza",
+        "address": "925 E. Pike St.",
+        "lat": 47.610802,
+        "lng": -122.302803
+      },
+      "category": null,
+      "url": "https://www.ticketmaster.com/event/Z7r9jZ1A7r6P-",
+      "image": "https://s1.ticketm.net/dam/c/f51/ee785ed6-f806-4195-98f4-69f67e09df51_106201_RETINA_LANDSCAPE_16_9.jpg",
+      "priceFrom": null,
+      "source": "ticketmaster"
+    },
+    {
+      "id": "tm-vvG1HZ_kMbl5fW",
+      "title": "Stephen Wilson Jr. - Gary The Torch Tour",
+      "start": "2026-09-19T02:30:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "Paramount Theatre",
+        "address": "911 Pine St",
+        "lat": 47.613566,
+        "lng": -122.33191
+      },
+      "category": "Music",
+      "url": "https://www.ticketmaster.com/stephen-wilson-jr-gary-the-torch-seattle-washington-09-18-2026/event/0F00646DD8ACB53D",
+      "image": "https://s1.ticketm.net/dam/a/5ad/90f536e4-3d67-4a3a-b3b7-3e0ada72a5ad_RETINA_LANDSCAPE_16_9.jpg",
+      "priceFrom": null,
+      "source": "ticketmaster"
+    },
+    {
+      "id": "tm-vvG1HZ_6D9ABRd",
+      "title": "Johnny Blue Skies & the Dark Clouds - Mutiny for the Masses 2026 Tour",
+      "start": "2026-09-19T03:00:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "Climate Pledge Arena",
+        "address": "334 1st Ave N",
+        "lat": 47.622126,
+        "lng": -122.354016
+      },
+      "category": "Music",
+      "url": "https://www.ticketmaster.com/johnny-blue-skies-the-dark-clouds-seattle-washington-09-18-2026/event/0F00647ED717ABC3",
+      "image": "https://s1.ticketm.net/dam/a/2ef/d5c4f5ac-28a7-4d1e-8f5c-011555afc2ef_RETINA_LANDSCAPE_16_9.jpg",
+      "priceFrom": null,
+      "source": "ticketmaster"
+    },
+    {
+      "id": "tm-vvG1HZ_u5YpTwV",
+      "title": "Chelsea Wolfe: THE DARK World Tour",
+      "start": "2026-09-19T03:30:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "Moore Theatre",
+        "address": "1932 2nd Ave",
+        "lat": 47.61196,
+        "lng": -122.34142
+      },
+      "category": "Music",
+      "url": "https://www.ticketmaster.com/chelsea-wolfe-the-dark-world-tour-seattle-washington-09-18-2026/event/0F0064D2F05BFCB4",
+      "image": "https://s1.ticketm.net/dam/a/2b1/d1850a94-98c5-43e6-b5cc-c0c9059562b1_RETINA_LANDSCAPE_16_9.jpg",
+      "priceFrom": null,
+      "source": "ticketmaster"
+    },
+    {
+      "id": "tm-vvG1HZ_2S4SuNN",
+      "title": "All Access Pass – Climate Pledge Arena Tours",
+      "start": "2026-09-19T07:00:00Z",
+      "end": null,
+      "allDay": true,
+      "venue": {
+        "name": "Climate Pledge Arena",
+        "address": "334 1st Ave N",
+        "lat": 47.622126,
+        "lng": -122.354016
+      },
+      "category": "Community",
+      "url": "https://www.ticketmaster.com/all-access-pass-climate-pledge-arena-seattle-washington-09-19-2026/event/0F0064FCD5CCD8E3",
+      "image": "https://s1.ticketm.net/dam/e/c1e/faa62a2f-a6b4-4582-9ca5-270a7ba19c1e_RETINA_LANDSCAPE_16_9.jpg",
+      "priceFrom": null,
+      "source": "ticketmaster"
+    },
+    {
+      "id": "vs-442212620",
+      "title": "Festal: Sea Mar Fiestas Patrias",
+      "start": "2026-09-19T07:00:00Z",
+      "end": "2026-09-20T07:00:00Z",
+      "allDay": true,
+      "venue": {
+        "name": "Seattle Center",
+        "address": null,
+        "lat": null,
+        "lng": null
+      },
+      "category": "Festivals & Special Events",
+      "url": "https://www.seattlecenter.com/events/featured-events/festal/sea-mar-fiestas-patrias",
+      "image": null,
+      "priceFrom": null,
+      "source": "visit-seattle"
+    },
+    {
+      "id": "tm-vvG1HZ_uE4R-wE",
+      "title": "Monster Jam",
+      "start": "2026-09-20T00:00:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "Lumen Field",
+        "address": "800 Occidental Ave S",
+        "lat": 47.595083,
+        "lng": -122.331607
+      },
+      "category": "Sports",
+      "url": "https://www.ticketmaster.com/monster-jam-seattle-washington-09-19-2026/event/0F0064D9D5BE1CA7",
+      "image": "https://s1.ticketm.net/dam/a/32f/7d37f364-1424-43d6-9546-1274421ac32f_RETINA_LANDSCAPE_16_9.jpg",
+      "priceFrom": null,
+      "source": "ticketmaster"
+    },
+    {
+      "id": "tm-vvG1HZ_G3Oan6g",
+      "title": "Preseason Game 1 - Seattle Kraken vs. Vancouver Canucks",
+      "start": "2026-09-20T01:00:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "Climate Pledge Arena",
+        "address": "334 1st Ave N",
+        "lat": 47.622126,
+        "lng": -122.354016
+      },
+      "category": "Sports",
+      "url": "https://www.ticketmaster.com/preseason-game-1-seattle-kraken-vs-seattle-washington-09-19-2026/event/0F0064C4A026A1F5",
+      "image": "https://s1.ticketm.net/dam/a/1da/790764fd-6deb-4208-8138-f64722c0d1da_1791341_RETINA_LANDSCAPE_16_9.jpg",
+      "priceFrom": null,
       "source": "ticketmaster"
     }
   ]
