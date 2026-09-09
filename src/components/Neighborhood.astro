@@ -37,6 +37,10 @@ const nearby = [
           <li class="near-row"><span class="near-name">{a}</span><span class="small">{b}</span></li>
         ))}
       </ul>
+      {/* The list above is the neighbourhood as it always is. The events page
+          is the same neighbourhood this week, so the way in belongs here
+          rather than in the nav alone. */}
+      <a class="btn btn--ghost btn--sm hood-cta" href="/events">What's on this month <span class="arr" aria-hidden="true">→</span></a>
     </div>
     <div class="hood-tiles rail-x">
       {[crossing, arena, bay].map((p) => (
@@ -58,6 +62,7 @@ const nearby = [
   .hood-cap .small { color: var(--fg); opacity: 0.8; max-width: 40ch; }
   .hood-hero { grid-column: 1 / span 7; min-height: clamp(280px, 38vw, 680px); }
   .hood-list { grid-column: 8 / span 5; display: grid; gap: clamp(16px, 2vw, 32px); align-content: start; }
+  .hood-cta { justify-self: start; margin-top: -6px; }
   .near-row { display: grid; grid-template-columns: 1fr auto; gap: 12px; align-items: baseline; padding: 12px 0; border-top: 1px solid var(--line-2); }
   .near-name { font-size: var(--t-body); }
   .near-row .small { text-align: right; }

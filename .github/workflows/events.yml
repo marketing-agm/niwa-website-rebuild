@@ -1,0 +1,101 @@
+name: Events feed
+
+# Refreshes src/site/events.json and commits the result, so /events is current
+# without anyone touching it.
+#
+# Mondays at 13:00 UTC — 6am in Seattle — which puts the week's listings up
+# before anyone looks. A run that finds nothing new writes nothing, commits
+# nothing and triggers no deploy.
+#
+# Two sources, and only one of them needs anything set up:
+#
+#   Queen Anne Chamber of Commerce   no key. Works out of the box, and it is
+#                                    the half that makes the page about the
+#                                    neighbourhood rather than about arenas.
+#   Ticketmaster                     needs a free key as the repository secret
+#                                    TICKETMASTER_API_KEY. Without it that one
+#                                    source is skipped and the run still
+#                                    succeeds on the other.
+#                                    Settings → Secrets and variables → Actions
+#                                    https://developer-acct.ticketmaster.com/user/register
+#
+# The job only fails if every source failed, which is a real thing to look at.
+
+on:
+  schedule:
+    - cron: '0 13 * * 1'
+  workflow_dispatch:
+    inputs:
+      radius:
+        description: 'Search radius in miles from the building'
+        required: false
+        default: '3'
+      days:
+        description: 'How many days ahead to look'
+        required: false
+        default: '30'
+      probe:
+        description: 'Report what each calendar is serving, and change nothing'
+        type: boolean
+        required: false
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: events-feed
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      # Reconnaissance, on demand: prints which endpoints each site answers on.
+      # Nothing is fetched into the feed and nothing is committed.
+      - name: Probe the calendars
+        if: inputs.probe
+        run: |
+          node scripts/refresh-events.mjs --probe | tee /tmp/probe.log
+          { echo '### Calendar probe'; echo ''; echo '```'; cat /tmp/probe.log; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Pull the feed
+        if: '!inputs.probe'
+        env:
+          TICKETMASTER_API_KEY: ${{ secrets.TICKETMASTER_API_KEY }}
+        run: |
+          node scripts/refresh-events.mjs \
+            --radius "${{ inputs.radius || '3' }}" \
+            --days "${{ inputs.days || '30' }}" 2>&1 | tee /tmp/events.log
+
+      # The site has to still build with the new data before it is committed —
+      # a malformed feed should fail here, not on the live site.
+      - name: Build with the new feed
+        if: '!inputs.probe'
+        run: npm run build
+
+      - name: Commit
+        if: '!inputs.probe'
+        run: |
+          if git diff --quiet -- src/site/events.json; then
+            { echo '### Events feed unchanged'; echo ''; echo '```'; cat /tmp/events.log; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          n=$(node -e "console.log(JSON.parse(require('fs').readFileSync('src/site/events.json','utf8')).events.length)")
+          git config user.name  'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add src/site/events.json
+          git commit -m "Events feed: ${n} listings within reach of the building
+
+          Written by .github/workflows/events.yml. Nothing here is hand-edited."
+          git push
+          { echo "### Events feed updated"; echo ''; echo "${n} listings committed."; echo ''; echo '```'; cat /tmp/events.log; echo '```'; } >> "$GITHUB_STEP_SUMMARY"

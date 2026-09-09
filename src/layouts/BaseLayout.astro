@@ -3,9 +3,19 @@ import Analytics from '../components/Analytics.astro';
 import TourDialog from '../components/TourDialog.astro';
 import '../styles/global.css';
 
-const { site } = Astro.props as { site: { id: string; config: any; data: any; faq?: { q: string; a: string }[] } };
+// `page` is how a route other than the homepage overrides what goes in the
+// head. Omitted, everything below behaves exactly as it did when this layout
+// served one page: the property's own title, description and canonical.
+const { site, page } = Astro.props as {
+  site: { id: string; config: any; data: any; faq?: { q: string; a: string }[] };
+  page?: { path: string; title: string; description: string; jsonLd?: any[]; scripts?: string[] };
+};
 const c = site.config;
-const url = c.domain.replace(/\/$/, '') + '/';
+const origin = c.domain.replace(/\/$/, '');
+const home = origin + '/';
+const url = origin + (page?.path ?? '/');
+const pageTitle = page?.title ?? c.seo.title;
+const pageDesc = page?.description ?? c.seo.description;
 
 // Price range is derived from live availability, not hand-maintained — a static
 // schema.priceRange drifts the moment rents move. Scoped to move-in-ready homes.
@@ -27,10 +37,10 @@ const officeHours: any[] = c.contact.officeHours ?? [];
 const jsonLd: any = {
   '@context': 'https://schema.org',
   '@type': c.schema.type,
-  '@id': url + '#property',
+  '@id': home + '#property',
   name: c.name,
   description: c.schema.description,
-  url,
+  url: home,
   telephone: c.contact.phone,
   priceRange,
   address: {
@@ -79,8 +89,8 @@ const emailjsConfigured = !!(c.integrations?.emailjs?.publicKey && c.integration
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-<title>{c.seo.title}</title>
-<meta name="description" content={c.seo.description} />
+<title>{pageTitle}</title>
+<meta name="description" content={pageDesc} />
 <meta name="keywords" content={c.seo.keywords} />
 <meta name="robots" content={c.seo.noindex ? 'noindex, nofollow' : 'index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1'} />
 <meta name="author" content={c.seo.author} />
@@ -93,15 +103,15 @@ const emailjsConfigured = !!(c.integrations?.emailjs?.publicKey && c.integration
 {c.geo?.latitude != null && <meta name="ICBM" content={`${c.geo.latitude}, ${c.geo.longitude}`} />}
 <meta property="og:type" content="website" />
 <meta property="og:site_name" content={c.name} />
-<meta property="og:title" content={c.seo.title} />
-<meta property="og:description" content={c.seo.description} />
+<meta property="og:title" content={pageTitle} />
+<meta property="og:description" content={pageDesc} />
 <meta property="og:url" content={url} />
 <meta property="og:locale" content={c.locale} />
 {c.seo.ogImage && <meta property="og:image" content={new URL(c.seo.ogImage, c.domain).href} />}
 {c.seo.ogImage && <meta property="og:image:alt" content={c.hero?.alt || `${c.name} apartments`} />}
 <meta name="twitter:card" content="summary_large_image" />
-<meta name="twitter:title" content={c.seo.title} />
-<meta name="twitter:description" content={c.seo.twitterDescription || c.seo.description} />
+<meta name="twitter:title" content={pageTitle} />
+<meta name="twitter:description" content={page ? pageDesc : (c.seo.twitterDescription || c.seo.description)} />
 {/* The SVG is the real mark and every current browser prefers it. The .ico
     is for the ones that ask for /favicon.ico regardless of what is declared —
     and for the bare request a browser makes to the site root before it has
@@ -120,6 +130,7 @@ const emailjsConfigured = !!(c.integrations?.emailjs?.publicKey && c.integration
 <meta name="theme-color" content={c.theme?.themeColor ?? '#0b0b0b'} />
 <script type="application/ld+json" is:inline set:html={JSON.stringify(jsonLd)} />
 {faqJsonLd && <script type="application/ld+json" is:inline set:html={JSON.stringify(faqJsonLd)} />}
+{(page?.jsonLd ?? []).map((block) => <script type="application/ld+json" is:inline set:html={JSON.stringify(block)} />)}
 <link rel="preload" href="/fonts/inter-tight-latin.woff2" as="font" type="font/woff2" crossorigin />
 {themeVars && <style is:inline set:html={`:root:root{${themeVars}}`} />}
 <script is:inline set:html={`window.__SITE__=${JSON.stringify(siteRuntime)};`} />

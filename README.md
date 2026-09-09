@@ -30,6 +30,8 @@ src/
                            per-layout "from" rents and counts in The homes
     photos.json          ← gallery captions; `src` names a file in src/assets/gallery
     faq.json
+    events.json          ← what's on nearby — machine-written, never hand-edited
+                           (scripts/refresh-events.mjs, weekly via Actions)
     places.json, bus-stops.json  ← unused by the current design, kept for the CMS
   assets/                ← photography. Astro emits responsive WebP from these.
   layouts/BaseLayout.astro   ← <head>: SEO, Open Graph, JSON-LD, runtime config
@@ -41,10 +43,12 @@ src/
   scripts/motion.ts      ← Lenis smooth scroll + GSAP (reveals, hero, pinned
                            gallery, counters, footer wordmark, menu, FAQ, dialog)
   scripts/tour.ts        ← the tour-request sentence: validation, EmailJS, mailto fallback
+  scripts/events.ts      ← /events: grid ⇄ list, category filter, map ↔ card highlighting
   styles/global.css      ← design tokens, fluid type scale, hairline grid, buttons
   lib/site.ts            ← loads the JSON above
   lib/photos.ts, lib/homes.ts  ← resolve photos to assets; describe layouts from the feed
-  pages/                 ← index + robots.txt / sitemap.xml / site.webmanifest
+  lib/events.ts          ← reads events.json; distance, walk time and map position
+  pages/                 ← index, events + robots.txt / sitemap.xml / site.webmanifest
 public/                  ← static files served as-is
   fonts/                 ← self-hosted Inter Tight (latin subsets)
   video/                 ← the hero loop (WebM + MP4)
@@ -100,6 +104,52 @@ npm run refresh -- --dry-run                # report only, no write
 
 It merges: AppFolio drives beds, baths, sqft, rent and dates, while
 hand-written marketing copy on a unit is preserved.
+
+## Events
+
+`/events` lists what's on within three miles of the building over the next
+thirty days. `src/site/events.json` is **machine-written** — nothing on that
+page is typed by hand, because a leasing site inventing an event is worse than
+a leasing site with no events page.
+
+Two sources, in `scripts/sources/`:
+
+| Source | Key? | What it brings |
+|---|---|---|
+| `queen-anne-chamber` | no | The neighbourhood's own calendar — the Farmers Market, Trick or Treat on the Ave, the Wine Walk, the Grand Tree Lighting. This is the half that makes the page about Queen Anne. |
+| `ticketmaster` | yes | The ticketed rooms — Climate Pledge Arena, Seattle Center's halls, the Paramount, the Moore, the Crocodile. Carries coordinates, which is what the map is plotted from. |
+
+```bash
+npm run events                                # every source
+npm run events -- --dry-run                   # report only, no write
+npm run events -- --only queen-anne-chamber   # one source
+npm run events -- --fixtures test/fixtures    # all sources, offline
+npm run events -- --radius 5 --days 45        # widen the net
+npm run events -- --probe                     # what is each site serving?
+```
+
+A source that fails or has no key is reported and skipped; the others still
+run, and the job only fails if every one of them failed.
+
+`.github/workflows/events.yml` runs it every Monday at 6am Seattle time,
+rebuilds to prove the site still compiles with the new data, and commits only
+when something actually changed. It can also be run by hand from the Actions
+tab, including a **probe** run that reports what each calendar is serving and
+changes nothing.
+
+**Optional setup:** add a repository secret `TICKETMASTER_API_KEY` (Settings →
+Secrets and variables → Actions) for a free key from
+<https://developer-acct.ticketmaster.com/user/register>. Without it the
+Chamber source runs on its own and the page still fills.
+
+### Adding a source
+
+Write a module in `scripts/sources/` exporting `id`, `label`, `fetchEvents(ctx)`,
+`normalise(raw, ctx)` and `fromSaved(body)`, and add it to `SOURCES` in
+`scripts/refresh-events.mjs`. The page reads `events.json`, never an API, so
+nothing in `src/` changes. `--probe` exists to find out whether a site has an
+endpoint worth writing against before you write one — Visit Seattle's candidate
+URLs are already in its list.
 
 ## Deploying
 
