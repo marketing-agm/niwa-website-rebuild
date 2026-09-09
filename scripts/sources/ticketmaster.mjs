@@ -14,12 +14,16 @@ const PAGE_SIZE = 100;
 const ENDPOINT = 'https://app.ticketmaster.com/discovery/v2/events.json';
 
 // Discovery's own segments, in words a person reading a leasing site would use.
+// "Undefined" is a real segment name it returns, and it is not a category —
+// mapping it to null leaves those events in the listing with no tag, rather
+// than printing a chip that says Undefined.
 const SEGMENTS = {
   Music: 'Music',
   Sports: 'Sports',
   'Arts & Theatre': 'Arts & theatre',
   Film: 'Film',
   Miscellaneous: 'Community',
+  Undefined: null,
 };
 
 /** Widest landscape image that isn't enormous. */
@@ -116,7 +120,7 @@ export function normalise(raw, { home, radiusMiles }) {
         lat: hasGeo ? Number(lat.toFixed(6)) : null,
         lng: hasGeo ? Number(lng.toFixed(6)) : null,
       },
-      category: seg ? (SEGMENTS[seg] ?? seg) : null,
+      category: seg ? (seg in SEGMENTS ? SEGMENTS[seg] : seg) : null,
       url: ev?.url ?? null,
       image: pickImage(ev?.images),
       priceFrom: prices.length ? Math.min(...prices) : null,

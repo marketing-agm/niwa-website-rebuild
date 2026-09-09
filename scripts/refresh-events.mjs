@@ -228,15 +228,29 @@ function merge(all) {
   const out = [...best.values()]
     .sort((a, b) => Date.parse(a.start) - Date.parse(b.start) || a.title.localeCompare(b.title));
 
-  // A season at one hall should not crowd out the rest of the month.
-  const cap = Math.max(3, Math.ceil(MAX / 5));
+  // Two caps, because a feed of sixty is easily forty of the same thing.
+  //
+  // A venue with a season on gets a tenth of the page at most: the first live
+  // run gave T-Mobile Park twelve of the sixty slots, and a homestand 2.6 miles
+  // away is not what someone reads this page for.
+  //
+  // And a repeated title gets two. "Seattle Mariners Ballpark Tour" runs every
+  // day the team is home and appeared on nine consecutive cards; a run of the
+  // same show is worth knowing about once or twice, not nine times.
+  const venueCap = Math.max(3, Math.ceil(MAX / 10));
+  const TITLE_CAP = 2;
   const perVenue = new Map();
+  const perTitle = new Map();
   const kept = [];
   for (const e of out) {
-    const key = `${e.source}|${e.venue.name.toLowerCase()}`;
-    const n = perVenue.get(key) ?? 0;
-    if (n >= cap) continue;
-    perVenue.set(key, n + 1);
+    const title = e.title.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+    const t = perTitle.get(title) ?? 0;
+    if (t >= TITLE_CAP) continue;
+    const venue = `${e.source}|${e.venue.name.toLowerCase()}`;
+    const v = perVenue.get(venue) ?? 0;
+    if (v >= venueCap) continue;
+    perTitle.set(title, t + 1);
+    perVenue.set(venue, v + 1);
     kept.push(e);
     if (kept.length >= MAX) break;
   }
