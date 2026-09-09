@@ -71,20 +71,77 @@ const MAX = Number(arg('max', 60));
 // script can rely on sight unseen, so rather than guess at one, `--probe`
 // asks all of them what they actually serve and prints the answers.
 const PROBE = {
-  'queen-anne-chamber': queenAnneChamber.probeUrls,
-  'visit-seattle': [
-    'https://visitseattle.org/wp-json/wp/v2/types',
-    'https://visitseattle.org/wp-json/wp/v2/events?per_page=1',
-    'https://visitseattle.org/wp-json/tribe/events/v1/events?per_page=1',
-    'https://visitseattle.org/events/feed/',
-    'https://visitseattle.org/things-to-do/events/feed/',
-  ],
+  'queen-anne-chamber': { base: 'https://www.queenannechamber.org', extra: queenAnneChamber.probeUrls },
+  'visit-seattle': {
+    base: 'https://visitseattle.org',
+    extra: [
+      'https://visitseattle.org/events/feed/',
+      'https://visitseattle.org/things-to-do/events/feed/',
+    ],
+  },
 };
 
+const grab = async (url, accept = 'application/json') => {
+  const ctl = new AbortController();
+  const t = setTimeout(() => ctl.abort(), 15000);
+  try {
+    const res = await fetch(url, { signal: ctl.signal, headers: { accept } });
+    return { ok: res.ok, status: res.status, type: (res.headers.get('content-type') || '').split(';')[0], text: await res.text() };
+  } catch (err) {
+    return { ok: false, status: 0, type: '-', text: '', error: err instanceof Error ? err.message : String(err) };
+  } finally {
+    clearTimeout(t);
+  }
+};
+
+// Guessing endpoint paths is a waste of a round trip when WordPress will simply
+// say what it has: /wp-json/ lists the REST namespaces a site has switched on,
+// and /wp-json/wp/v2/types names every post type and the path it answers on.
+// Between them there is no guessing left to do.
+async function discover(name, base) {
+  const root = await grab(`${base}/wp-json/`);
+  if (root.ok) {
+    try {
+      const ns = JSON.parse(root.text)?.namespaces ?? [];
+      console.log(`  namespaces: ${ns.length ? ns.join(', ') : '(none)'}`);
+    } catch {
+      console.log(`  /wp-json/ answered ${root.status} ${root.type}, but not with JSON`);
+    }
+  } else {
+    console.log(`  /wp-json/ → ${root.status || root.error} — the REST API looks switched off`);
+  }
+
+  const types = await grab(`${base}/wp-json/wp/v2/types`);
+  if (types.ok) {
+    try {
+      const t = JSON.parse(types.text);
+      const rows = Object.entries(t).map(([slug, v]) => ({ slug, name: v?.name, rest: v?.rest_base, ns: v?.rest_namespace }));
+      const interesting = rows.filter((r) => /event|calendar|thing|attraction/i.test(`${r.slug} ${r.name} ${r.rest}`));
+      console.log(`  post types: ${rows.map((r) => r.slug).join(', ')}`);
+      for (const r of (interesting.length ? interesting : [])) {
+        console.log(`    → ${r.slug}: rest_base="${r.rest}" namespace="${r.ns ?? 'wp/v2'}"  ${base}/wp-json/${r.ns ?? 'wp/v2'}/${r.rest}`);
+      }
+      // And actually call the ones that look like events.
+      for (const r of interesting) {
+        const url = `${base}/wp-json/${r.ns ?? 'wp/v2'}/${r.rest}?per_page=1`;
+        const hit = await grab(url);
+        console.log(`    ${String(hit.status).padEnd(4)} ${hit.type.padEnd(20)} ${url}`);
+        if (hit.ok) console.log(`         ${hit.text.slice(0, 220).replace(/\s+/g, ' ')}`);
+      }
+    } catch {
+      console.log('  /wp-json/wp/v2/types did not parse');
+    }
+  } else {
+    console.log(`  /wp-json/wp/v2/types → ${types.status || types.error}`);
+  }
+}
+
 async function runProbe() {
-  for (const [name, urls] of Object.entries(PROBE)) {
-    console.log(`\n=== ${name}`);
-    for (const url of urls) {
+  for (const [name, { base, extra }] of Object.entries(PROBE)) {
+    console.log(`\n=== ${name}  (${base})`);
+    await discover(name, base);
+    console.log('  other candidates:');
+    for (const url of extra) {
       const ctl = new AbortController();
       const t = setTimeout(() => ctl.abort(), 15000);
       try {
@@ -100,11 +157,11 @@ async function runProbe() {
         } else {
           shape = ` starts: ${text.slice(0, 90).replace(/\s+/g, ' ')}`;
         }
-        console.log(`  ${String(res.status).padEnd(4)} ${type.padEnd(26)} ${url}`);
-        if (res.ok) console.log(`      ${shape.trim()}`);
+        console.log(`    ${String(res.status).padEnd(4)} ${type.padEnd(26)} ${url}`);
+        if (res.ok) console.log(`         ${shape.trim()}`);
       } catch (err) {
-        console.log(`  ERR  ${'-'.padEnd(26)} ${url}`);
-        console.log(`      ${err instanceof Error ? err.message : err}`);
+        console.log(`    ERR  ${'-'.padEnd(26)} ${url}`);
+        console.log(`         ${err instanceof Error ? err.message : err}`);
       } finally {
         clearTimeout(t);
       }
