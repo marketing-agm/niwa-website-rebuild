@@ -15,6 +15,9 @@
 // Deterministic for a given response: same input, same output, so it is safe on
 // a schedule and a no-op diff means nothing changed.
 //
+// Discovery allows 5,000 calls a day and 5 a second. This makes at most two,
+// once a week.
+//
 // Usage:
 //   TICKETMASTER_API_KEY=… npm run events
 //   npm run events -- --dry-run                        # report only, no write
@@ -53,24 +56,58 @@ const PAGE_SIZE = 100;                        // Discovery API's cap per page
 // ---- fetch ----------------------------------------------------------------
 const iso = (d) => d.toISOString().replace(/\.\d{3}Z$/, 'Z');
 
+// Discovery marks `latlong` deprecated — "may be removed in a future release,
+// please use geoPoint instead" — and geoPoint wants a geohash, not a pair of
+// decimals. Nine characters is a box about five metres across, which is the
+// front door; `radius` does the rest of the work.
+const B32 = '0123456789bcdefghjkmnpqrstuvwxyz';
+function geohash(lat, lng, precision = 9) {
+  let idx = 0, bit = 0, even = true, hash = '';
+  let latMin = -90, latMax = 90, lngMin = -180, lngMax = 180;
+  while (hash.length < precision) {
+    if (even) {
+      const m = (lngMin + lngMax) / 2;
+      if (lng >= m) { idx = idx * 2 + 1; lngMin = m; } else { idx *= 2; lngMax = m; }
+    } else {
+      const m = (latMin + latMax) / 2;
+      if (lat >= m) { idx = idx * 2 + 1; latMin = m; } else { idx *= 2; latMax = m; }
+    }
+    even = !even;
+    if (++bit === 5) { hash += B32[idx]; bit = 0; idx = 0; }
+  }
+  return hash;
+}
+
 async function fetchPages(key) {
   const start = new Date();
   const end = new Date(start.getTime() + DAYS * 864e5);
   const out = [];
-  // Two pages is 200 events before filtering, which has always been more than a
-  // three-mile circle produces in a month. The loop stops early when it can.
+  // Two pages is 200 events before filtering, which is more than a three-mile
+  // circle produces in a month; the loop stops early when it can. Discovery
+  // only pages to the 1000th item (size × page < 1000), so at a size of 100
+  // there are eight more pages in hand if the window is ever widened.
   for (let page = 0; page < 2; page++) {
     const url = new URL('https://app.ticketmaster.com/discovery/v2/events.json');
     url.searchParams.set('apikey', key);
-    url.searchParams.set('latlong', `${HOME.lat},${HOME.lng}`);
+    url.searchParams.set('geoPoint', geohash(HOME.lat, HOME.lng));
     url.searchParams.set('radius', String(Math.ceil(RADIUS)));
     url.searchParams.set('unit', 'miles');
+    url.searchParams.set('countryCode', 'US');
     url.searchParams.set('startDateTime', iso(start));
     url.searchParams.set('endDateTime', iso(end));
+    // Discovery defaults these to "no" once a date range is sent, but a page
+    // that prints a date cannot carry an event whose date is a question mark,
+    // so they are stated rather than assumed.
+    url.searchParams.set('includeTBA', 'no');
+    url.searchParams.set('includeTBD', 'no');
+    url.searchParams.set('includeTest', 'no');
     url.searchParams.set('size', String(PAGE_SIZE));
     url.searchParams.set('page', String(page));
     url.searchParams.set('sort', 'date,asc');
 
+    // Logged with the key removed, so a run that comes back empty can be
+    // diagnosed from the Actions log without pasting a secret into it.
+    if (page === 0) console.log(`[events] GET ${String(url).replace(/apikey=[^&]*/, 'apikey=…')}`);
     const res = await fetch(url, { headers: { accept: 'application/json' } });
     if (!res.ok) throw new Error(`[events] Ticketmaster returned ${res.status} ${res.statusText}`);
     const body = await res.json();
@@ -109,22 +146,72 @@ function pickImage(images) {
   return usable[0]?.url ?? null;
 }
 
+// A wall-clock time in a named zone, resolved to the actual instant.
+//
+// Discovery does not always send `dateTime`: an event with a time still to be
+// announced has only `localDate`, and some sources send `localDate` and
+// `localTime` and nothing else. Emitting "2026-09-12T00:00:00" for those would
+// be read as UTC, which in Seattle is five in the evening on the 11th — the
+// page would print the wrong day. So the offset is worked out rather than
+// assumed, from the venue's own zone where Discovery gives one.
+//
+// Two passes: guess the offset at the naive instant, then re-read it at the
+// corrected one, which settles everything except a time inside a DST gap.
+const zoneCache = new Map();
+function utcFromLocal(zone, localDate, localTime) {
+  let dtf = zoneCache.get(zone);
+  if (!dtf) {
+    try {
+      dtf = new Intl.DateTimeFormat('en-US', {
+        timeZone: zone, hour12: false,
+        year: 'numeric', month: '2-digit', day: '2-digit',
+        hour: '2-digit', minute: '2-digit', second: '2-digit',
+      });
+    } catch {
+      return null; // a zone Node doesn't know; caller falls back
+    }
+    zoneCache.set(zone, dtf);
+  }
+  const [y, mo, d] = localDate.split('-').map(Number);
+  const [h = 0, mi = 0, sec = 0] = (localTime || '00:00:00').split(':').map(Number);
+  if (!Number.isFinite(y) || !Number.isFinite(mo) || !Number.isFinite(d)) return null;
+  const naive = Date.UTC(y, mo - 1, d, h, mi, sec);
+  const readBack = (ms) => {
+    const p = Object.fromEntries(dtf.formatToParts(ms).map((x) => [x.type, x.value]));
+    const hh = p.hour === '24' ? 0 : Number(p.hour);
+    return Date.UTC(Number(p.year), Number(p.month) - 1, Number(p.day), hh, Number(p.minute), Number(p.second));
+  };
+  // Each pass measures the offset at the instant it is refining, not at the
+  // naive one — reusing `naive` in the second pass cancels the first and hands
+  // back the wall clock read as UTC, which is the bug this function exists for.
+  let ts = naive - (readBack(naive) - naive);
+  ts = naive - (readBack(ts) - ts);
+  return Number.isFinite(ts) ? new Date(ts).toISOString().replace(/\.\d{3}Z$/, 'Z') : null;
+}
+
+const DEFAULT_TZ = 'America/Los_Angeles';
+
 /** Ticketmaster splits the date and the time, and marks TBA/TBD explicitly. */
 function startOf(ev) {
   const d = ev?.dates?.start;
   if (!d?.localDate) return null;
   if (d.dateTBA || d.dateTBD) return null;
   if (ev?.dates?.status?.code === 'cancelled') return null;
-  // dateTime is already UTC with a Z; localTime is the venue's wall clock.
+  // dateTime, when present, is already the instant, in UTC with a Z.
   if (d.dateTime) return { start: d.dateTime, allDay: false };
-  if (d.timeTBA || !d.localTime) return { start: `${d.localDate}T00:00:00`, allDay: true };
-  return { start: `${d.localDate}T${d.localTime}`, allDay: false };
+
+  const zone = ev?.dates?.timezone || ev?._embedded?.venues?.[0]?.timezone || DEFAULT_TZ;
+  const allDay = !!d.timeTBA || !d.localTime;
+  const wall = allDay ? '00:00:00' : d.localTime;
+  const start = utcFromLocal(zone, d.localDate, wall) ?? utcFromLocal(DEFAULT_TZ, d.localDate, wall);
+  return start ? { start, allDay } : null;
 }
 
 function normalise(raw) {
   const seen = new Set();
   const out = [];
   for (const ev of raw) {
+    if (ev?.test === true) continue;
     const when = startOf(ev);
     if (!when) continue;
     const v = ev?._embedded?.venues?.[0];
@@ -192,7 +279,14 @@ if (sourceFile) {
     console.error('[events] and add it to the repository as a secret named TICKETMASTER_API_KEY.');
     process.exit(78); // EX_CONFIG — "not configured", not "broken"
   }
-  raw = await fetchPages(key);
+  try {
+    raw = await fetchPages(key);
+  } catch (err) {
+    // Red, because a feed that cannot be reached is something to look at — but
+    // a legible line rather than a stack trace in the Actions log.
+    console.error(`[events] ${err instanceof Error ? err.message : err}`);
+    process.exit(1);
+  }
   console.log(`[events] fetched ${raw.length} event(s) within ${RADIUS} miles over the next ${DAYS} days`);
 }
 
