@@ -71,12 +71,22 @@ const MAX = Number(arg('max', 60));
 // script can rely on sight unseen, so rather than guess at one, `--probe`
 // asks all of them what they actually serve and prints the answers.
 const PROBE = {
-  'queen-anne-chamber': { base: 'https://www.queenannechamber.org', extra: queenAnneChamber.probeUrls },
+  'queen-anne-chamber': {
+    base: 'https://www.queenannechamber.org',
+    extra: [
+      // The Chamber runs Modern Events Calendar, not The Events Calendar.
+      // wp/v2/mec-events returns a WordPress *post* — its `date` is when the
+      // listing was published, not when the event happens — so the only
+      // endpoint that can carry a start date is MEC's own.
+      'https://www.queenannechamber.org/wp-json/mec/v1/events',
+    ],
+  },
   'visit-seattle': {
     base: 'https://visitseattle.org',
     extra: [
-      'https://visitseattle.org/events/feed/',
-      'https://visitseattle.org/things-to-do/events/feed/',
+      'https://visitseattle.org/wp-json/visitseattle/v1/events',
+      'https://visitseattle.org/wp-json/visitseattle/v1/neighborhoods',
+      'https://visitseattle.org/wp-json/visitwidget/v1/events',
     ],
   },
 };
@@ -179,15 +189,18 @@ async function runProbe() {
       try {
         const res = await fetch(url, { signal: ctl.signal, headers: { accept: 'application/json, text/calendar, application/rss+xml, */*' } });
         const type = (res.headers.get('content-type') || '').split(';')[0];
-        const text = (await res.text()).slice(0, 400);
+        const text = await res.text();
         let shape = '';
         if (type.includes('json')) {
           try {
-            const j = JSON.parse(text.length < 400 ? text : text + '');
-            shape = ` keys: ${Object.keys(j).slice(0, 8).join(', ')}`;
-          } catch { shape = ` starts: ${text.slice(0, 90).replace(/\s+/g, ' ')}`; }
+            const j = JSON.parse(text);
+            const first = Array.isArray(j) ? j[0]
+              : (Array.isArray(j?.events) ? j.events[0]
+              : (Array.isArray(j?.data) ? j.data[0] : j));
+            shape = `\n${JSON.stringify(first, null, 1).slice(0, 1600)}`;
+          } catch { shape = ` starts: ${text.slice(0, 120).replace(/\s+/g, ' ')}`; }
         } else {
-          shape = ` starts: ${text.slice(0, 90).replace(/\s+/g, ' ')}`;
+          shape = ` starts: ${text.slice(0, 120).replace(/\s+/g, ' ')}`;
         }
         console.log(`    ${String(res.status).padEnd(4)} ${type.padEnd(26)} ${url}`);
         if (res.ok) console.log(`         ${shape.trim()}`);
