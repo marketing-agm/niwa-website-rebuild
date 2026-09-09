@@ -19,24 +19,84 @@ if (form) {
     t.addEventListener('input', grow); grow();
   });
 
-  // The next six weekdays, since the office keeps weekday hours.
+  // Dates. Local throughout: toISOString would hand back the UTC day, which
+  // west of Greenwich is tomorrow for part of every evening.
+  const DOW = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  const openDays: string[] = site.config?.contact?.officeHours?.[0]?.days ?? [];
+  const isOpenDay = (d: Date) => !openDays.length || openDays.includes(DOW[d.getDay()]);
+  const iso = (d: Date) => `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+  const fromIso = (v: string) => { const [y, m, d] = v.split('-').map(Number); return new Date(y, m - 1, d); };
+  const fmtDay = (d: Date) => d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
+
+  // The next six open days, offered as chips because most people want one of
+  // them and a chip is one tap.
   const days = form.querySelector<HTMLElement>('[data-tour-days]');
+  const dateWrap = form.querySelector<HTMLElement>('[data-tour-date-wrap]');
+  const dateInput = form.querySelector<HTMLInputElement>('[data-tour-date]');
+  const dayHint = form.querySelector<HTMLElement>('[data-tour-day-hint]');
+  let firstOpen = '';
   if (days) {
     const d = new Date(); d.setHours(12, 0, 0, 0);
     let n = 0;
     while (n < 6) {
       d.setDate(d.getDate() + 1);
-      const dow = d.getDay();
-      if (dow === 0 || dow === 6) continue;
-      const label = d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
-      const value = d.toISOString().slice(0, 10);
+      if (!isOpenDay(d)) continue;
+      const value = iso(d);
+      if (!firstOpen) firstOpen = value;
       const el = document.createElement('label');
       el.className = 'chip';
-      el.innerHTML = `<input type="radio" name="day" value="${value}"><span>${label}</span>`;
+      el.innerHTML = `<input type="radio" name="day" value="${value}"><span>${fmtDay(d)}</span>`;
       days.appendChild(el);
       n++;
     }
   }
+
+  // And any other date, for the week the six chips don't cover. Bounded at
+  // tomorrow — leasing confirms by email, usually within a business day, so
+  // today is a promise the form can't make — and at six months, which is
+  // further out than any lease conversation starts.
+  if (dateInput) {
+    const lo = new Date(); lo.setHours(12, 0, 0, 0); lo.setDate(lo.getDate() + 1);
+    const hi = new Date(lo); hi.setDate(hi.getDate() + 180);
+    dateInput.min = iso(lo);
+    dateInput.max = iso(hi);
+  }
+
+  // Nothing here refuses a date. A Saturday is a real thing to ask for; the
+  // office simply isn't open on one, and saying so is more use than a field
+  // that won't take the answer.
+  const pickedDate = () => {
+    const on = !!form.querySelector<HTMLInputElement>('input[name="day"][value="pick"]:checked');
+    return on && dateInput?.value ? fromIso(dateInput.value) : null;
+  };
+  // `entering` is true only when the chip itself was just chosen. The default
+  // date and the focus belong to that moment; on a later keystroke they would
+  // mean the field refuses to be cleared and steals the caret back.
+  const syncDay = (entering = false) => {
+    const on = !!form.querySelector<HTMLInputElement>('input[name="day"][value="pick"]:checked');
+    if (dateWrap) dateWrap.hidden = !on;
+    if (on && dateInput) {
+      if (entering) {
+        if (!dateInput.value && firstOpen) dateInput.value = firstOpen;
+        dateInput.focus();
+      }
+      dateInput.classList.remove('is-invalid');
+    }
+    const d = pickedDate();
+    if (dayHint) {
+      const off = d && !isOpenDay(d);
+      dayHint.hidden = !off;
+      if (off) dayHint.textContent = `${DOW[d!.getDay()]} is outside the office's hours — ask anyway, and leasing will say what they can do.`;
+    }
+  };
+  // On the form, not on the strip: "another date" sits outside it, so that the
+  // one chip a phone visitor might actually need is not the last stop on a
+  // sideways scroll.
+  form.addEventListener('change', (e) => {
+    if ((e.target as HTMLElement)?.matches?.('input[name="day"]')) syncDay(true);
+  });
+  dateInput?.addEventListener('change', () => { status.textContent = ''; syncDay(); });
+  dateInput?.addEventListener('input', () => { status.textContent = ''; syncDay(); });
 
   const val = (name: string) => (form.elements.namedItem(name) as HTMLInputElement | RadioNodeList | null);
   const text = (name: string) => { const e = val(name) as HTMLInputElement | null; return e && 'value' in e ? String(e.value || '').trim() : ''; };
@@ -52,6 +112,11 @@ if (form) {
     const bad: HTMLInputElement[] = [];
     if (!first.value.trim()) bad.push(first);
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim())) bad.push(email);
+    const wantsPick = !!form.querySelector<HTMLInputElement>('input[name="day"][value="pick"]:checked');
+    if (wantsPick && dateInput && !dateInput.value) {
+      dateInput.classList.add('is-invalid');
+      if (!bad.length) { dateInput.focus(); status.textContent = 'Pick the date you would like to visit.'; return; }
+    }
     if (bad.length) {
       bad.forEach((b) => b.classList.add('is-invalid'));
       bad[0].focus();
@@ -61,7 +126,8 @@ if (form) {
 
     const bedsLabel = pickedLabel('beds') || 'not specified';
     const windowLabel = pickedLabel('movein') || 'not specified';
-    const dayLabel = pickedLabel('day') || 'any weekday';
+    const picked = pickedDate();
+    const dayLabel = picked ? fmtDay(picked) : (pickedLabel('day') || 'any weekday');
     const slotLabel = pickedLabel('slot') || 'any time';
     const attribution = (window as any).adAttributionFields ? (window as any).adAttributionFields() : {};
     const payload = {

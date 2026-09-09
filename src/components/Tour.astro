@@ -41,9 +41,21 @@ const slots = [['Morning', 'morning'], ['Midday', 'midday'], ['Afternoon', 'afte
           </span>
           <span class="tf-clause">
             <span class="tf-w">I could visit</span>
-            <span class="tf-chips" role="radiogroup" aria-label="Day to visit" data-tour-days>
-              <label class="chip"><input type="radio" name="day" value="any" checked /><span>any weekday</span></label>
+            {/* The next open days are inserted before the "another date" chip at
+                runtime. That chip opens a real date field, so a visitor whose
+                week doesn't work isn't stuck choosing between six days and
+                "any". */}
+            <span class="tf-chips tf-days-group" role="radiogroup" aria-label="Day to visit">
+              <span class="tf-days" data-tour-days>
+                <label class="chip"><input type="radio" name="day" value="any" checked /><span>any weekday</span></label>
+              </span>
+              <label class="chip" data-tour-pick><input type="radio" name="day" value="pick" /><span>another date</span></label>
             </span>
+            <span class="tf-field tf-date" data-tour-date-wrap hidden>
+              <label class="sr-only" for="tf-date">Date you'd like to tour</label>
+              <input id="tf-date" name="daydate" type="date" data-tour-date />
+            </span>
+            <span class="tf-hint" data-tour-day-hint hidden></span>
           </span>
           <span class="tf-clause">
             <span class="tf-w">in the</span>
@@ -134,6 +146,18 @@ const slots = [['Morning', 'morning'], ['Midday', 'midday'], ['Afternoon', 'afte
   .tf input:focus, .tf textarea:focus { outline: none; border-bottom-color: var(--ink); background: rgba(255,255,255,0.22); }
   .tf .is-invalid { border-bottom: 2px solid #b3261e; }
   .tf-chips { display: inline; }
+  .tf-days { display: inline; }
+  /* .tf-field is display:inline, which outranks the UA's [hidden] rule. */
+  .tf-date[hidden] { display: none; }
+  /* A date, not a sentence fragment — the italic the other fields wear would
+     make the browser's own numerals look like a mistake. */
+  .tf-date input { font-style: normal; font-size: 0.72em; padding: 0.06em 0.2em 0.1em; }
+  .tf-date input::-webkit-calendar-picker-indicator { cursor: pointer; opacity: 0.72; }
+  .tf-date input::-webkit-calendar-picker-indicator:hover { opacity: 1; }
+  /* Said once, under the sentence, when the chosen day falls outside the hours
+     the office actually keeps. It doesn't block anything. */
+  .tf-hint { display: block; font-size: 0.4em; line-height: 1.5; color: var(--ink-2); margin: 0.3em 0 -0.4em; font-style: italic; }
+  .tf-hint[hidden] { display: none; }
   .tf :global(.chip) { position: relative; display: inline-block; vertical-align: baseline; margin: 0 0.1em; }
   .tf :global(.chip input) { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
   .tf :global(.chip span) { display: inline-block; border: 1px solid var(--ink); border-radius: 999px; padding: 0.08em 0.62em 0.12em; font-size: 0.66em; line-height: 1.25; letter-spacing: -0.01em; transition: background-color 0.35s var(--ease), color 0.35s var(--ease), transform 0.35s var(--ease); white-space: nowrap; }
@@ -216,13 +240,19 @@ const slots = [['Morning', 'morning'], ['Midday', 'midday'], ['Afternoon', 'afte
 
     /* The day group is seven chips once the weekday dates are injected, which
        wrapped to four rows on its own. It is a sequence of dates, so it reads
-       naturally as a strip you push through rather than a block you scan. */
-    .tf-chips[data-tour-days] {
+       naturally as a strip you push through rather than a block you scan.
+       "Another date" stays out of the strip and sits on its own line under it:
+       it is the answer for anyone the next six days don't suit, and the last
+       stop on a sideways scroll is the one place they would never look. */
+    .tf-days {
+      display: flex; flex: 1 0 100%; gap: 8px;
       flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none;
       scroll-snap-type: x proximity; padding-bottom: 2px;
     }
-    .tf-chips[data-tour-days]::-webkit-scrollbar { display: none; }
-    .tf-chips[data-tour-days] :global(.chip) { flex: 0 0 auto; scroll-snap-align: start; }
+    .tf-days::-webkit-scrollbar { display: none; }
+    .tf-days :global(.chip) { flex: 0 0 auto; scroll-snap-align: start; }
+    .tf-date { display: block; margin-top: 10px; }
+    .tf-hint { font-size: 0.62em; margin-top: 0.5em; }
 
     .tf input { min-height: 44px; padding: 0 0.15em; }
     .tf-line--note { margin-top: 22px; }
