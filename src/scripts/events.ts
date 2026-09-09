@@ -45,6 +45,8 @@ if (root) {
   // event leaves the accessibility tree along with the layout.
   let category = 'all';
   let venueIds: Set<string> | null = null;
+  /** Keys of pins that are chosen, so their labels stay up after the pointer leaves. */
+  const chosen = new Set<string>();
   const apply = () => {
     let shown = 0;
     for (const el of items()) {
@@ -86,11 +88,14 @@ if (root) {
       b.classList.toggle('is-on', on);
       b.setAttribute('aria-pressed', String(on));
     }
+    chosen.clear();
     for (const p of pins) {
       const on = !!venueIds && p.dataset.evPinIds === [...venueIds].join(' ');
       p.classList.toggle('is-on', on);
       p.setAttribute('aria-pressed', String(on));
+      if (on && p.dataset.evPin) chosen.add(p.dataset.evPin);
     }
+    for (const [k, l] of labels) l.classList.toggle('is-lit', chosen.has(k));
   };
 
   const clearVenue = () => {
@@ -100,11 +105,12 @@ if (root) {
   };
   venueChip?.addEventListener('click', clearVenue);
 
-  const pickVenue = (pin: HTMLElement) => {
+  /** True when a filter was applied; false when the tap cleared one. */
+  const pickVenue = (pin: HTMLElement): boolean => {
     const ids = (pin.dataset.evPinIds ?? '').split(' ').filter(Boolean);
-    if (!ids.length) return;
+    if (!ids.length) return false;
     // Tapping the pin that is already chosen puts everything back.
-    if (venueIds && [...venueIds].join(' ') === ids.join(' ')) { clearVenue(); return; }
+    if (venueIds && [...venueIds].join(' ') === ids.join(' ')) { clearVenue(); return false; }
     venueIds = new Set(ids);
     category = 'all';
     const name = pin.dataset.evPinName ?? 'This venue';
@@ -115,6 +121,7 @@ if (root) {
       venueChip.setAttribute('aria-label', `Showing ${ids.length} event${ids.length === 1 ? '' : 's'} at ${name}. Clear this filter.`);
     }
     apply();
+    return true;
   };
   $$<HTMLButtonElement>('[data-ev-cat]').forEach((b) => b.addEventListener('click', () => {
     category = b.dataset.evCat!;
@@ -133,14 +140,19 @@ if (root) {
   const pinIds = new Map<Element, Set<string>>(pins.map((p) => [p, idsOf(p)]));
   const pinFor = (id: string) => pins.find((p) => pinIds.get(p)!.has(id)) ?? null;
 
+  // Labels live in a layer of their own, drawn after every pin, and are matched
+  // back to their pin by key. They were inside the pin and hoisted to the end
+  // of the group on hover, which put them on top and broke every click: moving
+  // a node out from under the cursor means the browser never completes one.
+  const labels = new Map<string, Element>(
+    $$('[data-ev-label]').map((l) => [(l as HTMLElement).dataset.evLabel!, l]),
+  );
   const light = (pin: Element | null) => {
     const ids = pin ? pinIds.get(pin)! : null;
+    const key = pin ? (pin as HTMLElement).dataset.evPin : null;
     for (const el of items()) el.classList.toggle('is-lit', !!ids && ids.has(el.dataset.evItem!));
     for (const p of pins) p.classList.toggle('is-lit', p === pin);
-    // SVG has no z-index: what is painted last is on top. A lit pin's label is
-    // wider than the pin, so without this it can be drawn underneath whichever
-    // pins happen to come after it in the markup.
-    if (pin?.parentNode) pin.parentNode.appendChild(pin);
+    for (const [k, l] of labels) l.classList.toggle('is-lit', k === key || chosen.has(k));
   };
 
   for (const el of items()) {
@@ -160,7 +172,11 @@ if (root) {
       // Filter to this pin first, then go to what is left. Scrolling to one
       // card in a list of sixty answered "where is it" but not "what is on
       // there", which is the question a pin actually asks.
-      pickVenue(pin as HTMLElement);
+      //
+      // Only on the way in, though. Tapping a chosen pin to clear it used to
+      // scroll too, which pulled you off the map you were still looking at and
+      // showed you the same sixty events you started with.
+      if (!pickVenue(pin as HTMLElement)) return;
       const target = items().find((el) => !el.hidden);
       if (!target) return;
       // The page scroller is Lenis on desktop; scrollIntoView is what it wraps.
