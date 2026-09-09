@@ -138,8 +138,8 @@ const miles = (e: SiteEvent) => (e.miles == null ? '' : e.miles < 0.15 ? 'next d
           <g class="ev-rings" aria-hidden="true">
             {/* Each ring is drawn twice, the second a hair inside it and
                 fainter — a rake leaves a furrow, not a line. */}
-            {RINGS.map((r) => <circle cx={CX} cy={CY} r={rPx(r)} />)}
-            {RINGS.map((r) => <circle class="ev-ring-2" cx={CX} cy={CY} r={Math.max(0, rPx(r) - 3.5)} />)}
+            {RINGS.map((r, i) => <circle style={`--i:${i}`} cx={CX} cy={CY} r={rPx(r)} />)}
+            {RINGS.map((r, i) => <circle class="ev-ring-2" style={`--i:${i}`} cx={CX} cy={CY} r={Math.max(0, rPx(r) - 3.5)} />)}
             {/* West of the axis, not east: the pins fall where the city is,
                 which from Queen Anne is east and south, and the labels were
                 landing on top of them. */}
@@ -165,6 +165,7 @@ const miles = (e: SiteEvent) => (e.miles == null ? '' : e.miles < 0.15 ? 'next d
                     a raked garden sends one out through the sand. */}
                 <circle class="ev-ripple" r={r} />
                 <circle class="ev-ripple ev-ripple--2" r={r} />
+                <circle class="ev-ripple ev-ripple--3" r={r} />
                 <circle class="ev-pin-dot" r={r} />
                 {n > 1 && <text class="ev-pin-n" y="4">{n}</text>}
               </g>
@@ -315,21 +316,44 @@ const miles = (e: SiteEvent) => (e.miles == null ? '' : e.miles < 0.15 ? 'next d
      line through the sand. They exist only while the pin is live, and reduced
      motion gets none of it. */
   .ev-ripple {
-    fill: none; stroke: var(--gold); stroke-width: 1.5;
+    fill: none; stroke: var(--gold); stroke-width: 3;
     transform-box: fill-box; transform-origin: center;
     opacity: 0; pointer-events: none;
   }
   .ev-pin.is-lit .ev-ripple, .ev-pin.is-on .ev-ripple, .ev-pin:focus-visible .ev-ripple {
-    animation: ev-rake 2.4s cubic-bezier(0.16, 0.6, 0.3, 1) infinite;
+    animation: ev-rake 1.8s cubic-bezier(0.16, 0.6, 0.3, 1) infinite;
   }
-  .ev-ripple--2 { animation-delay: 1.2s !important; }
+  .ev-ripple--2 { animation-delay: 0.6s !important; }
+  .ev-ripple--3 { animation-delay: 1.2s !important; }
   @keyframes ev-rake {
-    0%   { opacity: 0.55; transform: scale(1); stroke-width: 2; }
-    70%  { opacity: 0.12; }
-    100% { opacity: 0; transform: scale(3.4); stroke-width: 0.6; }
+    0%   { opacity: 0.85; transform: scale(1);   stroke-width: 3; }
+    60%  { opacity: 0.25; }
+    100% { opacity: 0;    transform: scale(5);   stroke-width: 0.7; }
   }
+
+  /* And the plate itself answers. Hovering the map sends a wave out through
+     the raked rings — each one brightening a beat after the one inside it, so
+     the light travels from the building outward the way a ripple crosses
+     sand. This is the thing the pin ripple sits inside; on its own the pin was
+     a halo, not a garden. */
+  @media (hover: hover) {
+    .ev-map:hover .ev-rings circle {
+      animation: ev-sand 2.6s ease-in-out infinite;
+      animation-delay: calc(var(--i, 0) * 0.16s);
+    }
+  }
+  .ev-map.is-live .ev-rings circle {
+    animation: ev-sand 2.6s ease-in-out infinite;
+    animation-delay: calc(var(--i, 0) * 0.16s);
+  }
+  @keyframes ev-sand {
+    0%, 100% { stroke: var(--line); }
+    35%      { stroke: var(--fg-3); }
+  }
+
   @media (prefers-reduced-motion: reduce) {
-    .ev-pin.is-lit .ev-ripple, .ev-pin.is-on .ev-ripple, .ev-pin:focus-visible .ev-ripple { animation: none; }
+    .ev-pin.is-lit .ev-ripple, .ev-pin.is-on .ev-ripple, .ev-pin:focus-visible .ev-ripple,
+    .ev-map:hover .ev-rings circle, .ev-map.is-live .ev-rings circle { animation: none; }
   }
   .ev-pin-n { fill: var(--ink); text-anchor: middle; font-family: var(--sans); font-size: 12px; font-weight: 600; pointer-events: none; }
   .ev-pin-label {

@@ -147,9 +147,12 @@ if (root) {
   const labels = new Map<string, Element>(
     $$('[data-ev-label]').map((l) => [(l as HTMLElement).dataset.evLabel!, l]),
   );
+  const map = root.querySelector<SVGElement>('[data-ev-map]');
   const light = (pin: Element | null) => {
     const ids = pin ? pinIds.get(pin)! : null;
     const key = pin ? (pin as HTMLElement).dataset.evPin : null;
+    // Touch has no hover, so the sand only moves on a tap unless it is told to.
+    map?.classList.toggle('is-live', !!pin || chosen.size > 0);
     for (const el of items()) el.classList.toggle('is-lit', !!ids && ids.has(el.dataset.evItem!));
     for (const p of pins) p.classList.toggle('is-lit', p === pin);
     for (const [k, l] of labels) l.classList.toggle('is-lit', k === key || chosen.has(k));
