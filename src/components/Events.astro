@@ -152,7 +152,8 @@ const miles = (e: SiteEvent) => (e.miles == null ? '' : e.miles < 0.15 ? 'next d
             const lines = clusterLines(cl);
             return (
               <g class="ev-pin" data-ev-pin={`c${ci}`} data-ev-pin-ids={cl.ids.join(' ')}
-                 transform={`translate(${cl.x} ${cl.y})`} tabindex="0" role="button" aria-label={clusterLabel(cl)}>
+                 data-ev-pin-name={cl.venues.length === 1 ? cl.venues[0].name : `${cl.venues[0].name} + ${cl.venues.length - 1} more`}
+                 transform={`translate(${cl.x} ${cl.y})`} tabindex="0" role="button" aria-pressed="false" aria-label={clusterLabel(cl)}>
                 {/* 21 units: half of COLLIDE, so hit areas tile rather than
                     steal. About 24px across on a phone, which is the smallest
                     target WCAG asks for — and the cards below carry everything
@@ -191,6 +192,14 @@ const miles = (e: SiteEvent) => (e.miles == null ? '' : e.miles < 0.15 ? 'next d
 
       <div class="ev-bar">
         <div class="ev-filters" role="group" aria-label="Filter by category">
+          {/* Filled in and revealed when a pin is tapped. Rendered here rather
+              than created in script so that it carries this component's scoped
+              styles — built in JS it came out as unstyled text. */}
+          <button type="button" class="ev-chip ev-chip--venue" data-ev-venue-chip hidden>
+            <span data-ev-venue-name></span>
+            <span class="ev-chip-n" data-ev-venue-n></span>
+            <span class="ev-chip-x" aria-hidden="true">✕</span>
+          </button>
           <button type="button" class="ev-chip is-on" data-ev-cat="all" aria-pressed="true">Everything <span class="ev-chip-n">{events.length}</span></button>
           {categories.map((cat) => (
             <button type="button" class="ev-chip" data-ev-cat={cat} aria-pressed="false">{cat} <span class="ev-chip-n">{events.filter((e) => e.category === cat).length}</span></button>
@@ -286,8 +295,11 @@ const miles = (e: SiteEvent) => (e.miles == null ? '' : e.miles < 0.15 ? 'next d
     paint-order: stroke; stroke: var(--bg); stroke-width: 5px; stroke-linejoin: round;
     opacity: 0; transition: opacity 0.25s; pointer-events: none;
   }
-  .ev-pin.is-lit .ev-pin-label, .ev-pin:focus-visible .ev-pin-label { opacity: 1; }
+  .ev-pin.is-lit .ev-pin-label, .ev-pin.is-on .ev-pin-label, .ev-pin:focus-visible .ev-pin-label { opacity: 1; }
   .ev-pin.is-lit .ev-pin-dot { fill: var(--fg); }
+  /* Chosen, not merely pointed at: the dot inverts and keeps its name up. */
+  .ev-pin.is-on .ev-pin-dot { fill: var(--fg); stroke: var(--gold); stroke-width: 3; }
+  .ev-pin.is-on .ev-pin-n { fill: var(--ink); }
   .ev-pin.is-out .ev-pin-dot { fill: var(--line); }
   .ev-pin:focus-visible { outline: none; }
   .ev-pin:focus-visible .ev-pin-dot { stroke: var(--fg); stroke-width: 3; }
@@ -298,7 +310,9 @@ const miles = (e: SiteEvent) => (e.miles == null ? '' : e.miles < 0.15 ? 'next d
   .ev-home-t { fill: var(--fg); text-anchor: middle; font-family: var(--sans); font-size: 14px; letter-spacing: 0.06em; text-transform: uppercase; paint-order: stroke; stroke: var(--bg); stroke-width: 5px; stroke-linejoin: round; }
 
   /* ---- controls ---- */
-  .ev-bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; padding: clamp(18px, 2vw, 28px) var(--inset); border-bottom: 1px solid var(--line); }
+  /* Tapping a pin scrolls here, and the nav is fixed — without this the chip
+     that says what was just filtered lands underneath it. */
+  .ev-bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; padding: clamp(18px, 2vw, 28px) var(--inset); border-bottom: 1px solid var(--line); scroll-margin-top: calc(var(--nav-h, 64px) + 10px); }
   .ev-filters { display: flex; flex-wrap: wrap; gap: 8px; }
   .ev-chip, .ev-view {
     font-family: inherit; font-size: var(--t-label); letter-spacing: 0.06em; text-transform: uppercase;
@@ -307,6 +321,13 @@ const miles = (e: SiteEvent) => (e.miles == null ? '' : e.miles < 0.15 ? 'next d
   }
   .ev-chip-n { opacity: 0.55; margin-left: 0.35em; font-variant-numeric: tabular-nums; }
   .ev-chip.is-on { background: var(--gold); border-color: var(--gold); color: var(--ink); }
+  /* Put there by tapping a pin. It carries its own dismiss, because a filter
+     you cannot see the end of is a filter people get stuck in. */
+  .ev-chip--venue { background: var(--fg); border-color: var(--fg); color: var(--ink); display: inline-flex; align-items: center; gap: 0.55em; }
+  .ev-chip--venue[hidden] { display: none; }
+  .ev-chip--venue .ev-chip-n { margin-left: 0; }
+  .ev-chip--venue .ev-chip-x { font-size: 1.15em; line-height: 1; opacity: 0.65; }
+  @media (hover: hover) { .ev-chip--venue:hover .ev-chip-x { opacity: 1; } }
   .ev-chip:focus-visible, .ev-view:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
   /* A thumb needs 44px; the type alone gave these 36. */
   @media (pointer: coarse) {

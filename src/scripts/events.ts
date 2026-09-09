@@ -35,14 +35,21 @@ if (root) {
     if (saved === 'list' || saved === 'grid') setView(saved);
   } catch { /* private mode */ }
 
-  // ---- category filter ----------------------------------------------------
+  // ---- filters -------------------------------------------------------------
+  // Two lenses on the same records: a category, chosen from the chip row, and a
+  // place, chosen by tapping a pin. They are alternatives rather than a
+  // compound — picking one clears the other — because a page that quietly has
+  // both on is a page where the count stops making sense.
+  //
   // Hidden with the hidden attribute rather than a class, so a filtered-out
   // event leaves the accessibility tree along with the layout.
   let category = 'all';
+  let venueIds: Set<string> | null = null;
   const apply = () => {
     let shown = 0;
     for (const el of items()) {
-      const on = category === 'all' || el.dataset.evCatOf === category;
+      const id = el.dataset.evItem!;
+      const on = venueIds ? venueIds.has(id) : (category === 'all' || el.dataset.evCatOf === category);
       el.hidden = !on;
       if (on) shown++;
     }
@@ -65,14 +72,54 @@ if (root) {
       const live = ids.some((id) => root.querySelector<HTMLElement>(`[data-ev-item="${CSS.escape(id)}"]:not([hidden])`));
       pin.classList.toggle('is-out', !live);
     }
+    paintChips();
+  };
+
+  // ---- the chip row, including the one a pin puts there ----------------------
+  const venueChip = root.querySelector<HTMLButtonElement>('[data-ev-venue-chip]');
+  const venueName = root.querySelector<HTMLElement>('[data-ev-venue-name]');
+  const venueN = root.querySelector<HTMLElement>('[data-ev-venue-n]');
+
+  const paintChips = () => {
+    for (const b of $$<HTMLButtonElement>('[data-ev-cat]')) {
+      const on = !venueIds && b.dataset.evCat === category;
+      b.classList.toggle('is-on', on);
+      b.setAttribute('aria-pressed', String(on));
+    }
+    for (const p of pins) {
+      const on = !!venueIds && p.dataset.evPinIds === [...venueIds].join(' ');
+      p.classList.toggle('is-on', on);
+      p.setAttribute('aria-pressed', String(on));
+    }
+  };
+
+  const clearVenue = () => {
+    venueIds = null;
+    if (venueChip) venueChip.hidden = true;
+    apply();
+  };
+  venueChip?.addEventListener('click', clearVenue);
+
+  const pickVenue = (pin: HTMLElement) => {
+    const ids = (pin.dataset.evPinIds ?? '').split(' ').filter(Boolean);
+    if (!ids.length) return;
+    // Tapping the pin that is already chosen puts everything back.
+    if (venueIds && [...venueIds].join(' ') === ids.join(' ')) { clearVenue(); return; }
+    venueIds = new Set(ids);
+    category = 'all';
+    const name = pin.dataset.evPinName ?? 'This venue';
+    if (venueChip && venueName && venueN) {
+      venueName.textContent = name;
+      venueN.textContent = String(ids.length);
+      venueChip.hidden = false;
+      venueChip.setAttribute('aria-label', `Showing ${ids.length} event${ids.length === 1 ? '' : 's'} at ${name}. Clear this filter.`);
+    }
+    apply();
   };
   $$<HTMLButtonElement>('[data-ev-cat]').forEach((b) => b.addEventListener('click', () => {
     category = b.dataset.evCat!;
-    $$<HTMLButtonElement>('[data-ev-cat]').forEach((o) => {
-      const on = o === b;
-      o.classList.toggle('is-on', on);
-      o.setAttribute('aria-pressed', String(on));
-    });
+    venueIds = null;
+    if (venueChip) venueChip.hidden = true;
     apply();
   }));
 
@@ -110,14 +157,17 @@ if (root) {
     pin.addEventListener('focus', () => light(pin));
     pin.addEventListener('blur', () => light(null));
     const jump = () => {
-      const ids = pinIds.get(pin)!;
-      // The soonest of this pin's events that the current filter is showing.
-      const target = items().find((el) => ids.has(el.dataset.evItem!) && !el.hidden);
+      // Filter to this pin first, then go to what is left. Scrolling to one
+      // card in a list of sixty answered "where is it" but not "what is on
+      // there", which is the question a pin actually asks.
+      pickVenue(pin as HTMLElement);
+      const target = items().find((el) => !el.hidden);
       if (!target) return;
-      light(pin);
-      // The page scroller is Lenis on desktop; scrollIntoView is what it wraps,
-      // and 'center' keeps the card clear of the fixed nav either way.
-      target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      // The page scroller is Lenis on desktop; scrollIntoView is what it wraps.
+      // 'start' on the bar, not the card, so the chip that says what has just
+      // been filtered is on screen with it.
+      const bar = root.querySelector('.ev-bar') ?? target;
+      bar.scrollIntoView({ behavior: 'smooth', block: 'start' });
     };
     pin.addEventListener('click', jump);
     pin.addEventListener('keydown', (e) => {
