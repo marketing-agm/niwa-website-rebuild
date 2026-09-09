@@ -79,6 +79,11 @@ const topHref = base || '#top';
   .nav-link:hover::after, .nav-link.is-active::after { transform: scaleX(1); transform-origin: left; }
   .nav-right { display: flex; align-items: center; gap: clamp(12px, 1.4vw, 28px); justify-self: end; }
   .nav-phone { color: var(--fg-2); font-size: var(--t-label); letter-spacing: 0.04em; transition: color 0.3s; }
+  /* It is a phone number in a nav bar on a touch device — the one control on
+     the page most likely to be tapped in a hurry, and it was 21px tall. */
+  @media (pointer: coarse) {
+    .nav-phone { display: inline-flex; align-items: center; min-height: 44px; }
+  }
   .nav-phone:hover { color: var(--fg); }
   .nav-burger { display: none; align-items: center; gap: 10px; height: 44px; font-size: var(--t-label); letter-spacing: 0.1em; text-transform: uppercase; }
   .nav-burger-l { display: grid; gap: 5px; width: 22px; }
