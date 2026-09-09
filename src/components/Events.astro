@@ -463,6 +463,7 @@ const miles = (e: SiteEvent) => (e.miles == null ? '' : e.miles < 0.15 ? 'next d
      mattered. It tops out at 0.2 — this line gets drawn across the lede and
      the listings, and it has to pass over them without competing. */
   .ev-call-r {
+    --call-peak: 0.2;
     fill: none; stroke: var(--gold); stroke-width: 1.1;
     vector-effect: non-scaling-stroke;
     transform-box: fill-box; transform-origin: center;
@@ -471,11 +472,17 @@ const miles = (e: SiteEvent) => (e.miles == null ? '' : e.miles < 0.15 ? 'next d
   }
   .ev-call-r--2 { animation-delay: 3.6s; }
   @keyframes ev-call {
-    0%   { opacity: 0;    transform: scale(1); }
-    4%   { opacity: 0.2; }
-    30%  { opacity: 0.15; }
-    60%  { opacity: 0.075; }
-    100% { opacity: 0;    transform: scale(78); }
+    0%   { opacity: 0; transform: scale(1); }
+    4%   { opacity: var(--call-peak); }
+    30%  { opacity: calc(var(--call-peak) * 0.75); }
+    60%  { opacity: calc(var(--call-peak) * 0.375); }
+    100% { opacity: 0; transform: scale(78); }
+  }
+  /* On a phone the map runs the full width, so the call is at full strength
+     right at the screen edge instead of thinned across a desktop's worth of
+     page. Same shape, quieter ink. */
+  @media (pointer: coarse) {
+    .ev-call-r { --call-peak: 0.15; }
   }
 
   @media (prefers-reduced-motion: reduce) {
