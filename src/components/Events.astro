@@ -316,19 +316,19 @@ const miles = (e: SiteEvent) => (e.miles == null ? '' : e.miles < 0.15 ? 'next d
      line through the sand. They exist only while the pin is live, and reduced
      motion gets none of it. */
   .ev-ripple {
-    fill: none; stroke: var(--gold); stroke-width: 3;
+    fill: none; stroke: var(--gold); stroke-width: 1.4;
     transform-box: fill-box; transform-origin: center;
     opacity: 0; pointer-events: none;
   }
   .ev-pin.is-lit .ev-ripple, .ev-pin.is-on .ev-ripple, .ev-pin:focus-visible .ev-ripple {
-    animation: ev-rake 1.8s cubic-bezier(0.16, 0.6, 0.3, 1) infinite;
+    animation: ev-rake 3.2s cubic-bezier(0.16, 0.6, 0.3, 1) infinite;
   }
-  .ev-ripple--2 { animation-delay: 0.6s !important; }
-  .ev-ripple--3 { animation-delay: 1.2s !important; }
+  .ev-ripple--2 { animation-delay: 1.06s !important; }
+  .ev-ripple--3 { animation-delay: 2.13s !important; }
   @keyframes ev-rake {
-    0%   { opacity: 0.85; transform: scale(1);   stroke-width: 3; }
-    60%  { opacity: 0.25; }
-    100% { opacity: 0;    transform: scale(5);   stroke-width: 0.7; }
+    0%   { opacity: 0.34; transform: scale(1);   stroke-width: 1.4; }
+    55%  { opacity: 0.1; }
+    100% { opacity: 0;    transform: scale(3.6); stroke-width: 0.4; }
   }
 
   /* And the plate itself answers. Hovering the map sends a wave out through
@@ -338,17 +338,20 @@ const miles = (e: SiteEvent) => (e.miles == null ? '' : e.miles < 0.15 ? 'next d
      a halo, not a garden. */
   @media (hover: hover) {
     .ev-map:hover .ev-rings circle {
-      animation: ev-sand 2.6s ease-in-out infinite;
-      animation-delay: calc(var(--i, 0) * 0.16s);
+      animation: ev-sand 3.6s ease-in-out infinite;
+      animation-delay: calc(var(--i, 0) * 0.2s);
     }
   }
   .ev-map.is-live .ev-rings circle {
-    animation: ev-sand 2.6s ease-in-out infinite;
-    animation-delay: calc(var(--i, 0) * 0.16s);
+    animation: ev-sand 3.6s ease-in-out infinite;
+    animation-delay: calc(var(--i, 0) * 0.2s);
   }
+  /* The peak is derived from the palette rather than typed in, and it is a
+     little under twice the rings' resting weight — enough that the eye catches
+     something crossing, not enough to look like the map is signalling. */
   @keyframes ev-sand {
     0%, 100% { stroke: var(--line); }
-    35%      { stroke: var(--fg-3); }
+    40%      { stroke: color-mix(in srgb, var(--fg) 22%, transparent); }
   }
 
   @media (prefers-reduced-motion: reduce) {
