@@ -312,7 +312,12 @@ const miles = (e: SiteEvent) => (e.miles == null ? '' : e.miles < 0.15 ? 'next d
      mostly empty corner. On a phone it takes the full width it is given. */
   .ev-map-wrap { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: clamp(16px, 2vw, 30px) var(--inset) clamp(12px, 1.4vw, 20px); }
   .ev-map { display: block; width: 100%; max-width: 560px; margin: 0 auto; height: auto; overflow: visible; }
-  .ev-rings circle { fill: none; stroke: var(--line); }
+  .ev-rings circle {
+    fill: none; stroke: var(--line);
+    /* fill-box on a circle is its own bounding box, so the origin lands on
+       cx,cy for every ring without repeating the numbers here. */
+    transform-box: fill-box; transform-origin: center;
+  }
   .ev-rings .ev-ring-2 { stroke: var(--line-2); }
   .ev-rings line { stroke: var(--line-2); }
   .ev-ring-t { fill: var(--fg-3); font-family: var(--sans); font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; }
@@ -348,27 +353,32 @@ const miles = (e: SiteEvent) => (e.miles == null ? '' : e.miles < 0.15 ? 'next d
     100% { opacity: 0;    transform: scale(42); }
   }
 
-  /* And the plate itself answers. Hovering the map sends a wave out through
-     the raked rings — each one brightening a beat after the one inside it, so
-     the light travels from the building outward the way a ripple crosses
-     sand. This is the thing the pin ripple sits inside; on its own the pin was
-     a halo, not a garden. */
+  /* And the whole figure answers. Hovering the map sends a swell out through
+     the raked rings: each one swells, brightens and settles a beat after the
+     one inside it, so a single wave travels from the building to the rim.
+     The rings are the surface — the pin ripple is what lands on it. */
   @media (hover: hover) {
     .ev-map:hover .ev-rings circle {
-      animation: ev-sand 3.6s ease-in-out infinite;
-      animation-delay: calc(var(--i, 0) * 0.2s);
+      animation: ev-sand 4.2s ease-in-out infinite;
+      animation-delay: calc(var(--i, 0) * 0.26s);
     }
   }
   .ev-map.is-live .ev-rings circle {
-    animation: ev-sand 3.6s ease-in-out infinite;
-    animation-delay: calc(var(--i, 0) * 0.2s);
+    animation: ev-sand 4.2s ease-in-out infinite;
+    animation-delay: calc(var(--i, 0) * 0.26s);
   }
-  /* The peak is derived from the palette rather than typed in, and it is a
-     little under twice the rings' resting weight — enough that the eye catches
+  /* The swell is 1.2% — about three units at the rim and less on every ring
+     inside it. Water, not a distance error: the outermost ring reads three
+     miles and moves by a fiftieth of one. The undershoot at 70% is the
+     settle; without it the ring breathes instead of rippling. The bright peak
+     is derived from the palette rather than typed in, and lands a little
+     under twice the rings' resting weight — enough that the eye catches
      something crossing, not enough to look like the map is signalling. */
   @keyframes ev-sand {
-    0%, 100% { stroke: var(--line); }
-    40%      { stroke: color-mix(in srgb, var(--fg) 22%, transparent); }
+    0%   { transform: scale(1);     stroke: var(--line); }
+    35%  { transform: scale(1.012); stroke: color-mix(in srgb, var(--fg) 22%, transparent); }
+    70%  { transform: scale(0.996); }
+    100% { transform: scale(1);     stroke: var(--line); }
   }
 
   @media (prefers-reduced-motion: reduce) {
