@@ -499,7 +499,12 @@ if (!reduce) {
   if (mark) {
     const strokes = $$('[data-stroke]', mark);
     gsap.set(strokes, { drawSVG: '0%' });
-    gsap.to(strokes, { drawSVG: '100%', duration: 1.6, stagger: 0.18, ease: 'power2.inOut', scrollTrigger: { trigger: mark, start: 'top 85%', once: true } });
+    // 95%, not 85%. The strokes are set to nothing the moment the page loads,
+    // so until this fires the block is its full height of plain background —
+    // and at 85% it began drawing only once a good part of that emptiness was
+    // already on screen. Starting as the block crosses the bottom edge means
+    // the mark is arriving the whole time you can see it.
+    gsap.to(strokes, { drawSVG: '100%', duration: 1.6, stagger: 0.18, ease: 'power2.inOut', scrollTrigger: { trigger: mark, start: 'top 95%', once: true } });
   }
 
   // The gold section lifts into view

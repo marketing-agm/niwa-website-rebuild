@@ -1,14 +1,18 @@
 ---
 import Wordmark from './Wordmark.astro';
 import { formatPhone, mapsUrl } from '../lib/site';
-const { site } = Astro.props as { site: any };
+// The wordmark is the end of the homepage's long scroll and earns its size
+// there. On a secondary page it is the thing that arrives right after the last
+// row of content, where seven hundred pixels of it reads as a hole rather than
+// a flourish — so those pages ask for it smaller.
+const { site, compact = false } = Astro.props as { site: any; compact?: boolean };
 const c = site.config;
 const a = c.address;
 const year = new Date().getFullYear();
 const hours = c.contact?.officeHours?.[0];
 const fmtHour = (t: string) => { const [h] = t.split(':').map(Number); return `${((h + 11) % 12) + 1}${h < 12 ? 'am' : 'pm'}`; };
 ---
-<footer class="foot" id="contact">
+<footer class:list={['foot', compact && 'foot--compact']} id="contact">
   <div class="foot-mark" data-footer-mark>
     <Wordmark class="foot-svg" label="Niwa Apartments" />
   </div>
@@ -56,6 +60,8 @@ const fmtHour = (t: string) => { const [h] = t.split(':').map(Number); return `$
 <style>
   .foot { background: var(--bg); color: var(--fg); border-top: 1px solid var(--line); }
   .foot-mark { padding: clamp(40px, 6vw, 110px) var(--gutter) clamp(28px, 4vw, 72px); }
+  .foot--compact .foot-mark { padding: clamp(24px, 3vw, 52px) var(--gutter) clamp(20px, 2.4vw, 40px); }
+  .foot--compact .foot-mark :global(.foot-svg) { max-width: min(100%, 700px); }
   .foot-mark :global(.foot-svg) { width: 100%; height: auto; color: var(--fg); stroke-width: 22; }
   .foot-cell { grid-column: span 3; display: grid; gap: 10px; align-content: start; font-size: var(--t-body); }
   .foot-links { display: grid; gap: 6px; }
