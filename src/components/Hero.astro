@@ -1,4 +1,5 @@
 ---
+import { mapsUrl } from '../lib/site';
 const { site } = Astro.props as { site: any };
 const c = site.config;
 const h = c.hero ?? {};
@@ -14,7 +15,13 @@ const facts = [
 ---
 <section class="hero" id="top" data-hero>
   <div class="hero-top">
-    <p class="label" data-hero-fade>{a.streetAddress}, {a.addressLocality}</p>
+    <p class="label" data-hero-fade><a
+      class="link hero-addr"
+      href={mapsUrl(c)}
+      target="_blank"
+      rel="noopener"
+      aria-label={`Open ${a.streetAddress}, ${a.addressLocality} in Google Maps`}
+    >{a.streetAddress}, {a.addressLocality}</a></p>
     <button type="button" class="label hero-top-r hero-special" data-hero-fade data-special-toggle aria-haspopup="dialog" aria-expanded="false" aria-controls="special-pop">{special.label}</button>
   </div>
 
@@ -70,6 +77,18 @@ const facts = [
   .hero { position: relative; padding-top: clamp(28px, 4vw, 64px); }
   .hero-top { display: flex; justify-content: space-between; gap: var(--gap); padding: 0 var(--inset) clamp(24px, 4.5vw, 80px); }
   .hero-top-r { text-align: right; }
+  /* The address is the one link in the hero that has to advertise itself: it
+     is set as a label, and nothing about an address says "press me". So the
+     rule is drawn at rest — dim, at the weight of a hairline — and goes gold
+     under the pointer like the rest of them. The hover has to be stated here
+     rather than left to .link: this rule sets --link-rule at the same
+     specificity, so it would otherwise hold the dim value through the hover. */
+  .hero-addr { --link-rule: var(--fg-3); color: inherit; }
+  @media (hover: hover) { .hero-addr:hover { --link-rule: var(--gold); } }
+  /* 16px of text, 44px of target, without moving the rule off the type. */
+  @media (pointer: coarse) {
+    .hero-addr::after { content: ''; position: absolute; inset: -16px -10px -12px; }
+  }
   .hero-title { padding: 0 var(--inset); display: grid; }
   .hero-title .hero-line { display: block; overflow: hidden; padding-bottom: 0.06em; margin-bottom: -0.06em; }
   .hero-line-in { display: block; will-change: transform; }
@@ -109,7 +128,12 @@ const facts = [
     .hero-facts { grid-column: 1 / -1; grid-template-columns: repeat(4, 1fr); }
   }
   @media (max-width: 720px) {
-    .hero-top { flex-direction: column; gap: 6px; }
+    /* Stacked, and with room between them: both rows now grow their own
+       pressable box, and at the old 6px gap the special's 12px of top pad
+       reached back over the last few pixels of the address — which was
+       harmless while the address was only text and is not now that it opens
+       a map. */
+    .hero-top { flex-direction: column; gap: 24px; }
     .hero-top-r { text-align: left; }
     /* 44px of pressable height; it was 22 and it opens a dialog. */
     .hero-special { text-align: left; padding: 12px 0; margin: -12px 0; }

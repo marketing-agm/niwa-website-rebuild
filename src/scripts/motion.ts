@@ -330,18 +330,15 @@ function scrollRail(
 if (!reduce) {
   const mm = gsap.matchMedia();
 
-  // The feature cards. .rail-x is display:contents above 640 — no box to
-  // measure, nothing to scroll — hence the query. The neighbourhood tiles are
-  // deliberately not in here: they are photographs, they keep their peek, and
-  // a third pinned run on one phone page is a lot of thumb.
-  mm.add('(max-width: 640px)', () => {
-    const feats = $('.b-feats');
-    if (feats) scrollRail(feats, $$<HTMLElement>(':scope > *', feats));
-  });
-
-  // The neighbourhood tiles are deliberately not in here: they are
-  // photographs, they keep their peek, and a third driven strip on one phone
-  // page is a lot of thumb.
+  // The feature strip used to be driven from here, stepping itself along as
+  // the page scrolled. It doesn't any more: each card now carries its own
+  // photograph, so a card that walks on its own is a photograph sliding out
+  // from under the sentence about it. You flip it, and the dots below it say
+  // where you are. See the b-pairs block further down.
+  //
+  // The neighbourhood tiles are deliberately not driven either: they are
+  // photographs, they keep their peek, and a driven strip on one phone page is
+  // a lot of thumb.
 
   // The amenity lists rail one breakpoint wider, where its chip row lives.
   mm.add('(max-width: 1024px)', () => {
@@ -394,6 +391,50 @@ if (gal && track) {
         onUpdate: (self) => { if (galBar) galBar.style.transform = `scaleX(${self.progress})`; },
       },
     });
+  }
+}
+
+/* ---------- The building strip: dots track the card you're on ----------
+
+   Below 640px the six amenities are a swipe strip, each card its heading, its
+   blurb and its photograph. The dots are the only thing that says there are six
+   and which one is showing, so they are wired here rather than inside the GSAP
+   block: reduced motion removes the animation, not the navigation. Above 640
+   the strip is display:contents and has no scroller, so scrollWidth never
+   exceeds clientWidth and nothing here does anything. */
+{
+  const pairs = $('[data-b-pairs]');
+  const dots = $$<HTMLButtonElement>('[data-b-dot]');
+  if (pairs && dots.length) {
+    const cards = $$<HTMLElement>(':scope > .b-pair', pairs);
+    let at = -1;
+    const paint = (i: number) => {
+      if (i === at) return;
+      at = i;
+      dots.forEach((d, n) => {
+        const on = n === i;
+        d.classList.toggle('is-on', on);
+        d.setAttribute('aria-current', String(on));
+      });
+    };
+    // Nearest card origin to the current scroll position; snap keeps it exact
+    // in practice, and rounding covers the moment between two cards.
+    const read = () => {
+      if (pairs.scrollWidth <= pairs.clientWidth) return;
+      const x = pairs.scrollLeft;
+      let best = 0, gap = Infinity;
+      cards.forEach((card, i) => {
+        const d = Math.abs(card.offsetLeft - cards[0].offsetLeft - x);
+        if (d < gap) { gap = d; best = i; }
+      });
+      paint(best);
+    };
+    pairs.addEventListener('scroll', () => requestAnimationFrame(read), { passive: true });
+    dots.forEach((dot, i) => dot.addEventListener('click', () => {
+      pairs.scrollTo({ left: cards[i].offsetLeft - cards[0].offsetLeft, behavior: reduce ? 'auto' : 'smooth' });
+      paint(i);
+    }));
+    read();
   }
 }
 
