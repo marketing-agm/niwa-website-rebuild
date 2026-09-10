@@ -40,26 +40,20 @@ const fitMiles = Math.min(win.radiusMiles, Math.max(0.5, Math.ceil(pins.reduce((
 const rPx = (m: number) => RMAX * Math.sqrt(Math.max(0, Math.min(1, m / fitMiles)));
 const RINGS = [0.25, 0.5, 1, 2, 3, 5].filter((r) => r <= fitMiles + 0.001);
 
-// The drop, in one place, because the CSS and the rings' arrival times have
-// to agree: a circle of DROP_R scaled to DROP_SCALE over BEAT seconds, which
-// puts the front at DROP_R * DROP_SCALE units when the beat is up. It travels
-// linearly — a surface wave has one speed — so a ring at radius r is reached
-// at that fraction of the beat.
-// Every ring sheds a copy of itself, which drifts outward and thins away.
-// SPREAD is how far each copy travels, the same distance for all of them
-// because a wave has one speed — so the whole figure ebbs outward together
-// rather than the outer rings racing the inner ones. Twelve seconds to cover
-// it is about 26px a second on screen. One copy per ring, all in phase, so
-// the figure holds exactly as many lines as it has labels — five, where the
-// old static rings plus their furrow ghosts plus two generations of copies
-// came to twenty-two.
-const SPREAD = 340;
-const BEAT = 12;
-const EBBS = 1;
-// A copy is a scale, and the scale that moves a ring out by SPREAD depends
-// on where it started: the ¼-mile ring has to grow far more than the
-// three-mile one to travel the same distance.
-const ebbTo = (r: number) => ((r + SPREAD) / r).toFixed(3);
+// One drop, over and over, from the building. A ring is born just outside
+// the marker and grows to BORN * REACH units, which carries it past the
+// three-mile ring and into the corners of the figure before it gives out.
+//
+// EBBS is what keeps the middle occupied. The rings used to be born at the
+// five labelled radii all at once, which meant that once the set had drifted
+// out there was nothing left near the centre and the pins floated in a hole
+// until the next set appeared. Born from one point instead, the innermost
+// ring is never further out than one gap — so the field repopulates from the
+// middle continuously and there is no empty moment.
+const BORN = 20;
+const REACH = 20;
+const BEAT = 15;
+const EBBS = 6;
 
 const at = (p: { east: number; north: number }) => {
   const d = Math.hypot(p.east, p.north);
@@ -156,7 +150,7 @@ const miles = (e: SiteEvent) => (e.miles == null ? '' : e.miles < 0.15 ? 'next d
   {events.length > 0 && (
     <>
       <div class="ev-map-wrap">
-        <svg class="ev-map" style={`--beat:${BEAT}s`} viewBox={`0 0 ${W} ${H}`} role="img" aria-label={`Map of ${pins.length} venue${pins.length === 1 ? '' : 's'} within ${fitMiles} miles of ${c.name}`} data-ev-map>
+        <svg class="ev-map" style={`--beat:${BEAT}s;--reach:${REACH}`} viewBox={`0 0 ${W} ${H}`} role="img" aria-label={`Map of ${pins.length} venue${pins.length === 1 ? '' : 's'} within ${fitMiles} miles of ${c.name}`} data-ev-map>
           <g class="ev-rings" aria-hidden="true">
             {/* No ring is drawn here any more. The rings you see are the ones
                 the ebb layer sends out, born at these radii — nothing on this
@@ -180,17 +174,21 @@ const miles = (e: SiteEvent) => (e.miles == null ? '' : e.miles < 0.15 ? 'next d
           <defs>
             <clipPath id="ev-plate"><circle cx={CX} cy={CY} r={RMAX} /></clipPath>
           </defs>
-          {/* Every ring sheds a copy of itself. Each is born exactly on its
-              ring — so it does not appear, it peels away — then drifts
-              outward and thins to nothing, carrying on past the figure the
-              way the single big ring used to. The labelled rings stay put:
-              they are the distance scale, and a scale that drifts is a scale
-              you cannot read. */}
+          {/* A drop, on repeat. Each ring is born just outside the building
+              marker, grows out past the three-mile ring and thins to
+              nothing. Six of them, evenly spaced through the cycle, so one
+              is always small and near the middle — that is the whole point
+              of emitting from a point rather than from the labelled radii.
+
+              Delays are negative and inline, so the field is already full
+              the instant the page loads rather than filling up over the
+              first fifteen seconds. Inline outranks the shorthand's implicit
+              delay:0, so no !important is wanted. */}
           <g class="ev-ebbs" aria-hidden="true">
-            {RINGS.flatMap((r) => Array.from({ length: EBBS }, (_, g) => (
-              <circle class="ev-ebb" cx={CX} cy={CY} r={rPx(r)}
-                      style={`--to:${ebbTo(rPx(r))};animation-delay:${(g * BEAT / EBBS - BEAT).toFixed(2)}s`} />
-            )))}
+            {Array.from({ length: EBBS }, (_, i) => (
+              <circle class="ev-ebb" cx={CX} cy={CY} r={BORN}
+                      style={`animation-delay:${(i * BEAT / EBBS - BEAT).toFixed(2)}s`} />
+            ))}
           </g>
           <g class="ev-ripples" clip-path="url(#ev-plate)" aria-hidden="true">
             {clusters.map((cl, ci) => (
@@ -384,41 +382,37 @@ const miles = (e: SiteEvent) => (e.miles == null ? '' : e.miles < 0.15 ? 'next d
     100% { opacity: 0;    transform: scale(42); }
   }
 
-  /* Rain on a pond. Every ring sheds a copy that drifts outward and thins
-     away, all of them travelling the same distance at the same time, so the
-     figure ebbs outward as one thing rather than five rings each doing their
-     own small thing.
+  /* Rain on a pond, from one point, on repeat. Nothing on this map is a line
+     that holds still — the rings you see are the drops, and there is no
+     stationary set behind them.
 
-     They rise over the first three percent rather than snapping on, which is
-     what hides the seam: the set dissolves at full spread and the next one
-     is already fading up at the labels. So the lettering marks where a ring
-     is born, and the ring is brightest there. Past the edge of the figure a
-     copy is nearly gone — the fade is what stops it becoming clutter over
-     the page, not a clip.
+     --beat and --reach are written onto the svg by the component, from the
+     same constants that space the six of them and set where they are born,
+     so the CSS restates neither the timing nor the geometry.
 
-     --beat is written onto the svg by the component from the same constant
-     that spaces the two generations, so the CSS restates no timing of its
-     own. Delays are negative and inline, so both generations are already on
-     their way out the instant the page loads. Inline outranks the shorthand's
-     implicit delay:0, so no !important is wanted. */
+     Each rises over the first four percent rather than snapping on, and the
+     rest of the cycle is one long fade. That fade is what makes this ebb
+     rather than merely expand, and it is also what keeps the far end tidy:
+     a ring is nearly gone by the time it clears the figure, so nothing has
+     to be clipped. */
   .ev-ebb {
     fill: none;
     stroke: color-mix(in srgb, var(--fg) 38%, transparent);
     stroke-width: 1.2;
-    /* Held to its drawn weight: the scale that carries the ¼-mile ring out
-       to the edge is nearly six, and the stroke would go with it. */
+    /* Held to its drawn weight: the scale that carries a ring out to the
+       corner is twenty, and the stroke would go with it. */
     vector-effect: non-scaling-stroke;
     transform-box: fill-box; transform-origin: center;
     opacity: 0; pointer-events: none;
     animation: ev-ebb var(--beat) linear infinite;
   }
-  /* Linear, so every ring's copy moves at the same speed and the figure
-     keeps its shape as it goes out. The opacity is the whole trick — it is
-     what makes this ebb rather than merely expand. */
+  /* Linear, so the six stay evenly spaced as they go out. Ease it and they
+     bunch at one end, which is exactly the empty middle this is meant to
+     fix. */
   @keyframes ev-ebb {
     0%   { opacity: 0;    transform: scale(1); }
-    3%   { opacity: 0.55; }
-    100% { opacity: 0;    transform: scale(var(--to, 2)); }
+    4%   { opacity: 0.55; }
+    100% { opacity: 0;    transform: scale(var(--reach, 20)); }
   }
 
   @media (prefers-reduced-motion: reduce) {
