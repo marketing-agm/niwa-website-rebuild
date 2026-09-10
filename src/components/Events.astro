@@ -46,13 +46,16 @@ const RINGS = [0.25, 0.5, 1, 2, 3, 5].filter((r) => r <= fitMiles + 0.001);
 // linearly — a surface wave has one speed — so a ring at radius r is reached
 // at that fraction of the beat.
 const DROP_R = 10;
-const DROP_SCALE = 28;
-// Nine seconds to cross, and six fronts on the way, so the plate always
-// carries a train rather than a lone ring — about 47 units between crests.
-// One passes any given radius every BOB seconds, which is what the distance
-// rings are timed to.
-const BEAT = 9;
-const DROPS = 6;
+// 450 units clears the corners of the square the map is drawn in (the
+// half-diagonal is 438), so a front keeps going past the three-mile ring and
+// out to the edge of the figure instead of stopping at the rim.
+const DROP_SCALE = 45;
+// Twenty-four seconds to cross all of that — about 17px a second on screen,
+// where it was 27 — and ten fronts on the way, which holds a crest every 45
+// units. One passes any given radius every BOB seconds, which is what the
+// distance rings are timed to.
+const BEAT = 24;
+const DROPS = 10;
 const BOB = BEAT / DROPS;
 const dropWave = (r: number) => ((r / (DROP_R * DROP_SCALE)) * BEAT).toFixed(2);
 
@@ -178,13 +181,18 @@ const miles = (e: SiteEvent) => (e.miles == null ? '' : e.miles < 0.15 ? 'next d
               inside a translated group that space moves with the pin. */}
           <defs>
             <clipPath id="ev-plate"><circle cx={CX} cy={CY} r={RMAX} /></clipPath>
+            {/* The drop gets the whole square, not the plate: a ripple that
+                stopped dead on the three-mile ring was a ripple in a bowl.
+                It still stops at the edge of the figure — the version that
+                carried on across the page was a gesture too far. */}
+            <clipPath id="ev-field"><rect x="0" y="0" width={W} height={H} /></clipPath>
           </defs>
           {/* The drop. Hover the map and a droplet lands on the building: a
               ring is born at the centre and travels out to the rim, with two
               more behind it a beat and two beats later, so what you see is
               one impact throwing a train of widening rings. Clipped to the
               plate — this stays on the water. */}
-          <g class="ev-drop" clip-path="url(#ev-plate)" aria-hidden="true">
+          <g class="ev-drop" clip-path="url(#ev-field)" aria-hidden="true">
             {Array.from({ length: DROPS }, (_, i) => (
               <circle class="ev-drop-r" cx={CX} cy={CY} r={DROP_R}
                       style={`animation-delay:${(i * BOB - BEAT).toFixed(3)}s`} />
@@ -385,9 +393,9 @@ const miles = (e: SiteEvent) => (e.miles == null ? '' : e.miles < 0.15 ? 'next d
   }
 
   /* Rain on a pond. Hover the map and a droplet lands on the building: a
-     wavefront is born at the centre and takes nine seconds to reach the rim,
-     with five more behind it, so what crosses the plate is a slow train of
-     widening rings rather than a pulse.
+     wavefront is born at the centre and takes twenty-four seconds to reach
+     the edge of the figure, with nine more behind it, so what crosses is a
+     slow train of widening rings rather than a pulse.
 
      The distance rings do not move on a guessed stagger. Each one carries a
      --wave: the moment the front actually reaches its radius. So a ring lifts
@@ -430,13 +438,13 @@ const miles = (e: SiteEvent) => (e.miles == null ? '' : e.miles < 0.15 ? 'next d
      in two seconds instead of four and a half, with the rings lifting long
      after it had passed them. */
   /* The train holds its light nearly the whole way and only lets go at the
-     rim: with six fronts up at once, a long even fade is what makes it read
+     edge: with ten fronts up at once, a long even fade is what makes it read
      as a field of ripples rather than as one ring you follow. */
   @keyframes ev-drop {
     0%   { opacity: 0;    transform: scale(1); }
     3%   { opacity: 0.72; }
     82%  { opacity: 0.46; }
-    100% { opacity: 0;    transform: scale(28); }
+    100% { opacity: 0;    transform: scale(45); }
   }
 
   /* And the rings lift as it passes. One push out, a smaller pull back, a
@@ -453,7 +461,7 @@ const miles = (e: SiteEvent) => (e.miles == null ? '' : e.miles < 0.15 ? 'next d
   }
   .ev-map.is-live .ev-ring-a { animation: ev-lift-lit var(--bob) linear infinite; }
   .ev-map.is-live .ev-ring-b { animation: ev-lift var(--bob) linear infinite; }
-  /* Six fronts are crossing, so a ring bobs six times a beat — once as each
+  /* Ten fronts are crossing, so a ring bobs ten times a beat — once as each
      passes. The delay is negative, which CSS resolves as a phase: the beat is
      a whole number of bob-cycles, so (wave − beat) is congruent to wave and
      every bob still starts at that ring's own arrival time. */
