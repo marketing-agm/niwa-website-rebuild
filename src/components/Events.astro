@@ -40,40 +40,21 @@ const fitMiles = Math.min(win.radiusMiles, Math.max(0.5, Math.ceil(pins.reduce((
 const rPx = (m: number) => RMAX * Math.sqrt(Math.max(0, Math.min(1, m / fitMiles)));
 const RINGS = [0.25, 0.5, 1, 2, 3, 5].filter((r) => r <= fitMiles + 0.001);
 
-// A rake never leaves a true circle. Each ring is a closed path whose radius
-// carries a small sine — a few lobes around the circumference — so the figure
-// reads as sand pulled through by hand rather than as plotted geometry. The
-// lobe count and phase differ per ring, and the CSS turns each one slowly, so
-// the crests travel and the whole plate moves like a water surface.
-// Amplitude is well under one percent of the radius: the ring that reads
-// three miles wobbles by about a fiftieth of one.
-const SEG = 144;                                       // 2.5° steps, fine enough that the second harmonic stays smooth
-const lobesFor = (i: number) => 3 + (i % 3);           // 3, 4, 5, 3, 4, 5 …
-// Amplitude grows faster than radius, so the ¼-mile ring stays a ring and the
-// outer ones carry the swell. A constant fraction would distort the small
-// rings hardest — three lobes at three percent reads as a wonky circle, not
-// as water — and a constant number of units would be worse still.
-const ampFor = (r: number) => 6.5 * Math.pow(r / RMAX, 1.4);
-// Two waves, not one. A single sine is a scallop; water is always more than
-// one train crossing, so a shorter, shallower second harmonic rides on the
-// first. Together they peak near nine units at the rim — about three percent,
-// so the ring that reads three miles stays between 2.9 and 3.1.
-const wavyRing = (r: number, i: number, inset = 0) => {
-  if (r <= 0) return '';
-  const k = lobesFor(i);
-  const amp = ampFor(r);
-  const phase = i * 1.3;                               // no two rings crest together
-  let d = '';
-  for (let s = 0; s < SEG; s++) {
-    const a = (s / SEG) * Math.PI * 2;
-    const wave = amp * Math.sin(k * a + phase) + amp * 0.42 * Math.sin((k + 3) * a - phase * 1.7);
-    const rr = Math.max(0, r - inset) + wave;
-    const x = (CX + rr * Math.cos(a)).toFixed(1);
-    const y = (CY + rr * Math.sin(a)).toFixed(1);
-    d += `${s === 0 ? 'M' : 'L'}${x} ${y}`;
-  }
-  return d + 'Z';
-};
+// One drop, over and over, from the building. A ring is born just outside
+// the marker and grows to BORN * REACH units, which carries it past the
+// three-mile ring and into the corners of the figure before it gives out.
+//
+// EBBS is what keeps the middle occupied. The rings used to be born at the
+// five labelled radii all at once, which meant that once the set had drifted
+// out there was nothing left near the centre and the pins floated in a hole
+// until the next set appeared. Born from one point instead, the innermost
+// ring is never further out than one gap — so the field repopulates from the
+// middle continuously and there is no empty moment.
+const BORN = 20;
+const REACH = 20;
+const BEAT = 15;
+const EBBS = 6;
+
 const at = (p: { east: number; north: number }) => {
   const d = Math.hypot(p.east, p.north);
   if (d < 1e-9) return { x: CX, y: CY };
@@ -169,46 +150,46 @@ const miles = (e: SiteEvent) => (e.miles == null ? '' : e.miles < 0.15 ? 'next d
   {events.length > 0 && (
     <>
       <div class="ev-map-wrap">
-        <svg class="ev-map" viewBox={`0 0 ${W} ${H}`} role="img" aria-label={`Map of ${pins.length} venue${pins.length === 1 ? '' : 's'} within ${fitMiles} miles of ${c.name}`} data-ev-map>
+        <svg class="ev-map" style={`--beat:${BEAT}s;--reach:${REACH}`} viewBox={`0 0 ${W} ${H}`} role="img" aria-label={`Map of ${pins.length} venue${pins.length === 1 ? '' : 's'} within ${fitMiles} miles of ${c.name}`} data-ev-map>
           <g class="ev-rings" aria-hidden="true">
-            {/* Each ring is drawn twice, the second a hair inside it and
-                fainter — a rake leaves a furrow, not a line. */}
-            {RINGS.map((r, i) => (
-              <g class="ev-ring-turn" style={`--i:${i};--turn:${10 + i * 2}s;--dir:${i % 2 ? -1 : 1}`}>
-                <g class="ev-ring-swell">
-                  <path class="ev-ring-a" d={wavyRing(rPx(r), i)} />
-                  <path class="ev-ring-b" d={wavyRing(rPx(r), i, 3.5)} />
-                </g>
-              </g>
-            ))}
+            {/* No ring is drawn here any more. The rings you see are the ones
+                the ebb layer sends out, born at these radii — nothing on this
+                map is a line that just sits there. What is left in this group
+                is the lettering, which marks the radius each ring is born at.
+
+                The crosshairs went with them: two more lines that could not
+                move, on a figure that was already carrying too many. North is
+                still called out, which is all they were really for. */}
             {/* West of the axis, not east: the pins fall where the city is,
                 which from Queen Anne is east and south, and the labels were
                 landing on top of them. */}
-            {/* Cleared by the ring's own crest height, not a flat 8: the rings
-                turn, so any lobe can arrive under any label. 1.45 covers the
-                two harmonics meeting at their peak. */}
-            {RINGS.map((r) => <text class="ev-ring-t ev-ring-l" x={CX - 9} y={CY - rPx(r) - 8 - ampFor(rPx(r)) * 1.45}>{ringLabel(r)}</text>)}
-            <line x1={CX - RMAX} y1={CY} x2={CX + RMAX} y2={CY} />
-            <line x1={CX} y1={CY - RMAX} x2={CX} y2={CY + RMAX} />
-            {/* East of the axis, now that the ring labels have the west side. */}
-            <text class="ev-ring-t ev-n" x={CX + 10} y={CY - RMAX - 8 - ampFor(RMAX) * 1.45}>N</text>
+            {RINGS.map((r) => <text class="ev-ring-t ev-ring-l" x={CX - 9} y={CY - rPx(r) - 8}>{ringLabel(r)}</text>)}
+            <text class="ev-ring-t ev-n" x={CX + 10} y={CY - RMAX - 8}>N</text>
           </g>
           {/* Ripples in a layer of their own, under the pins and clipped to the
               plate, so one can cross the whole raked field without escaping
               it. Inside a pin they could only ever be a halo: a clip path
               resolves in the user space of the element that references it, and
               inside a translated group that space moves with the pin. */}
-          {/* The call. Every few seconds the building sends one out: a ring
-              that crosses the plate, keeps going past the rim and off the map
-              entirely, thinning until the page absorbs it. This layer is the
-              one thing here that is deliberately not clipped. */}
-          <g class="ev-call" aria-hidden="true">
-            <circle class="ev-call-r" cx={CX} cy={CY} r="10" />
-            <circle class="ev-call-r ev-call-r--2" cx={CX} cy={CY} r="10" />
-          </g>
           <defs>
             <clipPath id="ev-plate"><circle cx={CX} cy={CY} r={RMAX} /></clipPath>
           </defs>
+          {/* A drop, on repeat. Each ring is born just outside the building
+              marker, grows out past the three-mile ring and thins to
+              nothing. Six of them, evenly spaced through the cycle, so one
+              is always small and near the middle — that is the whole point
+              of emitting from a point rather than from the labelled radii.
+
+              Delays are negative and inline, so the field is already full
+              the instant the page loads rather than filling up over the
+              first fifteen seconds. Inline outranks the shorthand's implicit
+              delay:0, so no !important is wanted. */}
+          <g class="ev-ebbs" aria-hidden="true">
+            {Array.from({ length: EBBS }, (_, i) => (
+              <circle class="ev-ebb" cx={CX} cy={CY} r={BORN}
+                      style={`animation-delay:${(i * BEAT / EBBS - BEAT).toFixed(2)}s`} />
+            ))}
+          </g>
           <g class="ev-ripples" clip-path="url(#ev-plate)" aria-hidden="true">
             {clusters.map((cl, ci) => (
               <g class="ev-fx" data-ev-fx={`c${ci}`} transform={`translate(${cl.x} ${cl.y})`}>
@@ -352,7 +333,7 @@ const miles = (e: SiteEvent) => (e.miles == null ? '' : e.miles < 0.15 ? 'next d
 </section>
 
 <style>
-  /* clip, not hidden, and on one axis only: the call is meant to spill up and
+  /* clip, not hidden, and on one axis only: the ebb is meant to carry up and
      down the page, but scrollable overflow to the sides would hand the
      document a horizontal scrollbar. overflow-x: clip is the one value that
      stops that without forcing the other axis to scroll. */
@@ -368,14 +349,6 @@ const miles = (e: SiteEvent) => (e.miles == null ? '' : e.miles < 0.15 ? 'next d
      mostly empty corner. On a phone it takes the full width it is given. */
   .ev-map-wrap { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: clamp(16px, 2vw, 30px) var(--inset) clamp(12px, 1.4vw, 20px); }
   .ev-map { display: block; width: 100%; max-width: 560px; margin: 0 auto; height: auto; overflow: visible; }
-  .ev-ring-a, .ev-ring-b { fill: none; stroke: var(--line); }
-  .ev-ring-b { stroke: var(--line-2); }
-  /* view-box, not fill-box: a wavy ring's own bounding box is not quite
-     centred on the plate, and rotating about anything but the building would
-     make the rings orbit instead of turn. view-box puts the origin at the
-     centre of the viewBox, which is where the building is. */
-  .ev-ring-turn, .ev-ring-swell { transform-box: view-box; transform-origin: center; }
-  .ev-rings line { stroke: var(--line-2); }
   .ev-ring-t { fill: var(--fg-3); font-family: var(--sans); font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; }
   .ev-ring-l { text-anchor: end; }
   .ev-n { text-anchor: start; fill: var(--fg-3); }
@@ -409,85 +382,42 @@ const miles = (e: SiteEvent) => (e.miles == null ? '' : e.miles < 0.15 ? 'next d
     100% { opacity: 0;    transform: scale(42); }
   }
 
-  /* The surface is never quite still. Each ring turns at its own pace and the
-     one outside it turns the other way, so the crests drift past each other
-     and the figure moves the way water does when nothing has touched it —
-     ten to eighteen seconds a revolution, which is quick enough to feel
-     alive and slow enough not to read as a spinner. */
-  .ev-ring-turn { animation: ev-drift var(--turn, 14s) linear infinite; }
-  @keyframes ev-drift {
-    to { transform: rotate(calc(var(--dir, 1) * 360deg)); }
-  }
+  /* Rain on a pond, from one point, on repeat. Nothing on this map is a line
+     that holds still — the rings you see are the drops, and there is no
+     stationary set behind them.
 
-  /* A wave crosses the whole figure, always, not only when touched. Each ring
-     swells and settles a third of a second after the one inside it, so what
-     you see is one pulse travelling from the building out to the rim — the
-     same shape as the call, read off the sand instead of the water. */
-  .ev-ring-swell { animation: ev-sand 3.2s ease-in-out infinite; }
-  /* Touching the map quickens the pulse and lights the leading line. The
-     ghost inside it is the furrow's far wall and stays put, which is what
-     keeps the pair reading as one rake stroke rather than as two rings. */
-  @media (hover: hover) {
-    .ev-map:hover .ev-ring-swell { animation-duration: 2.1s; }
-    .ev-map:hover .ev-ring-a { animation: ev-sand-lit 2.1s ease-in-out infinite; }
-  }
-  .ev-map.is-live .ev-ring-swell { animation-duration: 2.1s; }
-  .ev-map.is-live .ev-ring-a { animation: ev-sand-lit 2.1s ease-in-out infinite; }
-  .ev-ring-swell, .ev-ring-a { animation-delay: calc(var(--i, 0) * 0.32s) !important; }
+     --beat and --reach are written onto the svg by the component, from the
+     same constants that space the six of them and set where they are born,
+     so the CSS restates neither the timing nor the geometry.
 
-  /* The swell is 2.8% — about seven units at the rim and less on every ring
-     inside it. Water, not a distance error: the ring that reads three miles
-     moves by a thirty-fifth of one. The undershoot at 70% is the settle;
-     without it the ring breathes instead of rippling. The bright peak is
-     derived from the palette rather than typed in, and lands a little under
-     twice the rings' resting weight — enough that the eye catches something
-     crossing, not enough to look like the map is signalling. */
-  @keyframes ev-sand {
-    0%   { transform: scale(1); }
-    35%  { transform: scale(1.028); }
-    70%  { transform: scale(0.993); }
-    100% { transform: scale(1); }
-  }
-  @keyframes ev-sand-lit {
-    0%, 100% { stroke: var(--line); }
-    35%      { stroke: color-mix(in srgb, var(--fg) 22%, transparent); }
-  }
-
-  /* The call itself. It starts at the building, crosses the plate in about a
-     second and then spends five more thinning out across the page — which is
-     why the fade is nearly all of the keyframe and the growth is nearly none
-     of it. Two of them, half a cycle apart, so one is always somewhere on
-     screen and there is never a crowd. Opacity holds on a plateau rather
-     than decaying with the growth: a ring spread across the page has its
-     light spread with it, so a straight fade left it invisible by the time it
-     mattered. It tops out at 0.2 — this line gets drawn across the lede and
-     the listings, and it has to pass over them without competing. */
-  .ev-call-r {
-    --call-peak: 0.2;
-    fill: none; stroke: var(--gold); stroke-width: 1.1;
+     Each rises over the first four percent rather than snapping on, and the
+     rest of the cycle is one long fade. That fade is what makes this ebb
+     rather than merely expand, and it is also what keeps the far end tidy:
+     a ring is nearly gone by the time it clears the figure, so nothing has
+     to be clipped. */
+  .ev-ebb {
+    fill: none;
+    stroke: color-mix(in srgb, var(--fg) 38%, transparent);
+    stroke-width: 1.2;
+    /* Held to its drawn weight: the scale that carries a ring out to the
+       corner is twenty, and the stroke would go with it. */
     vector-effect: non-scaling-stroke;
     transform-box: fill-box; transform-origin: center;
     opacity: 0; pointer-events: none;
-    animation: ev-call 7.2s cubic-bezier(0.16, 0.62, 0.3, 1) infinite;
+    animation: ev-ebb var(--beat) linear infinite;
   }
-  .ev-call-r--2 { animation-delay: 3.6s; }
-  @keyframes ev-call {
-    0%   { opacity: 0; transform: scale(1); }
-    4%   { opacity: var(--call-peak); }
-    30%  { opacity: calc(var(--call-peak) * 0.75); }
-    60%  { opacity: calc(var(--call-peak) * 0.375); }
-    100% { opacity: 0; transform: scale(78); }
-  }
-  /* On a phone the map runs the full width, so the call is at full strength
-     right at the screen edge instead of thinned across a desktop's worth of
-     page. Same shape, quieter ink. */
-  @media (pointer: coarse) {
-    .ev-call-r { --call-peak: 0.15; }
+  /* Linear, so the six stay evenly spaced as they go out. Ease it and they
+     bunch at one end, which is exactly the empty middle this is meant to
+     fix. */
+  @keyframes ev-ebb {
+    0%   { opacity: 0;    transform: scale(1); }
+    4%   { opacity: 0.55; }
+    100% { opacity: 0;    transform: scale(var(--reach, 20)); }
   }
 
   @media (prefers-reduced-motion: reduce) {
     .ev-fx.is-lit .ev-ripple,
-    .ev-ring-turn, .ev-ring-swell, .ev-ring-a, .ev-call-r { animation: none; }
+    .ev-ebb { animation: none; }
   }
   .ev-pin-n { fill: var(--ink); text-anchor: middle; font-family: var(--sans); font-size: 12px; font-weight: 600; pointer-events: none; }
   .ev-pin-label {
