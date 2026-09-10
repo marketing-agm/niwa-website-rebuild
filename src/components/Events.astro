@@ -49,11 +49,13 @@ const RINGS = [0.25, 0.5, 1, 2, 3, 5].filter((r) => r <= fitMiles + 0.001);
 // SPREAD is how far each copy travels, the same distance for all of them
 // because a wave has one speed — so the whole figure ebbs outward together
 // rather than the outer rings racing the inner ones. Twelve seconds to cover
-// it is about 26px a second on screen. Two copies per ring, half a beat
-// apart, so there is always one on its way out.
+// it is about 26px a second on screen. One copy per ring, all in phase, so
+// the figure holds exactly as many lines as it has labels — five, where the
+// old static rings plus their furrow ghosts plus two generations of copies
+// came to twenty-two.
 const SPREAD = 340;
 const BEAT = 12;
-const EBBS = 2;
+const EBBS = 1;
 // A copy is a scale, and the scale that moves a ring out by SPREAD depends
 // on where it started: the ¼-mile ring has to grow far more than the
 // three-mile one to travel the same distance.
@@ -156,17 +158,18 @@ const miles = (e: SiteEvent) => (e.miles == null ? '' : e.miles < 0.15 ? 'next d
       <div class="ev-map-wrap">
         <svg class="ev-map" style={`--beat:${BEAT}s`} viewBox={`0 0 ${W} ${H}`} role="img" aria-label={`Map of ${pins.length} venue${pins.length === 1 ? '' : 's'} within ${fitMiles} miles of ${c.name}`} data-ev-map>
           <g class="ev-rings" aria-hidden="true">
-            {/* Each ring is drawn twice, the second a hair inside it and
-                fainter — a rake leaves a furrow, not a line. */}
-            {RINGS.map((r) => <circle class="ev-ring-a" cx={CX} cy={CY} r={rPx(r)} />)}
-            {RINGS.map((r) => <circle class="ev-ring-b" cx={CX} cy={CY} r={Math.max(0, rPx(r) - 3.5)} />)}
+            {/* No ring is drawn here any more. The rings you see are the ones
+                the ebb layer sends out, born at these radii — nothing on this
+                map is a line that just sits there. What is left in this group
+                is the lettering, which marks the radius each ring is born at.
+
+                The crosshairs went with them: two more lines that could not
+                move, on a figure that was already carrying too many. North is
+                still called out, which is all they were really for. */}
             {/* West of the axis, not east: the pins fall where the city is,
                 which from Queen Anne is east and south, and the labels were
                 landing on top of them. */}
             {RINGS.map((r) => <text class="ev-ring-t ev-ring-l" x={CX - 9} y={CY - rPx(r) - 8}>{ringLabel(r)}</text>)}
-            <line x1={CX - RMAX} y1={CY} x2={CX + RMAX} y2={CY} />
-            <line x1={CX} y1={CY - RMAX} x2={CX} y2={CY + RMAX} />
-            {/* East of the axis, now that the ring labels have the west side. */}
             <text class="ev-ring-t ev-n" x={CX + 10} y={CY - RMAX - 8}>N</text>
           </g>
           {/* Ripples in a layer of their own, under the pins and clipped to the
@@ -348,12 +351,6 @@ const miles = (e: SiteEvent) => (e.miles == null ? '' : e.miles < 0.15 ? 'next d
      mostly empty corner. On a phone it takes the full width it is given. */
   .ev-map-wrap { border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: clamp(16px, 2vw, 30px) var(--inset) clamp(12px, 1.4vw, 20px); }
   .ev-map { display: block; width: 100%; max-width: 560px; margin: 0 auto; height: auto; overflow: visible; }
-  .ev-ring-a, .ev-ring-b { fill: none; stroke: var(--line); }
-  .ev-ring-b { stroke: var(--line-2); }
-  /* fill-box on a circle is its own bounding box, so the origin lands on
-     cx,cy for every ring without repeating the numbers here. */
-  .ev-ring-a, .ev-ring-b { transform-box: fill-box; transform-origin: center; }
-  .ev-rings line { stroke: var(--line-2); }
   .ev-ring-t { fill: var(--fg-3); font-family: var(--sans); font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; }
   .ev-ring-l { text-anchor: end; }
   .ev-n { text-anchor: start; fill: var(--fg-3); }
@@ -392,10 +389,12 @@ const miles = (e: SiteEvent) => (e.miles == null ? '' : e.miles < 0.15 ? 'next d
      figure ebbs outward as one thing rather than five rings each doing their
      own small thing.
 
-     Each copy starts life exactly on its ring, at the ring's own weight, so
-     there is no moment where it appears — it peels off. It carries on past
-     the edge of the figure, but by then it is nearly gone: the fade is what
-     stops it becoming clutter over the page, not a clip.
+     They rise over the first three percent rather than snapping on, which is
+     what hides the seam: the set dissolves at full spread and the next one
+     is already fading up at the labels. So the lettering marks where a ring
+     is born, and the ring is brightest there. Past the edge of the figure a
+     copy is nearly gone — the fade is what stops it becoming clutter over
+     the page, not a clip.
 
      --beat is written onto the svg by the component from the same constant
      that spaces the two generations, so the CSS restates no timing of its
@@ -417,8 +416,9 @@ const miles = (e: SiteEvent) => (e.miles == null ? '' : e.miles < 0.15 ? 'next d
      keeps its shape as it goes out. The opacity is the whole trick — it is
      what makes this ebb rather than merely expand. */
   @keyframes ev-ebb {
-    0%   { opacity: 0.5; transform: scale(1); }
-    100% { opacity: 0;   transform: scale(var(--to, 2)); }
+    0%   { opacity: 0;    transform: scale(1); }
+    3%   { opacity: 0.55; }
+    100% { opacity: 0;    transform: scale(var(--to, 2)); }
   }
 
   @media (prefers-reduced-motion: reduce) {
