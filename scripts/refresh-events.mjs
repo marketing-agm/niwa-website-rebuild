@@ -39,8 +39,9 @@ import { dirname, join } from 'node:path';
 import * as ticketmaster from './sources/ticketmaster.mjs';
 import * as queenAnneChamber from './sources/queen-anne-chamber.mjs';
 import * as visitSeattle from './sources/visit-seattle.mjs';
+import * as seattleGov from './sources/seattle-gov.mjs';
 
-const SOURCES = [visitSeattle, queenAnneChamber, ticketmaster];
+const SOURCES = [visitSeattle, seattleGov, queenAnneChamber, ticketmaster];
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const configPath = join(root, 'src/site/site.config.json');
@@ -78,6 +79,7 @@ const MAX = Number(arg('max', 60));
 const PROBE = {
   'queen-anne-chamber': { base: 'https://www.queenannechamber.org', extra: queenAnneChamber.probeUrls },
   'visit-seattle': { base: 'https://visitseattle.org', extra: visitSeattle.probeUrls },
+  'seattle-gov': { base: 'https://www.trumba.com', extra: seattleGov.probeUrls },
 };
 
 const grab = async (url, accept = 'application/json') => {
@@ -241,20 +243,50 @@ function merge(all) {
   const TITLE_CAP = 2;
   const perVenue = new Map();
   const perTitle = new Map();
+
+  // Filling sixty slots in date order hands the page to whichever source has
+  // the earliest events. Adding the City calendar showed it: thirty-one
+  // Ticketmaster, twenty-eight City, and Visit Seattle — the source chosen
+  // precisely because it carries the neighbourhood's own cultural listings —
+  // down to one of its six.
+  //
+  // So every source gets a guaranteed share first, and only then is what is
+  // left filled by date. A source with fewer events than its share simply
+  // contributes all of them and hands the rest back. Date order holds within
+  // each pass and the result is sorted by date at the end, so the reader sees
+  // a calendar, not a rotation.
+  const sources = [...new Set(out.map((e) => e.source))];
+  const share = Math.max(1, Math.floor(MAX / Math.max(1, sources.length)));
+  const perSource = new Map();
   const kept = [];
-  for (const e of out) {
+  const takeable = (e) => {
     const title = e.title.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
-    const t = perTitle.get(title) ?? 0;
-    if (t >= TITLE_CAP) continue;
+    if ((perTitle.get(title) ?? 0) >= TITLE_CAP) return false;
     const venue = `${e.source}|${e.venue.name.toLowerCase()}`;
-    const v = perVenue.get(venue) ?? 0;
-    if (v >= venueCap) continue;
-    perTitle.set(title, t + 1);
-    perVenue.set(venue, v + 1);
+    return (perVenue.get(venue) ?? 0) < venueCap;
+  };
+  const take = (e) => {
+    const title = e.title.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+    const venue = `${e.source}|${e.venue.name.toLowerCase()}`;
+    perTitle.set(title, (perTitle.get(title) ?? 0) + 1);
+    perVenue.set(venue, (perVenue.get(venue) ?? 0) + 1);
+    perSource.set(e.source, (perSource.get(e.source) ?? 0) + 1);
     kept.push(e);
+  };
+
+  const taken = new Set();
+  for (const e of out) {
     if (kept.length >= MAX) break;
+    if ((perSource.get(e.source) ?? 0) >= share) continue;
+    if (!takeable(e)) continue;
+    take(e); taken.add(e);
   }
-  return kept;
+  for (const e of out) {
+    if (kept.length >= MAX) break;
+    if (taken.has(e) || !takeable(e)) continue;
+    take(e);
+  }
+  return kept.sort((a, b) => Date.parse(a.start) - Date.parse(b.start) || a.title.localeCompare(b.title));
 }
 
 // ---- run -------------------------------------------------------------------
