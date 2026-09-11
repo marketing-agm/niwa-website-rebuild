@@ -1,62 +1,71 @@
-// Why did the City feed contribute nothing?
+// The neighbourhood filter is not the problem: 52 of 200 records pass it. So
+// something after it is dropping all 52, and the way to find out which stage
+// is to walk them with the adapter's own code rather than a copy of it.
 //
-// The run fetched it — 2.8 seconds for half a megabyte — and the adapter kept
-// none of the 200 records. Either the neighbourhood filter is wrong, or the
-// feed is not carrying what the filter reads, or 200 records is a much
-// smaller slice of the month than it looked. This tells them apart instead of
-// guessing, by walking the same stages the adapter walks and counting what
-// survives each one.
+// Leading suspicion: 134 of the 200 records carry seriesID and repeats, which
+// means a recurring series is expressed as one record spanning the whole run.
+// If endDateTime is the last occurrence months out, the 90-day run limit —
+// which exists to keep standing arrangements off a page about things that
+// start — would take every one of them.
+
+import * as sg from './seattle-gov.mjs';
+import { plain } from './lib.mjs';
 
 const UA = 'niwa-website-rebuild events probe (+https://github.com/marketing-agm/niwa-website-rebuild)';
-const BASE = 'https://www.trumba.com/calendars/seattlegov-city-wide.json';
-
-async function get(url) {
-  const res = await fetch(url, { headers: { accept: 'application/json', 'user-agent': UA } });
-  const t = await res.text();
-  try { return { ok: res.ok, rows: JSON.parse(t), len: t.length }; }
-  catch { return { ok: false, rows: [], len: t.length }; }
-}
+const res = await fetch('https://www.trumba.com/calendars/seattlegov-city-wide.json?startdate=today', {
+  headers: { accept: 'application/json', 'user-agent': UA },
+});
+const rows = await res.json();
 const line = (s) => console.log(s);
-const plain = (h) => String(h ?? '').replace(/<[^>]*>/g, ' ').replace(/&[a-z]+;/gi, ' ').replace(/\s+/g, ' ').trim();
+line(`feed: ${rows.length} records`);
+
 const field = (ev, label) => (ev?.customFields ?? []).find((f) => String(f?.label ?? '').toLowerCase() === label.toLowerCase())?.value ?? '';
 const NEAR = /queen\s*anne|uptown|seattle\s*center|belltown|south\s*lake\s*union|denny\s*triangle|interbay|magnolia|downtown/i;
+const near = rows.filter((r) => !r.canceled
+  && !/^(online|virtual)$/i.test(String(r.locationType ?? ''))
+  && (NEAR.test(plain(field(r, 'Neighborhoods'))) || NEAR.test(plain(r.location))));
+line(`near and live: ${near.length}`);
 
-for (const q of ['?startdate=today', '']) {
-  const { rows, len } = await get(BASE + q);
-  line(`\n${'='.repeat(66)}\n${q || '(no params)'} — ${rows.length} records, ${len}b\n${'='.repeat(66)}`);
-  if (!rows.length) continue;
+const now = new Date();
+const day0 = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate());
+const cutoff = day0 + 30 * 864e5;
+const inst = (l, o) => {
+  if (!/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$/.test(String(l ?? ''))) return null;
+  const off = /^[+-]\d{4}$/.test(String(o ?? '')) ? `${o.slice(0, 3)}:${o.slice(3)}` : 'Z';
+  const ms = Date.parse(`${l}${off}`);
+  return Number.isFinite(ms) ? ms : null;
+};
 
-  const days = rows.map((r) => String(r.startDateTime ?? '').slice(0, 10)).filter(Boolean).sort();
-  line(`date span: ${days[0]} → ${days[days.length - 1]}  (${new Set(days).size} distinct days)`);
-
-  const withHood = rows.filter((r) => plain(field(r, 'Neighborhoods')));
-  line(`records carrying a Neighborhoods field: ${withHood.length} of ${rows.length}`);
-
-  // Every neighbourhood the feed actually names, most common first. If the
-  // filter is wrong, the right words are in here.
-  const hoods = new Map();
-  for (const r of rows) for (const h of plain(field(r, 'Neighborhoods')).split(',').map((s) => s.trim()).filter(Boolean)) {
-    hoods.set(h, (hoods.get(h) ?? 0) + 1);
-  }
-  line(`\ndistinct neighbourhoods named (${hoods.size}):`);
-  [...hoods.entries()].sort((a, b) => b[1] - a[1]).slice(0, 40).forEach(([h, n]) => line(`   ${String(n).padStart(4)}  ${h}`));
-
-  // The adapter's stages, counted.
-  let live = 0, inPerson = 0, near = 0;
-  for (const r of rows) {
-    if (r.canceled) continue; live++;
-    if (/^(online|virtual)$/i.test(String(r.locationType ?? ''))) continue; inPerson++;
-    if (NEAR.test(plain(field(r, 'Neighborhoods'))) || NEAR.test(plain(r.location))) near++;
-  }
-  line(`\nsurviving each stage:  not cancelled ${live}  →  in person ${inPerson}  →  near ${near}`);
-
-  // What the location text says, for records with no Neighborhoods field —
-  // that is the fallback, and it is worth knowing whether it carries anything.
-  const noHood = rows.filter((r) => !plain(field(r, 'Neighborhoods'))).slice(0, 12);
-  if (noHood.length) {
-    line(`\nsample locations on records with no Neighborhoods field:`);
-    noHood.forEach((r) => line(`   ${plain(r.location).slice(0, 70) || '(blank)'}  — ${plain(r.title).slice(0, 40)}`));
-  }
+let badStamp = 0, ended = 0, tooFar = 0, tooLong = 0, ok = 0;
+const runs = [];
+for (const r of near) {
+  const s = inst(r.startDateTime, r.startTimeZoneOffset);
+  if (s == null) { badStamp++; continue; }
+  const e = inst(r.endDateTime, r.endTimeZoneOffset) ?? s;
+  const runDays = (e - s) / 864e5;
+  runs.push(runDays);
+  if (e < day0) { ended++; continue; }
+  if (s > cutoff) { tooFar++; continue; }
+  if (runDays > 90) { tooLong++; continue; }
+  ok++;
 }
+line(`\nof those ${near.length}:`);
+line(`   unparseable timestamp : ${badStamp}`);
+line(`   already ended         : ${ended}`);
+line(`   starts past the window: ${tooFar}`);
+line(`   runs over 90 days     : ${tooLong}   ← the suspicion`);
+line(`   survive               : ${ok}`);
 
+runs.sort((a, b) => a - b);
+const at = (p) => runs.length ? runs[Math.min(runs.length - 1, Math.floor(p * runs.length))].toFixed(1) : '-';
+line(`\nrun length in days across the near records — min ${at(0)}, median ${at(0.5)}, 90th ${at(0.9)}, max ${runs.length ? runs[runs.length-1].toFixed(1) : '-'}`);
+line(`carrying seriesID: ${near.filter((r) => r.seriesID).length} of ${near.length}`);
+
+line('\nfive near records, as the adapter sees them:');
+near.slice(0, 5).forEach((r) => {
+  const s = inst(r.startDateTime, r.startTimeZoneOffset), e = inst(r.endDateTime, r.endTimeZoneOffset);
+  line(`   ${plain(r.title).slice(0, 44).padEnd(46)} ${r.startDateTime} → ${r.endDateTime}  run ${(((e ?? s) - s) / 864e5).toFixed(1)}d  series:${r.seriesID ? 'y' : 'n'}`);
+});
+
+line(`\nand what the adapter itself returns: ${sg.normalise(rows, { days: 30 }).length} event(s)`);
 line('\ndone');
