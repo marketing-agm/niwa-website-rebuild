@@ -24,16 +24,33 @@ const ENDPOINT = 'https://www.trumba.com/calendars/seattlegov-city-wide.json';
 
 export const probeUrls = [ENDPOINT];
 
-// The whole city publishes to this calendar, and most of it is nowhere near
-// the building. Every record carries a Neighborhoods field, which is the
-// City's own answer to "where is this", so that is what gets read — and the
-// location text as a fallback, because a handful of records name the
-// neighbourhood only in the address.
+// The whole city publishes to this calendar and most of it is nowhere near
+// the building, so the hard part of this source is deciding what is close.
 //
-// "Citywide" is deliberately not in here. It is on most park-programme
-// records and means "we run this everywhere", which is not a claim that
-// anything is happening within three miles of 1st Ave N.
-const NEAR = /queen\s*anne|uptown|seattle\s*center|belltown|south\s*lake\s*union|denny\s*triangle|interbay|magnolia|downtown/i;
+// The Neighborhoods field looked like the answer and is not, on its own: a
+// record can carry twenty of them. A fire-station story time in West Seattle
+// arrived tagged with Downtown among a dozen others and passed a test that
+// only asked whether any tag was near.
+//
+// The postcode is better, because there is one of it and it is in the
+// address. These are the codes within about three miles of 1st Ave N —
+// Uptown and South Lake Union, Queen Anne and Interbay, Belltown, the
+// downtown core, Pioneer Square and the International District, Eastlake,
+// Capitol Hill, Magnolia. Anything else is a bus ride.
+const NEAR_ZIPS = new Set(['98109', '98119', '98121', '98101', '98104', '98102', '98112', '98122', '98199']);
+
+// Used only where no postcode appears anywhere in the record, which is most
+// of the park programmes — "Freeway Park" carries no address at all.
+// "Citywide" is deliberately absent: it is on most park records and means
+// "we run this everywhere", which is not a claim that anything is happening
+// near this building.
+const NEAR_NAMES = /queen\s*anne|uptown|seattle\s*center|belltown|south\s*lake\s*union|denny\s*(?:park|triangle)|interbay|magnolia|downtown|freeway\s*park|pioneer\s*square|international\s*district|westlake|myrtle\s*edwards|olympic\s*sculpture/i;
+
+// Virtual sessions are real events and not ones you can walk to, and this
+// page's whole argument is walking distance. locationType alone missed them:
+// a Teams workshop came through typed "In-Person" with "Virtual Teams
+// Meeting" as its location.
+const VIRTUAL = /\bvirtual\b|\bonline\b|\bwebinar\b|\bzoom\b|\bteams meeting\b|\bremote\b/i;
 
 // Trumba's own taxonomy is a mix of calendar names and per-department custom
 // fields, so it is read where it exists and inferred from the title where it
@@ -56,16 +73,28 @@ const field = (ev, label) =>
   (ev?.customFields ?? []).find((f) => String(f?.label ?? '').toLowerCase() === label.toLowerCase())?.value ?? '';
 
 function isNear(ev) {
-  const hoods = plain(field(ev, 'Neighborhoods'));
-  const where = plain(ev?.location);
-  return NEAR.test(hoods) || NEAR.test(where);
+  const where = `${plain(ev?.location)} ${String(ev?.location ?? '')}`;
+  const zips = [...where.matchAll(/\b(98\d{3})\b/g)].map((m) => m[1]);
+  // A postcode is a single claim about one place, so where there is one it
+  // decides — including when it decides against.
+  if (zips.length) return zips.some((z) => NEAR_ZIPS.has(z));
+  return NEAR_NAMES.test(plain(field(ev, 'Neighborhoods'))) || NEAR_NAMES.test(plain(ev?.location));
 }
 
+function isVirtual(ev) {
+  if (/^(online|virtual|hybrid)$/i.test(String(ev?.locationType ?? ''))) return true;
+  return VIRTUAL.test(plain(ev?.title)) || VIRTUAL.test(plain(ev?.location));
+}
+
+// The page's category chips are a small closed set, and Trumba's own words
+// are not in it: categoryCalendar carries things like "Seattle.Gov|City-Wide"
+// and "Seattle Fire Department", which are publishers rather than kinds of
+// evening. So the feed's words are read for the hints and then thrown away —
+// an unrecognised one becomes no category rather than a new chip.
 function categorise(ev) {
-  const cat = plain(field(ev, 'Parks Event Category')) || plain(ev?.categoryCalendar);
-  const hay = `${ev?.title ?? ''} ${cat}`;
+  const hay = `${ev?.title ?? ''} ${plain(field(ev, 'Parks Event Category'))} ${plain(ev?.categoryCalendar)}`;
   for (const [re, name] of HINTS) if (re.test(hay)) return name;
-  return cat || null;
+  return null;
 }
 
 // location arrives as an anchor whose text is the venue and whose href is a
@@ -74,7 +103,11 @@ function categorise(ev) {
 // in a phone.
 function venueOf(ev) {
   const html = String(ev?.location ?? '');
-  const name = plain(html) || 'Seattle';
+  // The anchor text often runs the place and its address together — "Council
+  // Chambers 600 4th Ave., Floor 2". The address belongs in the address, so
+  // the name is cut at the house number.
+  let name = plain(html).replace(/\s+\d{2,5}\s+\w.*$/, '').trim() || plain(html) || 'Seattle';
+  if (name.length > 48) name = name.slice(0, 47).replace(/\s+\S*$/, '') + '…';
   let address = null;
   const href = html.match(/href\s*=\s*["']([^"']+)["']/i)?.[1];
   if (href) {
@@ -123,9 +156,7 @@ export function normalise(raw, { days = 30 } = {}) {
 
   for (const ev of raw) {
     if (ev?.canceled) continue;
-    // Online-only sessions are real events, but not ones you can walk to, and
-    // this page's whole argument is walking distance.
-    if (/^(online|virtual)$/i.test(String(ev?.locationType ?? ''))) continue;
+    if (isVirtual(ev)) continue;
     if (!isNear(ev)) continue;
 
     const title = plain(ev?.title);
