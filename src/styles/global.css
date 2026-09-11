@@ -154,14 +154,29 @@
 *, *::before, *::after { box-sizing: border-box; }
 /* The ink lives on html so the ground still runs to both edges once body stops
    widening at --maxw. Same colour either side of the seam, so there is no seam. */
-html { -webkit-text-size-adjust: 100%; scroll-behavior: auto; background: var(--bg); }
+/* overflow-x on html, not only on body. body already carried `clip`, but a
+   value set there is propagated up to the viewport rather than applied to
+   body, and the propagated value did not stop a child that reached past the
+   right edge from scrolling the page — measured: a probe element parked past
+   the edge still grew scrollWidth by its full width. Setting it on html makes
+   the clip unambiguous and the page cannot scroll sideways.
+
+   `clip`, never `hidden`: hidden would make html a scroll container and the
+   sticky nav would stop sticking. clip does not, and the nav is unaffected. */
+html { -webkit-text-size-adjust: 100%; scroll-behavior: auto; background: var(--bg); overflow-x: clip; }
 html.lenis, html.lenis body { height: auto; }
 .lenis.lenis-smooth { scroll-behavior: auto !important; }
 .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
 .lenis.lenis-stopped { overflow: hidden; }
 body {
   margin: 0;
-  max-width: var(--maxw);
+  /* min(), not --maxw on its own. Above 2560 the measure is derived in vw, and
+     a vw includes the vertical scrollbar while the space body actually has to
+     fill does not. On a machine with classic (space-taking) scrollbars that
+     put --maxw about fifteen pixels past the room available and the whole page
+     picked up a horizontal scroll. Headless Chromium draws overlay scrollbars
+     that take no width, which is why every audit came back clean. */
+  max-width: min(var(--maxw), 100%);
   margin-inline: auto;
   background: var(--bg);
   color: var(--fg);

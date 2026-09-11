@@ -62,16 +62,15 @@ const fmtHour = (t: string) => { const [h] = t.split(':').map(Number); return `$
   .foot-mark { padding: clamp(40px, 6vw, 110px) var(--gutter) clamp(28px, 4vw, 72px); }
   .foot--compact .foot-mark { padding: clamp(24px, 3vw, 52px) var(--gutter) clamp(20px, 2.4vw, 40px); }
   .foot--compact .foot-mark :global(.foot-svg) { max-width: min(100%, 700px); }
-  /* 80% of the measure, centred: it was reading oversized against everything
-     above it. The stroke is widened to compensate, because the mark is drawn
-     at a fixed viewBox weight and shrinking it thins the line by the same
-     fifth. Background is untouched. */
-  /* Two limits, not one. The width alone was the whole problem on a large
-     monitor: a mark set as a share of the measure grows with the canvas, so
-     at 2560 it filled the screen top to bottom. The height ceiling is what
-     stops it — below about 1500px wide the width rules, above it the height
-     does, and the mark settles rather than keeps growing. */
-  .foot-mark :global(.foot-svg) { width: 72%; max-height: 44vh; margin: 0 auto; height: auto; color: var(--fg); stroke-width: 30; }
+  /* Full measure, at the drawing's own stroke weight. The mark is the last
+     thing on the page and it is the name of the building, so it takes the
+     width it is given; the gutter on .foot-mark is what keeps it off the
+     edges, and that gutter scales with the screen, so the mark scales with
+     it on every size from a phone to a television. No height ceiling: the
+     mark is wide and short, so on any real screen the width is what rules,
+     and a vh ceiling only ever fired on a short window to shrink it for no
+     reason. */
+  .foot-mark :global(.foot-svg) { width: 100%; height: auto; margin: 0 auto; color: var(--fg); stroke-width: 22; }
   .foot-cell { grid-column: span 3; display: grid; gap: 10px; align-content: start; font-size: var(--t-body); }
   .foot-links { display: grid; gap: 6px; }
   .foot-bar { display: flex; justify-content: space-between; gap: var(--gap); flex-wrap: wrap; padding: clamp(16px, 1.6vw, 26px) var(--inset) clamp(24px, 2.4vw, 40px); }
