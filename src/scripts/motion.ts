@@ -396,13 +396,101 @@ if (!reduce) {
   });
 }
 
-/* ---------- Gallery: pinned horizontal scroll on desktop, native on touch ---------- */
-/* The gallery has no script any more. It used to pin the page on desktop and
-   scrub the strip sideways on scroll, which meant a reader could not reach
-   the rest of the page without playing through all ten photographs. It is a
-   plain scroll container now, at every width — the browser's own scrollbar
-   does the job, and it is draggable, flickable and keyboard-reachable in a
-   way the scrubbed version never was. */
+/* ---------- Gallery: pinned horizontal scroll on desktop, native on touch ----
+
+   Both modes live here, and the choice is made once, because two scripts
+   deciding this separately can disagree and leave the strip pinned with a
+   scrollbar under it, or scrollable with nothing driving it.
+
+   Pinned is the desktop behaviour and the one the page was designed around:
+   the section holds still while the vertical wheel drives the strip sideways,
+   and the hairline underneath fills as you travel. It is deliberately not
+   used on touch, on a narrow window, or under prefers-reduced-motion — pinning
+   takes over the page's only scroll axis, which is the wrong thing to do to a
+   phone and the wrong thing to do to a reader who has asked motion to stop.
+   Those get an ordinary scroll container with a draggable bar. */
+const galSection = $('[data-gallery]');
+const galTrack = $('[data-gallery-track]');
+const galVp = $('[data-gal-vp]');
+const galBarEl = $('[data-gal-bar]');
+const galThumb = $('[data-gal-thumb]');
+const galProgress = $('[data-gallery-progress]');
+
+if (galSection && galTrack && galVp) {
+  const pin = !coarse && !reduce && innerWidth >= 1024;
+
+  if (pin) {
+    galSection.classList.add('is-pinned');
+    const dist = () => Math.max(0, galTrack.scrollWidth - galVp.clientWidth);
+    gsap.to(galTrack, {
+      x: () => -dist(), ease: 'none',
+      scrollTrigger: {
+        trigger: galVp, pin: true, scrub: 0.6, anticipatePin: 1, invalidateOnRefresh: true,
+        start: () => (galVp.offsetHeight < innerHeight ? 'center center' : 'top top'),
+        end: () => '+=' + dist(),
+        onUpdate: (self) => { if (galProgress) galProgress.style.transform = `scaleX(${self.progress})`; },
+      },
+    });
+  } else if (galBarEl && galThumb) {
+    // The bar reflects the scroll and can drive it. One source of truth,
+    // scrollLeft: a wheel, a flick, an arrow key and a drag all end there.
+    const max = () => Math.max(1, galVp.scrollWidth - galVp.clientWidth);
+    const draw = () => {
+      const frac = Math.min(1, galVp.clientWidth / galVp.scrollWidth);
+      const travel = galBarEl.clientWidth * (1 - frac);
+      galThumb.style.width = `${frac * 100}%`;
+      galThumb.style.transform = `translateX(${(galVp.scrollLeft / max()) * travel}px)`;
+      galThumb.setAttribute('aria-valuenow', String(Math.round((galVp.scrollLeft / max()) * 100)));
+    };
+
+    // Lenis takes the wheel for the whole document, which left a sideways
+    // trackpad gesture over the strip moving it 48px out of 1320. Stopping the
+    // event here — before it reaches the window Lenis listens on — hands a
+    // horizontal gesture back to the browser. A vertical one is left alone, so
+    // the page still scrolls with the pointer over the photographs.
+    galVp.addEventListener('wheel', (e: WheelEvent) => {
+      if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) e.stopPropagation();
+    }, { passive: true });
+
+    galVp.addEventListener('scroll', draw, { passive: true });
+    addEventListener('resize', draw);
+    draw();
+
+    let from = 0, at = 0;
+    const move = (e: PointerEvent) => {
+      const frac = Math.min(1, galVp.clientWidth / galVp.scrollWidth);
+      const travel = galBarEl.clientWidth * (1 - frac);
+      if (travel <= 0) return;
+      galVp.scrollLeft = at + ((e.clientX - from) / travel) * max();
+    };
+    const up = (e: PointerEvent) => {
+      removeEventListener('pointermove', move);
+      removeEventListener('pointerup', up);
+      galBarEl.classList.remove('is-dragging');
+      galThumb.releasePointerCapture?.(e.pointerId);
+    };
+    galThumb.addEventListener('pointerdown', (e) => {
+      e.preventDefault();
+      from = e.clientX; at = galVp.scrollLeft;
+      galBarEl.classList.add('is-dragging');
+      galThumb.setPointerCapture?.(e.pointerId);
+      addEventListener('pointermove', move);
+      addEventListener('pointerup', up);
+    });
+    galBarEl.addEventListener('pointerdown', (e) => {
+      if (e.target === galThumb) return;
+      const ahead = e.clientX > galThumb.getBoundingClientRect().right;
+      galVp.scrollBy({ left: (ahead ? 1 : -1) * galVp.clientWidth * 0.9, behavior: 'smooth' });
+    });
+    galThumb.addEventListener('keydown', (e) => {
+      const step = { ArrowLeft: -1, ArrowRight: 1, Home: -Infinity, End: Infinity }[e.key];
+      if (step === undefined) return;
+      e.preventDefault();
+      if (!Number.isFinite(step)) galVp.scrollTo({ left: step < 0 ? 0 : max(), behavior: 'smooth' });
+      else galVp.scrollBy({ left: step * galVp.clientWidth * 0.6, behavior: 'smooth' });
+    });
+  }
+}
 
 /* ---------- The building strip: dots track the card you're on ----------
 

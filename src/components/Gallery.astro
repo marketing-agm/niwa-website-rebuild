@@ -13,10 +13,14 @@ const items = slugs.map(photo);
     itself. The section keeps a label for the accessibility tree, which is the
     one reader that cannot see what the pictures are. */}
 <section class="section gallery" id="gallery" data-gallery aria-label="The building and the neighborhood, photographed">
-  {/* A window you scroll, at every width. It used to pin the page on desktop
-      and scrub the strip sideways as you scrolled, which meant you could not
-      get past the section without going through all ten photographs. Now the
-      bar under it is a real scrollbar: drag it, flick it, or leave it. */}
+  {/* Two modes, chosen once in motion.ts so the two scripts cannot disagree.
+      On a desktop pointer the section pins and the strip scrubs sideways as
+      you scroll down — the vertical wheel drives the horizontal travel, and
+      the hairline under it fills as you go. On touch, on a narrow window, or
+      for anyone who asked for reduced motion, it is an ordinary scroll
+      container with the draggable bar below it: pinning hijacks the page's
+      only scroll axis, which is the wrong thing to do to a phone and the
+      wrong thing to do to someone who has asked motion to stop. */}
   <div class="gal-viewport" tabindex="0" role="group" aria-label="Photographs, scroll sideways" data-gal-vp>
     <div class="gal-track" data-gallery-track>
       {items.map((p) => (
@@ -27,6 +31,10 @@ const items = slugs.map(photo);
         </figure>
       ))}
     </div>
+    {/* Only drawn while pinned: it reports progress through the strip, which
+        is the one thing you cannot otherwise tell when the page has stopped
+        moving under you. */}
+    <div class="gal-progress" aria-hidden="true"><i data-gallery-progress></i></div>
   </div>
   {/* Our own bar, not the browser's. Chromium ignores ::-webkit-scrollbar once
       the standard scrollbar properties are set, and what it gives instead is
@@ -48,6 +56,15 @@ const items = slugs.map(photo);
     overflow-x: auto; overflow-y: hidden;
     scrollbar-width: none;
   }
+  /* Pinned: nothing scrolls natively, the track is moved by transform. */
+  .gallery.is-pinned .gal-viewport { overflow: hidden; padding-bottom: calc(var(--gap) + 14px); }
+  .gallery.is-pinned .gal-bar { display: none; }
+  .gal-progress { display: none; }
+  .gallery.is-pinned .gal-progress {
+    display: block; position: absolute; left: var(--gutter); right: var(--gutter);
+    bottom: 0; height: 1px; background: var(--line);
+  }
+  .gal-progress i { display: block; height: 100%; background: var(--fg); transform: scaleX(0); transform-origin: left; }
   .gal-viewport::-webkit-scrollbar { display: none; }
   /* Keyboard: the strip is focusable, so arrow keys scroll it. Without the
      outline there is no way to tell that focus has landed there. */
@@ -86,75 +103,3 @@ const items = slugs.map(photo);
   @media (max-width: 720px) { .gal-item { --h: clamp(240px, 48vh, 420px); } }
 </style>
 
-<script>
-  // The bar reflects the scroll and can drive it. Two directions, one source
-  // of truth: scrollLeft. Everything here reads or writes that, so a wheel, a
-  // flick, an arrow key and a drag all end up in the same place.
-  const vp = document.querySelector<HTMLElement>('[data-gal-vp]');
-  const bar = document.querySelector<HTMLElement>('[data-gal-bar]');
-  const thumb = document.querySelector<HTMLElement>('[data-gal-thumb]');
-
-  if (vp && bar && thumb) {
-    const max = () => Math.max(1, vp.scrollWidth - vp.clientWidth);
-
-    const draw = () => {
-      const frac = Math.min(1, vp.clientWidth / vp.scrollWidth);
-      const travel = bar.clientWidth * (1 - frac);
-      thumb.style.width = `${frac * 100}%`;
-      thumb.style.transform = `translateX(${(vp.scrollLeft / max()) * travel}px)`;
-      thumb.setAttribute('aria-valuenow', String(Math.round((vp.scrollLeft / max()) * 100)));
-    };
-
-    // Lenis takes the wheel for the whole document, which left a sideways
-    // trackpad gesture over the strip moving it 48px out of 1320. Stopping
-    // the event here — before it reaches the window Lenis listens on — hands
-    // a horizontal gesture back to the browser's own scrolling. A vertical
-    // one is left alone, so the page still scrolls with the pointer over the
-    // photographs and the section never traps you.
-    vp.addEventListener('wheel', (e: WheelEvent) => {
-      if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) e.stopPropagation();
-    }, { passive: true, capture: false });
-
-    vp.addEventListener('scroll', draw, { passive: true });
-    addEventListener('resize', draw);
-    draw();
-
-    // Drag.
-    let from = 0, at = 0;
-    const move = (e: PointerEvent) => {
-      const frac = Math.min(1, vp.clientWidth / vp.scrollWidth);
-      const travel = bar.clientWidth * (1 - frac);
-      if (travel <= 0) return;
-      vp.scrollLeft = at + ((e.clientX - from) / travel) * max();
-    };
-    const up = (e: PointerEvent) => {
-      removeEventListener('pointermove', move);
-      removeEventListener('pointerup', up);
-      bar.classList.remove('is-dragging');
-      thumb.releasePointerCapture?.(e.pointerId);
-    };
-    thumb.addEventListener('pointerdown', (e) => {
-      e.preventDefault();
-      from = e.clientX; at = vp.scrollLeft;
-      bar.classList.add('is-dragging');
-      thumb.setPointerCapture?.(e.pointerId);
-      addEventListener('pointermove', move);
-      addEventListener('pointerup', up);
-    });
-
-    // Clicking the track jumps a screenful, the way a scrollbar does.
-    bar.addEventListener('pointerdown', (e) => {
-      if (e.target === thumb) return;
-      const ahead = e.clientX > thumb.getBoundingClientRect().right;
-      vp.scrollBy({ left: (ahead ? 1 : -1) * vp.clientWidth * 0.9, behavior: 'smooth' });
-    });
-
-    thumb.addEventListener('keydown', (e) => {
-      const step = { ArrowLeft: -1, ArrowRight: 1, Home: -Infinity, End: Infinity }[e.key];
-      if (step === undefined) return;
-      e.preventDefault();
-      if (!Number.isFinite(step)) vp.scrollTo({ left: step < 0 ? 0 : max(), behavior: 'smooth' });
-      else vp.scrollBy({ left: step * vp.clientWidth * 0.6, behavior: 'smooth' });
-    });
-  }
-</script>
