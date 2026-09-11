@@ -1,5 +1,5 @@
 {
-  "updated": "2026-09-11T23:19:06.686Z",
+  "updated": "2026-09-11T23:21:26.587Z",
   "sources": [
     "Visit Seattle",
     "City of Seattle",
@@ -144,7 +144,7 @@
       "end": "2026-09-12T00:00:00.000Z",
       "allDay": false,
       "venue": {
-        "name": "2061 15th Ave. W., Seattle, WA 98119",
+        "name": "2061 15th Ave. W.",
         "address": null,
         "lat": null,
         "lng": null
@@ -414,7 +414,7 @@
       "end": "2026-09-13T00:00:00.000Z",
       "allDay": false,
       "venue": {
-        "name": "2061 15th Ave. W., Seattle, WA 98119",
+        "name": "2061 15th Ave. W.",
         "address": "2061 15th Ave W, Seattle, WA 98119",
         "lat": null,
         "lng": null
@@ -1049,7 +1049,7 @@
         "lat": 47.6221,
         "lng": -122.353988
       },
-      "category": "Tours",
+      "category": null,
       "url": "https://www.seattlecenter.com/events/event-calendar/journey-final-frontier-tour",
       "image": null,
       "priceFrom": null,
