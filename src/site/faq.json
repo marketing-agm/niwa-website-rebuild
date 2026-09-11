@@ -1,5 +1,5 @@
 {
-  "_note": "Every answer is grounded in units.json (the AppFolio feed), site.config.json, or copy confirmed by marketing as current on niwaseattle.com. Deliberately absent, because no verified source exists yet: parking cost, storage cost, security deposit, screening fee and utilities. Rents and dates are kept out on purpose: this file is hand-written and would go stale the next time npm run refresh runs, so price questions point at the availability map and the per-layout starting rents, which both come from the feed.",
+  "_note": "Every answer is grounded in units.json (the AppFolio feed), site.config.json, or copy confirmed by marketing as current on niwaseattle.com. Deliberately absent, because no verified source exists yet: parking cost, storage cost, security deposit, screening fee and utilities. Rents and dates are kept out on purpose: this file is hand-written and would go stale the next time npm run refresh runs, so price questions point at the availability map, which comes from the feed. Per-layout starting rents were removed from the homes section at the client\u2019s request, so nothing outside that map quotes a price.",
   "faq": [
     {
       "q": "What kinds of homes does Niwa have?",
@@ -7,7 +7,7 @@
     },
     {
       "q": "What does a home cost, and what is available right now?",
-      "a": "Rent varies by layout, floor and move-in date. The <a href=\"#availability\">availability map</a> shows every home currently listed with its actual rent and date, refreshed from the leasing system, and each home type lists its starting rent."
+      "a": "Rent varies by layout, floor and move-in date. The <a href=\"#availability\">availability map</a> shows every home currently listed with its actual rent and date, refreshed from the leasing system. For a figure on a particular home, ask the leasing team."
     },
     {
       "q": "When can I move in?",

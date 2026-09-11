@@ -19,10 +19,7 @@
 // listings. The calendar itself is a level down. Seattle Center is a City of
 // Seattle department, and the City publishes through Trumba, so that is the
 // first thing to look for on the real page.
-const PAGES = [
-  'https://www.seattlecenter.com/events/event-calendar',
-  'https://www.seattlecenter.com/events/featured-events',
-];
+const PAGES = ['https://www.seattlecenter.com/events/event-calendar'];
 const UA = 'niwa-website-rebuild events probe (+https://github.com/marketing-agm/niwa-website-rebuild)';
 
 for (const URL_ of PAGES) {
@@ -76,7 +73,23 @@ const links = [...new Set([...html.matchAll(/href=["'](\/events?\/[^"'#?]{3,120}
 console.log(`\ndistinct /event links: ${links.length}`);
 links.slice(0, 12).forEach((l) => console.log(`   ${l}`));
 
-// 5. A slice around the first one, so the row's real shape is visible.
+// 5. The event-list rows themselves. The calendar page carries .event-list__*
+// classes, so the listings are server-rendered after all — this prints two of
+// them whole, which is what an adapter has to be written against. What matters
+// is whether a row carries a date in any parseable form: there is no <time>
+// tag and no ISO date anywhere on the page, so if the date is only prose like
+// "Sat, Sep 13" then the year is inferred and the whole thing is guesswork.
+const rows = [...html.matchAll(/<(article|div|li)[^>]*class=["'][^"']*event-list__item[^"']*["'][\s\S]{0,2600}?<\/\1>/gi)];
+console.log(`\n.event-list__item rows: ${rows.length}`);
+if (!rows.length) {
+  const at = html.indexOf('event-list__');
+  console.log('--- 3000 chars from the first event-list__ ---');
+  console.log(html.slice(Math.max(0, at - 700), at + 2300).replace(/\s+/g, ' '));
+} else {
+  rows.slice(0, 2).forEach((m, i) => console.log(`\n--- row ${i + 1} ---\n` + m[0].replace(/\s+/g, ' ')));
+}
+
+// 5b. A slice around the first one, so the row's real shape is visible.
 if (links.length > 1) {
   const at = html.indexOf(`href="${links[1]}"`);
   if (at > 0) {
