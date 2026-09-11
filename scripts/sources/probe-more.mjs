@@ -1,72 +1,65 @@
-// Round three. Round two found the thing that matters: seattle.gov's event
-// calendar is not hand-built and is not Drupal — it loads
-// https://www.trumba.com/scripts/spuds.js, which means the City publishes its
-// calendar through Trumba.
+// Round four, and the last one. The City's calendar is Trumba, published as
+// "seattlegov-city-wide", and all four formats answer:
 //
-// That changes the question entirely. Trumba is a calendar publishing
-// platform whose whole purpose is syndication: every calendar it hosts serves
-// .rss, .ics, .xml and .json off a stable path, and those feeds exist to be
-// consumed. So there is nothing to scrape here — there is a feed to subscribe
-// to, if the calendar's web name can be read off the page that embeds it.
+//   .json   498KB   .rss   402KB   .xml   988KB   .ics  1.1MB
 //
-// A Trumba embed configures itself with $Trumba.addSpud({ webName: '...' }),
-// so this pulls the inline script out of the page and reads it, then asks the
-// feed for that name in each format.
+// JSON is the one to take. What is left is the record shape — every field the
+// adapter will read has to be one the feed actually sends — and whether the
+// feed can be asked for a date range, because pulling half a megabyte every
+// Monday to keep thirty days of it is rude to a public server and slow here.
 
 const UA = 'niwa-website-rebuild events probe (+https://github.com/marketing-agm/niwa-website-rebuild)';
-async function grab(url, accept = '*/*') {
+const BASE = 'https://www.trumba.com/calendars/seattlegov-city-wide.json';
+
+async function grab(url) {
   const ctl = new AbortController();
-  const t = setTimeout(() => ctl.abort(), 20000);
+  const t = setTimeout(() => ctl.abort(), 25000);
   try {
-    const res = await fetch(url, { signal: ctl.signal, redirect: 'follow', headers: { accept, 'user-agent': UA } });
+    const res = await fetch(url, { signal: ctl.signal, redirect: 'follow', headers: { accept: 'application/json', 'user-agent': UA } });
     const text = await res.text();
-    return { ok: res.ok, status: res.status, url: res.url, type: (res.headers.get('content-type') || '-').split(';')[0], len: text.length, text };
-  } catch (err) {
-    return { ok: false, status: 0, url, type: '-', len: 0, text: '', error: err instanceof Error ? err.message : String(err) };
-  } finally { clearTimeout(t); }
+    return { ok: res.ok, status: res.status, type: (res.headers.get('content-type') || '-').split(';')[0], len: text.length, text };
+  } catch (err) { return { ok: false, status: 0, type: '-', len: 0, text: '', error: String(err) }; }
+  finally { clearTimeout(t); }
 }
 const line = (s) => console.log(s);
 
-line('='.repeat(70));
-line('seattle.gov runs on Trumba — find the calendar name');
-line('='.repeat(70));
+const full = await grab(BASE);
+line(`full feed  ${full.status} ${full.type} ${full.len}b`);
+let rows = [];
+try { rows = JSON.parse(full.text); } catch (e) { line(`did not parse: ${e}`); }
+line(`records: ${Array.isArray(rows) ? rows.length : '(not an array)'}`);
 
-const page = await grab('https://www.seattle.gov/event-calendar', 'text/html');
-line(`listing ${page.status} ${page.len}b`);
+if (rows.length) {
+  // Every key any record uses, not just the first — feeds are ragged.
+  const keys = new Map();
+  for (const r of rows) for (const k of Object.keys(r)) keys.set(k, (keys.get(k) ?? 0) + 1);
+  line(`\nkeys across all ${rows.length} records (name × how many carry it):`);
+  [...keys.entries()].sort((a, b) => b[1] - a[1]).forEach(([k, n]) => line(`   ${k.padEnd(26)} ${n}`));
 
-// Every inline script, so nothing about the embed is missed.
-const inline = [...page.text.matchAll(/<script(?![^>]*\bsrc=)[^>]*>([\s\S]*?)<\/script>/gi)].map((m) => m[1].trim()).filter(Boolean);
-line(`\ninline scripts: ${inline.length}`);
-const trumbaBits = inline.filter((s) => /trumba|spud|webName/i.test(s));
-line(`mentioning Trumba: ${trumbaBits.length}`);
-trumbaBits.forEach((s, i) => line(`\n--- inline #${i + 1} ---\n${s.slice(0, 1200)}`));
-
-// Whatever the markup says, collect every candidate name.
-const names = new Set();
-for (const m of page.text.matchAll(/webName\s*:\s*["']([^"']+)["']/gi)) names.add(m[1]);
-for (const m of page.text.matchAll(/trumba\.com\/calendars\/([A-Za-z0-9_.-]+)/gi)) names.add(m[1]);
-for (const m of page.text.matchAll(/["']([A-Za-z0-9_-]*seattle[A-Za-z0-9_-]*)["']\s*[,}]/gi)) names.add(m[1]);
-line(`\ncandidate calendar names: ${[...names].join(', ') || '(none found in the markup)'}`);
-
-// Trumba serves each calendar in four formats off one path.
-const FORMATS = ['.rss', '.ics', '.xml', '.json'];
-const tryName = async (name) => {
-  line(`\n${name}`);
-  for (const f of FORMATS) {
-    const r = await grab(`https://www.trumba.com/calendars/${name}${f}`, '*/*');
-    const good = r.ok && r.len > 400;
-    line(`   ${String(r.status || r.error).padEnd(5)} ${r.type.padEnd(26)} ${String(r.len).padStart(9)}b  ${f}${good ? '  ← SERVES' : ''}`);
-    if (good && f === '.json') line(`        head: ${r.text.slice(0, 500)}`);
-    if (good && f === '.rss') {
-      const titles = [...r.text.matchAll(/<title>([\s\S]*?)<\/title>/gi)].slice(1, 4).map((m) => m[1].trim());
-      line(`        first items: ${titles.join(' | ').slice(0, 240)}`);
+  const trim = (r) => {
+    const o = {};
+    for (const [k, v] of Object.entries(r)) {
+      o[k] = typeof v === 'string' && v.length > 120 ? v.slice(0, 120) + '…' : v;
     }
-  }
-};
+    return o;
+  };
+  line(`\nfirst record:\n${JSON.stringify(trim(rows[0]), null, 1).slice(0, 2000)}`);
+  const withLoc = rows.find((r) => r.location || r.customFields?.length);
+  if (withLoc && withLoc !== rows[0]) line(`\na record carrying a location:\n${JSON.stringify(trim(withLoc), null, 1).slice(0, 1800)}`);
 
-for (const n of [...names].slice(0, 6)) await tryName(n);
-// The City's calendar is conventionally named for the publisher if nothing
-// was found in the markup.
-if (!names.size) for (const n of ['cityofseattle', 'seattlegov', 'seattle']) await tryName(n);
+  // How far ahead does an unfiltered pull reach?
+  const dates = rows.map((r) => r.startDateTime ?? r.startDate ?? r.start).filter(Boolean).sort();
+  line(`\ndate range in the feed: ${dates[0]} → ${dates[dates.length - 1]}`);
+}
+
+// Trumba documents a date window on its feeds. Worth knowing: pulling half a
+// megabyte weekly to keep thirty days of it is rude to a public server.
+line('\ncan the feed be asked for a window?');
+for (const q of ['?days=30', '?startdate=today&days=30', '?filterview=&days=30']) {
+  const r = await grab(BASE + q);
+  let n = '-';
+  try { const j = JSON.parse(r.text); n = Array.isArray(j) ? j.length : 'not an array'; } catch { n = 'unparsed'; }
+  line(`   ${String(r.status).padEnd(5)} ${String(r.len).padStart(8)}b  ${String(n).padStart(6)} records  ${q}`);
+}
 
 line('\ndone');
