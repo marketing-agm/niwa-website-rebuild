@@ -115,6 +115,40 @@
   }
 }
 
+/* ---------- 4K monitors and televisions ----------
+
+   The range above stops at 2560, which left a 4K desktop and any television
+   showing a 2560 page in the middle of a much larger screen. A television is
+   the harder case of the two and the one that settles the approach: it is
+   watched from across a room, so what it needs is not a wider grid — twelve
+   columns at 3840 gives 300px columns and the eye has to travel the whole
+   wall — but a larger one. So the type keeps growing faster than the page
+   does: body from 21px to 27px, h1 from 208px to 272px, while the measure
+   goes from 2560 only to 3400.
+
+   Above 3840 everything holds. There is no evidence about what is on the
+   other side of that, and a guess would be worse than a stop. */
+@media (min-width: 2560px) {
+  :root {
+    --t-label: clamp(1rem, 0.5rem + 0.312vw, 1.25rem);
+    --t-small: clamp(1.13rem, 0.55rem + 0.363vw, 1.42rem);
+    --t-body: clamp(1.34rem, 0.62rem + 0.45vw, 1.7rem);
+    --t-lead: clamp(2.12rem, 0.96rem + 0.725vw, 2.7rem);
+    --t-h3: clamp(3rem, 1.4rem + 1vw, 3.8rem);
+    --t-h2: clamp(6.25rem, 2.75rem + 2.188vw, 8rem);
+    --t-h1: clamp(13rem, 5rem + 5vw, 17rem);
+    --t-num: clamp(9.4rem, 4.2rem + 3.25vw, 12rem);
+    --gutter: clamp(34px, 10px + 0.938vw, 46px);
+    --pad: clamp(60px, 28px + 1.25vw, 76px);
+    --inset: clamp(96px, 32px + 2.5vw, 128px);
+    --gap: clamp(42px, 14px + 1.094vw, 56px);
+    --section: clamp(220px, 80px + 5.469vw, 290px);
+    --nav-h: clamp(92px, 36px + 2.188vw, 120px);
+    --radius: clamp(34px, 14px + 0.781vw, 44px);
+    --maxw: clamp(2560px, 880px + 65.625vw, 3400px);
+  }
+}
+
 
 /* ---------- Reset ---------- */
 *, *::before, *::after { box-sizing: border-box; }

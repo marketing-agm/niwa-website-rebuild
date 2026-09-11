@@ -74,6 +74,11 @@ const range = (a: number, b: number) => (a === b ? int(a) : `${int(a)}–${int(b
             </li>
           ))}
         </ul>
+        {/* The panel already opens with this. It is repeated here because a
+            reader who has just read "two dogs combined" can reasonably take
+            the limit to be two dogs and some cats, and the row above is where
+            that thought happens. */}
+        <p class="small pet-cap">Maximum of {pets.maxPerHome} pets per home.</p>
         <p class="small">{pets.deposit}, charged per pet. Some breeds are restricted. There is a pet wash in the building.</p>
       </div>
       <div class="cell note" data-reveal>
@@ -176,6 +181,7 @@ const range = (a: number, b: number) => (a === b ? int(a) : `${int(a)}–${int(b
   .home-row:hover .home-go .arr { transform: translateX(0.4em); }
   .home-notes { margin-top: -1px; }
   .note { grid-column: span 4; display: grid; gap: 12px; align-content: start; }
+  .pet-cap { color: var(--fg); }
   .pet-rows { display: grid; gap: 10px; margin: 2px 0 2px; }
   .pet-row { display: grid; grid-template-columns: 22px 1fr; gap: 10px; align-items: start; }
   .pet-ico { width: 22px; height: 22px; color: var(--fg-3); margin-top: -1px; flex: none; }
