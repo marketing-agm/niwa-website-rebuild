@@ -1,5 +1,5 @@
 {
-  "updated": "2026-09-11T23:46:10.360Z",
+  "updated": "2026-09-11T23:48:56.277Z",
   "sources": [
     "Visit Seattle",
     "City of Seattle",
@@ -42,7 +42,7 @@
         "lat": null,
         "lng": null
       },
-      "category": "Arts & theatre",
+      "category": null,
       "url": "https://www.stgpresents.org/events/harry-potter-and-the-cursed-child/",
       "image": null,
       "priceFrom": null,
@@ -60,7 +60,7 @@
         "lat": null,
         "lng": null
       },
-      "category": "Music",
+      "category": null,
       "url": "https://www.eventbrite.com/e/all-in-tickets-1991593799667",
       "image": null,
       "priceFrom": null,
@@ -392,7 +392,7 @@
     },
     {
       "id": "e12-117384",
-      "title": "Art open house FREE",
+      "title": "Art open house",
       "start": "2026-09-12T07:00:00Z",
       "end": null,
       "allDay": true,
@@ -402,7 +402,7 @@
         "lat": null,
         "lng": null
       },
-      "category": "Festivals",
+      "category": "Museums & galleries",
       "url": "https://www.pratt.org/open-house",
       "image": null,
       "priceFrom": 0,
@@ -420,7 +420,7 @@
         "lat": null,
         "lng": null
       },
-      "category": "Music",
+      "category": null,
       "url": "https://gageacademy.org/events/drawingjam2026",
       "image": null,
       "priceFrom": null,
@@ -456,7 +456,7 @@
         "lat": null,
         "lng": null
       },
-      "category": "Festivals",
+      "category": "Music",
       "url": "https://jacksonstreetjazz.org/",
       "image": null,
       "priceFrom": null,
@@ -464,7 +464,7 @@
     },
     {
       "id": "e12-120436",
-      "title": "Muslim festival FREE",
+      "title": "Muslim festival",
       "start": "2026-09-12T07:00:00Z",
       "end": null,
       "allDay": true,
@@ -510,7 +510,7 @@
         "lat": null,
         "lng": null
       },
-      "category": "Music",
+      "category": "Museums & galleries",
       "url": "https://www.facebook.com/events/2029101541302416",
       "image": null,
       "priceFrom": null,
@@ -823,24 +823,6 @@
       "source": "events12"
     },
     {
-      "id": "e12-100315",
-      "title": "Hawaiian festival FREE",
-      "start": "2026-09-13T07:00:00Z",
-      "end": null,
-      "allDay": true,
-      "venue": {
-        "name": "Lower Queen Anne",
-        "address": "Seattle Center, 305 Harrison St, Seattle, WA 98109",
-        "lat": null,
-        "lng": null
-      },
-      "category": "Festivals",
-      "url": "https://seattlecenter.com/events/featured-events/festal/live-aloha-hawaiian-cultural-festival",
-      "image": null,
-      "priceFrom": 0,
-      "source": "events12"
-    },
-    {
       "id": "tm-vvG1HZ_8ns0QCH",
       "title": "Lumen Field Stadium Tours",
       "start": "2026-09-13T07:00:00Z",
@@ -860,7 +842,7 @@
     },
     {
       "id": "e12-119417",
-      "title": "Mexican show FREE",
+      "title": "Mexican show",
       "start": "2026-09-13T07:00:00Z",
       "end": null,
       "allDay": true,
@@ -870,7 +852,7 @@
         "lat": null,
         "lng": null
       },
-      "category": "Festivals",
+      "category": null,
       "url": "https://townhallseattle.org/event/el-grito-2026/",
       "image": null,
       "priceFrom": 0,
@@ -896,7 +878,7 @@
     },
     {
       "id": "sc-live-aloha-hawaiian-cultural-festival",
-      "title": "Live Aloha Hawaiian Cultural Festival",
+      "title": "Hawaiian festival",
       "start": "2026-09-13T18:00:00Z",
       "end": null,
       "allDay": false,
@@ -963,6 +945,24 @@
       "category": null,
       "url": "https://www.ticketmaster.com/event/Z7r9jZ1A7P3Po",
       "image": "https://s1.ticketm.net/dam/c/f51/ee785ed6-f806-4195-98f4-69f67e09df51_106201_RETINA_LANDSCAPE_16_9.jpg",
+      "priceFrom": null,
+      "source": "ticketmaster"
+    },
+    {
+      "id": "tm-vvG1HZ_kDRIDyO",
+      "title": "WEEZER: The Gathering",
+      "start": "2026-09-14T02:00:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "Climate Pledge Arena",
+        "address": "334 1st Ave N",
+        "lat": 47.622126,
+        "lng": -122.354016
+      },
+      "category": "Music",
+      "url": "https://www.ticketmaster.com/weezer-the-gathering-seattle-washington-09-13-2026/event/0F00646EEFA3BE60",
+      "image": "https://s1.ticketm.net/dam/a/a2e/4990f811-a315-4173-adcf-405a96de3a2e_RETINA_LANDSCAPE_16_9.jpg",
       "priceFrom": null,
       "source": "ticketmaster"
     },
