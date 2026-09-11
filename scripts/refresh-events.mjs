@@ -223,8 +223,19 @@ const localDay = (iso) => {
 // The same festival can appear in two calendars. Match on the title and the
 // day, and keep the fuller record — the one that can be pinned on the map and
 // priced beats the one that cannot.
-const dedupeKey = (e) => `${e.title.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()}|${localDay(e.start)}`;
+const titleWords = (t) =>
+  String(t).toLowerCase()
+    .replace(/\s*\b(?:19|20)\d{2}\b\s*/g, ' ')   // a year in the name is not part of the name
+    .replace(/[^a-z0-9]+/g, ' ')
+    .trim();
+const dedupeKey = (e) => `${titleWords(e.title)}|${localDay(e.start)}`;
 const richness = (e) => (e.venue?.lat != null ? 4 : 0) + (e.url ? 2 : 0) + (e.priceFrom != null ? 1 : 0);
+
+// Words that carry no identity, so that one source's framing of a title does
+// not make it a different event from another's.
+const NOISE = new Set(['the', 'a', 'an', 'of', 'at', 'in', 'on', 'and', 'festal', 'presents', 'featuring', 'seattle']);
+const tokens = (t) => new Set(titleWords(t).split(' ').filter((w) => w && !NOISE.has(w)));
+const covers = (a, b) => { for (const w of b) if (!a.has(w)) return false; return true; };
 
 function merge(all) {
   const best = new Map();
@@ -233,8 +244,43 @@ function merge(all) {
     const prev = best.get(k);
     if (!prev || richness(e) > richness(prev)) best.set(k, e);
   }
-  const out = [...best.values()]
+  let out = [...best.values()]
     .sort((a, b) => Date.parse(a.start) - Date.parse(b.start) || a.title.localeCompare(b.title));
+
+  // Then again, across sources, on the same day, by containment rather than by
+  // an exact string. Two sources name the same evening differently and the key
+  // above cannot see it: Visit Seattle files the Hawaiian festival as "Festal:
+  // Live Aloha Hawaiian Cultural Festival" and Seattle Center as "Live Aloha
+  // Hawaiian Cultural Festival", and both went on the page on the same day.
+  // So did Sea Mar Fiestas Patrias, once as itself and once with the year on
+  // the end.
+  //
+  // One title's words containing the other's is the test, after dropping the
+  // words that carry no identity. Held to two words or more: one is far too
+  // little to identify anything, and three threw out "The Italian Festival",
+  // which is only two once "the" is gone. Checked both ways against the pairs
+  // that must collapse and the near-misses that must not — Kraken against
+  // Canucks and against Flames, two different films in the same series at the
+  // Mural, Italian against Turkish festival, Winterfest's rink against its
+  // market. The richer record wins, which is the same rule as above and means
+  // the one carrying coordinates survives — so merging a duplicate gains the
+  // page a pin rather than costing it one.
+  const merged = [];
+  for (const e of out) {
+    const day = localDay(e.start);
+    const mine = tokens(e.title);
+    const twin = mine.size >= 2
+      ? merged.find((k) => localDay(k.start) === day && k._t.size >= 2 && (covers(k._t, mine) || covers(mine, k._t)))
+      : null;
+    if (!twin) { e._t = mine; merged.push(e); continue; }
+    if (richness(e) > richness(twin)) {
+      // Keep the fuller record, and with it the shorter of the two names.
+      e._t = twin._t.size < mine.size ? twin._t : mine;
+      if (twin.title.length < e.title.length) e.title = twin.title;
+      merged[merged.indexOf(twin)] = e;
+    }
+  }
+  out = merged.map(({ _t, ...e }) => e);
 
   // Two caps, because a feed of sixty is easily forty of the same thing.
   //

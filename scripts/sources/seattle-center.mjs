@@ -57,16 +57,23 @@ const MONTHS = ['january','february','march','april','may','june','july','august
 // — so they are read for the hint and then thrown away. An unrecognised tag
 // becomes no category rather than a new chip, the same rule the other sources
 // follow.
+// Ordered: the first match wins, so the narrower kinds are asked before the
+// broader ones. The literal words are the ones Seattle Center actually tags
+// with — "Sports", "Music", "Theater" — and the first live run showed why
+// they matter: a Storm game and a Kraken game came back tagged "Sports" and
+// only the Kraken one was categorised, because the list carried the word
+// "kraken" and not the word "sport". Nine of fifteen listings came back with
+// no category at all for want of these.
 const HINTS = [
-  [/festival|festal|parade|celebration|fair\b/i, 'Festivals'],
-  [/market/i, 'Market'],
-  [/museum|exhibit|gallery|sculpture|artist|art\b/i, 'Museums & galleries'],
-  [/theatre|theater|play\b|musical|opera|ballet|dance/i, 'Arts & theatre'],
-  [/concert|music|band|symphony|jazz|dj\b/i, 'Music'],
-  [/tour\b|walk\b/i, 'Tours'],
-  [/skate|game|match|marathon|fitness|yoga|run\b|kraken/i, 'Sports'],
+  [/festival|festal|fiesta|parade|celebration|fair\b|winterfest|holiday/i, 'Festivals'],
+  [/market|bazaar/i, 'Market'],
   [/film|cinema|movie|screening/i, 'Film'],
-  [/family|kids|children|storytime/i, 'Family'],
+  [/theat(?:re|er)|play\b|musical|opera|ballet|dance|cirque/i, 'Arts & theatre'],
+  [/concert|music|band|symphony|jazz|\bdj\b|tour\s*20\d\d/i, 'Music'],
+  [/museum|exhibit|gallery|sculpture|artist|\bart(?:s|work)?\b/i, 'Museums & galleries'],
+  [/sport|skate|game\b|\bvs\.?\b|match\b|marathon|fitness|yoga|\brun\b|kraken|storm|sounders|reign/i, 'Sports'],
+  [/family|kids|children|storytime|playground/i, 'Family'],
+  [/\btour\b|\bwalk\b|garden/i, 'Tours'],
 ];
 
 export const id = 'seattle-center';
@@ -104,7 +111,13 @@ function placeOf(href) {
   const hit = pin ?? centre;
   let name = null;
   const slug = href.match(/\/maps\/place\/([^/@?]+)/);
-  if (slug) { try { name = decodeURIComponent(slug[1].replace(/\+/g, ' ')).trim() || null; } catch { name = null; } }
+  if (slug) {
+    try { name = decodeURIComponent(slug[1].replace(/\+/g, ' ')).trim() || null; } catch { name = null; }
+    // Some places are written into the slug with their full postal address —
+    // the first live run produced the venue "Armory, Seattle, WA 98109". The
+    // pin already carries the location; the label only has to name the place.
+    if (name) name = name.split(/\s*,\s*/)[0].replace(/\s+\d{2,5}\s+\w.*$/, '').trim() || null;
+  }
   return { name, lat: hit ? Number(hit[1]) : null, lng: hit ? Number(hit[2]) : null };
 }
 
