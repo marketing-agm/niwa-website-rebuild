@@ -1,14 +1,17 @@
-// What shape is events12.com/seattle?
+// What does one events12 entry look like?
 //
-// It is the one calendar of the three still outstanding that answers at all:
-// 200 on the listing, and its robots.txt allows /seattle/. Earlier probes
-// established there is no feed, no sitemap, no .ics and no JSON-LD anywhere on
-// it, so if this is to be a source the listing markup is the only way in and
-// the parser has to be written against whatever structure is really there.
+// The first pass found the spine: 143 blocks each carrying .event, .date and
+// .miles, inside <article> elements, with the title in an <h3> and a .free
+// marker on some. That is far more structure than expected and enough to
+// parse — but it also showed what the page really is. The headings include
+// Ellensburg Rodeo, the Evergreen State Fair, an Olympia waterfront festival
+// and acoustic music in Eastern Washington. events12.com/seattle is a guide
+// to Washington State, not to Seattle, which is presumably why it carries a
+// distance on every entry.
 //
-// This prints enough of it to write that parser: how the page is divided, what
-// a single entry looks like, and whether dates are in attributes or only in
-// prose.
+// So the parser needs the date and the distance, and the distance is what
+// will do most of the work: almost everything here is outside the three miles
+// this page promises. This prints three entries whole.
 //
 // Usage: node scripts/sources/probe-structure.mjs
 
@@ -17,41 +20,25 @@ const UA = 'niwa-website-rebuild events probe (+https://github.com/marketing-agm
 
 const res = await fetch(URL_, { headers: { accept: 'text/html', 'user-agent': UA }, redirect: 'follow' });
 const html = await res.text();
-console.log(`${res.status} ${res.url}  ${html.length}b\n`);
+console.log(`${res.status} ${res.url}  ${html.length}b`);
 
-// Machine-readable dates, if any exist at all.
-console.log(`<time> tags:        ${(html.match(/<time\b/gi) ?? []).length}`);
-console.log(`ISO dates:          ${new Set(html.match(/\b20\d{2}-\d{2}-\d{2}\b/g) ?? []).size}`);
-console.log(`itemprop/microdata: ${(html.match(/itemprop=/gi) ?? []).length}`);
-console.log(`JSON-LD blocks:     ${(html.match(/application\/ld\+json/gi) ?? []).length}`);
-
-// How is the page divided? Month headings are the likely spine.
-const heads = [...html.matchAll(/<h([1-4])[^>]*>([\s\S]{0,120}?)<\/h\1>/gi)].map((m) => `h${m[1]}: ${m[2].replace(/<[^>]*>/g,' ').replace(/\s+/g,' ').trim()}`);
-console.log(`\nheadings (${heads.length}):`);
-heads.slice(0, 24).forEach((h) => console.log('   ' + h));
-
-// Which classes repeat? That is the entry container, if there is one.
-const cls = {};
-for (const m of html.matchAll(/class=["']([^"']+)["']/g)) for (const c of m[1].split(/\s+/)) if (c) cls[c] = (cls[c] ?? 0) + 1;
-console.log('\nmost repeated classes:');
-Object.entries(cls).sort((a,b)=>b[1]-a[1]).slice(0, 20).forEach(([c,n]) => console.log(`   ${String(n).padStart(4)}  .${c}`));
-
-// Tag histogram in the body, to see whether entries are <p>, <li> or divs.
-const tags = {};
-for (const m of html.matchAll(/<([a-z][a-z0-9]*)\b/gi)) { const t=m[1].toLowerCase(); tags[t]=(tags[t]??0)+1; }
-console.log('\ntag counts:');
-Object.entries(tags).sort((a,b)=>b[1]-a[1]).slice(0, 16).forEach(([t,n]) => console.log(`   ${String(n).padStart(5)}  <${t}>`));
-
-// A date written in prose is the thing to look for: "September 13", "Sep 13-14".
-const MONTH = '(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*';
-const proseDates = html.match(new RegExp(`${MONTH}\\\\.?\\\\s+\\\\d{1,2}`, 'g')) ?? [];
-console.log(`\nprose dates like "September 13": ${proseDates.length}`);
-console.log('   ' + [...new Set(proseDates)].slice(0, 12).join(' | '));
-
-// And a slice around the first one, in context, which is what the parser must
-// actually cope with.
-const at = html.search(new RegExp(`${MONTH}\\\\.?\\\\s+\\\\d{1,2}`));
-if (at > 0) {
-  console.log('\n--- 2600 chars around the first prose date ---');
-  console.log(html.slice(Math.max(0, at - 800), at + 1800).replace(/\s+/g, ' '));
+const arts = [...html.matchAll(/<article\b[\s\S]{0,3000}?<\/article>/gi)];
+console.log(`\n<article> blocks: ${arts.length}`);
+for (const [i, m] of arts.slice(0, 3).entries()) {
+  console.log(`\n--- article ${i + 1} ---`);
+  console.log(m[0].replace(/\s+/g, ' '));
 }
+
+// Every distinct .date and .miles value, which is what the filter runs on.
+const dates = [...html.matchAll(/class=["'][^"']*\bdate\b[^"']*["'][^>]*>([\s\S]{0,90}?)</gi)].map((m) => m[1].replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim());
+const miles = [...html.matchAll(/class=["'][^"']*\bmiles\b[^"']*["'][^>]*>([\s\S]{0,60}?)</gi)].map((m) => m[1].replace(/<[^>]*>/g, ' ').replace(/\s+/g, ' ').trim());
+console.log(`\n.date values (${dates.length}), first 14:`);
+dates.slice(0, 14).forEach((d) => console.log(`   ${JSON.stringify(d)}`));
+console.log(`\n.miles values (${miles.length}), first 14:`);
+miles.slice(0, 14).forEach((d) => console.log(`   ${JSON.stringify(d)}`));
+
+// How many are actually near? That decides whether this source is worth having.
+const near = miles.filter((m) => { const n = parseFloat(m); return Number.isFinite(n) && n <= 3; });
+console.log(`\nentries within 3 miles by their own figure: ${near.length} of ${miles.length}`);
+const near10 = miles.filter((m) => { const n = parseFloat(m); return Number.isFinite(n) && n <= 10; });
+console.log(`within 10 miles: ${near10.length}`);
