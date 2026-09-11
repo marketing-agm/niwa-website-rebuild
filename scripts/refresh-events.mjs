@@ -22,6 +22,11 @@
 //                        the map. No feed exists: the listings are read from
 //                        their own calendar page, which serves them in HTML
 //                        and publishes no robots.txt. See that file.
+//   events12             a hand-kept guide to Washington State, read from its
+//                        HTML because it publishes no feed of any kind. Its
+//                        own listings run to Ellensburg and Olympia, so the
+//                        distance it prints on each entry does most of the
+//                        work. No coordinates, so no pins.
 //   queen-anne-chamber    the best listings there are, and unreachable: see
 //                        the note at the top of that file.
 //
@@ -45,9 +50,10 @@ import * as ticketmaster from './sources/ticketmaster.mjs';
 import * as queenAnneChamber from './sources/queen-anne-chamber.mjs';
 import * as visitSeattle from './sources/visit-seattle.mjs';
 import * as seattleCenter from './sources/seattle-center.mjs';
+import * as events12 from './sources/events12.mjs';
 import * as seattleGov from './sources/seattle-gov.mjs';
 
-const SOURCES = [visitSeattle, seattleGov, seattleCenter, queenAnneChamber, ticketmaster];
+const SOURCES = [visitSeattle, seattleGov, seattleCenter, events12, queenAnneChamber, ticketmaster];
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const configPath = join(root, 'src/site/site.config.json');
