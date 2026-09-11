@@ -1,5 +1,5 @@
 {
-  "updated": "2026-09-11T22:34:02.294Z",
+  "updated": "2026-09-11T22:35:18.917Z",
   "sources": [
     "Visit Seattle",
     "City of Seattle",
@@ -132,24 +132,6 @@
       },
       "category": "Public meetings",
       "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D208284979",
-      "image": null,
-      "priceFrom": null,
-      "source": "seattle-gov"
-    },
-    {
-      "id": "sg-205759024",
-      "title": "Mindful Moments",
-      "start": "2026-09-11T22:00:00.000Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "Leschi Park",
-        "address": "Leschi Park, 201 Lakeside Ave S, Seattle, WA 98122",
-        "lat": null,
-        "lng": null
-      },
-      "category": "Arts & theatre",
-      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D205759024",
       "image": null,
       "priceFrom": null,
       "source": "seattle-gov"
@@ -996,6 +978,24 @@
       },
       "category": "Public meetings",
       "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D195091681",
+      "image": null,
+      "priceFrom": null,
+      "source": "seattle-gov"
+    },
+    {
+      "id": "sg-202724476",
+      "title": "Chinese Dance",
+      "start": "2026-09-16T17:00:00.000Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "Hing Hay Park",
+        "address": "Hing Hay Park, 423 Maynard Ave S, Seattle, WA 98104",
+        "lat": null,
+        "lng": null
+      },
+      "category": "Arts & theatre",
+      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D202724476",
       "image": null,
       "priceFrom": null,
       "source": "seattle-gov"
