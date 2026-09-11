@@ -73,7 +73,12 @@ const HINTS = [
   [/museum|exhibit|gallery|sculpture|artist|\bart(?:s|work)?\b/i, 'Museums & galleries'],
   [/sport|skate|game\b|\bvs\.?\b|match\b|marathon|fitness|yoga|\brun\b|kraken|storm|sounders|reign/i, 'Sports'],
   [/family|kids|children|storytime|playground/i, 'Family'],
-  [/\btour\b|\bwalk\b|garden/i, 'Tours'],
+  // Not \btour\b. A tour on this calendar is far more often a band's than a
+  // walking one — the first run filed "Journey: Final Frontier Tour" under
+  // Tours, next to the sculpture walk. The things that really are tours here
+  // all say walk or stroll, and anything else with "tour" in it is better
+  // left uncategorised than filed wrongly.
+  [/\bwalk\b|\bstroll\b|garden/i, 'Tours'],
 ];
 
 export const id = 'seattle-center';

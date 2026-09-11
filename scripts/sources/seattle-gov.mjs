@@ -110,7 +110,15 @@ function venueOf(ev) {
   // The anchor text often runs the place and its address together — "Council
   // Chambers 600 4th Ave., Floor 2". The address belongs in the address, so
   // the name is cut at the house number.
+  //
+  // Some records have no place name at all and the anchor is the address
+  // itself, which put "2061 15th Ave. W., Seattle, WA 98119" on the page as a
+  // venue. The cut above cannot fire on those because the number is at the
+  // front rather than in the middle, so a name that begins with a house
+  // number is cut at its first comma instead — the street is at least
+  // recognisable, and the full address is still carried underneath.
   let name = plain(html).replace(/\s+\d{2,5}\s+\w.*$/, '').trim() || plain(html) || 'Seattle';
+  if (/^\d{2,6}\s+\S/.test(name)) name = name.split(/\s*,\s*/)[0].trim() || name;
   if (name.length > 48) name = name.slice(0, 47).replace(/\s+\S*$/, '') + '…';
   let address = null;
   const href = html.match(/href\s*=\s*["']([^"']+)["']/i)?.[1];
