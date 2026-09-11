@@ -118,7 +118,13 @@ function venueOf(ev) {
   // number is cut at its first comma instead — the street is at least
   // recognisable, and the full address is still carried underneath.
   let name = plain(html).replace(/\s+\d{2,5}\s+\w.*$/, '').trim() || plain(html) || 'Seattle';
-  if (/^\d{2,6}\s+\S/.test(name)) name = name.split(/\s*,\s*/)[0].trim() || name;
+  // Then cut at the first comma, always. Everything after one in this field is
+  // address — city, state, postcode — and the address is carried separately
+  // below. It catches both the record whose anchor is a bare street address,
+  // which the cut above cannot touch because the number is at the front rather
+  // than in the middle, and the one that ran long enough to be truncated with
+  // an ellipsis mid-address: "Fort Lawton Post Cemetery Texas Way Seattle,…".
+  name = name.split(/\s*,\s*/)[0].trim() || name;
   if (name.length > 48) name = name.slice(0, 47).replace(/\s+\S*$/, '') + '…';
   let address = null;
   const href = html.match(/href\s*=\s*["']([^"']+)["']/i)?.[1];
