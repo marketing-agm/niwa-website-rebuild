@@ -135,7 +135,13 @@ export function normalise(pages, { radiusMiles = 3, days = 30 } = {}) {
   for (const html of String(pages).length && !Array.isArray(pages) ? [pages] : pages) {
     for (const m of String(html).matchAll(/<article\b([^>]*)>([\s\S]*?)<\/article>/gi)) {
       const attrs = m[1], block = m[2];
-      const title = plain(block.match(/<h3[^>]*>([\s\S]*?)<\/h3>/i)?.[1] ?? '');
+      // The heading carries a FREE marker for free entries — "Art open house
+      // &nbsp; FREE". That is a price, not part of the name, so it comes off
+      // the title and sets priceFrom instead. Left on, the page was printing
+      // cards headed "Hawaiian festival FREE".
+      const rawTitle = plain(block.match(/<h3[^>]*>([\s\S]*?)<\/h3>/i)?.[1] ?? '');
+      const isFree = /\bFREE\s*$/.test(rawTitle);
+      const title = rawTitle.replace(/\s*\bFREE\s*$/, '').trim();
       if (!title) continue;
 
       // Distance first: it throws out most of the file, and a listing with no
@@ -161,7 +167,6 @@ export function normalise(pages, { radiusMiles = 3, days = 30 } = {}) {
       const start = utcFromLocal(DEFAULT_TZ, showDay, '00:00:00');
       if (!start) continue;
 
-      const body = field(block, 'event');
       const url = block.match(/class=["'][^"']*\bevent\b[^"']*["'][^>]*>[\s\S]*?<a[^>]*href=["'](https?:\/\/[^"']+)["']/i)?.[1] ?? null;
       const place = String(where).split('(')[0].trim() || 'Seattle';
 
@@ -179,11 +184,19 @@ export function normalise(pages, { radiusMiles = 3, days = 30 } = {}) {
           lat: null,
           lng: null,
         },
-        category: categorise(`${title} ${body}`),
+        // The title only, never the description. The description is prose
+        // about the event and mentions everything around it: the first live
+        // run filed "Drawing day" and "Underground art show" as Music, and an
+        // art open house as Festivals, all of them on words that appeared in
+        // the body rather than in the name. Titles here are plain and
+        // descriptive — "Jazz on the sidewalks", "Vintage thrift market",
+        // "Adventure race" — and a title that says nothing gets no chip,
+        // which is honest where a guess would not be.
+        category: categorise(title),
         url: url && !/google\.com\/maps/.test(url) ? url : null,
         image: null,
         // "FREE" is marked on the entry; a price is not, so none is invented.
-        priceFrom: /\bfree\b/i.test(`${attrs} ${title}`) ? 0 : null,
+        priceFrom: isFree || /\bfree\b/i.test(attrs) ? 0 : null,
         source: id,
       });
     }
