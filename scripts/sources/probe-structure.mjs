@@ -15,12 +15,31 @@
 //
 // Usage: node scripts/sources/probe-structure.mjs
 
-const URL_ = 'https://www.seattlecenter.com/events';
+// /events turned out to be a landing page — three nav links, no dates, no
+// listings. The calendar itself is a level down. Seattle Center is a City of
+// Seattle department, and the City publishes through Trumba, so that is the
+// first thing to look for on the real page.
+const PAGES = [
+  'https://www.seattlecenter.com/events/event-calendar',
+  'https://www.seattlecenter.com/events/featured-events',
+];
 const UA = 'niwa-website-rebuild events probe (+https://github.com/marketing-agm/niwa-website-rebuild)';
 
+for (const URL_ of PAGES) {
+console.log(`\n${'='.repeat(70)}\n${URL_}\n${'='.repeat(70)}`);
 const res = await fetch(URL_, { headers: { accept: 'text/html', 'user-agent': UA }, redirect: 'follow' });
 const html = await res.text();
 console.log(`${res.status} ${res.url}  ${html.length}b\n`);
+
+// Trumba first: it is how every City of Seattle property publishes, and it
+// is invisible in the markup — the calendar arrives from a third party after
+// the page loads, so only the spud's webName is in the HTML.
+const spud = html.match(/webName\s*:\s*["']([^"']+)["']/i)?.[1]
+  ?? html.match(/trumba\.com\/calendars\/([A-Za-z0-9_-]+)/i)?.[1];
+console.log(`Trumba calendar:   ${spud ? `${spud}  → https://www.trumba.com/calendars/${spud}.json` : 'absent'}`);
+const iframes = [...html.matchAll(/<iframe[^>]*src=["']([^"']+)["']/gi)].map((m) => m[1]);
+console.log(`iframes:           ${iframes.length}`);
+iframes.slice(0, 6).forEach((f) => console.log(`   ${f}`));
 
 // 1. Embedded state blobs, the best case.
 for (const [label, re] of [
@@ -64,4 +83,5 @@ if (links.length > 1) {
     console.log(`\n--- markup around ${links[1]} ---`);
     console.log(html.slice(Math.max(0, at - 900), at + 900).replace(/\s+/g, ' '));
   }
+}
 }
