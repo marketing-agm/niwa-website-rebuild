@@ -14,10 +14,13 @@ import { getJson, plain, utcFromLocal, DEFAULT_TZ } from './lib.mjs';
 export const id = 'seattle-gov';
 export const label = 'City of Seattle';
 
-// startdate=today is honoured — it drops the events already past and returns
-// the next 200, which reached a month out when this was measured. days= is
-// accepted and ignored, so the window is enforced here rather than asked for.
-const ENDPOINT = 'https://www.trumba.com/calendars/seattlegov-city-wide.json?startdate=today';
+// No parameters. Trumba accepts ?startdate= and ?days= without complaint and
+// honours neither: startdate=today silently returns an archive slice — the
+// first run of this adapter came back with public hearings from 2013, all of
+// which were correctly dropped as already ended, which is why it produced
+// nothing at all. The bare feed returns the current 200, which measured a
+// month out. The window is enforced below, where it can be checked.
+const ENDPOINT = 'https://www.trumba.com/calendars/seattlegov-city-wide.json';
 
 export const probeUrls = [ENDPOINT];
 
