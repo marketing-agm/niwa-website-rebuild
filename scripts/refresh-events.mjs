@@ -39,8 +39,9 @@ import { dirname, join } from 'node:path';
 import * as ticketmaster from './sources/ticketmaster.mjs';
 import * as queenAnneChamber from './sources/queen-anne-chamber.mjs';
 import * as visitSeattle from './sources/visit-seattle.mjs';
+import * as seattleGov from './sources/seattle-gov.mjs';
 
-const SOURCES = [visitSeattle, queenAnneChamber, ticketmaster];
+const SOURCES = [visitSeattle, seattleGov, queenAnneChamber, ticketmaster];
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const configPath = join(root, 'src/site/site.config.json');
@@ -78,6 +79,7 @@ const MAX = Number(arg('max', 60));
 const PROBE = {
   'queen-anne-chamber': { base: 'https://www.queenannechamber.org', extra: queenAnneChamber.probeUrls },
   'visit-seattle': { base: 'https://visitseattle.org', extra: visitSeattle.probeUrls },
+  'seattle-gov': { base: 'https://www.trumba.com', extra: seattleGov.probeUrls },
 };
 
 const grab = async (url, accept = 'application/json') => {
