@@ -1,65 +1,62 @@
-// Round four, and the last one. The City's calendar is Trumba, published as
-// "seattlegov-city-wide", and all four formats answer:
+// Why did the City feed contribute nothing?
 //
-//   .json   498KB   .rss   402KB   .xml   988KB   .ics  1.1MB
-//
-// JSON is the one to take. What is left is the record shape — every field the
-// adapter will read has to be one the feed actually sends — and whether the
-// feed can be asked for a date range, because pulling half a megabyte every
-// Monday to keep thirty days of it is rude to a public server and slow here.
+// The run fetched it — 2.8 seconds for half a megabyte — and the adapter kept
+// none of the 200 records. Either the neighbourhood filter is wrong, or the
+// feed is not carrying what the filter reads, or 200 records is a much
+// smaller slice of the month than it looked. This tells them apart instead of
+// guessing, by walking the same stages the adapter walks and counting what
+// survives each one.
 
 const UA = 'niwa-website-rebuild events probe (+https://github.com/marketing-agm/niwa-website-rebuild)';
 const BASE = 'https://www.trumba.com/calendars/seattlegov-city-wide.json';
 
-async function grab(url) {
-  const ctl = new AbortController();
-  const t = setTimeout(() => ctl.abort(), 25000);
-  try {
-    const res = await fetch(url, { signal: ctl.signal, redirect: 'follow', headers: { accept: 'application/json', 'user-agent': UA } });
-    const text = await res.text();
-    return { ok: res.ok, status: res.status, type: (res.headers.get('content-type') || '-').split(';')[0], len: text.length, text };
-  } catch (err) { return { ok: false, status: 0, type: '-', len: 0, text: '', error: String(err) }; }
-  finally { clearTimeout(t); }
+async function get(url) {
+  const res = await fetch(url, { headers: { accept: 'application/json', 'user-agent': UA } });
+  const t = await res.text();
+  try { return { ok: res.ok, rows: JSON.parse(t), len: t.length }; }
+  catch { return { ok: false, rows: [], len: t.length }; }
 }
 const line = (s) => console.log(s);
+const plain = (h) => String(h ?? '').replace(/<[^>]*>/g, ' ').replace(/&[a-z]+;/gi, ' ').replace(/\s+/g, ' ').trim();
+const field = (ev, label) => (ev?.customFields ?? []).find((f) => String(f?.label ?? '').toLowerCase() === label.toLowerCase())?.value ?? '';
+const NEAR = /queen\s*anne|uptown|seattle\s*center|belltown|south\s*lake\s*union|denny\s*triangle|interbay|magnolia|downtown/i;
 
-const full = await grab(BASE);
-line(`full feed  ${full.status} ${full.type} ${full.len}b`);
-let rows = [];
-try { rows = JSON.parse(full.text); } catch (e) { line(`did not parse: ${e}`); }
-line(`records: ${Array.isArray(rows) ? rows.length : '(not an array)'}`);
+for (const q of ['?startdate=today', '']) {
+  const { rows, len } = await get(BASE + q);
+  line(`\n${'='.repeat(66)}\n${q || '(no params)'} — ${rows.length} records, ${len}b\n${'='.repeat(66)}`);
+  if (!rows.length) continue;
 
-if (rows.length) {
-  // Every key any record uses, not just the first — feeds are ragged.
-  const keys = new Map();
-  for (const r of rows) for (const k of Object.keys(r)) keys.set(k, (keys.get(k) ?? 0) + 1);
-  line(`\nkeys across all ${rows.length} records (name × how many carry it):`);
-  [...keys.entries()].sort((a, b) => b[1] - a[1]).forEach(([k, n]) => line(`   ${k.padEnd(26)} ${n}`));
+  const days = rows.map((r) => String(r.startDateTime ?? '').slice(0, 10)).filter(Boolean).sort();
+  line(`date span: ${days[0]} → ${days[days.length - 1]}  (${new Set(days).size} distinct days)`);
 
-  const trim = (r) => {
-    const o = {};
-    for (const [k, v] of Object.entries(r)) {
-      o[k] = typeof v === 'string' && v.length > 120 ? v.slice(0, 120) + '…' : v;
-    }
-    return o;
-  };
-  line(`\nfirst record:\n${JSON.stringify(trim(rows[0]), null, 1).slice(0, 2000)}`);
-  const withLoc = rows.find((r) => r.location || r.customFields?.length);
-  if (withLoc && withLoc !== rows[0]) line(`\na record carrying a location:\n${JSON.stringify(trim(withLoc), null, 1).slice(0, 1800)}`);
+  const withHood = rows.filter((r) => plain(field(r, 'Neighborhoods')));
+  line(`records carrying a Neighborhoods field: ${withHood.length} of ${rows.length}`);
 
-  // How far ahead does an unfiltered pull reach?
-  const dates = rows.map((r) => r.startDateTime ?? r.startDate ?? r.start).filter(Boolean).sort();
-  line(`\ndate range in the feed: ${dates[0]} → ${dates[dates.length - 1]}`);
-}
+  // Every neighbourhood the feed actually names, most common first. If the
+  // filter is wrong, the right words are in here.
+  const hoods = new Map();
+  for (const r of rows) for (const h of plain(field(r, 'Neighborhoods')).split(',').map((s) => s.trim()).filter(Boolean)) {
+    hoods.set(h, (hoods.get(h) ?? 0) + 1);
+  }
+  line(`\ndistinct neighbourhoods named (${hoods.size}):`);
+  [...hoods.entries()].sort((a, b) => b[1] - a[1]).slice(0, 40).forEach(([h, n]) => line(`   ${String(n).padStart(4)}  ${h}`));
 
-// Trumba documents a date window on its feeds. Worth knowing: pulling half a
-// megabyte weekly to keep thirty days of it is rude to a public server.
-line('\ncan the feed be asked for a window?');
-for (const q of ['?days=30', '?startdate=today&days=30', '?filterview=&days=30']) {
-  const r = await grab(BASE + q);
-  let n = '-';
-  try { const j = JSON.parse(r.text); n = Array.isArray(j) ? j.length : 'not an array'; } catch { n = 'unparsed'; }
-  line(`   ${String(r.status).padEnd(5)} ${String(r.len).padStart(8)}b  ${String(n).padStart(6)} records  ${q}`);
+  // The adapter's stages, counted.
+  let live = 0, inPerson = 0, near = 0;
+  for (const r of rows) {
+    if (r.canceled) continue; live++;
+    if (/^(online|virtual)$/i.test(String(r.locationType ?? ''))) continue; inPerson++;
+    if (NEAR.test(plain(field(r, 'Neighborhoods'))) || NEAR.test(plain(r.location))) near++;
+  }
+  line(`\nsurviving each stage:  not cancelled ${live}  →  in person ${inPerson}  →  near ${near}`);
+
+  // What the location text says, for records with no Neighborhoods field —
+  // that is the fallback, and it is worth knowing whether it carries anything.
+  const noHood = rows.filter((r) => !plain(field(r, 'Neighborhoods'))).slice(0, 12);
+  if (noHood.length) {
+    line(`\nsample locations on records with no Neighborhoods field:`);
+    noHood.forEach((r) => line(`   ${plain(r.location).slice(0, 70) || '(blank)'}  — ${plain(r.title).slice(0, 40)}`));
+  }
 }
 
 line('\ndone');
