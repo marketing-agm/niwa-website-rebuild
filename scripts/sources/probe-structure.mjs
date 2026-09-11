@@ -1,58 +1,57 @@
-// How does the Seattle Center calendar paginate?
+// What shape is events12.com/seattle?
 //
-// The rows are server-rendered and well formed — a date-bar__date heading per
-// day, then event-list__title / __time / __location / __price / __tags / __text
-// per event, and the location link is a Google Maps URL with the coordinates
-// in it, which means these listings can go on the map rather than only in the
-// list. So the adapter is worth writing. What is still unknown is how to ask
-// for more than the default page: without that this source would only ever
-// carry today.
+// It is the one calendar of the three still outstanding that answers at all:
+// 200 on the listing, and its robots.txt allows /seattle/. Earlier probes
+// established there is no feed, no sitemap, no .ics and no JSON-LD anywhere on
+// it, so if this is to be a source the listing markup is the only way in and
+// the parser has to be written against whatever structure is really there.
 //
-// This tries the conventional shapes and reports which one actually moves the
-// calendar, by reading back the day headings each response contains.
+// This prints enough of it to write that parser: how the page is divided, what
+// a single entry looks like, and whether dates are in attributes or only in
+// prose.
 //
 // Usage: node scripts/sources/probe-structure.mjs
 
-const BASE = 'https://www.seattlecenter.com/events/event-calendar';
+const URL_ = 'https://www.events12.com/seattle/';
 const UA = 'niwa-website-rebuild events probe (+https://github.com/marketing-agm/niwa-website-rebuild)';
 
-const d = new Date(Date.now() + 12 * 864e5);
-const iso = d.toISOString().slice(0, 10);
-const us = `${d.getUTCMonth() + 1}/${d.getUTCDate()}/${d.getUTCFullYear()}`;
-
-const TRIES = [
-  ['base', BASE],
-  ['?date= iso', `${BASE}?date=${iso}`],
-  ['?date= us', `${BASE}?date=${encodeURIComponent(us)}`],
-  ['?start_date=', `${BASE}?start_date=${iso}`],
-  ['?from=', `${BASE}?from=${iso}`],
-  ['?page=2', `${BASE}?page=2`],
-  ['?p=2', `${BASE}?p=2`],
-  ['/iso path', `${BASE}/${iso}`],
-  ['?view=month', `${BASE}?view=month`],
-  ['?range=month', `${BASE}?range=month`],
-];
-
-console.log(`today is ${new Date().toISOString().slice(0, 10)}, asking for ${iso} (${us})\n`);
-console.log('what'.padEnd(14), 'status'.padEnd(7), 'bytes'.padStart(8), ' days'.padEnd(6), 'evts'.padStart(5), '  day headings');
-
-for (const [what, url] of TRIES) {
-  const ctl = new AbortController();
-  const t = setTimeout(() => ctl.abort(), 20000);
-  try {
-    const res = await fetch(url, { signal: ctl.signal, headers: { accept: 'text/html', 'user-agent': UA }, redirect: 'follow' });
-    const html = await res.text();
-    const days = [...html.matchAll(/class=["']date-bar__date["'][^>]*>\s*([^<]+?)\s*</gi)].map((m) => m[1]);
-    const evts = (html.match(/class=["']event-list__title["']/gi) ?? []).length;
-    console.log(what.padEnd(14), String(res.status).padEnd(7), String(html.length).padStart(8),
-      String(days.length).padStart(5), ' ', String(evts).padStart(4), '  ' + days.slice(0, 6).join(' | '));
-  } catch (err) {
-    console.log(what.padEnd(14), String(err?.message ?? err).slice(0, 40));
-  } finally { clearTimeout(t); }
-}
-
-// And one full row, to lock the field positions down before writing the parser.
-const res = await fetch(BASE, { headers: { accept: 'text/html', 'user-agent': UA } });
+const res = await fetch(URL_, { headers: { accept: 'text/html', 'user-agent': UA }, redirect: 'follow' });
 const html = await res.text();
-const i = html.indexOf('event-list__title');
-console.log('\n--- one row, whole ---\n' + html.slice(Math.max(0, i - 1400), i + 1400).replace(/\s+/g, ' '));
+console.log(`${res.status} ${res.url}  ${html.length}b\n`);
+
+// Machine-readable dates, if any exist at all.
+console.log(`<time> tags:        ${(html.match(/<time\b/gi) ?? []).length}`);
+console.log(`ISO dates:          ${new Set(html.match(/\b20\d{2}-\d{2}-\d{2}\b/g) ?? []).size}`);
+console.log(`itemprop/microdata: ${(html.match(/itemprop=/gi) ?? []).length}`);
+console.log(`JSON-LD blocks:     ${(html.match(/application\/ld\+json/gi) ?? []).length}`);
+
+// How is the page divided? Month headings are the likely spine.
+const heads = [...html.matchAll(/<h([1-4])[^>]*>([\s\S]{0,120}?)<\/h\1>/gi)].map((m) => `h${m[1]}: ${m[2].replace(/<[^>]*>/g,' ').replace(/\s+/g,' ').trim()}`);
+console.log(`\nheadings (${heads.length}):`);
+heads.slice(0, 24).forEach((h) => console.log('   ' + h));
+
+// Which classes repeat? That is the entry container, if there is one.
+const cls = {};
+for (const m of html.matchAll(/class=["']([^"']+)["']/g)) for (const c of m[1].split(/\s+/)) if (c) cls[c] = (cls[c] ?? 0) + 1;
+console.log('\nmost repeated classes:');
+Object.entries(cls).sort((a,b)=>b[1]-a[1]).slice(0, 20).forEach(([c,n]) => console.log(`   ${String(n).padStart(4)}  .${c}`));
+
+// Tag histogram in the body, to see whether entries are <p>, <li> or divs.
+const tags = {};
+for (const m of html.matchAll(/<([a-z][a-z0-9]*)\b/gi)) { const t=m[1].toLowerCase(); tags[t]=(tags[t]??0)+1; }
+console.log('\ntag counts:');
+Object.entries(tags).sort((a,b)=>b[1]-a[1]).slice(0, 16).forEach(([t,n]) => console.log(`   ${String(n).padStart(5)}  <${t}>`));
+
+// A date written in prose is the thing to look for: "September 13", "Sep 13-14".
+const MONTH = '(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)[a-z]*';
+const proseDates = html.match(new RegExp(`${MONTH}\\\\.?\\\\s+\\\\d{1,2}`, 'g')) ?? [];
+console.log(`\nprose dates like "September 13": ${proseDates.length}`);
+console.log('   ' + [...new Set(proseDates)].slice(0, 12).join(' | '));
+
+// And a slice around the first one, in context, which is what the parser must
+// actually cope with.
+const at = html.search(new RegExp(`${MONTH}\\\\.?\\\\s+\\\\d{1,2}`));
+if (at > 0) {
+  console.log('\n--- 2600 chars around the first prose date ---');
+  console.log(html.slice(Math.max(0, at - 800), at + 1800).replace(/\s+/g, ' '));
+}
