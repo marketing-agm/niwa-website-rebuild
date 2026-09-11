@@ -1,71 +1,110 @@
-// The neighbourhood filter is not the problem: 52 of 200 records pass it. So
-// something after it is dropping all 52, and the way to find out which stage
-// is to walk them with the adapter's own code rather than a copy of it.
+// What are the candidate calendars serving, and are they usable?
 //
-// Leading suspicion: 134 of the 200 records carry seriesID and repeats, which
-// means a recurring series is expressed as one record spanning the whole run.
-// If endDateTime is the last occurrence months out, the 90-day run limit —
-// which exists to keep standing arrangements off a page about things that
-// start — would take every one of them.
+// None of them is reachable from a development sandbox, so this runs on a
+// runner. It changes nothing: it reads four public pages and prints what it
+// finds, in an order that matters. robots.txt first, then the listing page,
+// then what the page itself advertises — <link rel="alternate"> feeds, .ics
+// links, JSON-LD — before any conventional path is tried. A published feed is
+// something a site has chosen to hand out; parsing its HTML is not, and
+// robots.txt is where it says which it wants.
+//
+// WHAT IT FOUND, September 2026 — re-run it before trusting any of this:
+//
+//   seattle.gov   USABLE, and now wired up. The City does not build its
+//                 calendar page: it embeds Trumba as "seattlegov-city-wide",
+//                 and Trumba serves every calendar it hosts as .rss, .ics,
+//                 .xml and .json off a stable path. See seattle-gov.mjs.
+//                 Note that ?startdate= and ?days= are accepted and not
+//                 honoured — startdate=today returns an archive slice, which
+//                 cost an afternoon.
+//
+//   events12.com  NOT USABLE. robots allows /seattle/, but the index carries
+//                 no feed, no .ics and no JSON-LD; its event pages carry none
+//                 either; there is no sitemap. The only way in is parsing
+//                 prose, which breaks on any layout change and lifts someone
+//                 else's editorial work wholesale.
+//
+//   everout.com   REFUSES. 403 on the listing and on robots.txt — an edge
+//                 rule against non-browser clients. Not something to route
+//                 around. Ask them: they run a partner programme.
+//
+//   do206.com     REFUSES, the same. DoStuff Media, their parent, has an API
+//                 for partners.
+//
+// Usage: node scripts/sources/probe-more.mjs
 
-import * as sg from './seattle-gov.mjs';
-import { plain } from './lib.mjs';
-
+const SITES = [
+  { id: 'events12',    base: 'https://www.events12.com', listing: 'https://www.events12.com/seattle/' },
+  { id: 'everout',     base: 'https://everout.com',      listing: 'https://everout.com/seattle/events/' },
+  { id: 'do206',       base: 'https://do206.com',        listing: 'https://do206.com/' },
+  { id: 'seattle-gov', base: 'https://www.seattle.gov',  listing: 'https://www.seattle.gov/event-calendar' },
+];
+const GUESSES = ['/feed', '/rss', '/rss.xml', '/atom.xml', '/events.json', '/events.ics', '/api/events'];
 const UA = 'niwa-website-rebuild events probe (+https://github.com/marketing-agm/niwa-website-rebuild)';
-const res = await fetch('https://www.trumba.com/calendars/seattlegov-city-wide.json?startdate=today', {
-  headers: { accept: 'application/json', 'user-agent': UA },
-});
-const rows = await res.json();
-const line = (s) => console.log(s);
-line(`feed: ${rows.length} records`);
 
-const field = (ev, label) => (ev?.customFields ?? []).find((f) => String(f?.label ?? '').toLowerCase() === label.toLowerCase())?.value ?? '';
-const NEAR = /queen\s*anne|uptown|seattle\s*center|belltown|south\s*lake\s*union|denny\s*triangle|interbay|magnolia|downtown/i;
-const near = rows.filter((r) => !r.canceled
-  && !/^(online|virtual)$/i.test(String(r.locationType ?? ''))
-  && (NEAR.test(plain(field(r, 'Neighborhoods'))) || NEAR.test(plain(r.location))));
-line(`near and live: ${near.length}`);
-
-const now = new Date();
-const day0 = Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate());
-const cutoff = day0 + 30 * 864e5;
-const inst = (l, o) => {
-  if (!/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}$/.test(String(l ?? ''))) return null;
-  const off = /^[+-]\d{4}$/.test(String(o ?? '')) ? `${o.slice(0, 3)}:${o.slice(3)}` : 'Z';
-  const ms = Date.parse(`${l}${off}`);
-  return Number.isFinite(ms) ? ms : null;
-};
-
-let badStamp = 0, ended = 0, tooFar = 0, tooLong = 0, ok = 0;
-const runs = [];
-for (const r of near) {
-  const s = inst(r.startDateTime, r.startTimeZoneOffset);
-  if (s == null) { badStamp++; continue; }
-  const e = inst(r.endDateTime, r.endTimeZoneOffset) ?? s;
-  const runDays = (e - s) / 864e5;
-  runs.push(runDays);
-  if (e < day0) { ended++; continue; }
-  if (s > cutoff) { tooFar++; continue; }
-  if (runDays > 90) { tooLong++; continue; }
-  ok++;
+async function grab(url, accept = '*/*') {
+  const ctl = new AbortController();
+  const t = setTimeout(() => ctl.abort(), 20000);
+  try {
+    const res = await fetch(url, { signal: ctl.signal, redirect: 'follow', headers: { accept, 'user-agent': UA } });
+    const text = await res.text();
+    return { ok: res.ok, status: res.status, url: res.url, type: (res.headers.get('content-type') || '-').split(';')[0], len: text.length, text };
+  } catch (err) {
+    return { ok: false, status: 0, url, type: '-', len: 0, text: '', error: err instanceof Error ? err.message : String(err) };
+  } finally { clearTimeout(t); }
 }
-line(`\nof those ${near.length}:`);
-line(`   unparseable timestamp : ${badStamp}`);
-line(`   already ended         : ${ended}`);
-line(`   starts past the window: ${tooFar}`);
-line(`   runs over 90 days     : ${tooLong}   ← the suspicion`);
-line(`   survive               : ${ok}`);
+const line = (s) => console.log(s);
 
-runs.sort((a, b) => a - b);
-const at = (p) => runs.length ? runs[Math.min(runs.length - 1, Math.floor(p * runs.length))].toFixed(1) : '-';
-line(`\nrun length in days across the near records — min ${at(0)}, median ${at(0.5)}, 90th ${at(0.9)}, max ${runs.length ? runs[runs.length-1].toFixed(1) : '-'}`);
-line(`carrying seriesID: ${near.filter((r) => r.seriesID).length} of ${near.length}`);
+// Only the rules under User-agent: *. A site that names a specific crawler is
+// talking to that crawler, not to us.
+function robotsVerdict(txt, path) {
+  let inStar = false; const rules = [];
+  for (const l of txt.split(/\r?\n/).map((x) => x.trim())) {
+    const ua = l.match(/^user-agent:\s*(.*)$/i);
+    if (ua) { inStar = ua[1].trim() === '*'; continue; }
+    if (!inStar) continue;
+    const d = l.match(/^(disallow|allow):\s*(.*)$/i);
+    if (d && d[2].trim()) rules.push({ kind: d[1].toLowerCase(), path: d[2].trim() });
+  }
+  const hits = rules.filter((r) => path.startsWith(r.path));
+  return { count: rules.length, hits, blocked: hits.some((r) => r.kind === 'disallow') };
+}
 
-line('\nfive near records, as the adapter sees them:');
-near.slice(0, 5).forEach((r) => {
-  const s = inst(r.startDateTime, r.startTimeZoneOffset), e = inst(r.endDateTime, r.endTimeZoneOffset);
-  line(`   ${plain(r.title).slice(0, 44).padEnd(46)} ${r.startDateTime} → ${r.endDateTime}  run ${(((e ?? s) - s) / 864e5).toFixed(1)}d  series:${r.seriesID ? 'y' : 'n'}`);
-});
+for (const site of SITES) {
+  line(`\n${'='.repeat(70)}\n${site.id}  ${site.listing}\n${'='.repeat(70)}`);
 
-line(`\nand what the adapter itself returns: ${sg.normalise(rows, { days: 30 }).length} event(s)`);
+  const robots = await grab(`${site.base}/robots.txt`, 'text/plain');
+  if (robots.ok) {
+    const v = robotsVerdict(robots.text, new URL(site.listing).pathname);
+    line(`robots.txt   ${robots.status}, ${v.count} rule(s) for *  →  ${v.blocked ? 'DISALLOWED' : 'not disallowed'}`);
+    v.hits.forEach((h) => line(`             matched ${h.kind}: ${h.path}`));
+  } else line(`robots.txt   ${robots.status || robots.error} — none served`);
+
+  const page = await grab(site.listing, 'text/html');
+  line(`listing      ${page.status} ${page.type} ${page.len}b`);
+  if (!page.ok) continue;
+
+  const feeds = [...(page.text.match(/<link\b[^>]*>/gi) ?? [])]
+    .filter((t) => /rel\s*=\s*["']?alternate/i.test(t) && /rss|atom|json|calendar/i.test(t))
+    .map((t) => t.match(/href\s*=\s*["']([^"']+)["']/i)?.[1])
+    .filter(Boolean);
+  line(`feeds advertised: ${feeds.length || 'none'}`);
+  feeds.forEach((f) => line(`   ${new URL(f, page.url).href}`));
+
+  const ld = [...page.text.matchAll(/<script[^>]*application\/ld\+json[^>]*>([\s\S]*?)<\/script>/gi)].length;
+  line(`JSON-LD blocks: ${ld}`);
+
+  // Trumba is how seattle.gov publishes; worth naming because it is invisible
+  // otherwise — the calendar arrives from a third party after the page loads.
+  const trumba = page.text.match(/webName\s*:\s*["']([^"']+)["']/i)?.[1];
+  if (trumba) line(`Trumba calendar: ${trumba}  → https://www.trumba.com/calendars/${trumba}.json`);
+
+  if (!feeds.length && !ld && !trumba) {
+    line('nothing advertised — conventional paths:');
+    for (const g of GUESSES) {
+      const r = await grab(site.base + g);
+      line(`   ${String(r.status || r.error).padEnd(5)} ${r.type.padEnd(26)} ${String(r.len).padStart(8)}b  ${g}`);
+    }
+  }
+}
 line('\ndone');
