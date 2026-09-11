@@ -526,74 +526,98 @@ if (!reduce) {
 document.fonts?.ready.then(() => ScrollTrigger.refresh());
 window.addEventListener('load', () => ScrollTrigger.refresh());
 
-/* ---------- The leasing special: a small panel beside the cursor ---------- */
+/* ---------- The leasing special: a panel hung under its label ---------- */
 const specialBtn = $<HTMLButtonElement>('[data-special-toggle]');
 const specialPop = $('[data-special-pop]');
 if (specialBtn && specialPop) {
-  // Whether the panel on screen got there by hover rather than by being asked
-  // for. See the click handler below.
-  let byHover = false;
+  // Pinned means the panel was clicked rather than hovered into view. A pinned
+  // panel does not follow the pointer out of the room: it stays until the
+  // close button, a click elsewhere, Escape or a scroll takes it away. That is
+  // the whole point of clicking something that already opened on hover — the
+  // click has to buy you something the hover did not.
+  let pinned = false;
+
   const close = () => {
     if (specialPop.hidden) return;
     specialPop.hidden = true;
     specialBtn.setAttribute('aria-expanded', 'false');
-    byHover = false;
+    pinned = false;
   };
-  const open = (x: number, y: number, takeFocus = true) => {
-    specialPop.hidden = false;
-    specialBtn.setAttribute('aria-expanded', 'true');
-    const pad = 12;
+
+  // Anchored to the label, never to the cursor. A panel that opens wherever
+  // the pointer happens to be reads as unrelated to the line that summoned it,
+  // which is exactly how it looked: the offer sat top right and its card
+  // floated in the middle of the hero.
+  //
+  // Edges line up with the label's. Left to left where there is room for it,
+  // and right to right where there is not — at the wide end the label sits in
+  // the right-hand gutter and a 620px card starting at the label's left edge
+  // would run off the screen. Either way the card hangs off the label and
+  // reads as belonging to it.
+  const place = () => {
+    const r = specialBtn.getBoundingClientRect();
+    const pad = 16;
+    // Clear air between the label and the card, so the two read as a label and
+    // its panel rather than as one stack of text.
+    const gap = 22;
     const w = specialPop.offsetWidth, h = specialPop.offsetHeight;
     const small = innerWidth < 720;
-    let left = small ? (innerWidth - w) / 2 : x + pad;
-    let top = small ? Math.min(y + pad, innerHeight - h - pad) : y + pad;
-    if (left + w > innerWidth - pad) left = x - w - pad;
-    if (left < pad) left = pad;
-    if (top + h > innerHeight - pad) top = Math.max(pad, y - h - pad);
+
+    let left = small ? (innerWidth - w) / 2 : r.left;
+    if (!small && left + w > innerWidth - pad) left = r.right - w;   // right edge to right edge
+    left = Math.min(Math.max(left, pad), Math.max(pad, innerWidth - w - pad));
+
+    let top = r.bottom + gap;
+    if (top + h > innerHeight - pad) top = Math.max(pad, r.top - h - gap);   // flip above
+
     specialPop.style.left = `${Math.round(left)}px`;
     specialPop.style.top = `${Math.round(top)}px`;
+  };
+
+  const open = (takeFocus = true) => {
+    specialPop.hidden = false;
+    specialBtn.setAttribute('aria-expanded', 'true');
+    place();
     if (!reduce) gsap.fromTo(specialPop, { opacity: 0, y: 8, scale: 0.98 }, { opacity: 1, y: 0, scale: 1, duration: 0.35, ease: 'power3.out', clearProps: 'scale' });
     // Only when the panel was asked for. Hovering must not move the caret out
     // from under someone who is tabbing or typing elsewhere on the page.
     if (takeFocus) (specialPop.querySelector('a, button') as HTMLElement | null)?.focus({ preventScroll: true });
   };
+
   // A pointer arriving at the label opens the panel before the click lands, so
   // a plain toggle would read the panel as already open and shut it again —
   // the label would look broken to the one gesture everybody tries. A click on
-  // a hovered-open panel commits to it instead, and takes focus, which is what
-  // clicking meant in the first place.
-  specialBtn.addEventListener('click', (e) => {
+  // a hovered-open panel pins it instead, and takes focus.
+  specialBtn.addEventListener('click', () => {
     if (!specialPop.hidden) {
-      if (!byHover) return close();
-      byHover = false;
+      if (pinned) return close();          // a second click on a pinned panel closes it
+      pinned = true;
       (specialPop.querySelector('a, button') as HTMLElement | null)?.focus({ preventScroll: true });
       return;
     }
-    const r = specialBtn.getBoundingClientRect();
-    // Keyboard activation has no pointer position; anchor to the label instead.
-    const x = e.clientX || r.left, y = e.clientY || r.bottom;
-    open(x, y);
+    pinned = true;
+    open();
   });
 
   // Hovering the label is enough — nobody should have to guess that the line
   // is clickable. Only where there is a real pointer: on a touch screen
   // :hover latches onto whatever was last tapped, so the tap stays the way in.
   //
-  // The panel opens beside the cursor, so there is a gap between the label and
-  // the panel that the pointer has to cross. Closing on the first mouseleave
-  // would shut it mid-crossing, so leaving either one starts a short grace
-  // period and entering either one cancels it. 220ms is long enough to cross
-  // the gap and short enough that the panel does not linger.
+  // There is a gap between the label and the card for the pointer to cross, so
+  // leaving either one starts a short grace period and entering either cancels
+  // it, rather than shutting the card mid-crossing. A pinned card ignores all
+  // of this.
   if (matchMedia('(hover: hover) and (pointer: fine)').matches) {
     let grace = 0;
     const hold = () => { clearTimeout(grace); };
-    const release = () => { clearTimeout(grace); grace = window.setTimeout(close, 220); };
-    specialBtn.addEventListener('mouseenter', (e) => {
+    const release = () => {
+      clearTimeout(grace);
+      if (pinned) return;
+      grace = window.setTimeout(close, 220);
+    };
+    specialBtn.addEventListener('mouseenter', () => {
       hold();
-      if (!specialPop.hidden) return;
-      const r = specialBtn.getBoundingClientRect();
-      byHover = true;
-      open(e.clientX || r.left, e.clientY || r.bottom, false);
+      if (specialPop.hidden) open(false);
     });
     specialBtn.addEventListener('mouseleave', release);
     specialPop.addEventListener('mouseenter', hold);
@@ -603,6 +627,10 @@ if (specialBtn && specialPop) {
   specialPop.addEventListener('click', (e) => { if ((e.target as Element).closest('[data-special-close]')) close(); });
   document.addEventListener('click', (e) => { if (!specialPop.hidden && !specialPop.contains(e.target as Node) && e.target !== specialBtn) close(); });
   window.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
+  // The panel is anchored to a label that scrolls away with the hero, so it
+  // goes when the page moves. It does follow a resize, since the anchor is
+  // still on screen and the card would otherwise be left behind.
+  window.addEventListener('resize', () => { if (!specialPop.hidden) place(); });
   window.addEventListener('scroll', close, { passive: true });
   lenis?.on('scroll', close);
 }
