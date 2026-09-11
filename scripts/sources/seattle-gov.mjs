@@ -37,7 +37,11 @@ export const probeUrls = [ENDPOINT];
 // Uptown and South Lake Union, Queen Anne and Interbay, Belltown, the
 // downtown core, Pioneer Square and the International District, Eastlake,
 // Capitol Hill, Magnolia. Anything else is a bus ride.
-const NEAR_ZIPS = new Set(['98109', '98119', '98121', '98101', '98104', '98102', '98112', '98122', '98199']);
+const NEAR_ZIPS = new Set(['98109', '98119', '98121', '98101', '98104', '98102', '98112', '98199']);
+// 98122 was in this set and came out again: it runs from Capitol Hill all the
+// way to Leschi, and a lakeside park four and a half miles east arrived on a
+// page that promises three. A postcode is only a good proxy for distance
+// while it stays small.
 
 // Used only where no postcode appears anywhere in the record, which is most
 // of the park programmes — "Freeway Park" carries no address at all.
