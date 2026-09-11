@@ -15,6 +15,7 @@ on:
   push:
     branches:
       - 'claude/niwa-more-event-sources'
+      - 'claude/niwa-grant-feedback'
     paths:
       - 'scripts/sources/probe-more.mjs'
       - '.github/workflows/events-probe.yml'

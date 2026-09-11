@@ -34,11 +34,35 @@
 // Usage: node scripts/sources/probe-more.mjs
 
 const SITES = [
-  { id: 'events12',    base: 'https://www.events12.com', listing: 'https://www.events12.com/seattle/' },
-  { id: 'everout',     base: 'https://everout.com',      listing: 'https://everout.com/seattle/events/' },
-  { id: 'do206',       base: 'https://do206.com',        listing: 'https://do206.com/' },
-  { id: 'seattle-gov', base: 'https://www.seattle.gov',  listing: 'https://www.seattle.gov/event-calendar' },
+  { id: 'events12',      base: 'https://www.events12.com',    listing: 'https://www.events12.com/seattle/' },
+  { id: 'everout',       base: 'https://everout.com',         listing: 'https://everout.com/seattle/events/' },
+  { id: 'do206',         base: 'https://do206.com',           listing: 'https://do206.com/' },
+  { id: 'seattle-gov',   base: 'https://www.seattle.gov',     listing: 'https://www.seattle.gov/event-calendar' },
+  // Added in the second round. Not on the original list, but it is the
+  // venue across the street from the building and the one calendar whose
+  // listings are all inside the ring the map draws, so if it publishes a
+  // feed it is worth more to this page than any of the aggregators.
+  { id: 'seattlecenter', base: 'https://www.seattlecenter.com', listing: 'https://www.seattlecenter.com/events' },
 ];
+
+// Round two. A 403 on a listing page is an edge rule about HTML, and it does
+// not follow that every path on the host refuses — a feed is often served by
+// a different handler with no such rule. So before concluding that a site
+// refuses us, ask it for the feeds it would plausibly publish, by name. Same
+// honest user-agent throughout: the point is to find what a site is willing
+// to hand an automated client, not to pass as something else.
+const TARGETED = {
+  everout: [
+    '/seattle/events/feed/', '/seattle/feed/', '/feed/', '/seattle/events.rss',
+    '/seattle/events/?format=json', '/api/events/', '/api/v1/events/', '/sitemap.xml',
+  ],
+  do206: [
+    '/events.rss', '/events.json', '/feed', '/rss', '/api/v2/events',
+    '/api/events', '/events.ics', '/sitemap.xml',
+  ],
+  events12: ['/seattle/index.rss', '/sitemap.xml', '/seattle/seattle.ics'],
+  seattlecenter: ['/events/feed', '/api/events', '/events.rss', '/sitemap.xml'],
+};
 const GUESSES = ['/feed', '/rss', '/rss.xml', '/atom.xml', '/events.json', '/events.ics', '/api/events'];
 const UA = 'niwa-website-rebuild events probe (+https://github.com/marketing-agm/niwa-website-rebuild)';
 
@@ -107,4 +131,16 @@ for (const site of SITES) {
     }
   }
 }
+// ---------- round two: ask by name ----------
+for (const [id, paths] of Object.entries(TARGETED)) {
+  const site = SITES.find((s) => s.id === id);
+  line(`\n${'-'.repeat(70)}\n${id}: named feed paths\n${'-'.repeat(70)}`);
+  for (const path of paths) {
+    const r = await grab(site.base + path);
+    const head = r.text.slice(0, 120).replace(/\s+/g, ' ');
+    line(`   ${String(r.status || r.error).padEnd(5)} ${r.type.padEnd(26)} ${String(r.len).padStart(8)}b  ${path}`);
+    if (r.ok && /xml|json|calendar/.test(r.type)) line(`         ↳ ${head}`);
+  }
+}
+
 line('\ndone');
