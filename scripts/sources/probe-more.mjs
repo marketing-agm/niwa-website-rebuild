@@ -1,27 +1,24 @@
-// What do the four candidate calendars actually serve?
+// Round two. Round one settled three of the four:
 //
-// None of them is reachable from a development sandbox, so this runs on a
-// GitHub runner and prints what it finds. It guesses nothing: for each site it
-// reads robots.txt, then the listing page, and reports the feeds the page
-// itself advertises — <link rel="alternate">, .ics links, and JSON-LD Event
-// blocks — before trying a short list of conventional paths.
+//   everout.com   403 on robots.txt and on the listing — the edge refuses
+//                 automated clients outright.
+//   do206.com     403 on both, the same.
+//   events12.com  200, robots allows /seattle/, but the page carries no feed,
+//                 no .ics and no JSON-LD. Hand-written HTML only.
 //
-// The order matters. A published feed is something a site has chosen to hand
-// out; parsing its HTML is not, and robots.txt is where it says which it
-// wants. So the first two answers decide whether the third is even worth
-// looking at.
+// That leaves seattle.gov, which is the one worth another round trip: robots
+// allows /event-calendar, the page is 25KB of shell with no listings in it —
+// so the events arrive from somewhere — and /api/events answered 404 with
+// application/json rather than an HTML error page, which means there is a
+// JSON surface on that host. This looks for where.
 //
-// Usage: node scripts/sources/probe-more.mjs
-
-const SITES = [
-  { id: 'events12',    base: 'https://www.events12.com', listing: 'https://www.events12.com/seattle/' },
-  { id: 'everout',     base: 'https://everout.com',      listing: 'https://everout.com/seattle/events/' },
-  { id: 'do206',       base: 'https://do206.com',        listing: 'https://do206.com/' },
-  { id: 'seattle-gov', base: 'https://www.seattle.gov',  listing: 'https://www.seattle.gov/event-calendar' },
-];
-
-// Conventional paths, tried only after the page has had its say.
-const GUESSES = ['/feed', '/feed/', '/rss', '/rss.xml', '/atom.xml', '/events.rss', '/events.json', '/events.ics', '/api/events', '/wp-json/'];
+// Seattle.gov runs Drupal, so the conventions are known: /jsonapi/ is the
+// JSON:API root, ?_format=json is the REST format flag, and drupalSettings is
+// the inline blob every Drupal page carries. Ask for those by name rather
+// than guessing paths.
+//
+// events12 gets one more question too: whether its individual event pages
+// carry the JSON-LD its index does not, and whether a sitemap lists them.
 
 const UA = 'niwa-website-rebuild events probe (+https://github.com/marketing-agm/niwa-website-rebuild)';
 
@@ -36,109 +33,78 @@ async function grab(url, accept = '*/*') {
     return { ok: false, status: 0, url, type: '-', len: 0, text: '', error: err instanceof Error ? err.message : String(err) };
   } finally { clearTimeout(t); }
 }
-
 const line = (s) => console.log(s);
 
-function feedsAdvertised(html, base) {
-  const out = [];
-  const re = /<link\b[^>]*>/gi;
-  for (const tag of html.match(re) ?? []) {
-    if (!/rel\s*=\s*["']?alternate/i.test(tag)) continue;
-    const type = tag.match(/type\s*=\s*["']([^"']+)["']/i)?.[1] ?? '';
-    const href = tag.match(/href\s*=\s*["']([^"']+)["']/i)?.[1] ?? '';
-    if (!href || !/rss|atom|json|calendar/i.test(type)) continue;
-    out.push({ type, href: new URL(href, base).href });
-  }
-  return out;
+// ---------------------------------------------------------------- seattle.gov
+line('='.repeat(70));
+line('seattle.gov — where does the calendar get its events?');
+line('='.repeat(70));
+
+const page = await grab('https://www.seattle.gov/event-calendar', 'text/html');
+line(`listing ${page.status} ${page.len}b`);
+
+if (page.ok) {
+  const scripts = [...page.text.matchAll(/<script[^>]+src\s*=\s*["']([^"']+)["']/gi)].map((m) => m[1]);
+  line(`\nscripts on the page (${scripts.length}):`);
+  scripts.slice(0, 25).forEach((s) => line(`   ${s}`));
+
+  // Drupal hangs its client config here, including any REST/view endpoints.
+  const ds = page.text.match(/<script[^>]*data-drupal-selector=["']drupal-settings-json["'][^>]*>([\s\S]*?)<\/script>/i);
+  if (ds) {
+    try {
+      const cfg = JSON.parse(ds[1]);
+      line(`\ndrupalSettings keys: ${Object.keys(cfg).join(', ')}`);
+      if (cfg.views) line(`   views: ${JSON.stringify(cfg.views).slice(0, 600)}`);
+      if (cfg.path) line(`   path: ${JSON.stringify(cfg.path).slice(0, 300)}`);
+    } catch { line('\ndrupalSettings present but did not parse'); }
+  } else line('\nno drupalSettings block — probably not Drupal, or not on this page');
+
+  // Any absolute or root-relative URL in the markup that smells like data.
+  const urls = new Set();
+  for (const m of page.text.matchAll(/["'`](\/[^"'`\s]*(?:api|json|calendar|event)[^"'`\s]*)["'`]/gi)) urls.add(m[1]);
+  for (const m of page.text.matchAll(/["'`](https?:\/\/[^"'`\s]*(?:api|json)[^"'`\s]*)["'`]/gi)) urls.add(m[1]);
+  line(`\nURLs in the markup that look like data (${urls.size}):`);
+  [...urls].slice(0, 30).forEach((u) => line(`   ${u}`));
 }
 
-function icsLinks(html, base) {
-  const out = new Set();
-  for (const m of html.matchAll(/href\s*=\s*["']([^"']*\.ics(?:\?[^"']*)?)["']/gi)) out.add(new URL(m[1], base).href);
-  for (const m of html.matchAll(/href\s*=\s*["']([^"']*(?:ical|icalendar|calendar\/export)[^"']*)["']/gi)) out.add(new URL(m[1], base).href);
-  return [...out].slice(0, 6);
+line('\nDrupal conventions, asked by name:');
+for (const p of ['/jsonapi/', '/jsonapi/node/event', '/event-calendar?_format=json', '/views/ajax', '/api/v1/events', '/calendar/events.json']) {
+  const r = await grab('https://www.seattle.gov' + p, 'application/json');
+  const hint = r.ok && /json/i.test(r.type) ? '  ← ANSWERS' : '';
+  line(`   ${String(r.status || r.error).padEnd(5)} ${r.type.padEnd(30)} ${String(r.len).padStart(8)}b  ${p}${hint}`);
+  if (r.ok && /json/i.test(r.type)) line(`         head: ${r.text.slice(0, 300)}`);
 }
 
-function jsonLd(html) {
-  const blocks = [];
-  for (const m of html.matchAll(/<script[^>]*type\s*=\s*["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi)) {
-    try { blocks.push(JSON.parse(m[1].trim())); } catch { /* a broken block tells us nothing */ }
-  }
-  const events = [];
-  const walk = (node) => {
-    if (Array.isArray(node)) return node.forEach(walk);
-    if (!node || typeof node !== 'object') return;
-    const t = node['@type'];
-    const types = Array.isArray(t) ? t : [t];
-    if (types.some((x) => typeof x === 'string' && /Event/i.test(x))) events.push(node);
-    Object.values(node).forEach(walk);
-  };
-  blocks.forEach(walk);
-  return events;
+// Seattle publishes open data on Socrata; a calendar dataset there would be
+// cleaner than anything scraped, and explicitly meant for reuse.
+line('\nSeattle open-data portal:');
+const soc = await grab('https://data.seattle.gov/api/catalog/v1?q=events&limit=8', 'application/json');
+line(`   ${soc.status} ${soc.type} ${soc.len}b`);
+if (soc.ok) {
+  try {
+    const j = JSON.parse(soc.text);
+    (j.results ?? []).forEach((r) => line(`   • ${r.resource?.name} — ${r.resource?.id} (${r.resource?.type})`));
+  } catch { line(`   did not parse: ${soc.text.slice(0, 200)}`); }
 }
 
-function robotsVerdict(txt, path) {
-  // Only the lines that apply to everyone; a site that names a specific agent
-  // is talking to that agent, not to us.
-  const lines = txt.split(/\r?\n/).map((l) => l.trim());
-  let inStar = false, rules = [];
-  for (const l of lines) {
-    const m = l.match(/^user-agent:\s*(.*)$/i);
-    if (m) { inStar = m[1].trim() === '*'; continue; }
-    if (!inStar) continue;
-    const d = l.match(/^(disallow|allow):\s*(.*)$/i);
-    if (d) rules.push({ kind: d[1].toLowerCase(), path: d[2].trim() });
-  }
-  const hits = rules.filter((r) => r.path && path.startsWith(r.path));
-  const blocking = hits.filter((r) => r.kind === 'disallow');
-  return { rules: rules.length, hits, blocked: blocking.length > 0 && !hits.some((r) => r.kind === 'allow' && r.path.length >= blocking[0].path.length) };
-}
+// ------------------------------------------------------------------ events12
+line('\n' + '='.repeat(70));
+line('events12 — is there anything structured behind the index?');
+line('='.repeat(70));
 
-for (const site of SITES) {
-  line(`\n${'='.repeat(70)}\n${site.id}  ${site.listing}\n${'='.repeat(70)}`);
-
-  const robots = await grab(`${site.base}/robots.txt`, 'text/plain');
-  if (robots.ok) {
-    const path = new URL(site.listing).pathname;
-    const v = robotsVerdict(robots.text, path);
-    line(`robots.txt   ${robots.status}, ${v.rules} rule(s) for *`);
-    line(`             ${path} → ${v.blocked ? 'DISALLOWED for everyone' : 'not disallowed'}`);
-    if (v.hits.length) v.hits.forEach((h) => line(`             matched: ${h.kind}: ${h.path}`));
-    const sitemaps = [...robots.text.matchAll(/^sitemap:\s*(\S+)/gim)].map((m) => m[1]).slice(0, 3);
-    if (sitemaps.length) line(`             sitemaps: ${sitemaps.join(', ')}`);
-  } else {
-    line(`robots.txt   ${robots.status || robots.error} — none served`);
-  }
-
-  const page = await grab(site.listing, 'text/html');
-  line(`listing      ${page.status} ${page.type} ${page.len} bytes${page.url !== site.listing ? ` (→ ${page.url})` : ''}`);
-  if (!page.ok) { if (page.error) line(`             ${page.error}`); continue; }
-
-  const feeds = feedsAdvertised(page.text, page.url);
-  line(`feeds the page advertises: ${feeds.length || 'none'}`);
-  feeds.forEach((f) => line(`   ${f.type}  ${f.href}`));
-
-  const ics = icsLinks(page.text, page.url);
-  line(`calendar links: ${ics.length || 'none'}`);
-  ics.forEach((h) => line(`   ${h}`));
-
-  const ld = jsonLd(page.text);
-  line(`JSON-LD Event objects on the listing: ${ld.length}`);
-  if (ld.length) {
-    const e = ld[0];
-    line(`   keys: ${Object.keys(e).join(', ')}`);
-    line(`   sample: ${JSON.stringify({ name: e.name, startDate: e.startDate, endDate: e.endDate, url: e.url, location: e.location?.name ?? e.location }).slice(0, 400)}`);
-  }
-
-  // Only worth a round trip if nothing above answered.
-  if (!feeds.length && !ics.length && !ld.length) {
-    line('nothing advertised — trying conventional paths:');
-    for (const g of GUESSES) {
-      const r = await grab(site.base + g);
-      const looks = /xml|json|calendar/i.test(r.type) ? '  ← usable content type' : '';
-      line(`   ${String(r.status || r.error).padEnd(5)} ${r.type.padEnd(28)} ${String(r.len).padStart(8)}b  ${g}${looks}`);
-    }
+const idx = await grab('https://www.events12.com/seattle/', 'text/html');
+if (idx.ok) {
+  const links = [...new Set([...idx.text.matchAll(/href\s*=\s*["'](\/seattle\/[^"'#?]+)["']/gi)].map((m) => m[1]))];
+  line(`internal /seattle/ links: ${links.length}`);
+  links.slice(0, 8).forEach((l) => line(`   ${l}`));
+  if (links[0]) {
+    const one = await grab('https://www.events12.com' + links[0], 'text/html');
+    const ld = [...one.text.matchAll(/<script[^>]*type\s*=\s*["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi)];
+    line(`\nsample page ${links[0]} → ${one.status}, ${one.len}b, ${ld.length} JSON-LD block(s)`);
+    if (ld.length) line(`   ${ld[0][1].trim().slice(0, 400)}`);
   }
 }
+const sm = await grab('https://www.events12.com/sitemap.xml', 'application/xml');
+line(`sitemap.xml ${sm.status} ${sm.type} ${sm.len}b`);
 
 line('\ndone');
