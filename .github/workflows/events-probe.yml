@@ -18,6 +18,7 @@ on:
       - 'claude/niwa-grant-feedback'
     paths:
       - 'scripts/sources/probe-more.mjs'
+      - 'scripts/sources/probe-structure.mjs'
       - '.github/workflows/events-probe.yml'
   workflow_dispatch:
 
@@ -39,3 +40,6 @@ jobs:
           node-version: '20'
       - name: Ask each calendar what it serves
         run: node scripts/sources/probe-more.mjs
+
+      - name: What shape is the Seattle Center page?
+        run: node scripts/sources/probe-structure.mjs
