@@ -1,0 +1,45 @@
+name: Events probe
+
+# What are the candidate calendars actually serving?
+#
+# Nothing in a development sandbox can reach them, so the only place to ask is
+# a runner. This changes nothing in the repository — it reads four public
+# pages and prints what it finds, so the adapters can be written against what
+# is there rather than against a guess.
+#
+# It runs on push to the branch that carries the probe, because a
+# workflow_dispatch button only appears once the workflow is on the default
+# branch, and this one has no business being there until it has earned it.
+
+on:
+  push:
+    branches:
+      - 'claude/niwa-more-event-sources'
+      - 'claude/niwa-grant-feedback'
+    paths:
+      - 'scripts/sources/probe-more.mjs'
+      - 'scripts/sources/probe-structure.mjs'
+      - '.github/workflows/events-probe.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: events-probe
+  cancel-in-progress: true
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Ask each calendar what it serves
+        run: node scripts/sources/probe-more.mjs
+
+      - name: What shape is the Seattle Center page?
+        run: node scripts/sources/probe-structure.mjs

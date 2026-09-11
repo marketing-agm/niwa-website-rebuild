@@ -1,5 +1,5 @@
 ---
-import { getHomes, money, int } from '../lib/homes';
+import { getHomes, int } from '../lib/homes';
 import UnitGrid from './UnitGrid.astro';
 const { site } = Astro.props as { site: any };
 const c = site.config;
@@ -8,6 +8,13 @@ const pets = c.pets ?? {};
 const s = c.sightmap ?? {};
 const showMap = !!(s.enabled && s.embedUrl);
 const range = (a: number, b: number) => (a === b ? int(a) : `${int(a)}–${int(b)}`);
+// What the row says on its right-hand side now that the rent has come off it.
+// The row still has to earn the click, and availability is the other thing a
+// reader wants to know and the other thing the feed actually knows — so it
+// takes the price's place rather than leaving an arrow on its own. Same three
+// states the panel uses, said shorter.
+const availLabel = (h: { now: number; soon: number }) =>
+  h.now ? `${h.now} available` : h.soon ? `${h.soon} coming soon` : 'Join the waitlist';
 ---
 <section class="section homes" id="floor-plans">
   <div class="sec-title">
@@ -26,7 +33,7 @@ const range = (a: number, b: number) => (a === b ? int(a) : `${int(a)}–${int(b
         <li>
           <button type="button" class="home-row" data-open-dialog={`home-${h.key}`} data-reveal>
             <span class="home-name">{h.name}</span>
-            <span class="home-go label">{h.rentMin ? `From ${money(h.rentMin)}` : 'Ask leasing'} <span class="arr" aria-hidden="true">→</span></span>
+            <span class="home-go label">{availLabel(h)} <span class="arr" aria-hidden="true">→</span></span>
           </button>
         </li>
       ))}
@@ -65,12 +72,20 @@ const range = (a: number, b: number) => (a === b ? int(a) : `${int(a)}–${int(b
                   </Fragment>
                 )}
               </svg>
+              {/* Joined, not concatenated: cats carry no weight limit, and the
+                  old template put a separator there whether or not there was
+                  anything to separate. */}
               <span class="small pet-txt">
-                <b>{t.name}</b> · {t.limit} · {t.rent}{t.note ? ` · ${t.note.toLowerCase()}` : ''}
+                <b>{t.name}</b>{[t.limit, t.rent, t.note?.toLowerCase()].filter(Boolean).map((bit: string) => <Fragment> · {bit}</Fragment>)}
               </span>
             </li>
           ))}
         </ul>
+        {/* The panel already opens with this. It is repeated here because a
+            reader who has just read "two dogs combined" can reasonably take
+            the limit to be two dogs and some cats, and the row above is where
+            that thought happens. */}
+        <p class="small pet-cap">Maximum of {pets.maxPerHome} pets per home.</p>
         <p class="small">{pets.deposit}, charged per pet. Some breeds are restricted. There is a pet wash in the building.</p>
       </div>
       <div class="cell note" data-reveal>
@@ -115,7 +130,6 @@ const range = (a: number, b: number) => (a === b ? int(a) : `${int(a)}–${int(b
         <dl class="hdlg-facts">
           <div><dt class="label label--dim">Size</dt><dd>{range(h.sqftMin, h.sqftMax)} sq ft</dd></div>
           <div><dt class="label label--dim">Bath</dt><dd>{h.baths}</dd></div>
-          <div><dt class="label label--dim">Starting rent</dt><dd>{h.rentMin ? `${money(h.rentMin)}/mo` : 'Ask leasing'}</dd></div>
           <div><dt class="label label--dim">Available</dt><dd>{h.now ? `${h.now} now` : ''}{h.now && h.soon ? ', ' : ''}{h.soon ? `${h.soon} coming soon` : ''}{!h.now && !h.soon ? 'Join the waitlist' : ''}</dd></div>
         </dl>
         <p class="small">{h.key === 'studio' ? 'Studios run across floors two through eight, several with balcony decks and city views.' : h.key === '1br' ? 'One bedrooms with a full kitchen, in-unit washer and dryer, and room for a dining table. Tour it furnished or unfurnished.' : 'Two bedrooms with one bath, in-unit washer and dryer, and select homes with kitchen islands and vaulted ceilings.'}</p>
@@ -173,6 +187,7 @@ const range = (a: number, b: number) => (a === b ? int(a) : `${int(a)}–${int(b
   .home-row:hover .home-go .arr { transform: translateX(0.4em); }
   .home-notes { margin-top: -1px; }
   .note { grid-column: span 4; display: grid; gap: 12px; align-content: start; }
+  .pet-cap { color: var(--fg); }
   .pet-rows { display: grid; gap: 10px; margin: 2px 0 2px; }
   .pet-row { display: grid; grid-template-columns: 22px 1fr; gap: 10px; align-items: start; }
   .pet-ico { width: 22px; height: 22px; color: var(--fg-3); margin-top: -1px; flex: none; }

@@ -81,19 +81,102 @@
 
   color-scheme: dark;
 }
+/* ---------- Very large screens ----------
+
+   Everything above stops growing at about 1800px and the page stopped
+   widening at 2100. On a 2560 or 3440 monitor that left the design frozen at
+   its 1800px size inside a much bigger frame: the h1 fell from 9.2% of the
+   viewport at 1440 to 4.2% at 3840, which is why it reads as small rather
+   than as spacious.
+
+   So the same tokens keep scaling, on a second fluid range from 1800 to 2560.
+   Nothing below 1800 is touched — the design that has been reviewed at 1440
+   and 1920 is exactly as it was — and above 2560 the page centres, because a
+   twelve-column grid stretched to 3440 puts the intro and the stats a desk
+   apart. */
+@media (min-width: 1800px) {
+  :root {
+    --t-label: clamp(0.9rem, 0.663rem + 0.211vw, 1rem);
+    --t-small: clamp(1.02rem, 0.759rem + 0.232vw, 1.13rem);
+    --t-body: clamp(1.28rem, 1.138rem + 0.126vw, 1.34rem);
+    --t-lead: clamp(1.9rem, 1.379rem + 0.463vw, 2.12rem);
+    --t-h3: clamp(2.6rem, 1.653rem + 0.842vw, 3rem);
+    --t-h2: clamp(5rem, 2.039rem + 2.632vw, 6.25rem);
+    --t-h1: clamp(10rem, 2.895rem + 6.316vw, 13rem);
+    --t-num: clamp(7.5rem, 3rem + 4vw, 9.4rem);
+    --gutter: clamp(26px, 7.05px + 1.053vw, 34px);
+    --pad: clamp(48px, 19.58px + 1.579vw, 60px);
+    --inset: clamp(72px, 15.16px + 3.158vw, 96px);
+    --gap: clamp(32px, 8.32px + 1.316vw, 42px);
+    --section: clamp(176px, 71.79px + 5.789vw, 220px);
+    --nav-h: clamp(76px, 38.11px + 2.105vw, 92px);
+    --radius: clamp(28px, 13.79px + 0.789vw, 34px);
+    --maxw: 2560px;
+  }
+}
+
+/* ---------- 4K monitors and televisions ----------
+
+   The range above stops at 2560, which left a 4K desktop and any television
+   showing a 2560 page in the middle of a much larger screen. A television is
+   the harder case of the two and the one that settles the approach: it is
+   watched from across a room, so what it needs is not a wider grid — twelve
+   columns at 3840 gives 300px columns and the eye has to travel the whole
+   wall — but a larger one. So the type keeps growing faster than the page
+   does: body from 21px to 27px, h1 from 208px to 272px, while the measure
+   goes from 2560 only to 3400.
+
+   Above 3840 everything holds. There is no evidence about what is on the
+   other side of that, and a guess would be worse than a stop. */
+@media (min-width: 2560px) {
+  :root {
+    --t-label: clamp(1rem, 0.5rem + 0.312vw, 1.25rem);
+    --t-small: clamp(1.13rem, 0.55rem + 0.363vw, 1.42rem);
+    --t-body: clamp(1.34rem, 0.62rem + 0.45vw, 1.7rem);
+    --t-lead: clamp(2.12rem, 0.96rem + 0.725vw, 2.7rem);
+    --t-h3: clamp(3rem, 1.4rem + 1vw, 3.8rem);
+    --t-h2: clamp(6.25rem, 2.75rem + 2.188vw, 8rem);
+    --t-h1: clamp(13rem, 5rem + 5vw, 17rem);
+    --t-num: clamp(9.4rem, 4.2rem + 3.25vw, 12rem);
+    --gutter: clamp(34px, 10px + 0.938vw, 46px);
+    --pad: clamp(60px, 28px + 1.25vw, 76px);
+    --inset: clamp(96px, 32px + 2.5vw, 128px);
+    --gap: clamp(42px, 14px + 1.094vw, 56px);
+    --section: clamp(220px, 80px + 5.469vw, 290px);
+    --nav-h: clamp(92px, 36px + 2.188vw, 120px);
+    --radius: clamp(34px, 14px + 0.781vw, 44px);
+    --maxw: clamp(2560px, 880px + 65.625vw, 3400px);
+  }
+}
+
 
 /* ---------- Reset ---------- */
 *, *::before, *::after { box-sizing: border-box; }
 /* The ink lives on html so the ground still runs to both edges once body stops
    widening at --maxw. Same colour either side of the seam, so there is no seam. */
-html { -webkit-text-size-adjust: 100%; scroll-behavior: auto; background: var(--bg); }
+/* overflow-x on html, not only on body. body already carried `clip`, but a
+   value set there is propagated up to the viewport rather than applied to
+   body, and the propagated value did not stop a child that reached past the
+   right edge from scrolling the page — measured: a probe element parked past
+   the edge still grew scrollWidth by its full width. Setting it on html makes
+   the clip unambiguous and the page cannot scroll sideways.
+
+   `clip`, never `hidden`: hidden would make html a scroll container and the
+   sticky nav would stop sticking. clip does not, and the nav is unaffected. */
+html { -webkit-text-size-adjust: 100%; scroll-behavior: auto; background: var(--bg); overflow-x: clip; }
 html.lenis, html.lenis body { height: auto; }
 .lenis.lenis-smooth { scroll-behavior: auto !important; }
 .lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
 .lenis.lenis-stopped { overflow: hidden; }
 body {
   margin: 0;
-  max-width: var(--maxw);
+  /* min(), not --maxw on its own. Above 2560 the measure is derived in vw, and
+     a vw includes the vertical scrollbar while the space body actually has to
+     fill does not. On a machine with classic (space-taking) scrollbars that
+     put --maxw about fifteen pixels past the room available and the whole page
+     picked up a horizontal scroll. Headless Chromium draws overlay scrollbars
+     that take no width, which is why every audit came back clean. */
+  max-width: min(var(--maxw), 100%);
   margin-inline: auto;
   background: var(--bg);
   color: var(--fg);

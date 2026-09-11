@@ -264,6 +264,28 @@ if (heroVideo) {
 }
 
 /* ---------- FAQ ---------- */
+/* The whole list folds behind one button. Collapsed, not removed — the
+   answers stay in the markup for the FAQ structured data and for anyone
+   searching the page — and the individual question toggles below are
+   untouched. */
+const faqAll = $('[data-faq-all]');
+const faqList = document.getElementById('faq-list');
+const faqAllLabel = $('[data-faq-all-label]');
+if (faqAll && faqList) {
+  faqAll.addEventListener('click', () => {
+    const open = faqAll.getAttribute('aria-expanded') === 'true';
+    faqAll.setAttribute('aria-expanded', String(!open));
+    if (faqAllLabel) faqAllLabel.textContent = open ? 'Read the questions' : 'Hide the questions';
+    if (reduce) { faqList.hidden = open; ScrollTrigger.refresh(); return; }
+    if (!open) {
+      faqList.hidden = false;
+      gsap.fromTo(faqList, { height: 0, opacity: 0 }, { height: 'auto', opacity: 1, duration: 0.6, ease: 'power3.out', clearProps: 'height', onComplete: () => ScrollTrigger.refresh() });
+    } else {
+      gsap.to(faqList, { height: 0, opacity: 0, duration: 0.45, ease: 'power3.inOut', onComplete: () => { faqList.hidden = true; gsap.set(faqList, { clearProps: 'height,opacity' }); ScrollTrigger.refresh(); } });
+    }
+  });
+}
+
 $$('[data-faq-toggle]').forEach((btn) => {
   const panel = document.getElementById(btn.getAttribute('aria-controls')!);
   if (!panel) return;
@@ -374,26 +396,98 @@ if (!reduce) {
   });
 }
 
-/* ---------- Gallery: pinned horizontal scroll on desktop, native on touch ---------- */
-const gal = $('[data-gallery]');
-const track = $('[data-gallery-track]');
-const galBar = $('[data-gallery-progress]');
-if (gal && track) {
-  const useNative = coarse || reduce || innerWidth < 1024;
-  if (useNative) {
-    gal.classList.add('is-native');
-    const vp = track.parentElement!;
-  } else {
-    const vp = track.parentElement!;
-    const dist = () => Math.max(0, track.scrollWidth - vp.clientWidth);
-    gsap.to(track, {
+/* ---------- Gallery: pinned horizontal scroll on desktop, native on touch ----
+
+   Both modes live here, and the choice is made once, because two scripts
+   deciding this separately can disagree and leave the strip pinned with a
+   scrollbar under it, or scrollable with nothing driving it.
+
+   Pinned is the desktop behaviour and the one the page was designed around:
+   the section holds still while the vertical wheel drives the strip sideways,
+   and the hairline underneath fills as you travel. It is deliberately not
+   used on touch, on a narrow window, or under prefers-reduced-motion — pinning
+   takes over the page's only scroll axis, which is the wrong thing to do to a
+   phone and the wrong thing to do to a reader who has asked motion to stop.
+   Those get an ordinary scroll container with a draggable bar. */
+const galSection = $('[data-gallery]');
+const galTrack = $('[data-gallery-track]');
+const galVp = $('[data-gal-vp]');
+const galBarEl = $('[data-gal-bar]');
+const galThumb = $('[data-gal-thumb]');
+const galProgress = $('[data-gallery-progress]');
+
+if (galSection && galTrack && galVp) {
+  const pin = !coarse && !reduce && innerWidth >= 1024;
+
+  if (pin) {
+    galSection.classList.add('is-pinned');
+    const dist = () => Math.max(0, galTrack.scrollWidth - galVp.clientWidth);
+    gsap.to(galTrack, {
       x: () => -dist(), ease: 'none',
       scrollTrigger: {
-        trigger: vp, pin: true, scrub: 0.6, anticipatePin: 1, invalidateOnRefresh: true,
-        start: () => (vp.offsetHeight < innerHeight ? 'center center' : 'top top'),
+        trigger: galVp, pin: true, scrub: 0.6, anticipatePin: 1, invalidateOnRefresh: true,
+        start: () => (galVp.offsetHeight < innerHeight ? 'center center' : 'top top'),
         end: () => '+=' + dist(),
-        onUpdate: (self) => { if (galBar) galBar.style.transform = `scaleX(${self.progress})`; },
+        onUpdate: (self) => { if (galProgress) galProgress.style.transform = `scaleX(${self.progress})`; },
       },
+    });
+  } else if (galBarEl && galThumb) {
+    // The bar reflects the scroll and can drive it. One source of truth,
+    // scrollLeft: a wheel, a flick, an arrow key and a drag all end there.
+    const max = () => Math.max(1, galVp.scrollWidth - galVp.clientWidth);
+    const draw = () => {
+      const frac = Math.min(1, galVp.clientWidth / galVp.scrollWidth);
+      const travel = galBarEl.clientWidth * (1 - frac);
+      galThumb.style.width = `${frac * 100}%`;
+      galThumb.style.transform = `translateX(${(galVp.scrollLeft / max()) * travel}px)`;
+      galThumb.setAttribute('aria-valuenow', String(Math.round((galVp.scrollLeft / max()) * 100)));
+    };
+
+    // Lenis takes the wheel for the whole document, which left a sideways
+    // trackpad gesture over the strip moving it 48px out of 1320. Stopping the
+    // event here — before it reaches the window Lenis listens on — hands a
+    // horizontal gesture back to the browser. A vertical one is left alone, so
+    // the page still scrolls with the pointer over the photographs.
+    galVp.addEventListener('wheel', (e: WheelEvent) => {
+      if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) e.stopPropagation();
+    }, { passive: true });
+
+    galVp.addEventListener('scroll', draw, { passive: true });
+    addEventListener('resize', draw);
+    draw();
+
+    let from = 0, at = 0;
+    const move = (e: PointerEvent) => {
+      const frac = Math.min(1, galVp.clientWidth / galVp.scrollWidth);
+      const travel = galBarEl.clientWidth * (1 - frac);
+      if (travel <= 0) return;
+      galVp.scrollLeft = at + ((e.clientX - from) / travel) * max();
+    };
+    const up = (e: PointerEvent) => {
+      removeEventListener('pointermove', move);
+      removeEventListener('pointerup', up);
+      galBarEl.classList.remove('is-dragging');
+      galThumb.releasePointerCapture?.(e.pointerId);
+    };
+    galThumb.addEventListener('pointerdown', (e) => {
+      e.preventDefault();
+      from = e.clientX; at = galVp.scrollLeft;
+      galBarEl.classList.add('is-dragging');
+      galThumb.setPointerCapture?.(e.pointerId);
+      addEventListener('pointermove', move);
+      addEventListener('pointerup', up);
+    });
+    galBarEl.addEventListener('pointerdown', (e) => {
+      if (e.target === galThumb) return;
+      const ahead = e.clientX > galThumb.getBoundingClientRect().right;
+      galVp.scrollBy({ left: (ahead ? 1 : -1) * galVp.clientWidth * 0.9, behavior: 'smooth' });
+    });
+    galThumb.addEventListener('keydown', (e) => {
+      const step = { ArrowLeft: -1, ArrowRight: 1, Home: -Infinity, End: Infinity }[e.key];
+      if (step === undefined) return;
+      e.preventDefault();
+      if (!Number.isFinite(step)) galVp.scrollTo({ left: step < 0 ? 0 : max(), behavior: 'smooth' });
+      else galVp.scrollBy({ left: step * galVp.clientWidth * 0.6, behavior: 'smooth' });
     });
   }
 }
@@ -520,41 +614,111 @@ if (!reduce) {
 document.fonts?.ready.then(() => ScrollTrigger.refresh());
 window.addEventListener('load', () => ScrollTrigger.refresh());
 
-/* ---------- The leasing special: a small panel beside the cursor ---------- */
+/* ---------- The leasing special: a panel hung under its label ---------- */
 const specialBtn = $<HTMLButtonElement>('[data-special-toggle]');
 const specialPop = $('[data-special-pop]');
 if (specialBtn && specialPop) {
+  // Pinned means the panel was clicked rather than hovered into view. A pinned
+  // panel does not follow the pointer out of the room: it stays until the
+  // close button, a click elsewhere, Escape or a scroll takes it away. That is
+  // the whole point of clicking something that already opened on hover — the
+  // click has to buy you something the hover did not.
+  let pinned = false;
+
   const close = () => {
     if (specialPop.hidden) return;
     specialPop.hidden = true;
     specialBtn.setAttribute('aria-expanded', 'false');
+    pinned = false;
   };
-  const open = (x: number, y: number) => {
-    specialPop.hidden = false;
-    specialBtn.setAttribute('aria-expanded', 'true');
-    const pad = 12;
+
+  // Anchored to the label, never to the cursor. A panel that opens wherever
+  // the pointer happens to be reads as unrelated to the line that summoned it,
+  // which is exactly how it looked: the offer sat top right and its card
+  // floated in the middle of the hero.
+  //
+  // Edges line up with the label's. Left to left where there is room for it,
+  // and right to right where there is not — at the wide end the label sits in
+  // the right-hand gutter and a 620px card starting at the label's left edge
+  // would run off the screen. Either way the card hangs off the label and
+  // reads as belonging to it.
+  const place = () => {
+    const r = specialBtn.getBoundingClientRect();
+    const pad = 16;
+    // Clear air between the label and the card, so the two read as a label and
+    // its panel rather than as one stack of text.
+    const gap = 22;
     const w = specialPop.offsetWidth, h = specialPop.offsetHeight;
     const small = innerWidth < 720;
-    let left = small ? (innerWidth - w) / 2 : x + pad;
-    let top = small ? Math.min(y + pad, innerHeight - h - pad) : y + pad;
-    if (left + w > innerWidth - pad) left = x - w - pad;
-    if (left < pad) left = pad;
-    if (top + h > innerHeight - pad) top = Math.max(pad, y - h - pad);
+
+    let left = small ? (innerWidth - w) / 2 : r.left;
+    if (!small && left + w > innerWidth - pad) left = r.right - w;   // right edge to right edge
+    left = Math.min(Math.max(left, pad), Math.max(pad, innerWidth - w - pad));
+
+    let top = r.bottom + gap;
+    if (top + h > innerHeight - pad) top = Math.max(pad, r.top - h - gap);   // flip above
+
     specialPop.style.left = `${Math.round(left)}px`;
     specialPop.style.top = `${Math.round(top)}px`;
-    if (!reduce) gsap.fromTo(specialPop, { opacity: 0, y: 8, scale: 0.98 }, { opacity: 1, y: 0, scale: 1, duration: 0.35, ease: 'power3.out', clearProps: 'scale' });
-    (specialPop.querySelector('a, button') as HTMLElement | null)?.focus({ preventScroll: true });
   };
-  specialBtn.addEventListener('click', (e) => {
-    if (!specialPop.hidden) return close();
-    const r = specialBtn.getBoundingClientRect();
-    // Keyboard activation has no pointer position; anchor to the label instead.
-    const x = e.clientX || r.left, y = e.clientY || r.bottom;
-    open(x, y);
+
+  const open = (takeFocus = true) => {
+    specialPop.hidden = false;
+    specialBtn.setAttribute('aria-expanded', 'true');
+    place();
+    if (!reduce) gsap.fromTo(specialPop, { opacity: 0, y: 8, scale: 0.98 }, { opacity: 1, y: 0, scale: 1, duration: 0.35, ease: 'power3.out', clearProps: 'scale' });
+    // Only when the panel was asked for. Hovering must not move the caret out
+    // from under someone who is tabbing or typing elsewhere on the page.
+    if (takeFocus) (specialPop.querySelector('a, button') as HTMLElement | null)?.focus({ preventScroll: true });
+  };
+
+  // A pointer arriving at the label opens the panel before the click lands, so
+  // a plain toggle would read the panel as already open and shut it again —
+  // the label would look broken to the one gesture everybody tries. A click on
+  // a hovered-open panel pins it instead, and takes focus.
+  specialBtn.addEventListener('click', () => {
+    if (!specialPop.hidden) {
+      if (pinned) return close();          // a second click on a pinned panel closes it
+      pinned = true;
+      (specialPop.querySelector('a, button') as HTMLElement | null)?.focus({ preventScroll: true });
+      return;
+    }
+    pinned = true;
+    open();
   });
+
+  // Hovering the label is enough — nobody should have to guess that the line
+  // is clickable. Only where there is a real pointer: on a touch screen
+  // :hover latches onto whatever was last tapped, so the tap stays the way in.
+  //
+  // There is a gap between the label and the card for the pointer to cross, so
+  // leaving either one starts a short grace period and entering either cancels
+  // it, rather than shutting the card mid-crossing. A pinned card ignores all
+  // of this.
+  if (matchMedia('(hover: hover) and (pointer: fine)').matches) {
+    let grace = 0;
+    const hold = () => { clearTimeout(grace); };
+    const release = () => {
+      clearTimeout(grace);
+      if (pinned) return;
+      grace = window.setTimeout(close, 220);
+    };
+    specialBtn.addEventListener('mouseenter', () => {
+      hold();
+      if (specialPop.hidden) open(false);
+    });
+    specialBtn.addEventListener('mouseleave', release);
+    specialPop.addEventListener('mouseenter', hold);
+    specialPop.addEventListener('mouseleave', release);
+  }
+
   specialPop.addEventListener('click', (e) => { if ((e.target as Element).closest('[data-special-close]')) close(); });
   document.addEventListener('click', (e) => { if (!specialPop.hidden && !specialPop.contains(e.target as Node) && e.target !== specialBtn) close(); });
   window.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
+  // The panel is anchored to a label that scrolls away with the hero, so it
+  // goes when the page moves. It does follow a resize, since the anchor is
+  // still on screen and the card would otherwise be left behind.
+  window.addEventListener('resize', () => { if (!specialPop.hidden) place(); });
   window.addEventListener('scroll', close, { passive: true });
   lenis?.on('scroll', close);
 }

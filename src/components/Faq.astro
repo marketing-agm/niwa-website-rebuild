@@ -4,12 +4,23 @@ const items: { q: string; a: string }[] = site.faq ?? [];
 ---
 {items.length > 0 && (
 <section class="section faq" id="faq">
+  {/* The head reads as a title row, the way every other section on the page
+      does — heading left, the note and the button right — rather than a
+      narrow sticky column beside a list. With the list folded the old layout
+      left two thirds of the row empty. */}
   <div class="faq-grid">
     <div class="faq-side">
       <h2 class="h2" data-reveal>Asked <em>often.</em></h2>
-      <p class="body" data-reveal>Anything else? The leasing team is available during office hours, or leave a note with your tour request.</p>
+      <p class="body faq-note" data-reveal>Anything else? The leasing team is available during office hours, or leave a note with your tour request.</p>
+      {/* The ten questions are a long block to walk past on the way to the
+          tour form, so they fold behind this. Collapsed, not removed: the
+          answers stay in the markup, which is what the FAQ structured data
+          and anyone searching the page are reading. */}
+      <button type="button" class="btn btn--ghost btn--sm faq-cta" aria-expanded="false" aria-controls="faq-list" data-faq-all>
+        <span data-faq-all-label>Read the questions</span> <span class="arr" aria-hidden="true">→</span>
+      </button>
     </div>
-    <ol class="faq-list">
+    <ol class="faq-list" id="faq-list" hidden>
       {items.map((it, i) => (
         <li class="faq-item" data-reveal>
           <button type="button" class="faq-q" aria-expanded="false" aria-controls={`faq-a-${i}`} id={`faq-q-${i}`} data-faq-toggle>
@@ -27,8 +38,19 @@ const items: { q: string; a: string }[] = site.faq ?? [];
 )}
 <style>
   .faq-grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: var(--gap); padding: clamp(40px, 5.5vw, 104px) var(--inset) clamp(24px, 3vw, 56px); border-top: 1px solid var(--line); }
-  .faq-side { grid-column: 1 / span 4; display: grid; gap: var(--gap); align-content: start; position: sticky; top: calc(var(--nav-h) + var(--gap)); }
-  .faq-list { grid-column: 5 / span 8; border-top: 1px solid var(--line); }
+  .faq-side {
+    grid-column: 1 / -1;
+    display: grid; grid-template-columns: repeat(12, minmax(0, 1fr));
+    gap: var(--gap); align-items: end;
+  }
+  .faq-side > .h2 { grid-column: 1 / span 7; }
+  .faq-note { grid-column: 9 / span 4; margin: 0; }
+  .faq-cta { grid-column: 9 / span 4; justify-self: start; }
+  .faq-list { grid-column: 1 / -1; border-top: 1px solid var(--line); margin-top: clamp(24px, 3vw, 48px); }
+  /* An author display would outrank the UA's [hidden] rule, so it is stated. */
+  .faq-list[hidden] { display: none; }
+  .faq-cta .arr { transition: transform 0.35s var(--ease); display: inline-block; }
+  .faq-cta[aria-expanded="true"] .arr { transform: rotate(90deg); }
   .faq-item { border-bottom: 1px solid var(--line); }
   .faq-q { width: 100%; display: grid; grid-template-columns: 1fr auto; gap: var(--gap); align-items: baseline; text-align: left; padding: clamp(16px, 1.8vw, 28px) 0; transition: color 0.3s; }
   .faq-q:hover { color: var(--gold); }
@@ -42,5 +64,10 @@ const items: { q: string; a: string }[] = site.faq ?? [];
   .faq-a-inner { padding: 0 0 clamp(20px, 2.2vw, 32px); max-width: 62ch; }
   .faq-a-inner :global(a) { color: var(--fg); background: linear-gradient(currentColor, currentColor) no-repeat 0 100% / 100% 1px; }
   .faq-a-inner :global(a:hover) { color: var(--gold); }
-  @media (max-width: 1024px) { .faq-side { grid-column: 1 / -1; position: static; } .faq-list { grid-column: 1 / -1; } }
+  /* Stacked from 1100, matching .sec-title: a four-column note against a
+     seven-column heading stops reading as prose below that. */
+  @media (max-width: 1100px) {
+    .faq-side > .h2, .faq-note, .faq-cta { grid-column: 1 / -1; }
+    .faq-note { max-width: 60ch; }
+  }
 </style>

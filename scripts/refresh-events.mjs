@@ -17,6 +17,16 @@
 //                        This is the half that makes the page about Queen Anne
 //                        rather than about arenas. No coordinates, so these
 //                        list on the page and not on the map.
+//   seattle-center       the campus across the street, and the only keyless
+//                        source that carries coordinates — so these plot on
+//                        the map. No feed exists: the listings are read from
+//                        their own calendar page, which serves them in HTML
+//                        and publishes no robots.txt. See that file.
+//   events12             a hand-kept guide to Washington State, read from its
+//                        HTML because it publishes no feed of any kind. Its
+//                        own listings run to Ellensburg and Olympia, so the
+//                        distance it prints on each entry does most of the
+//                        work. No coordinates, so no pins.
 //   queen-anne-chamber    the best listings there are, and unreachable: see
 //                        the note at the top of that file.
 //
@@ -39,8 +49,11 @@ import { dirname, join } from 'node:path';
 import * as ticketmaster from './sources/ticketmaster.mjs';
 import * as queenAnneChamber from './sources/queen-anne-chamber.mjs';
 import * as visitSeattle from './sources/visit-seattle.mjs';
+import * as seattleCenter from './sources/seattle-center.mjs';
+import * as events12 from './sources/events12.mjs';
+import * as seattleGov from './sources/seattle-gov.mjs';
 
-const SOURCES = [visitSeattle, queenAnneChamber, ticketmaster];
+const SOURCES = [visitSeattle, seattleGov, seattleCenter, events12, queenAnneChamber, ticketmaster];
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const configPath = join(root, 'src/site/site.config.json');
@@ -78,6 +91,7 @@ const MAX = Number(arg('max', 60));
 const PROBE = {
   'queen-anne-chamber': { base: 'https://www.queenannechamber.org', extra: queenAnneChamber.probeUrls },
   'visit-seattle': { base: 'https://visitseattle.org', extra: visitSeattle.probeUrls },
+  'seattle-gov': { base: 'https://www.trumba.com', extra: seattleGov.probeUrls },
 };
 
 const grab = async (url, accept = 'application/json') => {
@@ -215,8 +229,19 @@ const localDay = (iso) => {
 // The same festival can appear in two calendars. Match on the title and the
 // day, and keep the fuller record — the one that can be pinned on the map and
 // priced beats the one that cannot.
-const dedupeKey = (e) => `${e.title.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim()}|${localDay(e.start)}`;
+const titleWords = (t) =>
+  String(t).toLowerCase()
+    .replace(/\s*\b(?:19|20)\d{2}\b\s*/g, ' ')   // a year in the name is not part of the name
+    .replace(/[^a-z0-9]+/g, ' ')
+    .trim();
+const dedupeKey = (e) => `${titleWords(e.title)}|${localDay(e.start)}`;
 const richness = (e) => (e.venue?.lat != null ? 4 : 0) + (e.url ? 2 : 0) + (e.priceFrom != null ? 1 : 0);
+
+// Words that carry no identity, so that one source's framing of a title does
+// not make it a different event from another's.
+const NOISE = new Set(['the', 'a', 'an', 'of', 'at', 'in', 'on', 'and', 'festal', 'presents', 'featuring', 'seattle']);
+const tokens = (t) => new Set(titleWords(t).split(' ').filter((w) => w && !NOISE.has(w)));
+const covers = (a, b) => { for (const w of b) if (!a.has(w)) return false; return true; };
 
 function merge(all) {
   const best = new Map();
@@ -225,8 +250,43 @@ function merge(all) {
     const prev = best.get(k);
     if (!prev || richness(e) > richness(prev)) best.set(k, e);
   }
-  const out = [...best.values()]
+  let out = [...best.values()]
     .sort((a, b) => Date.parse(a.start) - Date.parse(b.start) || a.title.localeCompare(b.title));
+
+  // Then again, across sources, on the same day, by containment rather than by
+  // an exact string. Two sources name the same evening differently and the key
+  // above cannot see it: Visit Seattle files the Hawaiian festival as "Festal:
+  // Live Aloha Hawaiian Cultural Festival" and Seattle Center as "Live Aloha
+  // Hawaiian Cultural Festival", and both went on the page on the same day.
+  // So did Sea Mar Fiestas Patrias, once as itself and once with the year on
+  // the end.
+  //
+  // One title's words containing the other's is the test, after dropping the
+  // words that carry no identity. Held to two words or more: one is far too
+  // little to identify anything, and three threw out "The Italian Festival",
+  // which is only two once "the" is gone. Checked both ways against the pairs
+  // that must collapse and the near-misses that must not — Kraken against
+  // Canucks and against Flames, two different films in the same series at the
+  // Mural, Italian against Turkish festival, Winterfest's rink against its
+  // market. The richer record wins, which is the same rule as above and means
+  // the one carrying coordinates survives — so merging a duplicate gains the
+  // page a pin rather than costing it one.
+  const merged = [];
+  for (const e of out) {
+    const day = localDay(e.start);
+    const mine = tokens(e.title);
+    const twin = mine.size >= 2
+      ? merged.find((k) => localDay(k.start) === day && k._t.size >= 2 && (covers(k._t, mine) || covers(mine, k._t)))
+      : null;
+    if (!twin) { e._t = mine; merged.push(e); continue; }
+    if (richness(e) > richness(twin)) {
+      // Keep the fuller record, and with it the shorter of the two names.
+      e._t = twin._t.size < mine.size ? twin._t : mine;
+      if (twin.title.length < e.title.length) e.title = twin.title;
+      merged[merged.indexOf(twin)] = e;
+    }
+  }
+  out = merged.map(({ _t, ...e }) => e);
 
   // Two caps, because a feed of sixty is easily forty of the same thing.
   //
@@ -241,20 +301,50 @@ function merge(all) {
   const TITLE_CAP = 2;
   const perVenue = new Map();
   const perTitle = new Map();
+
+  // Filling sixty slots in date order hands the page to whichever source has
+  // the earliest events. Adding the City calendar showed it: thirty-one
+  // Ticketmaster, twenty-eight City, and Visit Seattle — the source chosen
+  // precisely because it carries the neighbourhood's own cultural listings —
+  // down to one of its six.
+  //
+  // So every source gets a guaranteed share first, and only then is what is
+  // left filled by date. A source with fewer events than its share simply
+  // contributes all of them and hands the rest back. Date order holds within
+  // each pass and the result is sorted by date at the end, so the reader sees
+  // a calendar, not a rotation.
+  const sources = [...new Set(out.map((e) => e.source))];
+  const share = Math.max(1, Math.floor(MAX / Math.max(1, sources.length)));
+  const perSource = new Map();
   const kept = [];
-  for (const e of out) {
+  const takeable = (e) => {
     const title = e.title.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
-    const t = perTitle.get(title) ?? 0;
-    if (t >= TITLE_CAP) continue;
+    if ((perTitle.get(title) ?? 0) >= TITLE_CAP) return false;
     const venue = `${e.source}|${e.venue.name.toLowerCase()}`;
-    const v = perVenue.get(venue) ?? 0;
-    if (v >= venueCap) continue;
-    perTitle.set(title, t + 1);
-    perVenue.set(venue, v + 1);
+    return (perVenue.get(venue) ?? 0) < venueCap;
+  };
+  const take = (e) => {
+    const title = e.title.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+    const venue = `${e.source}|${e.venue.name.toLowerCase()}`;
+    perTitle.set(title, (perTitle.get(title) ?? 0) + 1);
+    perVenue.set(venue, (perVenue.get(venue) ?? 0) + 1);
+    perSource.set(e.source, (perSource.get(e.source) ?? 0) + 1);
     kept.push(e);
+  };
+
+  const taken = new Set();
+  for (const e of out) {
     if (kept.length >= MAX) break;
+    if ((perSource.get(e.source) ?? 0) >= share) continue;
+    if (!takeable(e)) continue;
+    take(e); taken.add(e);
   }
-  return kept;
+  for (const e of out) {
+    if (kept.length >= MAX) break;
+    if (taken.has(e) || !takeable(e)) continue;
+    take(e);
+  }
+  return kept.sort((a, b) => Date.parse(a.start) - Date.parse(b.start) || a.title.localeCompare(b.title));
 }
 
 // ---- run -------------------------------------------------------------------

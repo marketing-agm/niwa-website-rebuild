@@ -106,20 +106,48 @@ const facts = [
   .hero-special { color: var(--gold); cursor: pointer; text-align: right; padding: 4px 0; transition: opacity 0.3s; }
   .hero-special:hover { opacity: 0.8; }
   .hero-special[aria-expanded="true"] { opacity: 0.8; }
-  .special-pop { position: fixed; z-index: 70; width: min(360px, calc(100vw - 2 * var(--gutter))); background: var(--bg); color: var(--fg); border: 1px solid var(--gold); border-radius: 12px; padding: 22px 24px 24px; display: grid; gap: 8px; box-shadow: 0 24px 60px rgba(0,0,0,0.5); }
+  /* The width tracks the screen rather than sitting at a fixed 360. The
+     heading inside is --t-h3, which grows with the viewport, so a fixed box
+     meant that on a large monitor "Up to 4 weeks free" broke across three
+     lines inside a panel the size of a phone. Tied to vw it stays roughly
+     four words to a line at every size, and the calc keeps it inside the
+     gutters on a phone where the clamp floor would otherwise be too wide. */
+  .special-pop {
+    position: fixed; z-index: 70;
+    width: min(clamp(400px, 26vw, 620px), calc(100vw - 2 * var(--gutter)));
+    background: var(--bg); color: var(--fg);
+    /* The same hairline the stat grids are drawn with — Walk Score, homes on
+       floors, distinct layouts, the pet rows. Gold on all four sides made the
+       panel shout as loudly as the offer inside it; the eyebrow is gold and
+       the button is gold, and that is enough. */
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    padding: clamp(28px, 2vw, 40px) clamp(30px, 2.2vw, 44px) clamp(30px, 2.2vw, 44px);
+    display: grid; gap: 12px;
+    box-shadow: 0 24px 60px rgba(0,0,0,0.5);
+  }
   .special-pop[hidden] { display: none; }
   .special-eyebrow { color: var(--gold); }
-  .special-title { font-size: var(--t-h3); line-height: 1.05; letter-spacing: -0.03em; font-weight: 500; margin-top: 4px; }
-  .special-note { color: var(--fg-2); }
-  .special-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
-  .special-x { position: absolute; top: 8px; right: 10px; width: clamp(32px, 2.2vw, 38px); height: clamp(32px, 2.2vw, 38px); color: var(--fg-2); font-size: var(--t-small); }
+  .special-title { font-size: var(--t-h3); line-height: 1.05; letter-spacing: -0.03em; font-weight: 500; margin-top: 6px; text-wrap: balance; }
+  .special-note { color: var(--fg-2); max-width: 42ch; }
+  .special-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
+  .special-x { position: absolute; top: 10px; right: 12px; width: clamp(32px, 2.2vw, 38px); height: clamp(32px, 2.2vw, 38px); color: var(--fg-2); font-size: var(--t-small); }
   .special-x:hover { color: var(--fg); }
   .hero-fact dd { margin: 0; color: var(--fg); }
   .hero-media { position: relative; }
   .hero-media-clip { height: clamp(300px, 66vh, 960px); overflow: hidden; }
   .hero-media-clip { position: relative; }
-  .hero-video { width: 100%; height: 118%; object-fit: cover; object-position: 50% 45%; margin-top: -9%; will-change: transform; background: var(--bg-2); }
-  .hero-shade { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(11,11,11,0.55) 0%, rgba(11,11,11,0.28) 45%, rgba(11,11,11,0.6) 100%); pointer-events: none; }
+  /* The loop reads dark, but the file is not: measured, its own mean
+     luminance is 126 against 143 for the photographs either side of it. What
+     was darkening it was the shade below, which averaged 43% black across the
+     frame. So most of this is taking that off, and only a little is lifting
+     the video itself — a big brightness() would clip the sky rather than
+     open the shadows. */
+  .hero-video { width: 100%; height: 118%; object-fit: cover; object-position: 50% 45%; margin-top: -9%; will-change: transform; background: var(--bg-2); filter: brightness(1.18) contrast(0.98) saturate(1.04); }
+  /* A vignette now, not a scrim. Nothing is set over the video — the hero
+     type sits above it in its own block — so this is only here to settle the
+     frame against the page at its edges. */
+  .hero-shade { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(11,11,11,0.14) 0%, rgba(11,11,11,0.04) 45%, rgba(11,11,11,0.2) 100%); pointer-events: none; }
   .hero-media { border-bottom: 1px solid var(--line); }
 
   @media (max-width: 1024px) {

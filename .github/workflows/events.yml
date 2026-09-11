@@ -7,8 +7,17 @@ name: Events feed
 # before anyone looks. A run that finds nothing new writes nothing, commits
 # nothing and triggers no deploy.
 #
-# Two sources, and only one of them needs anything set up:
+# Four sources, and only one of them needs anything set up:
 #
+#   Visit Seattle                    no key. Their REST endpoint carries a
+#                                    region, and one of the regions is exactly
+#                                    "Queen Anne / Seattle Center".
+#   City of Seattle                  no key. The City publishes its calendar
+#                                    through Trumba, which syndicates it as
+#                                    JSON; this filters to the neighbourhoods
+#                                    around the building. Parks programmes,
+#                                    council hearings, work parties — the
+#                                    civic half of what is on.
 #   Queen Anne Chamber of Commerce   no key. Works out of the box, and it is
 #                                    the half that makes the page about the
 #                                    neighbourhood rather than about arenas.
