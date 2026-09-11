@@ -17,6 +17,11 @@
 //                        This is the half that makes the page about Queen Anne
 //                        rather than about arenas. No coordinates, so these
 //                        list on the page and not on the map.
+//   seattle-center       the campus across the street, and the only keyless
+//                        source that carries coordinates — so these plot on
+//                        the map. No feed exists: the listings are read from
+//                        their own calendar page, which serves them in HTML
+//                        and publishes no robots.txt. See that file.
 //   queen-anne-chamber    the best listings there are, and unreachable: see
 //                        the note at the top of that file.
 //
@@ -39,9 +44,10 @@ import { dirname, join } from 'node:path';
 import * as ticketmaster from './sources/ticketmaster.mjs';
 import * as queenAnneChamber from './sources/queen-anne-chamber.mjs';
 import * as visitSeattle from './sources/visit-seattle.mjs';
+import * as seattleCenter from './sources/seattle-center.mjs';
 import * as seattleGov from './sources/seattle-gov.mjs';
 
-const SOURCES = [visitSeattle, seattleGov, queenAnneChamber, ticketmaster];
+const SOURCES = [visitSeattle, seattleGov, seattleCenter, queenAnneChamber, ticketmaster];
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
 const configPath = join(root, 'src/site/site.config.json');

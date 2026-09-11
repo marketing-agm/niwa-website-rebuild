@@ -107,6 +107,31 @@ export function plain(html, limit = 0) {
   return s;
 }
 
+/** The same, for a source that publishes HTML rather than a feed.
+ *
+ *  Sent with a user-agent that says who this is and links the repository. A
+ *  site that would rather not be read by a script is entitled to say so, and
+ *  it can only say so to a client that identifies itself. */
+export async function getText(url, { timeoutMs = 20000, headers = {} } = {}) {
+  const ctl = new AbortController();
+  const t = setTimeout(() => ctl.abort(), timeoutMs);
+  try {
+    const res = await fetch(url, {
+      signal: ctl.signal,
+      redirect: 'follow',
+      headers: {
+        accept: 'text/html,application/xhtml+xml',
+        'user-agent': 'niwa-website-rebuild events (+https://github.com/marketing-agm/niwa-website-rebuild)',
+        ...headers,
+      },
+    });
+    if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
+    return await res.text();
+  } finally {
+    clearTimeout(t);
+  }
+}
+
 /** A fetch that times out rather than hanging a scheduled job. */
 export async function getJson(url, { timeoutMs = 20000, headers = {} } = {}) {
   const ctl = new AbortController();
