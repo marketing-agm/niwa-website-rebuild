@@ -1,8 +1,9 @@
 {
-  "updated": "2026-09-11T22:35:18.917Z",
+  "updated": "2026-09-11T23:14:36.330Z",
   "sources": [
     "Visit Seattle",
     "City of Seattle",
+    "Seattle Center",
     "Ticketmaster"
   ],
   "window": {
@@ -27,6 +28,24 @@
       "image": "https://s1.ticketm.net/dam/a/6ba/cca88b1c-9704-49ea-83ff-23d0e4c246ba_1665171_RETINA_LANDSCAPE_16_9.jpg",
       "priceFrom": null,
       "source": "ticketmaster"
+    },
+    {
+      "id": "sc-46399",
+      "title": "Seattle Center Sculpture Walk 2026",
+      "start": "2026-09-11T07:00:00Z",
+      "end": null,
+      "allDay": true,
+      "venue": {
+        "name": "Seattle Center",
+        "address": null,
+        "lat": 47.6219473,
+        "lng": -122.3517443
+      },
+      "category": "Museums & galleries",
+      "url": "https://www.seattlecenter.com/events/event-calendar/seattle-center-sculpture-walk-2026-x46399",
+      "image": null,
+      "priceFrom": 0,
+      "source": "seattle-center"
     },
     {
       "id": "tm-vvG1HZ_eEqqzQq",
@@ -81,6 +100,24 @@
       "image": null,
       "priceFrom": null,
       "source": "seattle-gov"
+    },
+    {
+      "id": "sc-9-11-remembrance-ceremony-25th-anniversa",
+      "title": "9/11 Remembrance Ceremony - 25th Anniversary",
+      "start": "2026-09-11T19:00:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "Fisher Pavilion",
+        "address": null,
+        "lat": 47.6211235,
+        "lng": -122.352168
+      },
+      "category": null,
+      "url": "https://www.seattlecenter.com/events/event-calendar/9/11-remembrance-ceremony-25th-anniversary",
+      "image": null,
+      "priceFrom": 0,
+      "source": "seattle-center"
     },
     {
       "id": "sg-206884195",
@@ -297,6 +334,42 @@
       "image": "https://s1.ticketm.net/dam/c/df8/81eadad8-4449-412e-a2b1-3d8bbb78edf8_106181_RETINA_LANDSCAPE_16_9.jpg",
       "priceFrom": null,
       "source": "ticketmaster"
+    },
+    {
+      "id": "sc-46400",
+      "title": "Seattle Center Sculpture Walk 2026",
+      "start": "2026-09-12T07:00:00Z",
+      "end": null,
+      "allDay": true,
+      "venue": {
+        "name": "Seattle Center",
+        "address": null,
+        "lat": 47.6219473,
+        "lng": -122.3517443
+      },
+      "category": "Museums & galleries",
+      "url": "https://www.seattlecenter.com/events/event-calendar/seattle-center-sculpture-walk-2026-x46400",
+      "image": null,
+      "priceFrom": 0,
+      "source": "seattle-center"
+    },
+    {
+      "id": "sc-47102",
+      "title": "Washington Home Show",
+      "start": "2026-09-12T07:00:00Z",
+      "end": null,
+      "allDay": true,
+      "venue": {
+        "name": "Seattle Center Exhibition Hall",
+        "address": null,
+        "lat": 47.6240056,
+        "lng": -122.351606
+      },
+      "category": null,
+      "url": "https://www.seattlecenter.com/events/event-calendar/washington-home-show-x47102",
+      "image": null,
+      "priceFrom": null,
+      "source": "seattle-center"
     },
     {
       "id": "sg-206375559",
@@ -605,6 +678,60 @@
       "source": "ticketmaster"
     },
     {
+      "id": "sc-47103",
+      "title": "Washington Home Show",
+      "start": "2026-09-13T17:00:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "Seattle Center Exhibition Hall",
+        "address": null,
+        "lat": 47.6240056,
+        "lng": -122.351606
+      },
+      "category": null,
+      "url": "https://www.seattlecenter.com/events/event-calendar/washington-home-show-x47103",
+      "image": null,
+      "priceFrom": null,
+      "source": "seattle-center"
+    },
+    {
+      "id": "sc-live-aloha-hawaiian-cultural-festival",
+      "title": "Live Aloha Hawaiian Cultural Festival",
+      "start": "2026-09-13T18:00:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "Armory, Seattle, WA 98109",
+        "address": null,
+        "lat": 47.6215514,
+        "lng": -122.3509426
+      },
+      "category": "Festivals",
+      "url": "https://www.seattlecenter.com/events/event-calendar/live-aloha-hawaiian-cultural-festival",
+      "image": null,
+      "priceFrom": 0,
+      "source": "seattle-center"
+    },
+    {
+      "id": "sc-weezer",
+      "title": "Weezer",
+      "start": "2026-09-14T01:00:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "Climate Pledge Arena",
+        "address": null,
+        "lat": 47.6221,
+        "lng": -122.353988
+      },
+      "category": null,
+      "url": "https://www.seattlecenter.com/events/event-calendar/weezer",
+      "image": null,
+      "priceFrom": null,
+      "source": "seattle-center"
+    },
+    {
       "id": "tm-Z7r9jZ1A7P40I",
       "title": "Chanpan w/ SHEBAD",
       "start": "2026-09-14T02:00:00Z",
@@ -731,274 +858,76 @@
       "source": "seattle-gov"
     },
     {
-      "id": "sg-202724440",
-      "title": "Zumba",
-      "start": "2026-09-15T00:30:00.000Z",
+      "id": "sc-artsfund-2026-celebration-of-the-arts",
+      "title": "Artsfund 2026 Celebration of the Arts",
+      "start": "2026-09-18T00:00:00Z",
       "end": null,
       "allDay": false,
       "venue": {
-        "name": "Freeway Park",
-        "address": "Freeway Park, 700 Seneca St, Seattle, WA 98101",
-        "lat": null,
-        "lng": null
-      },
-      "category": null,
-      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D202724440",
-      "image": null,
-      "priceFrom": null,
-      "source": "seattle-gov"
-    },
-    {
-      "id": "tm-Z7r9jZ1AAZA16",
-      "title": "greek",
-      "start": "2026-09-15T02:00:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "Neumos",
-        "address": "925 East Pike Street",
-        "lat": 47.610802,
-        "lng": -122.302803
-      },
-      "category": "Music",
-      "url": "https://www.ticketmaster.com/event/Z7r9jZ1AAZA16",
-      "image": "https://s1.ticketm.net/dam/a/17a/a6d40ab3-ba61-4ba4-9a58-86493469717a_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": null,
-      "source": "ticketmaster"
-    },
-    {
-      "id": "tm-rZ7HnEZ1Af0dOS",
-      "title": "Mustard Service, Pity Party (Girls Club) , Manwolves , Chicano Mosh",
-      "start": "2026-09-15T02:00:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "The Crocodile",
-        "address": "2505 1st Ave",
-        "lat": 47.61458,
-        "lng": -122.34915
-      },
-      "category": "Music",
-      "url": "https://www.ticketweb.com/event/mustard-service-pity-party-girls-the-crocodile-tickets/14903833",
-      "image": "https://s1.ticketm.net/dam/c/fbc/b293c0ad-c904-4215-bc59-8d7f2414dfbc_106141_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": 37.35,
-      "source": "ticketmaster"
-    },
-    {
-      "id": "tm-rZ7HnEZ1AfxZaN",
-      "title": "Boys Go To Jupiter, Alt Bloom",
-      "start": "2026-09-15T03:00:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "Baba Yaga",
-        "address": "124 S Washington St",
-        "lat": 47.601427,
-        "lng": -122.333146
-      },
-      "category": "Music",
-      "url": "https://www.ticketweb.com/event/boys-go-to-jupiter-alt-baba-yaga-tickets/14880263",
-      "image": "https://s1.ticketm.net/dam/a/e28/ee2232a1-dd03-472c-be58-cc04969c1e28_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": 28.7,
-      "source": "ticketmaster"
-    },
-    {
-      "id": "sg-206807822",
-      "title": "Community CPR class at International District/Chinatown Community Center",
-      "start": "2026-09-15T12:15:00.000Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "International District/Chinatown Community…",
+        "name": "Marion Oliver McCaw Hall",
         "address": null,
-        "lat": null,
-        "lng": null
+        "lat": 47.6239994,
+        "lng": -122.3502714
       },
-      "category": "Classes",
-      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D206807822",
+      "category": "Festivals",
+      "url": "https://www.seattlecenter.com/events/event-calendar/artsfund-2026-celebration-of-the-arts",
       "image": null,
       "priceFrom": null,
-      "source": "seattle-gov"
+      "source": "seattle-center"
     },
     {
-      "id": "sg-208464259",
-      "title": "Public Safety Committee - Special Meeting",
-      "start": "2026-09-15T16:30:00.000Z",
+      "id": "sc-artists-at-the-center-path-with-art",
+      "title": "Artists at the Center: Path With Art",
+      "start": "2026-09-18T01:00:00Z",
       "end": null,
       "allDay": false,
       "venue": {
-        "name": "Council Chambers",
-        "address": "600 4th Ave, Seattle, WA 98104",
-        "lat": null,
-        "lng": null
+        "name": "Cornish Playhouse",
+        "address": null,
+        "lat": 47.6241187,
+        "lng": -122.3524483
       },
-      "category": "Public meetings",
-      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D208464259",
+      "category": "Museums & galleries",
+      "url": "https://www.seattlecenter.com/events/event-calendar/artists-at-the-center-path-with-art",
       "image": null,
-      "priceFrom": null,
-      "source": "seattle-gov"
+      "priceFrom": 0,
+      "source": "seattle-center"
     },
     {
-      "id": "sg-202724463",
-      "title": "Tuesday Senior Exercise",
-      "start": "2026-09-15T17:00:00.000Z",
+      "id": "sc-seattle-storm-vs-las-vegas-aces",
+      "title": "Seattle Storm vs Las Vegas Aces",
+      "start": "2026-09-18T01:00:00Z",
       "end": null,
       "allDay": false,
       "venue": {
-        "name": "Hing Hay Park",
-        "address": "Hing Hay Park, 423 Maynard Ave S, Seattle, WA 98104",
-        "lat": null,
-        "lng": null
+        "name": "Climate Pledge Arena",
+        "address": null,
+        "lat": 47.6221,
+        "lng": -122.353988
       },
       "category": null,
-      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D202724463",
+      "url": "https://www.seattlecenter.com/events/event-calendar/seattle-storm-vs-las-vegas-aces",
       "image": null,
       "priceFrom": null,
-      "source": "seattle-gov"
+      "source": "seattle-center"
     },
     {
-      "id": "sg-194808567",
-      "title": "City Council",
-      "start": "2026-09-15T21:00:00.000Z",
+      "id": "sc-johnny-blue-skies-the-dark-clouds-mutiny",
+      "title": "Johnny Blue Skies & the Dark Clouds: Mutiny After Midnight",
+      "start": "2026-09-19T03:00:00Z",
       "end": null,
       "allDay": false,
       "venue": {
-        "name": "Council Chambers",
-        "address": "600 4th Ave, Seattle, WA 98104",
-        "lat": null,
-        "lng": null
-      },
-      "category": "Public meetings",
-      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D194808567",
-      "image": null,
-      "priceFrom": null,
-      "source": "seattle-gov"
-    },
-    {
-      "id": "sg-207262467",
-      "title": "Public Engagement Session: Denny-Blaine Park Supplemental Use Guidelines feedback session",
-      "start": "2026-09-16T01:00:00.000Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "Miller Community Center",
-        "address": "330 19th Ave E, Seattle, WA 98112",
-        "lat": null,
-        "lng": null
+        "name": "Climate Pledge Arena",
+        "address": null,
+        "lat": 47.6221,
+        "lng": -122.353988
       },
       "category": null,
-      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D207262467",
+      "url": "https://www.seattlecenter.com/events/event-calendar/johnny-blue-skies-and-the-dark-clouds-mutiny-after-midnight",
       "image": null,
       "priceFrom": null,
-      "source": "seattle-gov"
-    },
-    {
-      "id": "tm-Z7r9jZ1AAZJaS",
-      "title": "A Chorus Line",
-      "start": "2026-09-16T02:00:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "5th Avenue Theatre",
-        "address": "1308 5th Ave",
-        "lat": 47.6115,
-        "lng": -122.334297
-      },
-      "category": "Arts & theatre",
-      "url": "https://www.ticketmaster.com/event/Z7r9jZ1AAZJaS",
-      "image": "https://s1.ticketm.net/dam/a/1d1/30fb5437-e219-4e3f-b317-f30027f071d1_521301_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": null,
-      "source": "ticketmaster"
-    },
-    {
-      "id": "tm-vvG1HZ_awJZtzy",
-      "title": "Boz Scaggs Rhythm Review 2026",
-      "start": "2026-09-16T02:30:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "Paramount Theatre",
-        "address": "911 Pine St",
-        "lat": 47.613566,
-        "lng": -122.33191
-      },
-      "category": "Music",
-      "url": "https://www.ticketmaster.com/boz-scaggs-rhythm-review-2026-seattle-washington-09-15-2026/event/0F00649CA6029E39",
-      "image": "https://s1.ticketm.net/dam/a/c20/609fc235-8849-40ef-86ff-38b231705c20_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": null,
-      "source": "ticketmaster"
-    },
-    {
-      "id": "tm-rZ7HnEZ1AfOPqd",
-      "title": "Sub Urban: The Bell Tolls Tour",
-      "start": "2026-09-16T02:30:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "Baba Yaga",
-        "address": "124 S Washington St",
-        "lat": 47.601427,
-        "lng": -122.333146
-      },
-      "category": "Music",
-      "url": "https://www.ticketweb.com/event/sub-urban-the-bell-tolls-baba-yaga-tickets/14825743",
-      "image": "https://s1.ticketm.net/dam/a/342/174fcbe4-c776-421b-8d67-c88b79d25342_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": 32.3,
-      "source": "ticketmaster"
-    },
-    {
-      "id": "tm-Z7r9jZ1AAZ8GI",
-      "title": "Dogstar - 21+",
-      "start": "2026-09-16T03:00:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "The Showbox",
-        "address": "1426 1st Ave.",
-        "lat": 47.602402,
-        "lng": -122.325996
-      },
-      "category": "Music",
-      "url": "https://www.ticketmaster.com/event/Z7r9jZ1AAZ8GI",
-      "image": "https://s1.ticketm.net/dam/a/b05/86458cb4-3b36-4038-a164-665231047b05_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": null,
-      "source": "ticketmaster"
-    },
-    {
-      "id": "sg-195091681",
-      "title": "Land Use & Sustainability Committee",
-      "start": "2026-09-16T16:30:00.000Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "Council Chambers",
-        "address": "600 4th Ave #2, Seattle, WA 98104",
-        "lat": null,
-        "lng": null
-      },
-      "category": "Public meetings",
-      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D195091681",
-      "image": null,
-      "priceFrom": null,
-      "source": "seattle-gov"
-    },
-    {
-      "id": "sg-202724476",
-      "title": "Chinese Dance",
-      "start": "2026-09-16T17:00:00.000Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "Hing Hay Park",
-        "address": "Hing Hay Park, 423 Maynard Ave S, Seattle, WA 98104",
-        "lat": null,
-        "lng": null
-      },
-      "category": "Arts & theatre",
-      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D202724476",
-      "image": null,
-      "priceFrom": null,
-      "source": "seattle-gov"
+      "source": "seattle-center"
     },
     {
       "id": "vs-442212620",
@@ -1017,6 +946,78 @@
       "image": null,
       "priceFrom": null,
       "source": "visit-seattle"
+    },
+    {
+      "id": "sc-st-jude-walk-seattle",
+      "title": "St. Jude Walk Seattle",
+      "start": "2026-09-19T15:00:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "International Fountain",
+        "address": null,
+        "lat": 47.6219473,
+        "lng": -122.3517443
+      },
+      "category": "Tours",
+      "url": "https://www.seattlecenter.com/events/event-calendar/st-jude-walk-seattle",
+      "image": null,
+      "priceFrom": 0,
+      "source": "seattle-center"
+    },
+    {
+      "id": "sc-50381",
+      "title": "Sea Mar Fiestas Patrias 2026",
+      "start": "2026-09-19T19:00:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "Armory, Seattle, WA 98109",
+        "address": null,
+        "lat": 47.6215514,
+        "lng": -122.3509426
+      },
+      "category": null,
+      "url": "https://www.seattlecenter.com/events/event-calendar/sea-mar-fiestas-patrias-2026-x50381",
+      "image": null,
+      "priceFrom": 0,
+      "source": "seattle-center"
+    },
+    {
+      "id": "sc-48926",
+      "title": "Seattle Kraken vs Vancouver Canucks",
+      "start": "2026-09-20T01:00:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "Climate Pledge Arena",
+        "address": null,
+        "lat": 47.6221,
+        "lng": -122.353988
+      },
+      "category": "Sports",
+      "url": "https://www.seattlecenter.com/events/event-calendar/seattle-kraken-vs-vancouver-canucks-x48926",
+      "image": null,
+      "priceFrom": null,
+      "source": "seattle-center"
+    },
+    {
+      "id": "sc-50382",
+      "title": "Sea Mar Fiestas Patrias 2026",
+      "start": "2026-09-20T18:00:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "Armory, Seattle, WA 98109",
+        "address": null,
+        "lat": 47.6215514,
+        "lng": -122.3509426
+      },
+      "category": null,
+      "url": "https://www.seattlecenter.com/events/event-calendar/sea-mar-fiestas-patrias-2026-x50382",
+      "image": null,
+      "priceFrom": 0,
+      "source": "seattle-center"
     },
     {
       "id": "vs-2026-northwest-tea-festival",
