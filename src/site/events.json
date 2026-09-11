@@ -1,5 +1,5 @@
 {
-  "updated": "2026-09-11T23:14:36.330Z",
+  "updated": "2026-09-11T23:19:06.686Z",
   "sources": [
     "Visit Seattle",
     "City of Seattle",
@@ -480,24 +480,6 @@
       "source": "seattle-gov"
     },
     {
-      "id": "sg-207479261",
-      "title": "Planetary Dance",
-      "start": "2026-09-12T21:00:00.000Z",
-      "end": "2026-09-13T01:00:00.000Z",
-      "allDay": false,
-      "venue": {
-        "name": "Freeway Park - Seneca Plaza",
-        "address": "Seneca Plaza, 600 Seneca St, Seattle, WA 98101",
-        "lat": null,
-        "lng": null
-      },
-      "category": "Arts & theatre",
-      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D207479261",
-      "image": null,
-      "priceFrom": null,
-      "source": "seattle-gov"
-    },
-    {
       "id": "sg-203539979",
       "title": "Nakisa Dehpanah | Between Bodies",
       "start": "2026-09-13T00:00:00.000Z",
@@ -642,24 +624,6 @@
       "source": "ticketmaster"
     },
     {
-      "id": "vs-442212615",
-      "title": "Festal: Live Aloha Hawaiian Cultural Festival",
-      "start": "2026-09-13T07:00:00Z",
-      "end": null,
-      "allDay": true,
-      "venue": {
-        "name": "Seattle Center",
-        "address": null,
-        "lat": null,
-        "lng": null
-      },
-      "category": "Festivals & Special Events",
-      "url": "https://www.seattlecenter.com/events/featured-events/festal/live-aloha-hawaiian-cultural-festival",
-      "image": null,
-      "priceFrom": null,
-      "source": "visit-seattle"
-    },
-    {
       "id": "tm-vvG1HZ_8ns0QCH",
       "title": "Lumen Field Stadium Tours",
       "start": "2026-09-13T07:00:00Z",
@@ -702,7 +666,7 @@
       "end": null,
       "allDay": false,
       "venue": {
-        "name": "Armory, Seattle, WA 98109",
+        "name": "Armory",
         "address": null,
         "lat": 47.6215514,
         "lng": -122.3509426
@@ -858,6 +822,96 @@
       "source": "seattle-gov"
     },
     {
+      "id": "sg-202724440",
+      "title": "Zumba",
+      "start": "2026-09-15T00:30:00.000Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "Freeway Park",
+        "address": "Freeway Park, 700 Seneca St, Seattle, WA 98101",
+        "lat": null,
+        "lng": null
+      },
+      "category": null,
+      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D202724440",
+      "image": null,
+      "priceFrom": null,
+      "source": "seattle-gov"
+    },
+    {
+      "id": "tm-Z7r9jZ1AAZA16",
+      "title": "greek",
+      "start": "2026-09-15T02:00:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "Neumos",
+        "address": "925 East Pike Street",
+        "lat": 47.610802,
+        "lng": -122.302803
+      },
+      "category": "Music",
+      "url": "https://www.ticketmaster.com/event/Z7r9jZ1AAZA16",
+      "image": "https://s1.ticketm.net/dam/a/17a/a6d40ab3-ba61-4ba4-9a58-86493469717a_RETINA_LANDSCAPE_16_9.jpg",
+      "priceFrom": null,
+      "source": "ticketmaster"
+    },
+    {
+      "id": "tm-rZ7HnEZ1Af0dOS",
+      "title": "Mustard Service, Pity Party (Girls Club) , Manwolves , Chicano Mosh",
+      "start": "2026-09-15T02:00:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "The Crocodile",
+        "address": "2505 1st Ave",
+        "lat": 47.61458,
+        "lng": -122.34915
+      },
+      "category": "Music",
+      "url": "https://www.ticketweb.com/event/mustard-service-pity-party-girls-the-crocodile-tickets/14903833",
+      "image": "https://s1.ticketm.net/dam/c/fbc/b293c0ad-c904-4215-bc59-8d7f2414dfbc_106141_RETINA_LANDSCAPE_16_9.jpg",
+      "priceFrom": 37.35,
+      "source": "ticketmaster"
+    },
+    {
+      "id": "tm-rZ7HnEZ1AfxZaN",
+      "title": "Boys Go To Jupiter, Alt Bloom",
+      "start": "2026-09-15T03:00:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "Baba Yaga",
+        "address": "124 S Washington St",
+        "lat": 47.601427,
+        "lng": -122.333146
+      },
+      "category": "Music",
+      "url": "https://www.ticketweb.com/event/boys-go-to-jupiter-alt-baba-yaga-tickets/14880263",
+      "image": "https://s1.ticketm.net/dam/a/e28/ee2232a1-dd03-472c-be58-cc04969c1e28_RETINA_LANDSCAPE_16_9.jpg",
+      "priceFrom": 28.7,
+      "source": "ticketmaster"
+    },
+    {
+      "id": "sg-206807822",
+      "title": "Community CPR class at International District/Chinatown Community Center",
+      "start": "2026-09-15T12:15:00.000Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "International District/Chinatown Community…",
+        "address": null,
+        "lat": null,
+        "lng": null
+      },
+      "category": "Classes",
+      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D206807822",
+      "image": null,
+      "priceFrom": null,
+      "source": "seattle-gov"
+    },
+    {
       "id": "sc-artsfund-2026-celebration-of-the-arts",
       "title": "Artsfund 2026 Celebration of the Arts",
       "start": "2026-09-18T00:00:00Z",
@@ -905,7 +959,7 @@
         "lat": 47.6221,
         "lng": -122.353988
       },
-      "category": null,
+      "category": "Sports",
       "url": "https://www.seattlecenter.com/events/event-calendar/seattle-storm-vs-las-vegas-aces",
       "image": null,
       "priceFrom": null,
@@ -928,24 +982,6 @@
       "image": null,
       "priceFrom": null,
       "source": "seattle-center"
-    },
-    {
-      "id": "vs-442212620",
-      "title": "Festal: Sea Mar Fiestas Patrias",
-      "start": "2026-09-19T07:00:00Z",
-      "end": "2026-09-20T07:00:00Z",
-      "allDay": true,
-      "venue": {
-        "name": "Seattle Center",
-        "address": null,
-        "lat": null,
-        "lng": null
-      },
-      "category": "Festivals & Special Events",
-      "url": "https://www.seattlecenter.com/events/featured-events/festal/sea-mar-fiestas-patrias",
-      "image": null,
-      "priceFrom": null,
-      "source": "visit-seattle"
     },
     {
       "id": "sc-st-jude-walk-seattle",
@@ -972,33 +1008,15 @@
       "end": null,
       "allDay": false,
       "venue": {
-        "name": "Armory, Seattle, WA 98109",
+        "name": "Armory",
         "address": null,
         "lat": 47.6215514,
         "lng": -122.3509426
       },
-      "category": null,
+      "category": "Festivals",
       "url": "https://www.seattlecenter.com/events/event-calendar/sea-mar-fiestas-patrias-2026-x50381",
       "image": null,
       "priceFrom": 0,
-      "source": "seattle-center"
-    },
-    {
-      "id": "sc-48926",
-      "title": "Seattle Kraken vs Vancouver Canucks",
-      "start": "2026-09-20T01:00:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "Climate Pledge Arena",
-        "address": null,
-        "lat": 47.6221,
-        "lng": -122.353988
-      },
-      "category": "Sports",
-      "url": "https://www.seattlecenter.com/events/event-calendar/seattle-kraken-vs-vancouver-canucks-x48926",
-      "image": null,
-      "priceFrom": null,
       "source": "seattle-center"
     },
     {
@@ -1008,52 +1026,34 @@
       "end": null,
       "allDay": false,
       "venue": {
-        "name": "Armory, Seattle, WA 98109",
+        "name": "Armory",
         "address": null,
         "lat": 47.6215514,
         "lng": -122.3509426
       },
-      "category": null,
+      "category": "Festivals",
       "url": "https://www.seattlecenter.com/events/event-calendar/sea-mar-fiestas-patrias-2026-x50382",
       "image": null,
       "priceFrom": 0,
       "source": "seattle-center"
     },
     {
-      "id": "vs-2026-northwest-tea-festival",
-      "title": "2026 Northwest Tea Festival",
-      "start": "2026-09-26T07:00:00Z",
-      "end": "2026-09-27T07:00:00Z",
+      "id": "sc-journey-final-frontier-tour",
+      "title": "Journey: Final Frontier Tour",
+      "start": "2026-09-21T07:00:00Z",
+      "end": null,
       "allDay": true,
       "venue": {
-        "name": "Seattle Center Exhibition Hall",
+        "name": "Climate Pledge Arena",
         "address": null,
-        "lat": null,
-        "lng": null
+        "lat": 47.6221,
+        "lng": -122.353988
       },
-      "category": "Festivals & Special Events",
-      "url": null,
+      "category": "Tours",
+      "url": "https://www.seattlecenter.com/events/event-calendar/journey-final-frontier-tour",
       "image": null,
       "priceFrom": null,
-      "source": "visit-seattle"
-    },
-    {
-      "id": "vs-442212625",
-      "title": "Festal: The Italian Festival",
-      "start": "2026-09-26T07:00:00Z",
-      "end": "2026-09-27T07:00:00Z",
-      "allDay": true,
-      "venue": {
-        "name": "Seattle Center",
-        "address": null,
-        "lat": null,
-        "lng": null
-      },
-      "category": "Festivals & Special Events",
-      "url": "https://www.seattlecenter.com/events/featured-events/festal/the-italian-festival",
-      "image": null,
-      "priceFrom": null,
-      "source": "visit-seattle"
+      "source": "seattle-center"
     },
     {
       "id": "vs-442213253",
