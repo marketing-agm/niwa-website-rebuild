@@ -65,8 +65,11 @@ const range = (a: number, b: number) => (a === b ? int(a) : `${int(a)}–${int(b
                   </Fragment>
                 )}
               </svg>
+              {/* Joined, not concatenated: cats carry no weight limit, and the
+                  old template put a separator there whether or not there was
+                  anything to separate. */}
               <span class="small pet-txt">
-                <b>{t.name}</b> · {t.limit} · {t.rent}{t.note ? ` · ${t.note.toLowerCase()}` : ''}
+                <b>{t.name}</b>{[t.limit, t.rent, t.note?.toLowerCase()].filter(Boolean).map((bit: string) => <Fragment> · {bit}</Fragment>)}
               </span>
             </li>
           ))}

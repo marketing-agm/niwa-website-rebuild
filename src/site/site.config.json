@@ -293,7 +293,6 @@
     "types": [
       {
         "name": "Cats",
-        "limit": "20 lb weight limit",
         "rent": "$50 / month"
       },
       {

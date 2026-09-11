@@ -13,7 +13,11 @@ const items = slugs.map(photo);
     itself. The section keeps a label for the accessibility tree, which is the
     one reader that cannot see what the pictures are. */}
 <section class="section gallery" id="gallery" data-gallery aria-label="The building and the neighborhood, photographed">
-  <div class="gal-viewport">
+  {/* A window you scroll, at every width. It used to pin the page on desktop
+      and scrub the strip sideways as you scrolled, which meant you could not
+      get past the section without going through all ten photographs. Now the
+      bar under it is a real scrollbar: drag it, flick it, or leave it. */}
+  <div class="gal-viewport" tabindex="0" role="group" aria-label="Photographs, scroll sideways" data-gal-vp>
     <div class="gal-track" data-gallery-track>
       {items.map((p) => (
         <figure class="gal-item" style={`--ar:${(p.img.width / p.img.height).toFixed(3)}`}>
@@ -23,24 +27,113 @@ const items = slugs.map(photo);
         </figure>
       ))}
     </div>
-    <div class="gal-progress" aria-hidden="true"><i data-gallery-progress></i></div>
+  </div>
+  {/* Our own bar, not the browser's. Chromium ignores ::-webkit-scrollbar once
+      the standard scrollbar properties are set, and what it gives instead is
+      an overlay that takes a pixel of layout and fades out when you stop —
+      which is not a bar you can reach for. This one is always there, sized to
+      the share of the strip on screen, and can be dragged. The thumb is in
+      the markup rather than built in script, because scoped styles never
+      reach an element JavaScript creates. */}
+  <div class="gal-bar" data-gal-bar>
+    <div class="gal-thumb" data-gal-thumb role="scrollbar" tabindex="0"
+         aria-controls="gallery" aria-orientation="horizontal" aria-label="Scroll the photographs"></div>
   </div>
 </section>
 
 <style>
-  .gal-viewport { position: relative; overflow: hidden; border-top: 1px solid var(--line); padding: var(--gap) 0 calc(var(--gap) + 14px); }
+  .gal-viewport {
+    position: relative; border-top: 1px solid var(--line);
+    padding: var(--gap) 0 calc(var(--gap) + 6px);
+    overflow-x: auto; overflow-y: hidden;
+    scroll-snap-type: x proximity;
+    scrollbar-width: none;
+  }
+  .gal-viewport::-webkit-scrollbar { display: none; }
+  .gal-item { scroll-snap-align: start; scroll-margin-left: var(--gutter); }
+  /* Keyboard: the strip is focusable, so arrow keys scroll it. Without the
+     outline there is no way to tell that focus has landed there. */
+  .gal-viewport:focus-visible { outline: 1px solid var(--gold); outline-offset: -1px; }
+
+  .gal-bar { margin: 14px var(--gutter) 0; height: 4px; background: var(--line); border-radius: 2px; }
+  .gal-thumb { height: 100%; width: 20%; background: var(--fg-3); border-radius: 2px; cursor: grab; transition: background-color 0.2s; }
+  @media (hover: hover) { .gal-thumb:hover { background: var(--fg-2); } }
+  .gal-thumb:focus-visible { outline: 1px solid var(--gold); outline-offset: 2px; }
+  .gal-bar.is-dragging .gal-thumb { background: var(--fg); cursor: grabbing; }
+  /* A finger has the photographs themselves to push, and a 4px target is not
+     one. The bar stays as the indicator; dragging is a pointer affordance. */
+  @media (pointer: coarse) { .gal-thumb { cursor: default; } }
   .gal-track { display: flex; gap: var(--gap); padding: 0 var(--gutter); width: max-content; will-change: transform; }
   /* The pictures carry no captions; the room name lives in the alt text so
      screen readers still get it. One child, so no track gap to reserve. */
   .gal-item { --h: clamp(280px, 60vh, 760px); display: block; flex: 0 0 auto; width: calc(var(--h) * var(--ar)); max-width: calc(100vw - var(--gutter) * 2); }
   .gal-img { height: var(--h); overflow: hidden; background: var(--bg-2); }
   .gal-img :global(img) { width: 100%; height: 100%; object-fit: cover; }
-  .gal-progress { position: absolute; left: var(--gutter); right: var(--gutter); bottom: 0; height: 1px; background: var(--line); }
-  .gal-progress i { display: block; height: 100%; background: var(--fg); transform: scaleX(0); transform-origin: left; }
-  /* Touch and small screens: native horizontal scroll with snap, no pinning. */
-  .gallery.is-native .gal-viewport { overflow-x: auto; scroll-snap-type: x mandatory; scrollbar-width: none; }
-  .gallery.is-native .gal-viewport::-webkit-scrollbar { display: none; }
-  .gallery.is-native .gal-item { scroll-snap-align: start; scroll-margin-left: var(--gutter); }
-  .gallery.is-native .gal-progress { display: none; }
   @media (max-width: 720px) { .gal-item { --h: clamp(240px, 48vh, 420px); } }
 </style>
+
+<script>
+  // The bar reflects the scroll and can drive it. Two directions, one source
+  // of truth: scrollLeft. Everything here reads or writes that, so a wheel, a
+  // flick, an arrow key and a drag all end up in the same place.
+  const vp = document.querySelector<HTMLElement>('[data-gal-vp]');
+  const bar = document.querySelector<HTMLElement>('[data-gal-bar]');
+  const thumb = document.querySelector<HTMLElement>('[data-gal-thumb]');
+
+  if (vp && bar && thumb) {
+    const max = () => Math.max(1, vp.scrollWidth - vp.clientWidth);
+
+    const draw = () => {
+      const frac = Math.min(1, vp.clientWidth / vp.scrollWidth);
+      const travel = bar.clientWidth * (1 - frac);
+      thumb.style.width = `${frac * 100}%`;
+      thumb.style.transform = `translateX(${(vp.scrollLeft / max()) * travel}px)`;
+      thumb.setAttribute('aria-valuenow', String(Math.round((vp.scrollLeft / max()) * 100)));
+    };
+
+    vp.addEventListener('scroll', draw, { passive: true });
+    addEventListener('resize', draw);
+    draw();
+
+    // Drag. Snap has to come off while dragging or the thumb fights the
+    // pointer — every move would be pulled back to the nearest photograph.
+    let from = 0, at = 0;
+    const move = (e: PointerEvent) => {
+      const frac = Math.min(1, vp.clientWidth / vp.scrollWidth);
+      const travel = bar.clientWidth * (1 - frac);
+      if (travel <= 0) return;
+      vp.scrollLeft = at + ((e.clientX - from) / travel) * max();
+    };
+    const up = (e: PointerEvent) => {
+      removeEventListener('pointermove', move);
+      removeEventListener('pointerup', up);
+      bar.classList.remove('is-dragging');
+      vp.style.scrollSnapType = '';
+      thumb.releasePointerCapture?.(e.pointerId);
+    };
+    thumb.addEventListener('pointerdown', (e) => {
+      e.preventDefault();
+      from = e.clientX; at = vp.scrollLeft;
+      bar.classList.add('is-dragging');
+      vp.style.scrollSnapType = 'none';
+      thumb.setPointerCapture?.(e.pointerId);
+      addEventListener('pointermove', move);
+      addEventListener('pointerup', up);
+    });
+
+    // Clicking the track jumps a screenful, the way a scrollbar does.
+    bar.addEventListener('pointerdown', (e) => {
+      if (e.target === thumb) return;
+      const ahead = e.clientX > thumb.getBoundingClientRect().right;
+      vp.scrollBy({ left: (ahead ? 1 : -1) * vp.clientWidth * 0.9, behavior: 'smooth' });
+    });
+
+    thumb.addEventListener('keydown', (e) => {
+      const step = { ArrowLeft: -1, ArrowRight: 1, Home: -Infinity, End: Infinity }[e.key];
+      if (step === undefined) return;
+      e.preventDefault();
+      if (!Number.isFinite(step)) vp.scrollTo({ left: step < 0 ? 0 : max(), behavior: 'smooth' });
+      else vp.scrollBy({ left: step * vp.clientWidth * 0.6, behavior: 'smooth' });
+    });
+  }
+</script>

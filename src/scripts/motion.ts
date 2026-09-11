@@ -375,28 +375,12 @@ if (!reduce) {
 }
 
 /* ---------- Gallery: pinned horizontal scroll on desktop, native on touch ---------- */
-const gal = $('[data-gallery]');
-const track = $('[data-gallery-track]');
-const galBar = $('[data-gallery-progress]');
-if (gal && track) {
-  const useNative = coarse || reduce || innerWidth < 1024;
-  if (useNative) {
-    gal.classList.add('is-native');
-    const vp = track.parentElement!;
-  } else {
-    const vp = track.parentElement!;
-    const dist = () => Math.max(0, track.scrollWidth - vp.clientWidth);
-    gsap.to(track, {
-      x: () => -dist(), ease: 'none',
-      scrollTrigger: {
-        trigger: vp, pin: true, scrub: 0.6, anticipatePin: 1, invalidateOnRefresh: true,
-        start: () => (vp.offsetHeight < innerHeight ? 'center center' : 'top top'),
-        end: () => '+=' + dist(),
-        onUpdate: (self) => { if (galBar) galBar.style.transform = `scaleX(${self.progress})`; },
-      },
-    });
-  }
-}
+/* The gallery has no script any more. It used to pin the page on desktop and
+   scrub the strip sideways on scroll, which meant a reader could not reach
+   the rest of the page without playing through all ten photographs. It is a
+   plain scroll container now, at every width — the browser's own scrollbar
+   does the job, and it is draggable, flickable and keyboard-reachable in a
+   way the scrubbed version never was. */
 
 /* ---------- The building strip: dots track the card you're on ----------
 
