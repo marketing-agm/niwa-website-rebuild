@@ -264,6 +264,28 @@ if (heroVideo) {
 }
 
 /* ---------- FAQ ---------- */
+/* The whole list folds behind one button. Collapsed, not removed — the
+   answers stay in the markup for the FAQ structured data and for anyone
+   searching the page — and the individual question toggles below are
+   untouched. */
+const faqAll = $('[data-faq-all]');
+const faqList = document.getElementById('faq-list');
+const faqAllLabel = $('[data-faq-all-label]');
+if (faqAll && faqList) {
+  faqAll.addEventListener('click', () => {
+    const open = faqAll.getAttribute('aria-expanded') === 'true';
+    faqAll.setAttribute('aria-expanded', String(!open));
+    if (faqAllLabel) faqAllLabel.textContent = open ? 'Read the questions' : 'Hide the questions';
+    if (reduce) { faqList.hidden = open; ScrollTrigger.refresh(); return; }
+    if (!open) {
+      faqList.hidden = false;
+      gsap.fromTo(faqList, { height: 0, opacity: 0 }, { height: 'auto', opacity: 1, duration: 0.6, ease: 'power3.out', clearProps: 'height', onComplete: () => ScrollTrigger.refresh() });
+    } else {
+      gsap.to(faqList, { height: 0, opacity: 0, duration: 0.45, ease: 'power3.inOut', onComplete: () => { faqList.hidden = true; gsap.set(faqList, { clearProps: 'height,opacity' }); ScrollTrigger.refresh(); } });
+    }
+  });
+}
+
 $$('[data-faq-toggle]').forEach((btn) => {
   const panel = document.getElementById(btn.getAttribute('aria-controls')!);
   if (!panel) return;

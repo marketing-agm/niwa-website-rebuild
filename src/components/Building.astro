@@ -209,14 +209,19 @@ const sizes = '(max-width: 720px) 100vw, (max-width: 1024px) 50vw, 60vw';
 
     /* Not a .cell, so it would otherwise show the grid's own hairline colour
        as a band the width of the page. */
-    .b-dots { display: flex; gap: 8px; justify-content: center; background: var(--bg); padding: 16px 0 18px; }
+    /* The gap is the pitch, and the pitch has to be the target: the pads
+       below are half of it either side, so adjacent dots tile rather than
+       overlap. Overlapping pads steal each other's taps. */
+    .b-dots { display: flex; gap: 22px; justify-content: center; background: var(--bg); padding: 16px 0 18px; }
     .b-dot {
       width: 7px; height: 7px; padding: 0; border: 0; border-radius: 50%;
       background: var(--line); cursor: pointer;
       transition: background-color 0.3s, transform 0.3s var(--ease);
     }
     /* 7px of dot, 44px of target. */
-    .b-dot::after { content: ''; position: absolute; inset: -18px -8px; }
+    /* 7px dot + 11px either side = a 29px target, against a 29px pitch —
+       clear of the 24px minimum with room for the active dot's scale. */
+    .b-dot::after { content: ''; position: absolute; inset: -18px -11px; }
     .b-dot { position: relative; }
     .b-dot.is-on { background: var(--gold); transform: scale(1.25); }
     .b-dot:focus-visible { outline: 2px solid var(--gold); outline-offset: 6px; }

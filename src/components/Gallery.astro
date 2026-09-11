@@ -46,18 +46,21 @@ const items = slugs.map(photo);
     position: relative; border-top: 1px solid var(--line);
     padding: var(--gap) 0 calc(var(--gap) + 6px);
     overflow-x: auto; overflow-y: hidden;
-    scroll-snap-type: x proximity;
     scrollbar-width: none;
   }
   .gal-viewport::-webkit-scrollbar { display: none; }
-  .gal-item { scroll-snap-align: start; scroll-margin-left: var(--gutter); }
   /* Keyboard: the strip is focusable, so arrow keys scroll it. Without the
      outline there is no way to tell that focus has landed there. */
   .gal-viewport:focus-visible { outline: 1px solid var(--gold); outline-offset: -1px; }
 
-  .gal-bar { margin: 14px var(--gutter) 0; height: 4px; background: var(--line); border-radius: 2px; }
-  .gal-thumb { height: 100%; width: 20%; background: var(--fg-3); border-radius: 2px; cursor: grab; transition: background-color 0.2s; }
-  @media (hover: hover) { .gal-thumb:hover { background: var(--fg-2); } }
+  /* 8px of bar inside a 22px hit strip: the bar reads as a hairline against
+     the photographs, but a hairline is not something you can catch with a
+     pointer. The padding is the target; the bar is the drawing. */
+  .gal-bar { margin: 10px var(--gutter) 0; padding: 7px 0; cursor: pointer; }
+  .gal-bar::before { content: ''; display: block; height: 8px; background: var(--line-2); border-radius: 4px; }
+  .gal-bar { position: relative; }
+  .gal-thumb { position: absolute; top: 7px; height: 8px; width: 20%; background: var(--fg-2); border-radius: 4px; cursor: grab; transition: background-color 0.2s; }
+  @media (hover: hover) { .gal-thumb:hover { background: var(--fg); } }
   .gal-thumb:focus-visible { outline: 1px solid var(--gold); outline-offset: 2px; }
   .gal-bar.is-dragging .gal-thumb { background: var(--fg); cursor: grabbing; }
   /* A finger has the photographs themselves to push, and a 4px target is not
@@ -91,12 +94,21 @@ const items = slugs.map(photo);
       thumb.setAttribute('aria-valuenow', String(Math.round((vp.scrollLeft / max()) * 100)));
     };
 
+    // Lenis takes the wheel for the whole document, which left a sideways
+    // trackpad gesture over the strip moving it 48px out of 1320. Stopping
+    // the event here — before it reaches the window Lenis listens on — hands
+    // a horizontal gesture back to the browser's own scrolling. A vertical
+    // one is left alone, so the page still scrolls with the pointer over the
+    // photographs and the section never traps you.
+    vp.addEventListener('wheel', (e: WheelEvent) => {
+      if (Math.abs(e.deltaX) > Math.abs(e.deltaY)) e.stopPropagation();
+    }, { passive: true, capture: false });
+
     vp.addEventListener('scroll', draw, { passive: true });
     addEventListener('resize', draw);
     draw();
 
-    // Drag. Snap has to come off while dragging or the thumb fights the
-    // pointer — every move would be pulled back to the nearest photograph.
+    // Drag.
     let from = 0, at = 0;
     const move = (e: PointerEvent) => {
       const frac = Math.min(1, vp.clientWidth / vp.scrollWidth);
@@ -108,14 +120,12 @@ const items = slugs.map(photo);
       removeEventListener('pointermove', move);
       removeEventListener('pointerup', up);
       bar.classList.remove('is-dragging');
-      vp.style.scrollSnapType = '';
       thumb.releasePointerCapture?.(e.pointerId);
     };
     thumb.addEventListener('pointerdown', (e) => {
       e.preventDefault();
       from = e.clientX; at = vp.scrollLeft;
       bar.classList.add('is-dragging');
-      vp.style.scrollSnapType = 'none';
       thumb.setPointerCapture?.(e.pointerId);
       addEventListener('pointermove', move);
       addEventListener('pointerup', up);

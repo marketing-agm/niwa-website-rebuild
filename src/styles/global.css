@@ -81,6 +81,40 @@
 
   color-scheme: dark;
 }
+/* ---------- Very large screens ----------
+
+   Everything above stops growing at about 1800px and the page stopped
+   widening at 2100. On a 2560 or 3440 monitor that left the design frozen at
+   its 1800px size inside a much bigger frame: the h1 fell from 9.2% of the
+   viewport at 1440 to 4.2% at 3840, which is why it reads as small rather
+   than as spacious.
+
+   So the same tokens keep scaling, on a second fluid range from 1800 to 2560.
+   Nothing below 1800 is touched — the design that has been reviewed at 1440
+   and 1920 is exactly as it was — and above 2560 the page centres, because a
+   twelve-column grid stretched to 3440 puts the intro and the stats a desk
+   apart. */
+@media (min-width: 1800px) {
+  :root {
+    --t-label: clamp(0.9rem, 0.663rem + 0.211vw, 1rem);
+    --t-small: clamp(1.02rem, 0.759rem + 0.232vw, 1.13rem);
+    --t-body: clamp(1.28rem, 1.138rem + 0.126vw, 1.34rem);
+    --t-lead: clamp(1.9rem, 1.379rem + 0.463vw, 2.12rem);
+    --t-h3: clamp(2.6rem, 1.653rem + 0.842vw, 3rem);
+    --t-h2: clamp(5rem, 2.039rem + 2.632vw, 6.25rem);
+    --t-h1: clamp(10rem, 2.895rem + 6.316vw, 13rem);
+    --t-num: clamp(7.5rem, 3rem + 4vw, 9.4rem);
+    --gutter: clamp(26px, 7.05px + 1.053vw, 34px);
+    --pad: clamp(48px, 19.58px + 1.579vw, 60px);
+    --inset: clamp(72px, 15.16px + 3.158vw, 96px);
+    --gap: clamp(32px, 8.32px + 1.316vw, 42px);
+    --section: clamp(176px, 71.79px + 5.789vw, 220px);
+    --nav-h: clamp(76px, 38.11px + 2.105vw, 92px);
+    --radius: clamp(28px, 13.79px + 0.789vw, 34px);
+    --maxw: 2560px;
+  }
+}
+
 
 /* ---------- Reset ---------- */
 *, *::before, *::after { box-sizing: border-box; }
