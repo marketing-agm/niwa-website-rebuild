@@ -56,9 +56,20 @@ const items = slugs.map(photo);
   /* 8px of bar inside a 22px hit strip: the bar reads as a hairline against
      the photographs, but a hairline is not something you can catch with a
      pointer. The padding is the target; the bar is the drawing. */
-  .gal-bar { margin: 10px var(--gutter) 0; padding: 7px 0; cursor: pointer; }
+  /* Short and centred, not full-bleed. At the full width of the page, pinned
+     under the strip, this read as the browser's own horizontal scrollbar
+     rather than as a control belonging to the gallery — it got reported as a
+     page bug twice. A track that stops well short of both edges and sits in
+     the middle cannot be mistaken for chrome, and it is a shorter throw to
+     drag. */
+  .gal-bar {
+    position: relative;
+    width: min(420px, calc(100% - var(--gutter) * 2));
+    margin: clamp(18px, 1.6vw, 28px) auto 0;
+    padding: 7px 0;
+    cursor: pointer;
+  }
   .gal-bar::before { content: ''; display: block; height: 8px; background: var(--line-2); border-radius: 4px; }
-  .gal-bar { position: relative; }
   .gal-thumb { position: absolute; top: 7px; height: 8px; width: 20%; background: var(--fg-2); border-radius: 4px; cursor: grab; transition: background-color 0.2s; }
   @media (hover: hover) { .gal-thumb:hover { background: var(--fg); } }
   .gal-thumb:focus-visible { outline: 1px solid var(--gold); outline-offset: 2px; }

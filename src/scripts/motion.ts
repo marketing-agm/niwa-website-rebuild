@@ -530,12 +530,16 @@ window.addEventListener('load', () => ScrollTrigger.refresh());
 const specialBtn = $<HTMLButtonElement>('[data-special-toggle]');
 const specialPop = $('[data-special-pop]');
 if (specialBtn && specialPop) {
+  // Whether the panel on screen got there by hover rather than by being asked
+  // for. See the click handler below.
+  let byHover = false;
   const close = () => {
     if (specialPop.hidden) return;
     specialPop.hidden = true;
     specialBtn.setAttribute('aria-expanded', 'false');
+    byHover = false;
   };
-  const open = (x: number, y: number) => {
+  const open = (x: number, y: number, takeFocus = true) => {
     specialPop.hidden = false;
     specialBtn.setAttribute('aria-expanded', 'true');
     const pad = 12;
@@ -549,15 +553,53 @@ if (specialBtn && specialPop) {
     specialPop.style.left = `${Math.round(left)}px`;
     specialPop.style.top = `${Math.round(top)}px`;
     if (!reduce) gsap.fromTo(specialPop, { opacity: 0, y: 8, scale: 0.98 }, { opacity: 1, y: 0, scale: 1, duration: 0.35, ease: 'power3.out', clearProps: 'scale' });
-    (specialPop.querySelector('a, button') as HTMLElement | null)?.focus({ preventScroll: true });
+    // Only when the panel was asked for. Hovering must not move the caret out
+    // from under someone who is tabbing or typing elsewhere on the page.
+    if (takeFocus) (specialPop.querySelector('a, button') as HTMLElement | null)?.focus({ preventScroll: true });
   };
+  // A pointer arriving at the label opens the panel before the click lands, so
+  // a plain toggle would read the panel as already open and shut it again —
+  // the label would look broken to the one gesture everybody tries. A click on
+  // a hovered-open panel commits to it instead, and takes focus, which is what
+  // clicking meant in the first place.
   specialBtn.addEventListener('click', (e) => {
-    if (!specialPop.hidden) return close();
+    if (!specialPop.hidden) {
+      if (!byHover) return close();
+      byHover = false;
+      (specialPop.querySelector('a, button') as HTMLElement | null)?.focus({ preventScroll: true });
+      return;
+    }
     const r = specialBtn.getBoundingClientRect();
     // Keyboard activation has no pointer position; anchor to the label instead.
     const x = e.clientX || r.left, y = e.clientY || r.bottom;
     open(x, y);
   });
+
+  // Hovering the label is enough — nobody should have to guess that the line
+  // is clickable. Only where there is a real pointer: on a touch screen
+  // :hover latches onto whatever was last tapped, so the tap stays the way in.
+  //
+  // The panel opens beside the cursor, so there is a gap between the label and
+  // the panel that the pointer has to cross. Closing on the first mouseleave
+  // would shut it mid-crossing, so leaving either one starts a short grace
+  // period and entering either one cancels it. 220ms is long enough to cross
+  // the gap and short enough that the panel does not linger.
+  if (matchMedia('(hover: hover) and (pointer: fine)').matches) {
+    let grace = 0;
+    const hold = () => { clearTimeout(grace); };
+    const release = () => { clearTimeout(grace); grace = window.setTimeout(close, 220); };
+    specialBtn.addEventListener('mouseenter', (e) => {
+      hold();
+      if (!specialPop.hidden) return;
+      const r = specialBtn.getBoundingClientRect();
+      byHover = true;
+      open(e.clientX || r.left, e.clientY || r.bottom, false);
+    });
+    specialBtn.addEventListener('mouseleave', release);
+    specialPop.addEventListener('mouseenter', hold);
+    specialPop.addEventListener('mouseleave', release);
+  }
+
   specialPop.addEventListener('click', (e) => { if ((e.target as Element).closest('[data-special-close]')) close(); });
   document.addEventListener('click', (e) => { if (!specialPop.hidden && !specialPop.contains(e.target as Node) && e.target !== specialBtn) close(); });
   window.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
