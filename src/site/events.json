@@ -1,9 +1,10 @@
 {
-  "updated": "2026-09-11T23:21:26.587Z",
+  "updated": "2026-09-11T23:46:10.360Z",
   "sources": [
     "Visit Seattle",
     "City of Seattle",
     "Seattle Center",
+    "Events12",
     "Ticketmaster"
   ],
   "window": {
@@ -11,6 +12,60 @@
     "radiusMiles": 3
   },
   "events": [
+    {
+      "id": "e12-101179",
+      "title": "Cider tasting",
+      "start": "2026-09-11T07:00:00Z",
+      "end": "2026-09-12T07:00:00Z",
+      "allDay": true,
+      "venue": {
+        "name": "South Lake Union",
+        "address": "South Lake Union Discovery Center, 101 Westlake Ave N, Seattle, WA 98109",
+        "lat": null,
+        "lng": null
+      },
+      "category": null,
+      "url": "https://www.cidersummitnw.com/seattle1",
+      "image": null,
+      "priceFrom": null,
+      "source": "events12"
+    },
+    {
+      "id": "e12-117523",
+      "title": "Harry Potter live",
+      "start": "2026-09-11T07:00:00Z",
+      "end": "2026-09-12T07:00:00Z",
+      "allDay": true,
+      "venue": {
+        "name": "Downtown",
+        "address": "Paramount Theatre, 911 Pine St, Seattle, WA 98101",
+        "lat": null,
+        "lng": null
+      },
+      "category": "Arts & theatre",
+      "url": "https://www.stgpresents.org/events/harry-potter-and-the-cursed-child/",
+      "image": null,
+      "priceFrom": null,
+      "source": "events12"
+    },
+    {
+      "id": "e12-120403",
+      "title": "Interactive show",
+      "start": "2026-09-11T07:00:00Z",
+      "end": "2026-09-26T07:00:00Z",
+      "allDay": true,
+      "venue": {
+        "name": "Belltown",
+        "address": "Base Camp Studios 2, 1901 3rd Ave, Seattle, WA 98101",
+        "lat": null,
+        "lng": null
+      },
+      "category": "Music",
+      "url": "https://www.eventbrite.com/e/all-in-tickets-1991593799667",
+      "image": null,
+      "priceFrom": null,
+      "source": "events12"
+    },
     {
       "id": "tm-vvG1HZ_8nsN1CM",
       "title": "Lumen Field Stadium Tours",
@@ -336,6 +391,96 @@
       "source": "ticketmaster"
     },
     {
+      "id": "e12-117384",
+      "title": "Art open house FREE",
+      "start": "2026-09-12T07:00:00Z",
+      "end": null,
+      "allDay": true,
+      "venue": {
+        "name": "Central District",
+        "address": "Pratt Fine Arts Center, 1902 South Main St, Seattle, WA 98144",
+        "lat": null,
+        "lng": null
+      },
+      "category": "Festivals",
+      "url": "https://www.pratt.org/open-house",
+      "image": null,
+      "priceFrom": 0,
+      "source": "events12"
+    },
+    {
+      "id": "e12-102359",
+      "title": "Drawing day",
+      "start": "2026-09-12T07:00:00Z",
+      "end": null,
+      "allDay": true,
+      "venue": {
+        "name": "Downtown",
+        "address": "Gage Academy of Art, 2107 Westlake Ave, Seattle, WA 98121",
+        "lat": null,
+        "lng": null
+      },
+      "category": "Music",
+      "url": "https://gageacademy.org/events/drawingjam2026",
+      "image": null,
+      "priceFrom": null,
+      "source": "events12"
+    },
+    {
+      "id": "e12-119075",
+      "title": "Gourmet cooking class",
+      "start": "2026-09-12T07:00:00Z",
+      "end": "2026-09-26T07:00:00Z",
+      "allDay": true,
+      "venue": {
+        "name": "Belltown",
+        "address": "Hotel Andra, 2000 4th Ave, Seattle, WA 98121",
+        "lat": null,
+        "lng": null
+      },
+      "category": null,
+      "url": "https://www.hotstovesociety.com/store/events/",
+      "image": null,
+      "priceFrom": null,
+      "source": "events12"
+    },
+    {
+      "id": "e12-118978",
+      "title": "Jazz on the sidewalks",
+      "start": "2026-09-12T07:00:00Z",
+      "end": null,
+      "allDay": true,
+      "venue": {
+        "name": "Central District",
+        "address": "Pratt Fine Arts Center, 1902 South Main St, Seattle, WA 98144",
+        "lat": null,
+        "lng": null
+      },
+      "category": "Festivals",
+      "url": "https://jacksonstreetjazz.org/",
+      "image": null,
+      "priceFrom": null,
+      "source": "events12"
+    },
+    {
+      "id": "e12-120436",
+      "title": "Muslim festival FREE",
+      "start": "2026-09-12T07:00:00Z",
+      "end": null,
+      "allDay": true,
+      "venue": {
+        "name": "SoDo",
+        "address": "Victory Hall at The Boxyard, 1201 1st Ave S, Seattle, WA 98134",
+        "lat": null,
+        "lng": null
+      },
+      "category": "Festivals",
+      "url": "https://muzfest.org/",
+      "image": null,
+      "priceFrom": 0,
+      "source": "events12"
+    },
+    {
       "id": "sc-46400",
       "title": "Seattle Center Sculpture Walk 2026",
       "start": "2026-09-12T07:00:00Z",
@@ -352,6 +497,42 @@
       "image": null,
       "priceFrom": 0,
       "source": "seattle-center"
+    },
+    {
+      "id": "e12-112867",
+      "title": "Underground art show",
+      "start": "2026-09-12T07:00:00Z",
+      "end": null,
+      "allDay": true,
+      "venue": {
+        "name": "South Lake Union",
+        "address": "El Corazon, 109 Eastlake Ave E, Seattle, WA 98109",
+        "lat": null,
+        "lng": null
+      },
+      "category": "Music",
+      "url": "https://www.facebook.com/events/2029101541302416",
+      "image": null,
+      "priceFrom": null,
+      "source": "events12"
+    },
+    {
+      "id": "e12-120442",
+      "title": "Vintage thrift market",
+      "start": "2026-09-12T07:00:00Z",
+      "end": null,
+      "allDay": true,
+      "venue": {
+        "name": "Seattle",
+        "address": "Seattle Convention Center Summit, 900 Pine St, Seattle, WA 98101",
+        "lat": null,
+        "lng": null
+      },
+      "category": "Market",
+      "url": "https://tickets.thriftcon.co/landing/thriftcon-seattle",
+      "image": null,
+      "priceFrom": null,
+      "source": "events12"
     },
     {
       "id": "sc-47102",
@@ -378,7 +559,7 @@
       "end": null,
       "allDay": false,
       "venue": {
-        "name": "Fort Lawton Post Cemetery Texas Way Seattle,…",
+        "name": "Fort Lawton Post Cemetery Texas Way Seattle",
         "address": "Texas Way, Seattle, WA 98199",
         "lat": null,
         "lng": null
@@ -624,6 +805,42 @@
       "source": "ticketmaster"
     },
     {
+      "id": "e12-103578",
+      "title": "Adventure race",
+      "start": "2026-09-13T07:00:00Z",
+      "end": null,
+      "allDay": true,
+      "venue": {
+        "name": "Pioneer Square",
+        "address": "Occidental Hall, 589 Occidental Ave S, Seattle, WA 98134",
+        "lat": null,
+        "lng": null
+      },
+      "category": "Sports",
+      "url": "https://seattlesports.org/signature-events/urban-x-2026",
+      "image": null,
+      "priceFrom": null,
+      "source": "events12"
+    },
+    {
+      "id": "e12-100315",
+      "title": "Hawaiian festival FREE",
+      "start": "2026-09-13T07:00:00Z",
+      "end": null,
+      "allDay": true,
+      "venue": {
+        "name": "Lower Queen Anne",
+        "address": "Seattle Center, 305 Harrison St, Seattle, WA 98109",
+        "lat": null,
+        "lng": null
+      },
+      "category": "Festivals",
+      "url": "https://seattlecenter.com/events/featured-events/festal/live-aloha-hawaiian-cultural-festival",
+      "image": null,
+      "priceFrom": 0,
+      "source": "events12"
+    },
+    {
       "id": "tm-vvG1HZ_8ns0QCH",
       "title": "Lumen Field Stadium Tours",
       "start": "2026-09-13T07:00:00Z",
@@ -640,6 +857,24 @@
       "image": "https://s1.ticketm.net/dam/a/6ba/cca88b1c-9704-49ea-83ff-23d0e4c246ba_1665171_RETINA_LANDSCAPE_16_9.jpg",
       "priceFrom": null,
       "source": "ticketmaster"
+    },
+    {
+      "id": "e12-119417",
+      "title": "Mexican show FREE",
+      "start": "2026-09-13T07:00:00Z",
+      "end": null,
+      "allDay": true,
+      "venue": {
+        "name": "First Hill",
+        "address": "Town Hall Seattle, 1119 8th Ave, Seattle, WA 98101",
+        "lat": null,
+        "lng": null
+      },
+      "category": "Festivals",
+      "url": "https://townhallseattle.org/event/el-grito-2026/",
+      "image": null,
+      "priceFrom": 0,
+      "source": "events12"
     },
     {
       "id": "sc-47103",
@@ -732,186 +967,6 @@
       "source": "ticketmaster"
     },
     {
-      "id": "tm-vvG1HZ_kDRIDyO",
-      "title": "WEEZER: The Gathering",
-      "start": "2026-09-14T02:00:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "Climate Pledge Arena",
-        "address": "334 1st Ave N",
-        "lat": 47.622126,
-        "lng": -122.354016
-      },
-      "category": "Music",
-      "url": "https://www.ticketmaster.com/weezer-the-gathering-seattle-washington-09-13-2026/event/0F00646EEFA3BE60",
-      "image": "https://s1.ticketm.net/dam/a/a2e/4990f811-a315-4173-adcf-405a96de3a2e_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": null,
-      "source": "ticketmaster"
-    },
-    {
-      "id": "tm-vvG1HZ_uMIRTiE",
-      "title": "Jazz is Dead Welcomes Cortex",
-      "start": "2026-09-14T03:00:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "Moore Theatre",
-        "address": "1932 2nd Ave",
-        "lat": 47.61196,
-        "lng": -122.34142
-      },
-      "category": "Music",
-      "url": "https://www.ticketmaster.com/jazz-is-dead-welcomes-cortex-seattle-washington-09-13-2026/event/0F0064DDE8BFFB27",
-      "image": "https://s1.ticketm.net/dam/a/e6d/9411ed91-b8f6-439d-966d-ddee32618e6d_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": null,
-      "source": "ticketmaster"
-    },
-    {
-      "id": "tm-rZ7HnEZ1AfZeb7",
-      "title": "Flammable",
-      "start": "2026-09-14T05:00:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "Chop Suey",
-        "address": "1325 E Madison St.",
-        "lat": 47.613485,
-        "lng": -122.314457
-      },
-      "category": "Music",
-      "url": "https://www.ticketweb.com/event/flammable-chop-suey-tickets/14002604",
-      "image": "https://s1.ticketm.net/dam/c/df8/81eadad8-4449-412e-a2b1-3d8bbb78edf8_106181_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": null,
-      "source": "ticketmaster"
-    },
-    {
-      "id": "tm-vvG1HZ_eEqLFQ-",
-      "title": "Seattle Mariners Ballpark Tour",
-      "start": "2026-09-14T07:00:00Z",
-      "end": null,
-      "allDay": true,
-      "venue": {
-        "name": "T-Mobile Park",
-        "address": "1250 1st Ave S.",
-        "lat": 47.590333,
-        "lng": -122.33285
-      },
-      "category": "Community",
-      "url": "https://www.ticketmaster.com/seattle-mariners-ballpark-tour-seattle-washington-09-14-2026/event/0F006429DD7C86A1",
-      "image": "https://s1.ticketm.net/dam/a/1a6/5487c2cb-fc09-4cf4-8f7f-f29e74fa71a6_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": null,
-      "source": "ticketmaster"
-    },
-    {
-      "id": "sg-194808501",
-      "title": "Council Briefing",
-      "start": "2026-09-14T21:00:00.000Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "Council Chambers",
-        "address": "600 4th Ave, Seattle, WA 98104",
-        "lat": null,
-        "lng": null
-      },
-      "category": "Public meetings",
-      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D194808501",
-      "image": null,
-      "priceFrom": null,
-      "source": "seattle-gov"
-    },
-    {
-      "id": "sg-202724440",
-      "title": "Zumba",
-      "start": "2026-09-15T00:30:00.000Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "Freeway Park",
-        "address": "Freeway Park, 700 Seneca St, Seattle, WA 98101",
-        "lat": null,
-        "lng": null
-      },
-      "category": null,
-      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D202724440",
-      "image": null,
-      "priceFrom": null,
-      "source": "seattle-gov"
-    },
-    {
-      "id": "tm-Z7r9jZ1AAZA16",
-      "title": "greek",
-      "start": "2026-09-15T02:00:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "Neumos",
-        "address": "925 East Pike Street",
-        "lat": 47.610802,
-        "lng": -122.302803
-      },
-      "category": "Music",
-      "url": "https://www.ticketmaster.com/event/Z7r9jZ1AAZA16",
-      "image": "https://s1.ticketm.net/dam/a/17a/a6d40ab3-ba61-4ba4-9a58-86493469717a_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": null,
-      "source": "ticketmaster"
-    },
-    {
-      "id": "tm-rZ7HnEZ1Af0dOS",
-      "title": "Mustard Service, Pity Party (Girls Club) , Manwolves , Chicano Mosh",
-      "start": "2026-09-15T02:00:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "The Crocodile",
-        "address": "2505 1st Ave",
-        "lat": 47.61458,
-        "lng": -122.34915
-      },
-      "category": "Music",
-      "url": "https://www.ticketweb.com/event/mustard-service-pity-party-girls-the-crocodile-tickets/14903833",
-      "image": "https://s1.ticketm.net/dam/c/fbc/b293c0ad-c904-4215-bc59-8d7f2414dfbc_106141_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": 37.35,
-      "source": "ticketmaster"
-    },
-    {
-      "id": "tm-rZ7HnEZ1AfxZaN",
-      "title": "Boys Go To Jupiter, Alt Bloom",
-      "start": "2026-09-15T03:00:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "Baba Yaga",
-        "address": "124 S Washington St",
-        "lat": 47.601427,
-        "lng": -122.333146
-      },
-      "category": "Music",
-      "url": "https://www.ticketweb.com/event/boys-go-to-jupiter-alt-baba-yaga-tickets/14880263",
-      "image": "https://s1.ticketm.net/dam/a/e28/ee2232a1-dd03-472c-be58-cc04969c1e28_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": 28.7,
-      "source": "ticketmaster"
-    },
-    {
-      "id": "sg-206807822",
-      "title": "Community CPR class at International District/Chinatown Community Center",
-      "start": "2026-09-15T12:15:00.000Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "International District/Chinatown Community…",
-        "address": null,
-        "lat": null,
-        "lng": null
-      },
-      "category": "Classes",
-      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D206807822",
-      "image": null,
-      "priceFrom": null,
-      "source": "seattle-gov"
-    },
-    {
       "id": "sc-artsfund-2026-celebration-of-the-arts",
       "title": "Artsfund 2026 Celebration of the Arts",
       "start": "2026-09-18T00:00:00Z",
@@ -984,24 +1039,6 @@
       "source": "seattle-center"
     },
     {
-      "id": "sc-st-jude-walk-seattle",
-      "title": "St. Jude Walk Seattle",
-      "start": "2026-09-19T15:00:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "International Fountain",
-        "address": null,
-        "lat": 47.6219473,
-        "lng": -122.3517443
-      },
-      "category": "Tours",
-      "url": "https://www.seattlecenter.com/events/event-calendar/st-jude-walk-seattle",
-      "image": null,
-      "priceFrom": 0,
-      "source": "seattle-center"
-    },
-    {
       "id": "sc-50381",
       "title": "Sea Mar Fiestas Patrias 2026",
       "start": "2026-09-19T19:00:00Z",
@@ -1017,42 +1054,6 @@
       "url": "https://www.seattlecenter.com/events/event-calendar/sea-mar-fiestas-patrias-2026-x50381",
       "image": null,
       "priceFrom": 0,
-      "source": "seattle-center"
-    },
-    {
-      "id": "sc-50382",
-      "title": "Sea Mar Fiestas Patrias 2026",
-      "start": "2026-09-20T18:00:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "Armory",
-        "address": null,
-        "lat": 47.6215514,
-        "lng": -122.3509426
-      },
-      "category": "Festivals",
-      "url": "https://www.seattlecenter.com/events/event-calendar/sea-mar-fiestas-patrias-2026-x50382",
-      "image": null,
-      "priceFrom": 0,
-      "source": "seattle-center"
-    },
-    {
-      "id": "sc-journey-final-frontier-tour",
-      "title": "Journey: Final Frontier Tour",
-      "start": "2026-09-21T07:00:00Z",
-      "end": null,
-      "allDay": true,
-      "venue": {
-        "name": "Climate Pledge Arena",
-        "address": null,
-        "lat": 47.6221,
-        "lng": -122.353988
-      },
-      "category": null,
-      "url": "https://www.seattlecenter.com/events/event-calendar/journey-final-frontier-tour",
-      "image": null,
-      "priceFrom": null,
       "source": "seattle-center"
     },
     {
