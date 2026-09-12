@@ -30,7 +30,34 @@ reached the table but nobody was told, and they need working through by hand.
 
 ## Setting it up
 
-### 1. The database
+There are two ways. The workflow is less work and less to get wrong.
+
+### The quick way: run the setup workflow
+
+Add these as **repository secrets** (Settings -> Secrets and variables ->
+Actions), then run **Actions -> Leads setup -> Run workflow**:
+
+| Secret | Where it comes from |
+| --- | --- |
+| `CLOUDFLARE_API_TOKEN` | Cloudflare -> My Profile -> API Tokens -> Create. Custom token with **Account · D1 · Edit** and **Account · Cloudflare Pages · Edit**. |
+| `CLOUDFLARE_ACCOUNT_ID` | Cloudflare dashboard sidebar, or the account URL. |
+| `RESEND_API_KEY` | resend.com, after verifying the domain (below). |
+| `LEAD_TO` | `leasing@niwaapartments.com` |
+| `LEAD_FROM` | A verified sender on the domain, e.g. `site@niwaapartments.com` |
+| `LEADS_TOKEN` | A long random string. Guards the admin page. |
+| `LEAD_WEBHOOK_URL` | Optional. A Teams or Slack incoming webhook. |
+
+It creates the database, records its id in `wrangler.toml`, creates the table
+and sets every value on the Pages project. It is safe to run twice.
+
+**One step it cannot do for you:** binding the database to the Pages project.
+Cloudflare dashboard -> Workers & Pages -> the project -> Settings -> Bindings
+-> D1 database -> variable name `DB`, database `niwa-leads`. Then redeploy.
+That binding is what makes `env.DB` exist inside the function.
+
+### The manual way
+
+#### 1. The database
 
 ```sh
 npx wrangler d1 create niwa-leads
@@ -43,14 +70,14 @@ the table:
 npx wrangler d1 execute niwa-leads --remote --file=migrations/0001_leads.sql
 ```
 
-### 2. Resend
+#### 2. Resend
 
 Sign up, add **niwaapartments.com** as a domain and complete the DNS records it
 asks for. That is what makes the mail authenticated rather than sent from a
 shared pool — the difference between the inbox and the spam folder, which for a
 leasing enquiry is the difference between a tour and nothing.
 
-### 3. Environment variables
+#### 3. Environment variables
 
 Cloudflare dashboard, the Pages project, **Settings -> Environment variables**.
 Set these for Production, and for Preview if you want the preview URLs working.
@@ -66,7 +93,7 @@ None of them belong in the repository.
 
 Mark `RESEND_API_KEY` and `LEADS_TOKEN` as encrypted.
 
-### 4. Lock the admin page down properly
+#### 4. Lock the admin page down properly
 
 The token is a backstop, not the lock. Put **Cloudflare Access** in front of
 `/admin/*`: Zero Trust -> Access -> Applications -> Add, self-hosted, the

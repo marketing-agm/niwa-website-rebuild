@@ -1,0 +1,149 @@
+name: Leads setup (one time)
+
+# Creates the leads database and puts the settings in place, so none of it has
+# to be done by hand.
+#
+# WHAT YOU DO FIRST, once:
+#
+#   1. A Cloudflare API token — dash.cloudflare.com → My Profile → API Tokens →
+#      Create Token → Custom, with these permissions on your account:
+#         Account · D1 · Edit
+#         Account · Cloudflare Pages · Edit
+#   2. Put it in this repository as the secret CLOUDFLARE_API_TOKEN, and your
+#      account id as CLOUDFLARE_ACCOUNT_ID (dashboard sidebar, or the URL).
+#      Settings → Secrets and variables → Actions → New repository secret.
+#   3. Add the rest as repository secrets too:
+#         RESEND_API_KEY   from resend.com, with the domain verified
+#         LEAD_TO          leasing@niwaapartments.com
+#         LEAD_FROM        a verified sender, e.g. site@niwaapartments.com
+#         LEADS_TOKEN      a long random string; guards the admin page
+#         LEAD_WEBHOOK_URL optional, a Teams or Slack incoming webhook
+#   4. Run this workflow (Actions → Leads setup → Run workflow).
+#
+# It is safe to run more than once: it reuses an existing database rather than
+# making a second one, and the schema uses CREATE TABLE IF NOT EXISTS.
+#
+# Nothing secret is printed. The values are read from GitHub secrets and handed
+# to wrangler on stdin, and the log only ever says whether each step worked.
+
+on:
+  workflow_dispatch:
+    inputs:
+      database_name:
+        description: 'D1 database name'
+        required: false
+        default: 'niwa-leads'
+
+permissions:
+  contents: write
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      DB_NAME: ${{ inputs.database_name || 'niwa-leads' }}
+      PROJECT: niwa-website-rebuild
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20, cache: npm }
+      - run: npm ci
+
+      - name: Check the token is there
+        run: |
+          if [ -z "$CLOUDFLARE_API_TOKEN" ] || [ -z "$CLOUDFLARE_ACCOUNT_ID" ]; then
+            echo "::error::Set CLOUDFLARE_API_TOKEN and CLOUDFLARE_ACCOUNT_ID as repository secrets first. See the comment at the top of this file."
+            exit 1
+          fi
+
+      - name: Create the database, or find the one already there
+        id: db
+        run: |
+          set -euo pipefail
+          existing=$(npx wrangler d1 list --json 2>/dev/null \
+            | node -e "let s='';process.stdin.on('data',d=>s+=d).on('end',()=>{try{const l=JSON.parse(s);const m=l.find(d=>d.name===process.env.DB_NAME);console.log(m?m.uuid:'')}catch{console.log('')}})")
+          if [ -n "$existing" ]; then
+            echo "Reusing the existing $DB_NAME."
+            id="$existing"
+          else
+            echo "Creating $DB_NAME."
+            npx wrangler d1 create "$DB_NAME" > /tmp/create.log 2>&1 || { cat /tmp/create.log; exit 1; }
+            id=$(grep -oE '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}' /tmp/create.log | head -1)
+          fi
+          if [ -z "$id" ]; then echo "::error::Could not determine the database id."; exit 1; fi
+          echo "id=$id" >> "$GITHUB_OUTPUT"
+          echo "Database id resolved."
+
+      - name: Record the id in wrangler.toml
+        run: |
+          set -euo pipefail
+          node -e '
+            const fs = require("fs");
+            const id = process.argv[1];
+            const p = "wrangler.toml";
+            let s = fs.readFileSync(p, "utf8");
+            const before = s;
+            s = s.replace(/database_id = "[^"]*"/, `database_id = "${id}"`);
+            if (s === before) { console.error("database_id line not found in wrangler.toml"); process.exit(1); }
+            fs.writeFileSync(p, s);
+          ' "${{ steps.db.outputs.id }}"
+          if git diff --quiet -- wrangler.toml; then
+            echo "wrangler.toml already had this id."
+          else
+            git config user.name  "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add wrangler.toml
+            git commit -m "Record the leads database id
+
+          Written by .github/workflows/leads-setup.yml. The id is an identifier,
+          not a secret: access is granted by the binding, not by knowing it."
+            git push
+          fi
+
+      - name: Create the table
+        run: npx wrangler d1 execute "$DB_NAME" --remote --file=migrations/0001_leads.sql
+
+      - name: Put the settings in place
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          LEAD_TO: ${{ secrets.LEAD_TO }}
+          LEAD_FROM: ${{ secrets.LEAD_FROM }}
+          LEADS_TOKEN: ${{ secrets.LEADS_TOKEN }}
+          LEAD_WEBHOOK_URL: ${{ secrets.LEAD_WEBHOOK_URL }}
+        run: |
+          set -euo pipefail
+          put () {
+            local name="$1" value="$2"
+            if [ -z "$value" ]; then echo "  $name — not set, skipped"; return; fi
+            printf '%s' "$value" | npx wrangler pages secret put "$name" \
+              --project-name "$PROJECT" > /dev/null 2>&1 \
+              && echo "  $name — set" || { echo "::error::failed to set $name"; exit 1; }
+          }
+          put RESEND_API_KEY    "$RESEND_API_KEY"
+          put LEAD_TO           "$LEAD_TO"
+          put LEAD_FROM         "$LEAD_FROM"
+          put LEADS_TOKEN       "$LEADS_TOKEN"
+          put LEAD_WEBHOOK_URL  "$LEAD_WEBHOOK_URL"
+
+      - name: What to do next
+        run: |
+          {
+            echo "### Leads setup finished"
+            echo ""
+            echo "Database **$DB_NAME** is ready and the settings are in place."
+            echo ""
+            echo "One thing is still manual: **bind the database to the Pages project.**"
+            echo "Cloudflare dashboard → Workers & Pages → $PROJECT → Settings → Bindings"
+            echo "→ D1 database → variable name \`DB\`, database \`$DB_NAME\`. Then redeploy."
+            echo ""
+            echo "Then check it end to end:"
+            echo ""
+            echo '```'
+            echo "curl -X POST https://<your-domain>/api/tour -H 'content-type: application/json' \\"
+            echo "  -d '{\"lead_first_name\":\"Test\",\"lead_email\":\"you@example.com\"}'"
+            echo '```'
+            echo ""
+            echo 'Expect `{"ok":true,"stored":true,"emailed":true}`, then delete the row from /admin/leads.html.'
+          } >> "$GITHUB_STEP_SUMMARY"
