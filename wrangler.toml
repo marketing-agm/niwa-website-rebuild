@@ -13,3 +13,24 @@
 name = "niwa-website-rebuild"
 pages_build_output_dir = "./dist"
 compatibility_date = "2024-11-01"
+
+# The leads database, bound into the Pages Functions as env.DB.
+#
+# Declared here rather than only in the dashboard for the same reason as the
+# output directory above: a binding that exists only in a dashboard is one
+# nobody can see in review and anyone can remove by accident.
+#
+# database_id is filled in once, per account, and is not a secret — it is an
+# identifier, and access to the database is granted by the binding rather than
+# by knowing it. Create the database and read the id back with:
+#
+#   npx wrangler d1 create niwa-leads
+#   npx wrangler d1 execute niwa-leads --remote --file=migrations/0001_leads.sql
+#
+# then paste the id below and redeploy. Until it is a real id the endpoint
+# still answers and still emails; it just reports stored:false, and the email
+# says so in the body rather than pretending the record was kept.
+[[d1_databases]]
+binding = "DB"
+database_name = "niwa-leads"
+database_id = "REPLACE_WITH_ID_FROM_wrangler_d1_create"

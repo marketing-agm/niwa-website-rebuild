@@ -1,0 +1,17 @@
+{
+  "//": "The functions are typechecked on their own, not with the site. They run on the Cloudflare Workers runtime, whose globals (Request, Response, fetch, crypto) are declared by @cloudflare/workers-types and collide with the DOM lib the site's own config pulls in. Keeping them in a separate program lets each have the globals it actually runs against. The root tsconfig excludes this directory for the same reason.",
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "types": [
+      "@cloudflare/workers-types"
+    ],
+    "lib": [
+      "ES2022"
+    ],
+    "noEmit": true
+  },
+  "include": [
+    "**/*.ts"
+  ],
+  "exclude": []
+}

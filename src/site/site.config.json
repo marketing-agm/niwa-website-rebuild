@@ -160,13 +160,7 @@
     }
   },
   "integrations": {
-    "orsApiKey": "",
-    "emailjs": {
-      "publicKey": "",
-      "serviceId": "",
-      "templateId": "",
-      "toEmail": "leasing@niwaapartments.com"
-    }
+    "orsApiKey": ""
   },
   "analytics": {
     "posthog": {

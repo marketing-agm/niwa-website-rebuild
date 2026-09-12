@@ -74,6 +74,17 @@ const slots = [['Morning', 'morning'], ['Midday', 'midday'], ['Afternoon', 'afte
           <label class="sr-only" for="tf-msg">Anything else</label>
           <textarea id="tf-msg" name="msg" rows="1" placeholder="Anything else? Questions, must-haves, a home you have your eye on…" data-autogrow></textarea>
         </p>
+        {/* The honeypot. A field nobody can see, nobody is told about and no
+            real visitor fills in; a bot fills every field it finds, and the
+            endpoint quietly drops anything that arrives with this set. Hidden
+            with a class rather than type="hidden", because a hidden input is
+            obvious in the markup and a bot skips it. aria-hidden and
+            tabindex="-1" keep it away from screen readers and the tab order,
+            and autocomplete="off" stops a browser filling it in. */}
+        <div class="tf-hp" aria-hidden="true">
+          <label for="tf-company">Company</label>
+          <input id="tf-company" name="company" type="text" tabindex="-1" autocomplete="off" />
+        </div>
         <div class="tf-foot">
           <button type="submit" class="btn btn--ink" data-tour-submit><span data-tour-submit-label>Request this tour</span> <span class="arr" aria-hidden="true">→</span></button>
           <p class="tf-status mono" role="status" aria-live="polite" data-tour-status></p>
@@ -166,6 +177,7 @@ const slots = [['Morning', 'morning'], ['Midday', 'midday'], ['Afternoon', 'afte
   .tf :global(.chip input:focus-visible + span) { outline: 2px solid var(--ink); outline-offset: 3px; }
   .tf-line--note { margin-top: clamp(14px, 1.6vw, 26px); font-size: clamp(1.4rem, 1.12rem + 1.4vw, 2.8rem); }
   .tf-line--note textarea { width: 100%; min-width: 0; resize: none; font-size: 0.7em; line-height: 1.4; font-style: normal; padding: 0.3em 0; overflow: hidden; }
+  .tf-hp { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
   .tf-foot { display: flex; flex-wrap: wrap; align-items: center; gap: var(--gap); margin-top: clamp(20px, 2.6vw, 40px); }
   .tf-status { color: var(--ink-2); font-size: var(--t-small); }
   .tf-fine { margin-top: clamp(20px, 2.6vw, 40px); font-size: var(--t-small); color: var(--ink-2); max-width: 62ch; line-height: 1.5; }

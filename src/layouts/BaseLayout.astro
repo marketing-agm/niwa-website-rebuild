@@ -82,7 +82,6 @@ const siteRuntime = {
   id: site.id,
   config: { name: c.name, address: c.address, integrations: c.integrations, contact: c.contact },
 };
-const emailjsConfigured = !!(c.integrations?.emailjs?.publicKey && c.integrations.emailjs.serviceId && c.integrations.emailjs.templateId);
 ---
 <!DOCTYPE html>
 <html lang={c.lang}>
@@ -134,7 +133,6 @@ const emailjsConfigured = !!(c.integrations?.emailjs?.publicKey && c.integration
 <link rel="preload" href="/fonts/inter-tight-latin.woff2" as="font" type="font/woff2" crossorigin />
 {themeVars && <style is:inline set:html={`:root:root{${themeVars}}`} />}
 <script is:inline set:html={`window.__SITE__=${JSON.stringify(siteRuntime)};`} />
-{emailjsConfigured && <script is:inline src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js" defer></script>}
 <Analytics site={site} />
 </head>
 <body>

@@ -7,3 +7,6 @@ dist/
 
 # flyer proofs (the PDF next to them is the artifact)
 flyer/dist/
+
+# wrangler local state (the local D1 database and caches)
+.wrangler/

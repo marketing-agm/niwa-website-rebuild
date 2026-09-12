@@ -1,6 +1,11 @@
-// The tour request: one sentence, filled in. Sends through EmailJS when the
-// site is configured for it; otherwise it hands the visitor a prepared email so
-// a request is never silently dropped.
+// The tour request: one sentence, filled in.
+//
+// Posts to /api/tour, a Cloudflare Pages Function on this same domain, which
+// writes the enquiry to the leads table, emails leasing and pings the team
+// channel. If that call fails for any reason the visitor is handed a prepared
+// email instead, so a request is never silently dropped — the one outcome
+// this form must not have is telling someone leasing has their details when
+// nobody does.
 type SiteRuntime = { id: string; config: any };
 const site: SiteRuntime = (window as any).__SITE__ || { id: 'niwa', config: {} };
 const form = document.querySelector<HTMLFormElement>('[data-tour-form]');
@@ -131,7 +136,6 @@ if (form) {
     const slotLabel = pickedLabel('slot') || 'any time';
     const attribution = (window as any).adAttributionFields ? (window as any).adAttributionFields() : {};
     const payload = {
-      to_email: site.config?.integrations?.emailjs?.toEmail || site.config?.contact?.email || '',
       property_name: site.config?.name || 'Niwa Apartments',
       property_site_id: site.id,
       lead_first_name: first.value.trim(),
@@ -149,24 +153,33 @@ if (form) {
       ...attribution,
     };
 
-    const ej = site.config?.integrations?.emailjs;
-    const configured = !!(ej && ej.publicKey && ej.serviceId && ej.templateId && (window as any).emailjs);
     let sent = false;
-    if (configured) {
-      submitBtn.disabled = true;
-      submitLbl.textContent = 'Sending';
-      status.textContent = '';
-      try {
-        await (window as any).emailjs.send(ej.serviceId, ej.templateId, payload, { publicKey: ej.publicKey });
-        sent = true;
-      } catch (err) {
-        console.error('[tour] send failed', err);
-        submitBtn.disabled = false;
-        submitLbl.textContent = 'Request this tour';
-        status.textContent = "That didn't go through. Try again, or call the office.";
-        return;
-      }
+    submitBtn.disabled = true;
+    submitLbl.textContent = 'Sending';
+    status.textContent = '';
+    try {
+      // Ten seconds, then give up and offer the prepared email. A spinner that
+      // never resolves reads as a broken site and loses the enquiry anyway.
+      const abort = new AbortController();
+      const timer = setTimeout(() => abort.abort(), 10000);
+      const res = await fetch('/api/tour', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify(payload),
+        signal: abort.signal,
+      });
+      clearTimeout(timer);
+      const data = await res.json().catch(() => ({}));
+      if (!res.ok || !data?.ok) throw new Error(data?.error || `${res.status}`);
+      sent = true;
+    } catch (err) {
+      // Not an error state for the visitor: the confirmation below hands them
+      // the same request as a ready-to-send email. Logged so a run of these is
+      // visible in the browser console during testing.
+      console.error('[tour] post failed, falling back to mail', err);
     }
+    submitBtn.disabled = false;
+    submitLbl.textContent = 'Request this tour';
 
     (window as any).trackEvent?.('tour_requested', { source: 'tour sentence', beds: pickedLabel('beds') || null, move_in: pickedLabel('movein') || null });
 
