@@ -51,6 +51,7 @@ import * as queenAnneChamber from './sources/queen-anne-chamber.mjs';
 import * as visitSeattle from './sources/visit-seattle.mjs';
 import * as seattleCenter from './sources/seattle-center.mjs';
 import * as events12 from './sources/events12.mjs';
+import { canonicalCategory } from './sources/lib.mjs';
 import * as seattleGov from './sources/seattle-gov.mjs';
 
 const SOURCES = [visitSeattle, seattleGov, seattleCenter, events12, queenAnneChamber, ticketmaster];
@@ -397,6 +398,14 @@ for (const src of chosen) {
       continue;
     }
     log(`${result.events.length} event(s)`);
+    // Every category through the one closed set, whatever the adapter decided.
+    // The page builds its filter chips from the distinct values it finds, so a
+    // source emitting a word of its own invents a chip — which is how the page
+    // came to offer "Festivals" and "Festivals & Special Events" side by side.
+    // Doing it here rather than in each adapter means no future source can
+    // reintroduce that, and an unmappable word becomes no chip rather than a
+    // new one.
+    for (const e of result.events) e.category = canonicalCategory(e.category);
     collected.push(...result.events);
     if (result.events.length) used.push(src.label);
   } catch (err) {

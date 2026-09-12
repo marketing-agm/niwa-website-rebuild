@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<meta name="robots" content="noindex, nofollow" />
+<title>Tour requests — Niwa</title>
+<style>
+  :root { --bg:#0b0b0b; --fg:#f2f1ec; --fg-2:#a5a39c; --line:rgba(242,241,236,0.14); --gold:#f4c430; --warn:#ff6b6b; color-scheme: dark; }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--fg); font:15px/1.5 ui-sans-serif,system-ui,sans-serif; padding:24px 16px 64px; }
+  .wrap { max-width:1100px; margin:0 auto; }
+  h1 { font-size:24px; font-weight:600; margin:0 0 4px; letter-spacing:-0.02em; }
+  .sub { color:var(--fg-2); margin:0 0 24px; }
+  .counts { display:flex; flex-wrap:wrap; gap:1px; background:var(--line); border:1px solid var(--line); border-radius:10px; overflow:hidden; margin:0 0 20px; }
+  .count { background:var(--bg); padding:14px 20px; flex:1 1 150px; }
+  .count b { display:block; font-size:26px; font-weight:600; }
+  .count span { color:var(--fg-2); font-size:12px; text-transform:uppercase; letter-spacing:.08em; }
+  .count.is-warn b { color:var(--warn); }
+  .bar { display:flex; flex-wrap:wrap; gap:8px; align-items:center; margin:0 0 16px; }
+  button, select, input { font:inherit; color:inherit; background:transparent; border:1px solid var(--line); border-radius:8px; padding:7px 12px; cursor:pointer; }
+  button:hover, select:hover { border-color:var(--fg-2); }
+  button.primary { background:var(--gold); color:#0b0b0b; border-color:var(--gold); font-weight:600; }
+  input[type=password], input[type=text] { cursor:text; min-width:260px; }
+  table { width:100%; border-collapse:collapse; }
+  th, td { text-align:left; padding:10px 12px; border-bottom:1px solid var(--line); vertical-align:top; }
+  th { font-size:12px; text-transform:uppercase; letter-spacing:.08em; color:var(--fg-2); font-weight:500; white-space:nowrap; }
+  tr.handled { opacity:.45; }
+  .who { font-weight:600; }
+  .muted { color:var(--fg-2); font-size:13px; }
+  .msg { max-width:34ch; white-space:pre-wrap; }
+  .flag { color:var(--warn); font-size:12px; white-space:nowrap; }
+  .empty { color:var(--fg-2); padding:40px 0; }
+  .scroll { overflow-x:auto; }
+  @media (max-width:720px) { th:nth-child(n+5), td:nth-child(n+5) { display:none; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Tour requests</h1>
+  <p class="sub">Every enquiry the site has received. This is the record — the email is only the notification.</p>
+
+  <div id="gate">
+    <div class="bar">
+      <input id="token" type="password" placeholder="Access token" autocomplete="current-password" />
+      <button class="primary" id="go">Open</button>
+    </div>
+    <p class="muted">Ask whoever set the site up for the token. It is stored for this browser tab only.<br />
+      This page should also sit behind Cloudflare Access, which is the real lock — the token is the backstop.</p>
+  </div>
+
+  <div id="app" hidden>
+    <div class="counts" id="counts"></div>
+    <div class="bar">
+      <select id="filter">
+        <option value="open">Still to deal with</option>
+        <option value="">Everything</option>
+        <option value="handled">Already handled</option>
+      </select>
+      <button id="refresh">Refresh</button>
+      <button id="csv">Download CSV</button>
+      <span class="muted" id="stamp"></span>
+    </div>
+    <div class="scroll"><table>
+      <thead><tr><th>Received</th><th>Who</th><th>Wants</th><th>Visit</th><th>Message</th><th></th></tr></thead>
+      <tbody id="rows"></tbody>
+    </table></div>
+    <p class="empty" id="empty" hidden>Nothing here.</p>
+  </div>
+</div>
+
+<script type="module">
+const $ = (s) => document.querySelector(s);
+let token = sessionStorage.getItem('leads_token') || '';
+let leads = [];
+
+const api = (path, opts = {}) => fetch(path, {
+  ...opts,
+  headers: { ...(opts.headers || {}), authorization: `Bearer ${token}` },
+});
+
+const fmt = (iso) => {
+  const d = new Date(iso);
+  return d.toLocaleString('en-US', { month: 'short', day: 'numeric', hour: 'numeric', minute: '2-digit' });
+};
+const esc = (s) => String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
+async function load() {
+  const state = $('#filter').value;
+  const res = await api(`/api/leads?limit=200${state ? `&state=${state}` : ''}`);
+  if (res.status === 401) { sessionStorage.removeItem('leads_token'); location.reload(); return; }
+  const data = await res.json();
+  if (!data.ok) { $('#rows').innerHTML = `<tr><td colspan="6">${esc(data.error)}</td></tr>`; return; }
+  leads = data.leads;
+
+  const c = data.counts || {};
+  $('#counts').innerHTML = [
+    ['Total', c.total ?? 0, ''],
+    ['Still to deal with', c.open ?? 0, ''],
+    // The number that matters: enquiries that arrived without a notification
+    // going out. If this is not zero, someone was never told.
+    ['Arrived with no email sent', c.unnotified ?? 0, (c.unnotified ?? 0) > 0 ? ' is-warn' : ''],
+  ].map(([label, n, cls]) => `<div class="count${cls}"><b>${n}</b><span>${label}</span></div>`).join('');
+
+  $('#stamp').textContent = `updated ${new Date().toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })}`;
+  $('#empty').hidden = leads.length > 0;
+  $('#rows').innerHTML = leads.map((l) => `
+    <tr class="${l.handled_at ? 'handled' : ''}">
+      <td class="muted">${fmt(l.received_at)}${l.email_ok ? '' : '<br /><span class="flag">no email sent</span>'}</td>
+      <td><span class="who">${esc([l.first_name, l.last_name].filter(Boolean).join(' '))}</span><br />
+          <a class="muted" href="mailto:${esc(l.email)}">${esc(l.email)}</a>${l.phone ? `<br /><a class="muted" href="tel:${esc(l.phone)}">${esc(l.phone)}</a>` : ''}</td>
+      <td class="muted">${esc(l.beds || '—')}<br />${esc(l.move_in || '')}</td>
+      <td class="muted">${esc(l.tour_date || '—')}<br />${esc(l.tour_time || '')}</td>
+      <td class="msg muted">${esc(l.message || '')}</td>
+      <td><button data-id="${l.id}" data-on="${l.handled_at ? '0' : '1'}">${l.handled_at ? 'Reopen' : 'Mark handled'}</button></td>
+    </tr>`).join('');
+}
+
+$('#rows').addEventListener('click', async (e) => {
+  const b = e.target.closest('button[data-id]');
+  if (!b) return;
+  b.disabled = true;
+  await api('/api/leads', {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({ id: b.dataset.id, handled: b.dataset.on === '1' }),
+  });
+  load();
+});
+
+$('#csv').addEventListener('click', () => {
+  const cols = ['received_at', 'first_name', 'last_name', 'email', 'phone', 'beds', 'move_in', 'tour_date', 'tour_time', 'message', 'source', 'handled_at'];
+  const cell = (v) => `"${String(v ?? '').replace(/"/g, '""')}"`;
+  const csv = [cols.join(','), ...leads.map((l) => cols.map((c) => cell(l[c])).join(','))].join('\n');
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv' }));
+  a.download = `niwa-tour-requests-${new Date().toISOString().slice(0, 10)}.csv`;
+  a.click();
+});
+
+$('#filter').addEventListener('change', load);
+$('#refresh').addEventListener('click', load);
+$('#go').addEventListener('click', () => {
+  token = $('#token').value.trim();
+  if (!token) return;
+  sessionStorage.setItem('leads_token', token);
+  start();
+});
+$('#token').addEventListener('keydown', (e) => { if (e.key === 'Enter') $('#go').click(); });
+
+function start() {
+  $('#gate').hidden = true;
+  $('#app').hidden = false;
+  load();
+  // Someone leaves this open on a desk; it should not go stale.
+  setInterval(load, 60000);
+}
+if (token) start();
+</script>
+</body>
+</html>

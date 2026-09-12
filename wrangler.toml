@@ -13,3 +13,21 @@
 name = "niwa-website-rebuild"
 pages_build_output_dir = "./dist"
 compatibility_date = "2024-11-01"
+
+# The leads database is NOT declared here.
+#
+# It was, with a placeholder id standing in until the database existed, and
+# that broke every preview deployment: Cloudflare reads this file during the
+# build and tries to resolve the binding, and "REPLACE_WITH_ID..." is not a
+# database. Four previews failed before it was spotted. A config placeholder
+# that only fails remotely is worse than no config at all.
+#
+# It does not belong here anyway. On a Pages project the D1 binding is set on
+# the project, not in this file:
+#
+#   Workers & Pages -> niwa-website-rebuild -> Settings -> Bindings
+#   -> D1 database -> variable name DB, database niwa-leads
+#
+# Locally, pass it on the command line instead, which needs no id at all:
+#
+#   npx wrangler pages dev dist --d1 DB=niwa-leads
