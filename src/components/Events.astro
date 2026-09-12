@@ -164,7 +164,17 @@ const miles = (e: SiteEvent) => (e.miles == null ? '' : e.miles < 0.15 ? 'next d
                 which from Queen Anne is east and south, and the labels were
                 landing on top of them. */}
             {RINGS.map((r) => <text class="ev-ring-t ev-ring-l" x={CX - 9} y={CY - rPx(r) - 8}>{ringLabel(r)}</text>)}
+            {/* All four points, not just north. One letter tells you which
+                way up the map is; four let you read a pin's direction off it
+                without counting round from the top — which is the question
+                someone actually has when they see a dot down and to the
+                right. Placed just outside the widest ring on each axis, with
+                north kept off the axis so it does not sit on the radius
+                labels that run up the middle. */}
             <text class="ev-ring-t ev-n" x={CX + 10} y={CY - RMAX - 8}>N</text>
+            <text class="ev-ring-t ev-c ev-c--s" x={CX} y={CY + RMAX + 20}>S</text>
+            <text class="ev-ring-t ev-c ev-c--e" x={CX + RMAX + 12} y={CY + 5}>E</text>
+            <text class="ev-ring-t ev-c ev-c--w" x={CX - RMAX - 12} y={CY + 5}>W</text>
           </g>
           {/* Ripples in a layer of their own, under the pins and clipped to the
               plate, so one can cross the whole raked field without escaping
@@ -352,6 +362,12 @@ const miles = (e: SiteEvent) => (e.miles == null ? '' : e.miles < 0.15 ? 'next d
   .ev-ring-t { fill: var(--fg-3); font-family: var(--sans); font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; }
   .ev-ring-l { text-anchor: end; }
   .ev-n { text-anchor: start; fill: var(--fg-3); }
+  /* Quieter than the radius labels: the compass is orientation, not data, and
+     should be readable when looked for rather than competing with the pins. */
+  .ev-c { fill: var(--fg-3); opacity: 0.75; }
+  .ev-c--s { text-anchor: middle; }
+  .ev-c--e { text-anchor: start; }
+  .ev-c--w { text-anchor: end; }
   .ev-map-note { color: var(--fg-3); margin: 12px auto 0; max-width: 560px; text-align: center; }
 
   .ev-pin { cursor: pointer; }
@@ -495,7 +511,17 @@ const miles = (e: SiteEvent) => (e.miles == null ? '' : e.miles < 0.15 ? 'next d
   .ev-dow { font-size: var(--t-label); letter-spacing: 0.1em; text-transform: uppercase; }
   .ev-dnum { font-size: clamp(1.6rem, 1.2rem + 1.4vw, 2.4rem); line-height: 1; letter-spacing: -0.03em; color: var(--gold); }
   .ev-mon { font-size: var(--t-label); letter-spacing: 0.1em; text-transform: uppercase; }
-  .ev-name { font-weight: 400; text-wrap: pretty; }
+  /* .h3 sets 1.08, which is right for a heading of two or three words and
+     wrong here. These titles come from other people's feeds and run long —
+     "Freeway Park 50 Years: Legacy of Dance | Planetary Dance and Potluck: A
+     community ritual for peace" is one of them — so they wrap to three or
+     four lines. And the title is a link, whose rule is drawn once per line
+     box: at 1.08 the rule under one line was landing on the capitals of the
+     next, and sitting on the descenders of its own. The extra leading gives
+     both of them room. */
+  .ev-name { font-weight: 400; text-wrap: pretty; line-height: 1.2; }
+  .ev-name :global(.link) { padding-bottom: 4px; }
+  .ev-row-n :global(.link) { padding-bottom: 3px; }
   .ev-meta { color: var(--fg-2); display: flex; flex-wrap: wrap; gap: 0 10px; }
   .ev-meta .ev-venue::before { content: '·'; margin-right: 10px; color: var(--fg-3); }
   .ev-meta > :first-child.ev-venue::before { content: none; margin: 0; }
@@ -513,7 +539,7 @@ const miles = (e: SiteEvent) => (e.miles == null ? '' : e.miles < 0.15 ? 'next d
   }
   .ev-row.is-lit { background: var(--bg-2); }
   .ev-row-t { color: var(--gold); }
-  .ev-row-n { font-size: var(--t-body); text-wrap: pretty; }
+  .ev-row-n { font-size: var(--t-body); text-wrap: pretty; line-height: 1.45; }
   .ev-row-v, .ev-row-c { color: var(--fg-2); }
   .ev-row-d { color: var(--fg-3); text-align: right; }
 
