@@ -14,23 +14,20 @@ name = "niwa-website-rebuild"
 pages_build_output_dir = "./dist"
 compatibility_date = "2024-11-01"
 
-# The leads database, bound into the Pages Functions as env.DB.
+# The leads database is NOT declared here.
 #
-# Declared here rather than only in the dashboard for the same reason as the
-# output directory above: a binding that exists only in a dashboard is one
-# nobody can see in review and anyone can remove by accident.
+# It was, with a placeholder id standing in until the database existed, and
+# that broke every preview deployment: Cloudflare reads this file during the
+# build and tries to resolve the binding, and "REPLACE_WITH_ID..." is not a
+# database. Four previews failed before it was spotted. A config placeholder
+# that only fails remotely is worse than no config at all.
 #
-# database_id is filled in once, per account, and is not a secret — it is an
-# identifier, and access to the database is granted by the binding rather than
-# by knowing it. Create the database and read the id back with:
+# It does not belong here anyway. On a Pages project the D1 binding is set on
+# the project, not in this file:
 #
-#   npx wrangler d1 create niwa-leads
-#   npx wrangler d1 execute niwa-leads --remote --file=migrations/0001_leads.sql
+#   Workers & Pages -> niwa-website-rebuild -> Settings -> Bindings
+#   -> D1 database -> variable name DB, database niwa-leads
 #
-# then paste the id below and redeploy. Until it is a real id the endpoint
-# still answers and still emails; it just reports stored:false, and the email
-# says so in the body rather than pretending the record was kept.
-[[d1_databases]]
-binding = "DB"
-database_name = "niwa-leads"
-database_id = "REPLACE_WITH_ID_FROM_wrangler_d1_create"
+# Locally, pass it on the command line instead, which needs no id at all:
+#
+#   npx wrangler pages dev dist --d1 DB=niwa-leads

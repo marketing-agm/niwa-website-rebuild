@@ -47,8 +47,9 @@ Actions), then run **Actions -> Leads setup -> Run workflow**:
 | `LEADS_TOKEN` | A long random string. Guards the admin page. |
 | `LEAD_WEBHOOK_URL` | Optional. A Teams or Slack incoming webhook. |
 
-It creates the database, records its id in `wrangler.toml`, creates the table
-and sets every value on the Pages project. It is safe to run twice.
+It creates the database, creates the table and sets every value on the Pages
+project, then prints the database id you need for the binding step. It is safe
+to run twice.
 
 **One step it cannot do for you:** binding the database to the Pages project.
 Cloudflare dashboard -> Workers & Pages -> the project -> Settings -> Bindings
@@ -63,8 +64,10 @@ That binding is what makes `env.DB` exist inside the function.
 npx wrangler d1 create niwa-leads
 ```
 
-Put the id it prints into `wrangler.toml` under `[[d1_databases]]`, then create
-the table:
+Note the id it prints — you need it for the binding below. It does **not** go
+into `wrangler.toml`: Cloudflare reads that file at build time and a Pages
+project takes its D1 binding from the project settings, not from the file. Then
+create the table:
 
 ```sh
 npx wrangler d1 execute niwa-leads --remote --file=migrations/0001_leads.sql
@@ -136,7 +139,7 @@ page afterwards.
 ```sh
 npm run build
 npx wrangler d1 execute niwa-leads --local --file=migrations/0001_leads.sql
-npx wrangler pages dev dist \
+npx wrangler pages dev dist --d1 DB=niwa-leads \
   --binding LEAD_TO=you@example.com LEAD_FROM=site@example.com LEADS_TOKEN=dev-token
 ```
 

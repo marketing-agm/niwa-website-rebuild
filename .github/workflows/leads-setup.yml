@@ -76,31 +76,10 @@ jobs:
           echo "id=$id" >> "$GITHUB_OUTPUT"
           echo "Database id resolved."
 
-      - name: Record the id in wrangler.toml
+      - name: Report the database id
         run: |
-          set -euo pipefail
-          node -e '
-            const fs = require("fs");
-            const id = process.argv[1];
-            const p = "wrangler.toml";
-            let s = fs.readFileSync(p, "utf8");
-            const before = s;
-            s = s.replace(/database_id = "[^"]*"/, `database_id = "${id}"`);
-            if (s === before) { console.error("database_id line not found in wrangler.toml"); process.exit(1); }
-            fs.writeFileSync(p, s);
-          ' "${{ steps.db.outputs.id }}"
-          if git diff --quiet -- wrangler.toml; then
-            echo "wrangler.toml already had this id."
-          else
-            git config user.name  "github-actions[bot]"
-            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-            git add wrangler.toml
-            git commit -m "Record the leads database id
-
-          Written by .github/workflows/leads-setup.yml. The id is an identifier,
-          not a secret: access is granted by the binding, not by knowing it."
-            git push
-          fi
+          echo "Database id: ${{ steps.db.outputs.id }}"
+          echo "You need this for the binding step below." >> "$GITHUB_STEP_SUMMARY"
 
       - name: Create the table
         run: npx wrangler d1 execute "$DB_NAME" --remote --file=migrations/0001_leads.sql
