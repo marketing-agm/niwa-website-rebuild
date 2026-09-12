@@ -42,7 +42,7 @@ Actions), then run **Actions -> Leads setup -> Run workflow**:
 | `CLOUDFLARE_API_TOKEN` | Cloudflare -> My Profile -> API Tokens -> Create. Custom token with **Account · D1 · Edit** and **Account · Cloudflare Pages · Edit**. |
 | `CLOUDFLARE_ACCOUNT_ID` | Cloudflare dashboard sidebar, or the account URL. |
 | `RESEND_API_KEY` | resend.com, after verifying the domain (below). |
-| `LEAD_TO` | `leasing@niwaapartments.com` |
+| `LEAD_TO` | Who gets the email. One address, or several separated by commas — `leasing@niwaapartments.com,gerry@…` |
 | `LEAD_FROM` | A verified sender on the domain, e.g. `site@niwaapartments.com` |
 | `LEADS_TOKEN` | A long random string. Guards the admin page. |
 | `LEAD_WEBHOOK_URL` | Optional. A Teams or Slack webhook — see below. |
@@ -89,7 +89,7 @@ None of them belong in the repository.
 | Name | What it is |
 | --- | --- |
 | `RESEND_API_KEY` | **Secret.** From Resend. |
-| `LEAD_TO` | Where leasing reads it, e.g. `leasing@niwaapartments.com` |
+| `LEAD_TO` | Who gets the email. One address, or several separated by commas. |
 | `LEAD_FROM` | A verified sender on the domain, e.g. `site@niwaapartments.com` |
 | `LEAD_WEBHOOK_URL` | Optional. A Teams or Slack webhook — see below. |
 | `LEADS_TOKEN` | **Secret.** Guards the admin page. Generate a long random one. |

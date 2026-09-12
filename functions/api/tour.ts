@@ -184,9 +184,13 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
   // 2. The email.
   let emailOk = false;
   let emailError = '';
-  const to = env.LEAD_TO;
+  // LEAD_TO takes one address or several, separated by commas — a shared
+  // leasing inbox and the agent who actually works the leads, say. One address
+  // is one point of failure, and this is the notification half, which is the
+  // half allowed to fail.
+  const to = (env.LEAD_TO ?? '').split(',').map((a) => a.trim()).filter(Boolean);
   const from = env.LEAD_FROM;
-  if (env.RESEND_API_KEY && to && from) {
+  if (env.RESEND_API_KEY && to.length && from) {
     const rows: [string, string][] = [
       ['Name', name],
       ['Email', lead.email],
@@ -210,7 +214,7 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
         method: 'POST',
         headers: { authorization: `Bearer ${env.RESEND_API_KEY}`, 'content-type': 'application/json' },
         body: JSON.stringify({
-          from, to: [to],
+          from, to,
           // So hitting reply in the inbox answers the person, not the website.
           reply_to: lead.email,
           subject: `Tour request — ${name}${when ? `, ${when}` : ''}`,
