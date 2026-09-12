@@ -45,7 +45,7 @@ Actions), then run **Actions -> Leads setup -> Run workflow**:
 | `LEAD_TO` | `leasing@niwaapartments.com` |
 | `LEAD_FROM` | A verified sender on the domain, e.g. `site@niwaapartments.com` |
 | `LEADS_TOKEN` | A long random string. Guards the admin page. |
-| `LEAD_WEBHOOK_URL` | Optional. A Teams or Slack incoming webhook. |
+| `LEAD_WEBHOOK_URL` | Optional. A Teams or Slack webhook — see below. |
 
 It creates the database, creates the table and sets every value on the Pages
 project, then prints the database id you need for the binding step. It is safe
@@ -91,7 +91,7 @@ None of them belong in the repository.
 | `RESEND_API_KEY` | **Secret.** From Resend. |
 | `LEAD_TO` | Where leasing reads it, e.g. `leasing@niwaapartments.com` |
 | `LEAD_FROM` | A verified sender on the domain, e.g. `site@niwaapartments.com` |
-| `LEAD_WEBHOOK_URL` | Optional. A Teams or Slack incoming webhook. |
+| `LEAD_WEBHOOK_URL` | Optional. A Teams or Slack webhook — see below. |
 | `LEADS_TOKEN` | **Secret.** Guards the admin page. Generate a long random one. |
 
 Mark `RESEND_API_KEY` and `LEADS_TOKEN` as encrypted.
@@ -106,6 +106,47 @@ sign in as themselves.
 
 It is free on the Zero Trust plan, and it also covers the Sveltia CMS at
 `/admin/`, which is worth doing regardless.
+
+## The team channel (optional, and the most useful part)
+
+`LEAD_WEBHOOK_URL` posts each enquiry into a channel as it arrives. Worth
+setting up: an inbox is one person, and a channel is everyone who is in it. It
+is the difference between an enquiry waiting for someone to come back from
+leave and being seen in a minute.
+
+The endpoint sends the right shape for whichever service the URL belongs to,
+picked off the hostname — Slack and Google Chat take a plain message, Teams
+needs an Adaptive Card and rejects the plain one.
+
+### Slack
+
+1. api.slack.com/apps -> **Create New App** -> From scratch, pick the workspace.
+2. **Incoming Webhooks** -> turn it on -> **Add New Webhook to Workspace**.
+3. Choose the channel (`#leasing`, say) and allow it.
+4. Copy the `https://hooks.slack.com/services/...` URL into `LEAD_WEBHOOK_URL`.
+
+### Microsoft Teams
+
+Microsoft has been retiring the old "Incoming Webhook" connector, so which
+route you have depends on the tenant. Both work here.
+
+**Workflows (current).** In Teams, right-click the channel -> **Workflows** ->
+search for *"Post to a channel when a webhook request is received"* -> pick the
+team and channel -> it gives you a URL on `logic.azure.com`. That is the one.
+
+**Incoming Webhook (older tenants).** Channel -> **...** -> Connectors ->
+Incoming Webhook -> Configure -> name it -> Create. The URL is on
+`webhook.office.com`.
+
+Either way, paste it into `LEAD_WEBHOOK_URL` and the card shape is chosen for
+you.
+
+### Checking the channel works
+
+Send a test enquiry (below). If the channel stays quiet but the lead appears in
+the admin page, the webhook is the part that failed and the `webhook_error`
+column on that row says why — the enquiry itself is safe either way, which is
+the whole point of the order things happen in.
 
 ## Checking it works
 

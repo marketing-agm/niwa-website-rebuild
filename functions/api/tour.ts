@@ -61,6 +61,67 @@ const KNOWN = new Set([
 const escapeHtml = (s: string) =>
   s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]!));
 
+/** Teams and Slack do not speak the same language, and the difference is not
+ *  cosmetic — send Slack's shape to a modern Teams webhook and you get a
+ *  rejection or an empty card.
+ *
+ *  Slack and Google Chat take `{ text }`. Teams used to as well, through the
+ *  Office 365 connector, but Microsoft has been retiring those in favour of
+ *  the Workflows app, and a Workflows webhook expects an Adaptive Card. The
+ *  card shape below is accepted by both the old connectors and Workflows, so
+ *  it is the safe thing to send anywhere that looks like Teams.
+ *
+ *  Picked off the hostname, because that is the only thing distinguishing them
+ *  at the point of sending, and getting it wrong is silent: the enquiry is
+ *  stored and emailed either way, and the channel simply stays quiet. */
+function webhookBody(url: string, d: { name: string; when: string; lead: Record<string, string> }) {
+  const { name, when, lead } = d;
+  let host = '';
+  try { host = new URL(url).hostname.toLowerCase(); } catch { /* fall through to Slack's shape */ }
+  const isTeams = /(^|\.)webhook\.office\.com$/.test(host)
+    || /(^|\.)logic\.azure\.com$/.test(host)
+    || host.includes('powerplatform')
+    || host.includes('powerautomate');
+
+  const facts: [string, string][] = [
+    ['Email', lead.email],
+    ['Phone', lead.phone || '—'],
+    ['Looking for', lead.beds || '—'],
+    ['Move in', lead.move_in || '—'],
+    ['Wants to visit', when || '—'],
+  ];
+
+  if (isTeams) {
+    return {
+      type: 'message',
+      attachments: [{
+        contentType: 'application/vnd.microsoft.card.adaptive',
+        contentUrl: null,
+        content: {
+          $schema: 'http://adaptivecards.io/schemas/adaptive-card.json',
+          type: 'AdaptiveCard',
+          version: '1.4',
+          body: [
+            { type: 'TextBlock', text: 'Tour request', weight: 'Bolder', size: 'Medium' },
+            { type: 'TextBlock', text: name, size: 'Large', wrap: true },
+            { type: 'FactSet', facts: facts.map(([title, value]) => ({ title, value })) },
+            ...(lead.message ? [{ type: 'TextBlock', text: lead.message.slice(0, 500), wrap: true, isSubtle: true }] : []),
+          ],
+        },
+      }],
+    };
+  }
+
+  // Slack, Google Chat, and anything else that takes a plain message.
+  return {
+    text:
+      `*Tour request* — ${name}${when ? ` · ${when}` : ''}\n` +
+      `${lead.email}${lead.phone ? ` · ${lead.phone}` : ''}\n` +
+      `${lead.beds || 'no preference'} · move in ${lead.move_in || 'not specified'}` +
+      (lead.message ? `\n> ${lead.message.slice(0, 500)}` : ''),
+  };
+}
+
 export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
   let body: Json;
   try { body = (await request.json()) as Json; }
@@ -166,24 +227,19 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
     emailError = 'not configured';
   }
 
-  // 3. The team channel, if there is one. Second pair of eyes, different
-  //    failure mode from email.
+  // 3. The team channel, if there is one. Second pair of eyes, and a different
+  //    failure mode from email — a channel nobody has muted beats an inbox
+  //    with a rule on it.
   let webhookOk: number | null = null;
   let webhookError = '';
   if (env.LEAD_WEBHOOK_URL) {
-    const text =
-      `*Tour request* — ${name}${when ? ` · ${when}` : ''}\n` +
-      `${lead.email}${lead.phone ? ` · ${lead.phone}` : ''}\n` +
-      `${lead.beds || 'no preference'} · move in ${lead.move_in || 'not specified'}` +
-      (lead.message ? `\n> ${lead.message.slice(0, 500)}` : '');
     try {
       const res = await fetch(env.LEAD_WEBHOOK_URL, {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
-        // `text` is what both Slack and a Teams incoming webhook accept.
-        body: JSON.stringify({ text }),
+        body: JSON.stringify(webhookBody(env.LEAD_WEBHOOK_URL, { name, when, lead })),
       });
-      if (!res.ok) throw new Error(`${res.status}`);
+      if (!res.ok) throw new Error(`${res.status} ${(await res.text()).slice(0, 200)}`);
       webhookOk = 1;
     } catch (err) {
       webhookOk = 0;
