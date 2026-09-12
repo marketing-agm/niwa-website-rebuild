@@ -1,5 +1,5 @@
 {
-  "updated": "2026-09-11T23:48:56.277Z",
+  "updated": "2026-09-12T00:18:45.468Z",
   "sources": [
     "Visit Seattle",
     "City of Seattle",
@@ -12,60 +12,6 @@
     "radiusMiles": 3
   },
   "events": [
-    {
-      "id": "e12-101179",
-      "title": "Cider tasting",
-      "start": "2026-09-11T07:00:00Z",
-      "end": "2026-09-12T07:00:00Z",
-      "allDay": true,
-      "venue": {
-        "name": "South Lake Union",
-        "address": "South Lake Union Discovery Center, 101 Westlake Ave N, Seattle, WA 98109",
-        "lat": null,
-        "lng": null
-      },
-      "category": null,
-      "url": "https://www.cidersummitnw.com/seattle1",
-      "image": null,
-      "priceFrom": null,
-      "source": "events12"
-    },
-    {
-      "id": "e12-117523",
-      "title": "Harry Potter live",
-      "start": "2026-09-11T07:00:00Z",
-      "end": "2026-09-12T07:00:00Z",
-      "allDay": true,
-      "venue": {
-        "name": "Downtown",
-        "address": "Paramount Theatre, 911 Pine St, Seattle, WA 98101",
-        "lat": null,
-        "lng": null
-      },
-      "category": null,
-      "url": "https://www.stgpresents.org/events/harry-potter-and-the-cursed-child/",
-      "image": null,
-      "priceFrom": null,
-      "source": "events12"
-    },
-    {
-      "id": "e12-120403",
-      "title": "Interactive show",
-      "start": "2026-09-11T07:00:00Z",
-      "end": "2026-09-26T07:00:00Z",
-      "allDay": true,
-      "venue": {
-        "name": "Belltown",
-        "address": "Base Camp Studios 2, 1901 3rd Ave, Seattle, WA 98101",
-        "lat": null,
-        "lng": null
-      },
-      "category": null,
-      "url": "https://www.eventbrite.com/e/all-in-tickets-1991593799667",
-      "image": null,
-      "priceFrom": null,
-      "source": "events12"
-    },
     {
       "id": "tm-vvG1HZ_8nsN1CM",
       "title": "Lumen Field Stadium Tours",
@@ -85,24 +31,6 @@
       "source": "ticketmaster"
     },
     {
-      "id": "sc-46399",
-      "title": "Seattle Center Sculpture Walk 2026",
-      "start": "2026-09-11T07:00:00Z",
-      "end": null,
-      "allDay": true,
-      "venue": {
-        "name": "Seattle Center",
-        "address": null,
-        "lat": 47.6219473,
-        "lng": -122.3517443
-      },
-      "category": "Museums & galleries",
-      "url": "https://www.seattlecenter.com/events/event-calendar/seattle-center-sculpture-walk-2026-x46399",
-      "image": null,
-      "priceFrom": 0,
-      "source": "seattle-center"
-    },
-    {
       "id": "tm-vvG1HZ_eEqqzQq",
       "title": "Seattle Mariners Ballpark Tour",
       "start": "2026-09-11T07:00:00Z",
@@ -119,60 +47,6 @@
       "image": "https://s1.ticketm.net/dam/a/1a6/5487c2cb-fc09-4cf4-8f7f-f29e74fa71a6_RETINA_LANDSCAPE_16_9.jpg",
       "priceFrom": null,
       "source": "ticketmaster"
-    },
-    {
-      "id": "sg-207730689",
-      "title": "Land Use & Sustainability Committee - Special Meeting - Public Hearing",
-      "start": "2026-09-11T16:30:00.000Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "Council Chambers",
-        "address": "600 4th Ave #2, Seattle, WA 98104",
-        "lat": null,
-        "lng": null
-      },
-      "category": "Public meetings",
-      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D207730689",
-      "image": null,
-      "priceFrom": null,
-      "source": "seattle-gov"
-    },
-    {
-      "id": "sg-207247709",
-      "title": "Daybreak Community & Land Tending",
-      "start": "2026-09-11T18:00:00.000Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "Seattle",
-        "address": null,
-        "lat": null,
-        "lng": null
-      },
-      "category": "Volunteering",
-      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D207247709",
-      "image": null,
-      "priceFrom": null,
-      "source": "seattle-gov"
-    },
-    {
-      "id": "sc-9-11-remembrance-ceremony-25th-anniversa",
-      "title": "9/11 Remembrance Ceremony - 25th Anniversary",
-      "start": "2026-09-11T19:00:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "Fisher Pavilion",
-        "address": null,
-        "lat": 47.6211235,
-        "lng": -122.352168
-      },
-      "category": null,
-      "url": "https://www.seattlecenter.com/events/event-calendar/9/11-remembrance-ceremony-25th-anniversary",
-      "image": null,
-      "priceFrom": 0,
-      "source": "seattle-center"
     },
     {
       "id": "sg-206884195",
@@ -195,7 +69,7 @@
     {
       "id": "sg-182114581",
       "title": "Open Adoption Hours",
-      "start": "2026-09-11T20:00:00.000Z",
+      "start": "2026-09-11T20:00:00Z",
       "end": "2026-09-12T00:00:00.000Z",
       "allDay": false,
       "venue": {
@@ -206,24 +80,6 @@
       },
       "category": null,
       "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D182114581",
-      "image": null,
-      "priceFrom": null,
-      "source": "seattle-gov"
-    },
-    {
-      "id": "sg-208284979",
-      "title": "Human Services, Labor, & Economic Development Committee - Special Meeting",
-      "start": "2026-09-11T21:00:00.000Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "Council Chambers",
-        "address": "600 4th Ave #2, Seattle, WA 98104",
-        "lat": null,
-        "lng": null
-      },
-      "category": "Public meetings",
-      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D208284979",
       "image": null,
       "priceFrom": null,
       "source": "seattle-gov"
@@ -409,6 +265,24 @@
       "source": "events12"
     },
     {
+      "id": "e12-101179",
+      "title": "Cider tasting",
+      "start": "2026-09-12T07:00:00Z",
+      "end": null,
+      "allDay": true,
+      "venue": {
+        "name": "South Lake Union",
+        "address": "South Lake Union Discovery Center, 101 Westlake Ave N, Seattle, WA 98109",
+        "lat": null,
+        "lng": null
+      },
+      "category": null,
+      "url": "https://www.cidersummitnw.com/seattle1",
+      "image": null,
+      "priceFrom": null,
+      "source": "events12"
+    },
+    {
       "id": "e12-102359",
       "title": "Drawing day",
       "start": "2026-09-12T07:00:00Z",
@@ -427,19 +301,37 @@
       "source": "events12"
     },
     {
-      "id": "e12-119075",
-      "title": "Gourmet cooking class",
+      "id": "e12-117523",
+      "title": "Harry Potter live",
+      "start": "2026-09-12T07:00:00Z",
+      "end": null,
+      "allDay": true,
+      "venue": {
+        "name": "Downtown",
+        "address": "Paramount Theatre, 911 Pine St, Seattle, WA 98101",
+        "lat": null,
+        "lng": null
+      },
+      "category": null,
+      "url": "https://www.stgpresents.org/events/harry-potter-and-the-cursed-child/",
+      "image": null,
+      "priceFrom": null,
+      "source": "events12"
+    },
+    {
+      "id": "e12-120403",
+      "title": "Interactive show",
       "start": "2026-09-12T07:00:00Z",
       "end": "2026-09-26T07:00:00Z",
       "allDay": true,
       "venue": {
         "name": "Belltown",
-        "address": "Hotel Andra, 2000 4th Ave, Seattle, WA 98121",
+        "address": "Base Camp Studios 2, 1901 3rd Ave, Seattle, WA 98101",
         "lat": null,
         "lng": null
       },
       "category": null,
-      "url": "https://www.hotstovesociety.com/store/events/",
+      "url": "https://www.eventbrite.com/e/all-in-tickets-1991593799667",
       "image": null,
       "priceFrom": null,
       "source": "events12"
@@ -859,6 +751,24 @@
       "source": "events12"
     },
     {
+      "id": "sc-46401",
+      "title": "Seattle Center Sculpture Walk 2026",
+      "start": "2026-09-13T07:00:00Z",
+      "end": null,
+      "allDay": true,
+      "venue": {
+        "name": "Seattle Center",
+        "address": null,
+        "lat": 47.6219473,
+        "lng": -122.3517443
+      },
+      "category": "Museums & galleries",
+      "url": "https://www.seattlecenter.com/events/event-calendar/seattle-center-sculpture-walk-2026-x46401",
+      "image": null,
+      "priceFrom": 0,
+      "source": "seattle-center"
+    },
+    {
       "id": "sc-47103",
       "title": "Washington Home Show",
       "start": "2026-09-13T17:00:00Z",
@@ -967,6 +877,78 @@
       "source": "ticketmaster"
     },
     {
+      "id": "tm-vvG1HZ_uMIRTiE",
+      "title": "Jazz is Dead Welcomes Cortex",
+      "start": "2026-09-14T03:00:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "Moore Theatre",
+        "address": "1932 2nd Ave",
+        "lat": 47.61196,
+        "lng": -122.34142
+      },
+      "category": "Music",
+      "url": "https://www.ticketmaster.com/jazz-is-dead-welcomes-cortex-seattle-washington-09-13-2026/event/0F0064DDE8BFFB27",
+      "image": "https://s1.ticketm.net/dam/a/e6d/9411ed91-b8f6-439d-966d-ddee32618e6d_RETINA_LANDSCAPE_16_9.jpg",
+      "priceFrom": null,
+      "source": "ticketmaster"
+    },
+    {
+      "id": "tm-rZ7HnEZ1AfZeb7",
+      "title": "Flammable",
+      "start": "2026-09-14T05:00:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "Chop Suey",
+        "address": "1325 E Madison St.",
+        "lat": 47.613485,
+        "lng": -122.314457
+      },
+      "category": "Music",
+      "url": "https://www.ticketweb.com/event/flammable-chop-suey-tickets/14002604",
+      "image": "https://s1.ticketm.net/dam/c/df8/81eadad8-4449-412e-a2b1-3d8bbb78edf8_106181_RETINA_LANDSCAPE_16_9.jpg",
+      "priceFrom": null,
+      "source": "ticketmaster"
+    },
+    {
+      "id": "tm-vvG1HZ_eEqLFQ-",
+      "title": "Seattle Mariners Ballpark Tour",
+      "start": "2026-09-14T07:00:00Z",
+      "end": null,
+      "allDay": true,
+      "venue": {
+        "name": "T-Mobile Park",
+        "address": "1250 1st Ave S.",
+        "lat": 47.590333,
+        "lng": -122.33285
+      },
+      "category": "Community",
+      "url": "https://www.ticketmaster.com/seattle-mariners-ballpark-tour-seattle-washington-09-14-2026/event/0F006429DD7C86A1",
+      "image": "https://s1.ticketm.net/dam/a/1a6/5487c2cb-fc09-4cf4-8f7f-f29e74fa71a6_RETINA_LANDSCAPE_16_9.jpg",
+      "priceFrom": null,
+      "source": "ticketmaster"
+    },
+    {
+      "id": "e12-106154",
+      "title": "Boat sale",
+      "start": "2026-09-17T07:00:00Z",
+      "end": "2026-09-20T07:00:00Z",
+      "allDay": true,
+      "venue": {
+        "name": "Eastlake",
+        "address": "Chandler’s Cove, 901 Fairview Ave N, Seattle, WA 98109",
+        "lat": null,
+        "lng": null
+      },
+      "category": null,
+      "url": "https://boatsafloatshow.com/",
+      "image": null,
+      "priceFrom": null,
+      "source": "events12"
+    },
+    {
       "id": "sc-artsfund-2026-celebration-of-the-arts",
       "title": "Artsfund 2026 Celebration of the Arts",
       "start": "2026-09-18T00:00:00Z",
@@ -1039,6 +1021,24 @@
       "source": "seattle-center"
     },
     {
+      "id": "sc-st-jude-walk-seattle",
+      "title": "St. Jude Walk Seattle",
+      "start": "2026-09-19T15:00:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "International Fountain",
+        "address": null,
+        "lat": 47.6219473,
+        "lng": -122.3517443
+      },
+      "category": "Tours",
+      "url": "https://www.seattlecenter.com/events/event-calendar/st-jude-walk-seattle",
+      "image": null,
+      "priceFrom": 0,
+      "source": "seattle-center"
+    },
+    {
       "id": "sc-50381",
       "title": "Sea Mar Fiestas Patrias 2026",
       "start": "2026-09-19T19:00:00Z",
@@ -1068,7 +1068,7 @@
         "lat": null,
         "lng": null
       },
-      "category": "Festivals & Special Events",
+      "category": "Festivals",
       "url": "https://seattlecenter.com/events/featured-events/festal/croatiafest",
       "image": null,
       "priceFrom": null,
@@ -1086,7 +1086,7 @@
         "lat": null,
         "lng": null
       },
-      "category": "Festivals & Special Events",
+      "category": "Festivals",
       "url": "https://www.seattlecenter.com/events/featured-events/festal/turkfest",
       "image": null,
       "priceFrom": null,
