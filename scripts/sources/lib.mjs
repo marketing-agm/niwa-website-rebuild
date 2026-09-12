@@ -144,3 +144,49 @@ export async function getJson(url, { timeoutMs = 20000, headers = {} } = {}) {
     clearTimeout(t);
   }
 }
+
+/* ---------- The category chips ----------
+
+   A closed set, and the only one. The page builds its filter chips from
+   whichever distinct category strings come back, so any source that emits a
+   word of its own invents a chip — which is how the page ended up offering
+   both "Festivals" and "Festivals & Special Events", two chips for the same
+   thing, split four listings to two. Visit Seattle passes its feed's own
+   category names straight through; the other sources map into a list; nobody
+   was reconciling the two.
+
+   Applied centrally, over every event from every source, so this cannot
+   happen again whatever an individual adapter does with its own taxonomy. */
+export const CATEGORIES = [
+  'Arts & theatre', 'Community', 'Family', 'Festivals', 'Film', 'Market',
+  'Museums & galleries', 'Music', 'Public meetings', 'Sports', 'Tours', 'Volunteering',
+];
+
+// Ordered: first match wins, so the narrower kinds are asked before the
+// broader ones. A film screening at a festival is Film; a festival is not Film.
+const CATEGORY_ALIASES = [
+  [/\bfilm\b|cinema|movie|screening/i, 'Film'],
+  [/festival|festal|fiesta|parade|celebrat|special event|\bfair\b|carnival|winterfest/i, 'Festivals'],
+  [/market|bazaar|craft show|farmers/i, 'Market'],
+  [/theat(?:re|er)|\bplay\b|musical|opera|ballet|dance|cirque|comedy|performing/i, 'Arts & theatre'],
+  [/concert|music|\bband\b|symphony|jazz|\bdj\b|nightlife/i, 'Music'],
+  [/museum|exhibit|gallery|sculpture|artist|\bart(?:s|work)?\b/i, 'Museums & galleries'],
+  [/sport|athletic|skate|\bgame\b|\bvs\.?\b|marathon|fitness|yoga|\brun\b|\brace\b/i, 'Sports'],
+  [/family|kids|children|storytime|playground|youth/i, 'Family'],
+  [/hearing|council|committee|board meeting|public meeting|civic/i, 'Public meetings'],
+  [/volunteer|work party|clean\s?up|stewardship/i, 'Volunteering'],
+  [/\btour\b|\bwalk\b|\bstroll\b|garden|cruise/i, 'Tours'],
+  [/community|neighbou?rhood|social/i, 'Community'],
+];
+
+/** Any source's wording, reduced to one of CATEGORIES — or null, which the
+ *  page renders as a card with no chip. Null beats a wrong chip: a reader can
+ *  live without a label, but not with the wrong one. */
+export function canonicalCategory(raw) {
+  const s = plain(raw);
+  if (!s) return null;
+  const exact = CATEGORIES.find((c) => c.toLowerCase() === s.toLowerCase());
+  if (exact) return exact;
+  for (const [re, name] of CATEGORY_ALIASES) if (re.test(s)) return name;
+  return null;
+}

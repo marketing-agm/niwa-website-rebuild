@@ -519,9 +519,20 @@ const miles = (e: SiteEvent) => (e.miles == null ? '' : e.miles < 0.15 ? 'next d
      box: at 1.08 the rule under one line was landing on the capitals of the
      next, and sitting on the descenders of its own. The extra leading gives
      both of them room. */
-  .ev-name { font-weight: 400; text-wrap: pretty; line-height: 1.2; }
-  .ev-name :global(.link) { padding-bottom: 4px; }
-  .ev-row-n :global(.link) { padding-bottom: 3px; }
+  .ev-name { font-weight: 400; text-wrap: pretty; line-height: 1.32; }
+  /* 1px, not 4. The rule is drawn on the bottom edge of the link's padding
+     box, so padding pushes it DOWN — towards the next line, not away from it.
+     Adding padding to give it room made it worse: measured at 1.2/4px the
+     rule sat 0.6px past the top of the next line's glyphs, which is the
+     overlap you could see under "Seattle Center Sculpture".
+
+     Solved rather than eyeballed. With the font's content box measured at
+     1.21x its size here, the clearance between the rule and the next line's
+     glyphs is 1.5·lineHeight − 0.5·fontSize − contentBox − padding. 1.32 with
+     1px lands it at about 9px, which reads as a gap at every size because
+     both terms scale with the type. */
+  .ev-name :global(.link) { padding-bottom: 1px; }
+  .ev-row-n :global(.link) { padding-bottom: 1px; }
   .ev-meta { color: var(--fg-2); display: flex; flex-wrap: wrap; gap: 0 10px; }
   .ev-meta .ev-venue::before { content: '·'; margin-right: 10px; color: var(--fg-3); }
   .ev-meta > :first-child.ev-venue::before { content: none; margin: 0; }
@@ -539,7 +550,7 @@ const miles = (e: SiteEvent) => (e.miles == null ? '' : e.miles < 0.15 ? 'next d
   }
   .ev-row.is-lit { background: var(--bg-2); }
   .ev-row-t { color: var(--gold); }
-  .ev-row-n { font-size: var(--t-body); text-wrap: pretty; line-height: 1.45; }
+  .ev-row-n { font-size: var(--t-body); text-wrap: pretty; line-height: 1.5; }
   .ev-row-v, .ev-row-c { color: var(--fg-2); }
   .ev-row-d { color: var(--fg-3); text-align: right; }
 

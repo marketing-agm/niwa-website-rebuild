@@ -37,14 +37,19 @@ const HINTS = [
   [/film|cinema|screening/i, 'Film'],
 ];
 
+// The feed's own words are read for the hint and then thrown away. Returning
+// named[0] straight out is what put "Festivals & Special Events" on the page
+// next to "Festivals" — their taxonomy is not the page's, and a source does
+// not get to name a chip. refresh-events.mjs maps whatever comes back through
+// the closed set as well, so this is belt and braces.
 function categorise(ev) {
+  const named = [];
   for (const key of ['event_categories', 'events_categories', 'categories']) {
-    const named = (ev?.[key] ?? []).map?.((c) => plain(c?.name ?? c)).filter(Boolean);
-    if (named?.length) return named[0];
+    named.push(...((ev?.[key] ?? []).map?.((c) => plain(c?.name ?? c)).filter(Boolean) ?? []));
   }
-  const hay = `${plain(ev?.title)} ${plain(ev?.description)}`;
+  const hay = `${named.join(' ')} ${plain(ev?.title)} ${plain(ev?.description)}`;
   for (const [re, label] of HINTS) if (re.test(hay)) return label;
-  return 'Community';
+  return null;
 }
 
 const inRegion = (ev) => {
