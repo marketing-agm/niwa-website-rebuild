@@ -36,6 +36,25 @@ if (form) {
   // The next six open days, offered as chips because most people want one of
   // them and a chip is one tap.
   const days = form.querySelector<HTMLElement>('[data-tour-days]');
+
+  // Which way the day strip can still be pushed. Told to the CSS rather than
+  // worked out there, because no CSS query can ask whether an element
+  // overflows — and a fade that is always on would dim the last chip once you
+  // had reached it, which is worse than no fade at all.
+  if (days) {
+    const edges = () => {
+      const more = days.scrollWidth - days.clientWidth;
+      const x = days.scrollLeft;
+      days.classList.toggle('has-more-right', more > 1 && x < more - 1);
+      days.classList.toggle('has-more-left', more > 1 && x > 1);
+    };
+    days.addEventListener('scroll', edges, { passive: true });
+    addEventListener('resize', edges);
+    // Also after the weekday chips are injected below, which is what makes it
+    // overflow in the first place.
+    queueMicrotask(edges);
+    setTimeout(edges, 0);
+  }
   const dateWrap = form.querySelector<HTMLElement>('[data-tour-date-wrap]');
   const dateInput = form.querySelector<HTMLInputElement>('[data-tour-date]');
   const dayHint = form.querySelector<HTMLElement>('[data-tour-day-hint]');

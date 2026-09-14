@@ -263,6 +263,21 @@ const slots = [['Morning', 'morning'], ['Midday', 'midday'], ['Afternoon', 'afte
     }
     .tf-days::-webkit-scrollbar { display: none; }
     .tf-days :global(.chip) { flex: 0 0 auto; scroll-snap-align: start; }
+    /* The strip was being cut dead at the screen edge, mid-word — "Wed, S" —
+       with nothing to say it continued. A hard crop reads as a layout fault
+       rather than as more content, which on the one surface that converts is
+       the wrong thing to make someone wonder about. A soft edge says it
+       scrolls without spending any room saying so.
+
+       The classes come from tour.ts, so the fade only appears on the side
+       there is actually something to reach: no fade when it all fits, none on
+       the left until you have moved, and none on the right once you are at
+       the end. A permanent fade would dim the last chip for no reason. */
+    .tf-days.has-more-right { mask-image: linear-gradient(to right, #000 calc(100% - 44px), transparent 100%); }
+    .tf-days.has-more-left { mask-image: linear-gradient(to left, #000 calc(100% - 44px), transparent 100%); }
+    .tf-days.has-more-left.has-more-right {
+      mask-image: linear-gradient(to right, transparent 0, #000 44px, #000 calc(100% - 44px), transparent 100%);
+    }
     .tf-date { display: block; margin-top: 10px; }
     .tf-hint { font-size: 0.62em; margin-top: 0.5em; }
 
