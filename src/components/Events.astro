@@ -261,9 +261,16 @@ const miles = (e: SiteEvent) => (e.miles == null ? '' : e.miles < 0.15 ? 'next d
             <text class="ev-home-t" y="30">{c.name.replace(' Apartments', '')}</text>
           </g>
         </svg>
+        {/* A legend, not a paragraph. Three sentences held to the map's own
+            560px stacked into a clot under a large circular figure; the same
+            facts separated by middots read as one line of caption and take
+            the width they are given. The clause about venues on the same spot
+            sharing a pin went with it — the pin already carries the count, in
+            the badge and in its label. */}
         <p class="ev-map-note small">
-          Distances are straight-line from {c.address.streetAddress}. Tap a pin to jump to its events{pins.length > clusters.length ? '; venues that fall on the same spot share one' : ''}.
-          {feed.unpinned > 0 && ` ${feed.unpinned} ${feed.unpinned === 1 ? 'listing gives' : 'listings give'} no location, so ${feed.unpinned === 1 ? 'it is' : 'they are'} below but not on the map.`}
+          Straight-line from {c.address.streetAddress} · Tap a pin to jump to its events{feed.unpinned > 0
+            ? ` · ${feed.unpinned} ${feed.unpinned === 1 ? 'listing gives' : 'listings give'} no location and ${feed.unpinned === 1 ? 'appears' : 'appear'} below only`
+            : ''}
         </p>
       </div>
 
@@ -374,7 +381,11 @@ const miles = (e: SiteEvent) => (e.miles == null ? '' : e.miles < 0.15 ? 'next d
   .ev-c--n, .ev-c--s { text-anchor: middle; }
   .ev-c--e { text-anchor: start; }
   .ev-c--w { text-anchor: end; }
-  .ev-map-note { color: var(--fg-3); margin: 12px auto 0; max-width: 560px; text-align: center; }
+  /* No max-width: the note is a caption for the section, not for the plate,
+     and capping it at the map's measure is what bunched it. text-wrap: balance
+     so that where it does wrap, the lines come out even rather than leaving a
+     word on its own. */
+  .ev-map-note { color: var(--fg-3); margin: 14px auto 0; text-align: center; text-wrap: balance; }
 
   .ev-pin { cursor: pointer; }
   .ev-pin-hit { fill: transparent; }
@@ -584,6 +595,9 @@ const miles = (e: SiteEvent) => (e.miles == null ? '' : e.miles < 0.15 ? 'next d
     .ev-pin-label { font-size: 24px; stroke-width: 7px; }
     .ev-home-t { font-size: 22px; stroke-width: 7px; }
     .ev-pin-n { font-size: 15px; }
-    .ev-map-note { text-align: left; }
+    /* Left with the rest of the section on a phone — and `pretty` rather than
+       `balance` to go with it: balanced lines are even, which reads as
+       deliberate when centred and as a half-empty column when it is not. */
+    .ev-map-note { text-align: left; text-wrap: pretty; }
   }
 </style>
