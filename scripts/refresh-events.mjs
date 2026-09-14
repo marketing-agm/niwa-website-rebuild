@@ -82,6 +82,7 @@ if (!Number.isFinite(home.lat) || !Number.isFinite(home.lng)) {
 
 const radiusMiles = Number(arg('radius', 3));
 const days = Number(arg('days', 30));
+
 const MAX = Number(arg('max', 60));
 
 // ---- probe -----------------------------------------------------------------
@@ -225,6 +226,18 @@ const localDay = (iso) => {
     .formatToParts(new Date(iso));
   const get = (t) => p.find((x) => x.type === t)?.value ?? '';
   return `${get('year')}-${get('month')}-${get('day')}`;
+};
+
+// Today in Seattle, so a run at 13:00 UTC — 6am here — does not retire an event
+// that is on this evening. Day granularity on purpose: an event holds its place
+// for the whole of its own day rather than disappearing as it starts.
+const TODAY = localDay(new Date().toISOString());
+// A run counts as upcoming until its last day: an installation that opened last
+// Friday and closes a fortnight out is on today.
+const keepUpcoming = (e) => {
+  if (!e?.start || Number.isNaN(Date.parse(e.start))) return false;
+  const last = e.end && !Number.isNaN(Date.parse(e.end)) ? localDay(e.end) : localDay(e.start);
+  return last >= TODAY;
 };
 
 // The same festival can appear in two calendars. Match on the title and the
@@ -406,6 +419,14 @@ for (const src of chosen) {
     // reintroduce that, and an unmappable word becomes no chip rather than a
     // new one.
     for (const e of result.events) e.category = canonicalCategory(e.category);
+    // Same reason the categories are normalised here: six adapters, six ideas
+    // of where a window starts. Most ask their source for "from now", but a
+    // scraped page has no window to ask for and hands back whatever the page
+    // lists, which includes last weekend. A finished event that reaches the
+    // file is one the page has to filter out later, so it does not reach it.
+    const before = result.events.length;
+    result.events = result.events.filter(keepUpcoming);
+    if (result.events.length < before) log(`dropped ${before - result.events.length} already past`);
     collected.push(...result.events);
     if (result.events.length) used.push(src.label);
   } catch (err) {

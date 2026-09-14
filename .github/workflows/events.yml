@@ -3,8 +3,12 @@ name: Events feed
 # Refreshes src/site/events.json and commits the result, so /events is current
 # without anyone touching it.
 #
-# Mondays at 13:00 UTC — 6am in Seattle — which puts the week's listings up
-# before anyone looks. A run that finds nothing new writes nothing, commits
+# Daily at 13:00 UTC — 6am in Seattle — because the page is built once and then
+# served as it was. A weekly run meant that by Saturday most of what the page
+# listed had already happened: the build drops finished events, but a build only
+# happens when something is committed, and nothing was committed between
+# Mondays. Running every morning retires yesterday and picks up whatever the
+# calendars have added. A run that finds nothing new writes nothing, commits
 # nothing and triggers no deploy.
 #
 # Four sources, and only one of them needs anything set up:
@@ -32,7 +36,7 @@ name: Events feed
 
 on:
   schedule:
-    - cron: '0 13 * * 1'
+    - cron: '0 13 * * *'
   workflow_dispatch:
     inputs:
       radius:

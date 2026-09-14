@@ -31,12 +31,21 @@ export type SiteEvent = RawEvent & {
   /** Position on the plotted map, in miles east and north of the building. */
   east: number | null;
   north: number | null;
+  /** The day the page shows it on: its start, or today if the run is already under way. */
   day: string;        // 2026-09-12
   dayLabel: string;   // Saturday, September 12
   shortDay: string;   // Sat
   dayNum: string;     // 12
   monthAbbr: string;  // Sep
   timeLabel: string;  // 7:30 PM  ·  '' when all-day
+  /** First local day of the run — what the feed said, unclamped. */
+  startDay: string;
+  /** Last local day of the run. Same as startDay unless the feed gives a later end. */
+  lastDay: string;
+  /** Began before today and has not finished. */
+  ongoing: boolean;
+  /** 'Sep 26' when the run spans more than one day, else ''. */
+  untilLabel: string;
 };
 
 const HOME = {
@@ -72,6 +81,11 @@ const TZ = 'America/Los_Angeles';
 const fmt = (v: string, opts: Intl.DateTimeFormatOptions) =>
   new Intl.DateTimeFormat('en-US', { timeZone: TZ, ...opts }).format(new Date(v));
 
+// Noon UTC lands on the same calendar day in Seattle whether the city is on
+// PDT or PST, so a bare YYYY-MM-DD can be handed back to the formatter without
+// sliding into the day before.
+const atNoon = (day: string) => `${day}T12:00:00Z`;
+
 /** YYYY-MM-DD in the venue's zone, so grouping by day matches the printed date. */
 export function localDay(iso: string): string {
   const p = new Intl.DateTimeFormat('en-CA', { timeZone: TZ, year: 'numeric', month: '2-digit', day: '2-digit' })
@@ -85,6 +99,11 @@ export function localDay(iso: string): string {
 // a pin to match. A missing coordinate has to read as missing.
 const coord = (v: unknown) => (v === null || v === undefined || v === '' ? NaN : Number(v));
 
+// Today in Seattle, not on the build machine. A build that runs at 01:00 UTC is
+// still on the previous evening here, and that evening's events have not
+// happened yet.
+const TODAY = localDay(new Date().toISOString());
+
 function decorate(e: RawEvent): SiteEvent {
   const lat = coord(e.venue?.lat);
   const lng = coord(e.venue?.lng);
@@ -92,18 +111,35 @@ function decorate(e: RawEvent): SiteEvent {
   const hasGeo = Number.isFinite(lat) && Number.isFinite(lng) && !(lat === 0 && lng === 0);
   const miles = hasGeo ? milesBetween(HOME.lat, HOME.lng, lat, lng) : null;
   const en = hasGeo ? eastNorth(lat, lng) : null;
+  const startDay = localDay(e.start);
+  // A feed that gives no end, or an end that parses to nothing, is a single day.
+  const lastDay = e.end && !Number.isNaN(Date.parse(e.end)) ? localDay(e.end) : startDay;
+  // A run already under way is on today, and today is the date to print: a
+  // fortnight-long installation labelled with the Friday it opened reads as an
+  // event that has been and gone. The record keeps its real start either way —
+  // only the date the page shows is moved.
+  const ongoing = startDay < TODAY && lastDay >= TODAY;
+  const onDay = ongoing ? TODAY : startDay;
+  const shown = atNoon(onDay);
   return {
     ...e,
     miles,
     walkMinutes: miles == null ? null : Math.max(5, Math.round((miles / 3) * 60 / 5) * 5),
     east: en?.east ?? null,
     north: en?.north ?? null,
-    day: localDay(e.start),
-    dayLabel: fmt(e.start, { weekday: 'long', month: 'long', day: 'numeric' }),
-    shortDay: fmt(e.start, { weekday: 'short' }),
-    dayNum: fmt(e.start, { day: 'numeric' }),
-    monthAbbr: fmt(e.start, { month: 'short' }),
+    day: onDay,
+    dayLabel: fmt(shown, { weekday: 'long', month: 'long', day: 'numeric' }),
+    shortDay: fmt(shown, { weekday: 'short' }),
+    dayNum: fmt(shown, { day: 'numeric' }),
+    monthAbbr: fmt(shown, { month: 'short' }),
     timeLabel: e.allDay ? '' : fmt(e.start, { hour: 'numeric', minute: '2-digit' }),
+    startDay,
+    lastDay,
+    ongoing,
+    // Only worth saying when there is more than one day to it. Without this a
+    // run shows a single date and reads as a one-off you have already missed
+    // the start of.
+    untilLabel: lastDay > startDay ? fmt(atNoon(lastDay), { month: 'short', day: 'numeric' }) : '',
   };
 }
 
@@ -126,7 +162,14 @@ export function getEvents(): EventsFeed {
   const events = raw
     .filter((e) => e && e.title && e.start && !Number.isNaN(Date.parse(e.start)))
     .map(decorate)
-    .sort((a, b) => Date.parse(a.start) - Date.parse(b.start));
+    // The feed is a snapshot, so by the end of its week most of what is in it
+    // has happened. Anything finished comes out here rather than on the page —
+    // which also keeps the Event records in the page's JSON-LD to things a
+    // search engine can still send someone to.
+    .filter((e) => e.lastDay >= TODAY)
+    // By the day it is shown on, so a run under way sorts into today rather
+    // than back at the date it opened.
+    .sort((a, b) => a.day.localeCompare(b.day) || Date.parse(a.start) - Date.parse(b.start));
   const categories = [...new Set(events.map((e) => e.category).filter(Boolean) as string[])].sort();
   const maxMiles = events.reduce((m, e) => Math.max(m, e.miles ?? 0), 0);
   return {

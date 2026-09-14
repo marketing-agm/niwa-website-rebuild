@@ -31,7 +31,7 @@ src/
     photos.json          ← gallery captions; `src` names a file in src/assets/gallery
     faq.json
     events.json          ← what's on nearby — machine-written, never hand-edited
-                           (scripts/refresh-events.mjs, weekly via Actions)
+                           (scripts/refresh-events.mjs, daily via Actions)
     places.json, bus-stops.json  ← unused by the current design, kept for the CMS
   assets/                ← photography. Astro emits responsive WebP from these.
   layouts/BaseLayout.astro   ← <head>: SEO, Open Graph, JSON-LD, runtime config
@@ -118,7 +118,7 @@ Two sources, in `scripts/sources/`:
 |---|---|---|
 | `visit-seattle` | no | Their `visitseattle/v1/events` endpoint, filtered to their own **"Queen Anne / Seattle Center"** region — the Festal festivals, the museums, the theatres. No coordinates, so these list on the page and not on the map. |
 | `ticketmaster` | yes | The ticketed rooms — Climate Pledge Arena, Seattle Center's halls, the Paramount, the Moore, the Crocodile. Carries coordinates, which is what the map is plotted from. |
-| `queen-anne-chamber` | — | The best listings there are, and unreachable. Their Modern Events Calendar endpoint answers but returns nothing to an anonymous caller; four rounds of `--probe` found no other way in. Kept and called weekly, because the day it starts answering is the day this page gets much better. See the note at the top of that file. |
+| `queen-anne-chamber` | — | The best listings there are, and unreachable. Their Modern Events Calendar endpoint answers but returns nothing to an anonymous caller; four rounds of `--probe` found no other way in. Kept and called daily, because the day it starts answering is the day this page gets much better. See the note at the top of that file. |
 
 ```bash
 npm run events                                # every source
@@ -132,7 +132,7 @@ npm run events -- --probe                     # what is each site serving?
 A source that fails or has no key is reported and skipped; the others still
 run, and the job only fails if every one of them failed.
 
-`.github/workflows/events.yml` runs it every Monday at 6am Seattle time,
+`.github/workflows/events.yml` runs it every morning at 6am Seattle time,
 rebuilds to prove the site still compiles with the new data, and commits only
 when something actually changed. It can also be run by hand from the Actions
 tab, including a **probe** run that reports what each calendar is serving and

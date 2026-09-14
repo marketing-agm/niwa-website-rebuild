@@ -142,7 +142,7 @@ const miles = (e: SiteEvent) => (e.miles == null ? '' : e.miles < 0.15 ? 'next d
     <p class="lead ev-lede" data-reveal>
       {events.length > 0
         ? `The neighbourhood's own calendar and everything on sale within ${win.radiusMiles} miles of the front door, over the next ${win.days} days. Climate Pledge Arena is at the end of the block; most of the rest is a walk.`
-        : `This page lists what's on within ${win.radiusMiles} miles of the front door. The feed refreshes every Monday — nothing is listed right now.`}
+        : `This page lists what's on within ${win.radiusMiles} miles of the front door. The feed refreshes every morning — nothing is listed right now.`}
     </p>
     {updated && <p class="mono ev-updated">Updated {updated}{credit ? ` · ${credit}` : ''}</p>}
   </div>
@@ -163,15 +163,17 @@ const miles = (e: SiteEvent) => (e.miles == null ? '' : e.miles < 0.15 ? 'next d
             {/* West of the axis, not east: the pins fall where the city is,
                 which from Queen Anne is east and south, and the labels were
                 landing on top of them. */}
-            {RINGS.map((r) => <text class="ev-ring-t ev-ring-l" x={CX - 9} y={CY - rPx(r) - 8}>{ringLabel(r)}</text>)}
+            {RINGS.map((r) => <text class="ev-ring-t ev-ring-l" x={CX - 34} y={CY - rPx(r) - 8}>{ringLabel(r)}</text>)}
             {/* All four points, not just north. One letter tells you which
                 way up the map is; four let you read a pin's direction off it
                 without counting round from the top — which is the question
                 someone actually has when they see a dot down and to the
-                right. Placed just outside the widest ring on each axis, with
-                north kept off the axis so it does not sit on the radius
-                labels that run up the middle. */}
-            <text class="ev-ring-t ev-n" x={CX + 10} y={CY - RMAX - 8}>N</text>
+                right. Placed just outside the widest ring on each axis —
+                north on the axis with south, since a compass whose poles do
+                not line up reads as a drawing error. The radius labels share
+                that baseline at the outermost ring, so they are set far
+                enough left of the middle to clear it at both type sizes. */}
+            <text class="ev-ring-t ev-c ev-c--n" x={CX} y={CY - RMAX - 8}>N</text>
             <text class="ev-ring-t ev-c ev-c--s" x={CX} y={CY + RMAX + 20}>S</text>
             <text class="ev-ring-t ev-c ev-c--e" x={CX + RMAX + 12} y={CY + 5}>E</text>
             <text class="ev-ring-t ev-c ev-c--w" x={CX - RMAX - 12} y={CY + 5}>W</text>
@@ -305,6 +307,10 @@ const miles = (e: SiteEvent) => (e.miles == null ? '' : e.miles < 0.15 ? 'next d
             </h2>
             <p class="ev-meta mono">
               {e.timeLabel && <span>{e.timeLabel}</span>}
+              {/* A run of more than a day says where it ends. Without it the
+                  card shows one date, and a fortnight-long installation reads
+                  as a single evening. */}
+              {e.untilLabel && <span>{e.ongoing ? 'On until' : 'Until'} {e.untilLabel}</span>}
               <span class="ev-venue">{e.venue.name}</span>
             </p>
             <p class="ev-foot mono">
@@ -337,7 +343,9 @@ const miles = (e: SiteEvent) => (e.miles == null ? '' : e.miles < 0.15 ? 'next d
   {events.length === 0 && (
     <div class="ev-none">
       <p class="h3">The feed is empty.</p>
-      <p class="body">It refreshes automatically every Monday morning, from Visit Seattle's Queen Anne listings and from Ticketmaster. If it stays empty, one of the two needs looking at.</p>
+      {/* Named from the feed rather than typed here, so adding a calendar does
+          not leave this line describing the two it used to have. */}
+      <p class="body">It refreshes automatically every morning{credit ? `, from ${credit}` : ''}. If it stays empty, one of those needs looking at.</p>
     </div>
   )}
 </section>
@@ -361,11 +369,10 @@ const miles = (e: SiteEvent) => (e.miles == null ? '' : e.miles < 0.15 ? 'next d
   .ev-map { display: block; width: 100%; max-width: 560px; margin: 0 auto; height: auto; overflow: visible; }
   .ev-ring-t { fill: var(--fg-3); font-family: var(--sans); font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; }
   .ev-ring-l { text-anchor: end; }
-  .ev-n { text-anchor: start; fill: var(--fg-3); }
   /* Quieter than the radius labels: the compass is orientation, not data, and
      should be readable when looked for rather than competing with the pins. */
   .ev-c { fill: var(--fg-3); opacity: 0.75; }
-  .ev-c--s { text-anchor: middle; }
+  .ev-c--n, .ev-c--s { text-anchor: middle; }
   .ev-c--e { text-anchor: start; }
   .ev-c--w { text-anchor: end; }
   .ev-map-note { color: var(--fg-3); margin: 12px auto 0; max-width: 560px; text-align: center; }
