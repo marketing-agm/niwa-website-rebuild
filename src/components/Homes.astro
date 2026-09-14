@@ -1,20 +1,25 @@
 ---
-import { getHomes, int } from '../lib/homes';
+import { getHomes, money, int } from '../lib/homes';
 import UnitGrid from './UnitGrid.astro';
 const { site } = Astro.props as { site: any };
 const c = site.config;
 const homes = getHomes(c, site.data?.units ?? []);
-const pets = c.pets ?? {};
 const s = c.sightmap ?? {};
 const showMap = !!(s.enabled && s.embedUrl);
 const range = (a: number, b: number) => (a === b ? int(a) : `${int(a)}–${int(b)}`);
-// What the row says on its right-hand side now that the rent has come off it.
-// The row still has to earn the click, and availability is the other thing a
-// reader wants to know and the other thing the feed actually knows — so it
-// takes the price's place rather than leaving an arrow on its own. Same three
-// states the panel uses, said shorter.
-const availLabel = (h: { now: number; soon: number }) =>
-  h.now ? `${h.now} available` : h.soon ? `${h.soon} coming soon` : 'Join the waitlist';
+// The row carries the starting rent again, and this time it is true.
+//
+// It came off because the figures behind it were five weeks stale — units.json
+// had not been refreshed since 31 August, so the page was quoting rents that
+// had since moved and advertising homes as "coming soon" on dates already
+// past. That was the right reason to take a number down and the wrong reason
+// to leave it down: Gerry's note 5 asked for the opposite, a starting price
+// that tracks the lowest posted unit, and the objection was never to showing
+// a price but to showing a wrong one.
+//
+// It is refreshed daily from the AppFolio feed now, so rentMin is the lowest
+// rent actually posted rather than a figure someone typed once. The size range
+// moves into the panel beside it.
 ---
 <section class="section homes" id="floor-plans">
   <div class="sec-title">
@@ -33,71 +38,12 @@ const availLabel = (h: { now: number; soon: number }) =>
         <li>
           <button type="button" class="home-row" data-open-dialog={`home-${h.key}`} data-reveal>
             <span class="home-name">{h.name}</span>
-            <span class="home-go label">{availLabel(h)} <span class="arr" aria-hidden="true">→</span></span>
+            <span class="home-go label">{h.rentMin ? `From ${money(h.rentMin)}` : 'Ask leasing'} <span class="arr" aria-hidden="true">→</span></span>
           </button>
         </li>
       ))}
     </ol>
 
-    <div class="grid home-notes">
-      <div class="cell note" data-reveal>
-        <span class="label label--dim">Pets</span>
-        <p class="note-lead">Up to {pets.maxPerHome} pets per home.</p>
-        {/* One row per animal, each with its own limits, rather than a single
-            sentence that made you hold both sets of numbers at once. The
-            figures come from the config so they cannot drift from the terms
-            table; the sentence used to hard-code 20 and 75. */}
-        <ul class="pet-rows">
-          {(pets.types ?? []).map((t: any) => (
-            <li class="pet-row">
-              <svg class="pet-ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"
-                   stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
-                {t.name === 'Cats' ? (
-                  <Fragment>
-                    <path d="M4.6 9.2 4.1 4.6l3.7 2.5" />
-                    <path d="M19.4 9.2l.5-4.6-3.7 2.5" />
-                    <path d="M4.6 9.2a7.4 7.4 0 0 0-.6 2.9c0 4 3.6 7.1 8 7.1s8-3.1 8-7.1a7.4 7.4 0 0 0-.6-2.9" />
-                    <path d="M9.6 12.2h.01M14.4 12.2h.01" />
-                    <path d="M12 14.6v1.1M12 15.7c-.5.7-1.3 1-2 1M12 15.7c.5.7 1.3 1 2 1" />
-                    <path d="M2.6 13.6h3.1M18.3 13.6h3.1" />
-                  </Fragment>
-                ) : (
-                  <Fragment>
-                    <path d="M6.4 8.1C4.6 8.4 3.4 10.2 3.7 12.3c.3 1.8 1.6 3 3 2.9" />
-                    <path d="M17.6 8.1c1.8.3 3 2.1 2.7 4.2-.3 1.8-1.6 3-3 2.9" />
-                    <path d="M6.4 8.1C7 6.2 9.2 4.9 12 4.9s5 1.3 5.6 3.2c.3 1 .4 2 .4 3.1 0 4-2.6 6.7-6 6.7s-6-2.7-6-6.7c0-1.1.1-2.1.4-3.1Z" />
-                    <path d="M9.9 11.6h.01M14.1 11.6h.01" />
-                    <path d="M12 14.1v1.2" />
-                    <path d="M10.3 15.5a2 2 0 0 0 3.4 0" />
-                  </Fragment>
-                )}
-              </svg>
-              {/* Joined, not concatenated: cats carry no weight limit, and the
-                  old template put a separator there whether or not there was
-                  anything to separate. */}
-              <span class="small pet-txt">
-                <b>{t.name}</b>{[t.limit, t.rent, t.note?.toLowerCase()].filter(Boolean).map((bit: string) => <Fragment> · {bit}</Fragment>)}
-              </span>
-            </li>
-          ))}
-        </ul>
-        {/* The panel already opens with this. It is repeated here because a
-            reader who has just read "two dogs combined" can reasonably take
-            the limit to be two dogs and some cats, and the row above is where
-            that thought happens. */}
-        <p class="small pet-cap">Maximum of {pets.maxPerHome} pets per home.</p>
-        <p class="small">{pets.deposit}, charged per pet. Some breeds are restricted. There is a pet wash in the building.</p>
-      </div>
-      <div class="cell note" data-reveal>
-        <span class="label label--dim">Income-restricted homes</span>
-        <p class="note-lead">MFTE, MHA and ADA homes are available.</p>
-        <p class="small">{c.housingPrograms?.note}</p>
-      </div>
-      <div class="cell note" data-reveal>
-        <span class="label label--dim">Terms</span>
-        <p class="note-lead">Rent varies by home, floor and date.</p>
-        <p class="small">{c.rentalTerms?.pending}</p>
-      </div>
     </div>
   </div>
 
@@ -130,7 +76,7 @@ const availLabel = (h: { now: number; soon: number }) =>
         <dl class="hdlg-facts">
           <div><dt class="label label--dim">Size</dt><dd>{range(h.sqftMin, h.sqftMax)} sq ft</dd></div>
           <div><dt class="label label--dim">Bath</dt><dd>{h.baths}</dd></div>
-          <div><dt class="label label--dim">Available</dt><dd>{h.now ? `${h.now} now` : ''}{h.now && h.soon ? ', ' : ''}{h.soon ? `${h.soon} coming soon` : ''}{!h.now && !h.soon ? 'Join the waitlist' : ''}</dd></div>
+          <div><dt class="label label--dim">Rent from</dt><dd>{h.rentMin ? `${money(h.rentMin)}/mo` : 'Ask leasing'}</dd></div>
         </dl>
         <p class="small">{h.key === 'studio' ? 'Studios run across floors two through eight, several with balcony decks and city views.' : h.key === '1br' ? 'One bedrooms with a full kitchen, in-unit washer and dryer, and room for a dining table. Tour it furnished or unfurnished.' : 'Two bedrooms with one bath, in-unit washer and dryer, and select homes with kitchen islands and vaulted ceilings.'}</p>
         {h.tours.length > 0 && (
@@ -185,15 +131,7 @@ const availLabel = (h: { now: number; soon: number }) =>
   .home-go { display: inline-flex; align-items: center; gap: 0.8em; color: var(--fg-2); white-space: nowrap; }
   .home-go .arr { transition: transform 0.45s var(--ease); }
   .home-row:hover .home-go .arr { transform: translateX(0.4em); }
-  .home-notes { margin-top: -1px; }
   .note { grid-column: span 4; display: grid; gap: 12px; align-content: start; }
-  .pet-cap { color: var(--fg); }
-  .pet-rows { display: grid; gap: 10px; margin: 2px 0 2px; }
-  .pet-row { display: grid; grid-template-columns: 22px 1fr; gap: 10px; align-items: start; }
-  .pet-ico { width: 22px; height: 22px; color: var(--fg-3); margin-top: -1px; flex: none; }
-  .pet-txt { color: var(--fg-2); }
-  .pet-txt b { color: var(--fg); font-weight: 400; }
-  .note-lead { font-size: var(--t-lead); line-height: 1.2; letter-spacing: -0.02em; max-width: 20ch; }
   .note .small { max-width: 44ch; }
 
   .map-lede { display: flex; justify-content: space-between; align-items: end; gap: var(--gap); flex-wrap: wrap; padding: clamp(28px, 3.5vw, 56px) var(--inset); }
