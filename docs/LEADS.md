@@ -28,6 +28,48 @@ handled as they are dealt with, download the lot as CSV. The third counter —
 *arrived with no email sent* — should be zero. If it is not, those enquiries
 reached the table but nobody was told, and they need working through by hand.
 
+## Where this got to, 14 September 2026
+
+**Not set up.** The form is on the mailto fallback described above: a tour
+request only reaches leasing if the visitor's own mail app opens and they press
+send. Nothing is broken and nothing is half-configured — the Cloudflare
+variables are simply empty.
+
+**Done.** A Resend account exists, owned by marketing@agmrealestategroup.com
+(signed in through the shared marketing-agm GitHub account). `niwaapartments.com`
+is added to it but **not verified**, so it sends nothing.
+
+**Blocked on.** DNS for niwaapartments.com is hosted at Wix — the domain answers
+from `ns14.wixdns.net` and `ns15.wixdns.net`. Nobody on the marketing side has
+the Wix login. Someone who does has to add the two records Resend lists, and
+then the rest is fifteen minutes of dashboard work.
+
+### What was established, so nobody works it out twice
+
+- **Mail for niwaapartments.com is Google Workspace** (`aspmx.l.google.com`), so
+  leasing@ is a Gmail mailbox and Gerry can filter on it once mail arrives.
+- **Resend's records do not touch the root.** Its SPF is a CNAME at `rsend` and
+  its DKIM a TXT at `resend._domainkey`, which is currently empty. The root SPF
+  record — `v=spf1 include:_spf.google.com ~all` — stays exactly as it is.
+  **Do not edit the root SPF**: that is how Google Workspace mail gets broken for
+  a whole company. For the same reason, do not add any MX record whose name is
+  blank or `@`; anything Resend asks for belongs on the `rsend` subdomain.
+- **DMARC is `p=none`**, monitoring only, reporting to `dmarc_agg@vali.email`.
+  Nothing gets rejected while this settles in.
+- **If Wix access never appears**, verify `agmrealestategroup.com` instead and
+  send from something like `niwa-site@agmrealestategroup.com`. `LEAD_TO` stays
+  `leasing@niwaapartments.com` — only the sending domain needs verifying, never
+  the receiving one. The only cost is the From line, which only leasing sees,
+  since replies go to the prospect.
+- **The Cloudflare dashboard will only accept Secrets.** `wrangler.toml` puts the
+  project in config-as-code mode, so plain text variables are refused there.
+  Either add all three as Secrets — they behave identically at runtime — or put
+  `LEAD_TO` and `LEAD_FROM` into a `[vars]` block in `wrangler.toml` and keep only
+  `RESEND_API_KEY` in the dashboard.
+- **When niwaapartments.com is cut over from Wix to Cloudflare**, the Resend
+  records have to move with it. If they are left behind the tour emails stop, and
+  they stop silently.
+
 ## Setting it up
 
 There are two ways. The workflow is less work and less to get wrong.
