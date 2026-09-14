@@ -330,12 +330,25 @@ R.push('============================================================');
 console.log(R.join('\n'));
 
 // ---- write ---------------------------------------------------------------
-const nextJson = JSON.stringify({ units: merged }, null, 2) + '\n';
-const changed = nextJson !== readFileSync(unitsPath, 'utf8');
+// Two stamps, because they answer different questions and only one of them is
+// the renter's. `checked` moves on every run and is what the page shows: it
+// says the rent on screen is what AppFolio was posting this morning, which is
+// true whether or not the number moved. `updated` moves only when the data
+// does, so the history still shows when a price last actually changed.
+//
+// The file is therefore rewritten on every run, which is the point — a page
+// that says "checked today" has to be rebuilt today to say it.
+const now = new Date().toISOString();
+const changed = JSON.stringify(currentUnits) !== JSON.stringify(merged);
+const nextJson = JSON.stringify({
+  checked: now,
+  updated: changed ? now : (current.updated ?? now),
+  units: merged,
+}, null, 2) + '\n';
 
-if (changed && !dryRun) {
+if (!dryRun) {
   writeFileSync(unitsPath, nextJson);
-  console.error(`\n[refresh] wrote ${unitsPath}`);
+  console.error(`\n[refresh] wrote ${unitsPath}${changed ? '' : ' (stamp only — no change to the homes)'}`);
 } else if (changed) {
   console.error('\n[refresh] changes detected (dry-run: not written)');
 } else {

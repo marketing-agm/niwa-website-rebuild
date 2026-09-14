@@ -1,5 +1,6 @@
 ---
 import { getEvents, byDay, type SiteEvent } from '../lib/events';
+import { stampLabel } from '../lib/site';
 const { site } = Astro.props as { site: any };
 const c = site.config;
 const feed = getEvents();
@@ -124,9 +125,7 @@ const clusterLabel = (cl: Cluster) => {
 };
 
 const groups = byDay(events);
-const updated = feed.updated
-  ? new Intl.DateTimeFormat('en-US', { timeZone: 'America/Los_Angeles', month: 'long', day: 'numeric' }).format(new Date(feed.updated))
-  : null;
+const updated = stampLabel(feed.checked);
 // "A and B", "A, B and C" — a credit line, not a list of vendors.
 const credit = feed.sources.length
   ? feed.sources.length === 1
@@ -142,9 +141,9 @@ const miles = (e: SiteEvent) => (e.miles == null ? '' : e.miles < 0.15 ? 'next d
     <p class="lead ev-lede" data-reveal>
       {events.length > 0
         ? `The neighbourhood's own calendar and everything on sale within ${win.radiusMiles} miles of the front door, over the next ${win.days} days. Climate Pledge Arena is at the end of the block; most of the rest is a walk.`
-        : `This page lists what's on within ${win.radiusMiles} miles of the front door. The feed refreshes every Monday — nothing is listed right now.`}
+        : `This page lists what's on within ${win.radiusMiles} miles of the front door. The feed refreshes every morning — nothing is listed right now.`}
     </p>
-    {updated && <p class="mono ev-updated">Updated {updated}{credit ? ` · ${credit}` : ''}</p>}
+    {updated && <p class="mono ev-updated">Checked {updated}{credit ? ` · ${credit}` : ''}</p>}
   </div>
 
   {events.length > 0 && (
@@ -163,15 +162,17 @@ const miles = (e: SiteEvent) => (e.miles == null ? '' : e.miles < 0.15 ? 'next d
             {/* West of the axis, not east: the pins fall where the city is,
                 which from Queen Anne is east and south, and the labels were
                 landing on top of them. */}
-            {RINGS.map((r) => <text class="ev-ring-t ev-ring-l" x={CX - 9} y={CY - rPx(r) - 8}>{ringLabel(r)}</text>)}
+            {RINGS.map((r) => <text class="ev-ring-t ev-ring-l" x={CX - 34} y={CY - rPx(r) - 8}>{ringLabel(r)}</text>)}
             {/* All four points, not just north. One letter tells you which
                 way up the map is; four let you read a pin's direction off it
                 without counting round from the top — which is the question
                 someone actually has when they see a dot down and to the
-                right. Placed just outside the widest ring on each axis, with
-                north kept off the axis so it does not sit on the radius
-                labels that run up the middle. */}
-            <text class="ev-ring-t ev-n" x={CX + 10} y={CY - RMAX - 8}>N</text>
+                right. Placed just outside the widest ring on each axis —
+                north on the axis with south, since a compass whose poles do
+                not line up reads as a drawing error. The radius labels share
+                that baseline at the outermost ring, so they are set far
+                enough left of the middle to clear it at both type sizes. */}
+            <text class="ev-ring-t ev-c ev-c--n" x={CX} y={CY - RMAX - 8}>N</text>
             <text class="ev-ring-t ev-c ev-c--s" x={CX} y={CY + RMAX + 20}>S</text>
             <text class="ev-ring-t ev-c ev-c--e" x={CX + RMAX + 12} y={CY + 5}>E</text>
             <text class="ev-ring-t ev-c ev-c--w" x={CX - RMAX - 12} y={CY + 5}>W</text>
@@ -260,9 +261,16 @@ const miles = (e: SiteEvent) => (e.miles == null ? '' : e.miles < 0.15 ? 'next d
             <text class="ev-home-t" y="30">{c.name.replace(' Apartments', '')}</text>
           </g>
         </svg>
+        {/* A legend, not a paragraph. Three sentences held to the map's own
+            560px stacked into a clot under a large circular figure; the same
+            facts separated by middots read as one line of caption and take
+            the width they are given. The clause about venues on the same spot
+            sharing a pin went with it — the pin already carries the count, in
+            the badge and in its label. */}
         <p class="ev-map-note small">
-          Distances are straight-line from {c.address.streetAddress}. Tap a pin to jump to its events{pins.length > clusters.length ? '; venues that fall on the same spot share one' : ''}.
-          {feed.unpinned > 0 && ` ${feed.unpinned} ${feed.unpinned === 1 ? 'listing gives' : 'listings give'} no location, so ${feed.unpinned === 1 ? 'it is' : 'they are'} below but not on the map.`}
+          Straight-line from {c.address.streetAddress} · Tap a pin to jump to its events{feed.unpinned > 0
+            ? ` · ${feed.unpinned} ${feed.unpinned === 1 ? 'listing gives' : 'listings give'} no location and ${feed.unpinned === 1 ? 'appears' : 'appear'} below only`
+            : ''}
         </p>
       </div>
 
@@ -305,6 +313,10 @@ const miles = (e: SiteEvent) => (e.miles == null ? '' : e.miles < 0.15 ? 'next d
             </h2>
             <p class="ev-meta mono">
               {e.timeLabel && <span>{e.timeLabel}</span>}
+              {/* A run of more than a day says where it ends. Without it the
+                  card shows one date, and a fortnight-long installation reads
+                  as a single evening. */}
+              {e.untilLabel && <span>{e.ongoing ? 'On until' : 'Until'} {e.untilLabel}</span>}
               <span class="ev-venue">{e.venue.name}</span>
             </p>
             <p class="ev-foot mono">
@@ -337,7 +349,9 @@ const miles = (e: SiteEvent) => (e.miles == null ? '' : e.miles < 0.15 ? 'next d
   {events.length === 0 && (
     <div class="ev-none">
       <p class="h3">The feed is empty.</p>
-      <p class="body">It refreshes automatically every Monday morning, from Visit Seattle's Queen Anne listings and from Ticketmaster. If it stays empty, one of the two needs looking at.</p>
+      {/* Named from the feed rather than typed here, so adding a calendar does
+          not leave this line describing the two it used to have. */}
+      <p class="body">It refreshes automatically every morning{credit ? `, from ${credit}` : ''}. If it stays empty, one of those needs looking at.</p>
     </div>
   )}
 </section>
@@ -361,14 +375,17 @@ const miles = (e: SiteEvent) => (e.miles == null ? '' : e.miles < 0.15 ? 'next d
   .ev-map { display: block; width: 100%; max-width: 560px; margin: 0 auto; height: auto; overflow: visible; }
   .ev-ring-t { fill: var(--fg-3); font-family: var(--sans); font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; }
   .ev-ring-l { text-anchor: end; }
-  .ev-n { text-anchor: start; fill: var(--fg-3); }
   /* Quieter than the radius labels: the compass is orientation, not data, and
      should be readable when looked for rather than competing with the pins. */
   .ev-c { fill: var(--fg-3); opacity: 0.75; }
-  .ev-c--s { text-anchor: middle; }
+  .ev-c--n, .ev-c--s { text-anchor: middle; }
   .ev-c--e { text-anchor: start; }
   .ev-c--w { text-anchor: end; }
-  .ev-map-note { color: var(--fg-3); margin: 12px auto 0; max-width: 560px; text-align: center; }
+  /* No max-width: the note is a caption for the section, not for the plate,
+     and capping it at the map's measure is what bunched it. text-wrap: balance
+     so that where it does wrap, the lines come out even rather than leaving a
+     word on its own. */
+  .ev-map-note { color: var(--fg-3); margin: 14px auto 0; text-align: center; text-wrap: balance; }
 
   .ev-pin { cursor: pointer; }
   .ev-pin-hit { fill: transparent; }
@@ -465,8 +482,15 @@ const miles = (e: SiteEvent) => (e.miles == null ? '' : e.miles < 0.15 ? 'next d
   /* ---- controls ---- */
   /* Tapping a pin scrolls here, and the nav is fixed — without this the chip
      that says what was just filtered lands underneath it. */
-  .ev-bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; padding: clamp(18px, 2vw, 28px) var(--inset); border-bottom: 1px solid var(--line); scroll-margin-top: calc(var(--nav-h, 64px) + 10px); }
-  .ev-filters { display: flex; flex-wrap: wrap; gap: 8px; }
+  /* The view toggle holds the top right; the chips take what is left and wrap
+     under themselves.
+     Both used to be items of one wrapping row, so the moment the chips filled a
+     line the toggle was pushed onto the next one — arriving bottom left, under
+     the chips, at chip size, reading as a third row of categories rather than
+     as a different kind of control. It is pinned now, and the chips wrap in
+     their own box beside it. */
+  .ev-bar { display: flex; flex-wrap: nowrap; align-items: flex-start; justify-content: space-between; gap: 16px clamp(20px, 3vw, 44px); padding: clamp(18px, 2vw, 28px) var(--inset); border-bottom: 1px solid var(--line); scroll-margin-top: calc(var(--nav-h, 64px) + 10px); }
+  .ev-filters { flex: 1 1 auto; min-width: 0; display: flex; flex-wrap: wrap; gap: 8px; }
   .ev-chip, .ev-view {
     font-family: inherit; font-size: var(--t-label); letter-spacing: 0.06em; text-transform: uppercase;
     color: var(--fg-3); background: none; border: 1px solid var(--line); border-radius: 999px;
@@ -487,7 +511,7 @@ const miles = (e: SiteEvent) => (e.miles == null ? '' : e.miles < 0.15 ? 'next d
     .ev-chip, .ev-view { min-height: 44px; padding-top: 0; padding-bottom: 0; display: inline-flex; align-items: center; }
   }
   @media (hover: hover) { .ev-chip:not(.is-on):hover, .ev-view:not(.is-on):hover { color: var(--fg); border-color: var(--fg-3); } }
-  .ev-views { display: flex; gap: 0; }
+  .ev-views { flex: none; display: flex; gap: 0; }
   .ev-views .ev-view { border-radius: 0; }
   .ev-views .ev-view:first-child { border-radius: 999px 0 0 999px; }
   .ev-views .ev-view:last-child { border-radius: 0 999px 999px 0; margin-left: -1px; }
@@ -578,6 +602,15 @@ const miles = (e: SiteEvent) => (e.miles == null ? '' : e.miles < 0.15 ? 'next d
     .ev-pin-label { font-size: 24px; stroke-width: 7px; }
     .ev-home-t { font-size: 22px; stroke-width: 7px; }
     .ev-pin-n { font-size: 15px; }
-    .ev-map-note { text-align: left; }
+    /* Left with the rest of the section on a phone — and `pretty` rather than
+       `balance` to go with it: balanced lines are even, which reads as
+       deliberate when centred and as a half-empty column when it is not. */
+    .ev-map-note { text-align: left; text-wrap: pretty; }
+    /* A phone has no width to give it: "Museums & galleries" alone is most of
+       the row. So it goes back to a line of its own, and stays in document
+       order there — moving it above the chips with `order` would have sent a
+       keyboard back up the page after the last chip. */
+    .ev-bar { flex-wrap: wrap; }
+    .ev-filters { flex: 1 1 100%; }
   }
 </style>
