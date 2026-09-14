@@ -1,5 +1,5 @@
 ---
-import { getHomes, int } from '../lib/homes';
+import { getHomes, money, int } from '../lib/homes';
 import UnitGrid from './UnitGrid.astro';
 const { site } = Astro.props as { site: any };
 const c = site.config;
@@ -7,15 +7,19 @@ const homes = getHomes(c, site.data?.units ?? []);
 const s = c.sightmap ?? {};
 const showMap = !!(s.enabled && s.embedUrl);
 const range = (a: number, b: number) => (a === b ? int(a) : `${int(a)}–${int(b)}`);
-// What the row says on its right-hand side. Not the rent, which came off at
-// the client's request, and no longer the availability count either: that came
-// out of the panel for being wrong — units.json has not been refreshed since
-// August, so homes were listed as "coming soon" on dates already past — and
-// leaving the same number on the row would have meant the page still asserting
-// on one line what it had just stopped asserting on the next.
+// The row carries the starting rent again, and this time it is true.
 //
-// The size range instead. It is true, it does not go stale, and it is the
-// thing a reader is actually choosing between at this point in the page.
+// It came off because the figures behind it were five weeks stale — units.json
+// had not been refreshed since 31 August, so the page was quoting rents that
+// had since moved and advertising homes as "coming soon" on dates already
+// past. That was the right reason to take a number down and the wrong reason
+// to leave it down: Gerry's note 5 asked for the opposite, a starting price
+// that tracks the lowest posted unit, and the objection was never to showing
+// a price but to showing a wrong one.
+//
+// It is refreshed daily from the AppFolio feed now, so rentMin is the lowest
+// rent actually posted rather than a figure someone typed once. The size range
+// moves into the panel beside it.
 ---
 <section class="section homes" id="floor-plans">
   <div class="sec-title">
@@ -34,7 +38,7 @@ const range = (a: number, b: number) => (a === b ? int(a) : `${int(a)}–${int(b
         <li>
           <button type="button" class="home-row" data-open-dialog={`home-${h.key}`} data-reveal>
             <span class="home-name">{h.name}</span>
-            <span class="home-go label">{range(h.sqftMin, h.sqftMax)} sq ft <span class="arr" aria-hidden="true">→</span></span>
+            <span class="home-go label">{h.rentMin ? `From ${money(h.rentMin)}` : 'Ask leasing'} <span class="arr" aria-hidden="true">→</span></span>
           </button>
         </li>
       ))}
@@ -72,6 +76,7 @@ const range = (a: number, b: number) => (a === b ? int(a) : `${int(a)}–${int(b
         <dl class="hdlg-facts">
           <div><dt class="label label--dim">Size</dt><dd>{range(h.sqftMin, h.sqftMax)} sq ft</dd></div>
           <div><dt class="label label--dim">Bath</dt><dd>{h.baths}</dd></div>
+          <div><dt class="label label--dim">Rent from</dt><dd>{h.rentMin ? `${money(h.rentMin)}/mo` : 'Ask leasing'}</dd></div>
         </dl>
         <p class="small">{h.key === 'studio' ? 'Studios run across floors two through eight, several with balcony decks and city views.' : h.key === '1br' ? 'One bedrooms with a full kitchen, in-unit washer and dryer, and room for a dining table. Tour it furnished or unfurnished.' : 'Two bedrooms with one bath, in-unit washer and dryer, and select homes with kitchen islands and vaulted ceilings.'}</p>
         {h.tours.length > 0 && (

@@ -1,41 +1,36 @@
 {
   "units": [
     {
-      "uid": "niwa-apartments-204",
-      "id": "204",
+      "uid": "niwa-apartments-206",
+      "id": "206",
       "property": "Niwa Apartments",
       "address": "513 1st Ave N",
       "beds": 0,
       "baths": 1,
-      "sqft": 367,
-      "rent": 1569,
+      "sqft": 359,
+      "rent": 1495,
       "floor": "Second floor",
       "floorNum": 2,
-      "available": "Sep 1, 2026",
+      "available": "Sep 21, 2026",
       "availType": "soon",
-      "features": [
-        "On-site laundry",
-        "Income-restricted (MFTE) — income limits apply"
-      ],
+      "features": [],
       "plan": "studio"
     },
     {
-      "uid": "niwa-apartments-207",
-      "id": "207",
+      "uid": "niwa-apartments-211",
+      "id": "211",
       "property": "Niwa Apartments",
       "address": "513 1st Ave N",
-      "beds": 0,
+      "beds": 2,
       "baths": 1,
-      "sqft": 367,
-      "rent": 1675,
+      "sqft": 787,
+      "rent": 2825,
       "floor": "Second floor",
       "floorNum": 2,
-      "available": "Now",
-      "availType": "now",
-      "features": [
-        "On-site laundry"
-      ],
-      "plan": "studio"
+      "available": "Sep 15, 2026",
+      "availType": "soon",
+      "features": [],
+      "plan": "2br1ba"
     },
     {
       "uid": "niwa-apartments-214",
@@ -45,7 +40,7 @@
       "beds": 0,
       "baths": 1,
       "sqft": 349,
-      "rent": 1675,
+      "rent": 1625,
       "floor": "Second floor",
       "floorNum": 2,
       "available": "Oct 8, 2026",
@@ -56,40 +51,20 @@
       "plan": "studio"
     },
     {
-      "uid": "niwa-apartments-217",
-      "id": "217",
+      "uid": "niwa-apartments-317",
+      "id": "317",
       "property": "Niwa Apartments",
       "address": "513 1st Ave N",
       "beds": 0,
       "baths": 1,
       "sqft": 349,
-      "rent": 1675,
-      "floor": "Second floor",
-      "floorNum": 2,
-      "available": "Sep 9, 2026",
-      "availType": "soon",
-      "features": [
-        "On-site laundry"
-      ],
-      "plan": "studio"
-    },
-    {
-      "uid": "niwa-apartments-308",
-      "id": "308",
-      "property": "Niwa Apartments",
-      "address": "513 1st Ave N",
-      "beds": 2,
-      "baths": 1,
-      "sqft": 661,
-      "rent": 2700,
+      "rent": 1650,
       "floor": "Third floor",
       "floorNum": 3,
       "available": "Now",
       "availType": "now",
-      "features": [
-        "On-site laundry"
-      ],
-      "plan": "2br1ba"
+      "features": [],
+      "plan": "studio"
     },
     {
       "uid": "niwa-apartments-320",
@@ -102,48 +77,12 @@
       "rent": 2820,
       "floor": "Third floor",
       "floorNum": 3,
-      "available": "Sep 5, 2026",
-      "availType": "soon",
+      "available": "Now",
+      "availType": "now",
       "features": [
         "On-site laundry"
       ],
       "plan": "1br"
-    },
-    {
-      "uid": "niwa-apartments-509",
-      "id": "509",
-      "property": "Niwa Apartments",
-      "address": "513 1st Ave N",
-      "beds": 0,
-      "baths": 1,
-      "sqft": 388,
-      "rent": 1700,
-      "floor": "Fifth floor",
-      "floorNum": 5,
-      "available": "Now",
-      "availType": "now",
-      "features": [
-        "On-site laundry"
-      ],
-      "plan": "studio"
-    },
-    {
-      "uid": "niwa-apartments-519",
-      "id": "519",
-      "property": "Niwa Apartments",
-      "address": "513 1st Ave N",
-      "beds": 2,
-      "baths": 1,
-      "sqft": 730,
-      "rent": 2945,
-      "floor": "Fifth floor",
-      "floorNum": 5,
-      "available": "Now",
-      "availType": "now",
-      "features": [
-        "On-site laundry"
-      ],
-      "plan": "2br1ba"
     },
     {
       "uid": "niwa-apartments-603",
@@ -153,7 +92,7 @@
       "beds": 0,
       "baths": 1,
       "sqft": 369,
-      "rent": 1600,
+      "rent": 1695,
       "floor": "Sixth floor",
       "floorNum": 6,
       "available": "Sep 21, 2026",
@@ -171,7 +110,7 @@
       "beds": 0,
       "baths": 1,
       "sqft": 361,
-      "rent": 1700,
+      "rent": 1650,
       "floor": "Sixth floor",
       "floorNum": 6,
       "available": "Sep 15, 2026",
@@ -189,7 +128,7 @@
       "beds": 0,
       "baths": 1,
       "sqft": 360,
-      "rent": 1725,
+      "rent": 1675,
       "floor": "Seventh floor",
       "floorNum": 7,
       "available": "Now",
@@ -225,7 +164,7 @@
       "beds": 0,
       "baths": 1,
       "sqft": 360,
-      "rent": 1755,
+      "rent": 1650,
       "floor": "Eighth floor",
       "floorNum": 8,
       "available": "Sep 15, 2026",
@@ -243,7 +182,7 @@
       "beds": 0,
       "baths": 1,
       "sqft": 360,
-      "rent": 1755,
+      "rent": 1650,
       "floor": "Eighth floor",
       "floorNum": 8,
       "available": "Now",
@@ -261,7 +200,7 @@
       "beds": 0,
       "baths": 1,
       "sqft": 360,
-      "rent": 1755,
+      "rent": 1695,
       "floor": "Eighth floor",
       "floorNum": 8,
       "available": "Now",
@@ -282,8 +221,8 @@
       "rent": 3195,
       "floor": "Eighth floor",
       "floorNum": 8,
-      "available": "Sep 1, 2026",
-      "availType": "soon",
+      "available": "Now",
+      "availType": "now",
       "features": [
         "On-site laundry"
       ],

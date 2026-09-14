@@ -1,0 +1,121 @@
+name: Availability feed
+
+# Refreshes src/site/units.json from the AGM availabilities feed, so the home
+# types, sizes and "from" prices on the site are what AppFolio is actually
+# listing today.
+#
+# Daily at 15:00 UTC — 8am in Seattle — which is before leasing hours and an
+# hour clear of the Monday events job. A run that finds no change writes
+# nothing, commits nothing and triggers no deploy.
+#
+# No secrets. The feed is public:
+#   https://raw.githubusercontent.com/marketing-agm/agm-availabilities/main/listings.json
+# and the property it filters to is availability.appfolioProperty in
+# src/site/site.config.json.
+#
+# What the script will and will not touch:
+#   AppFolio drives        beds, baths, sqft, rent, available
+#   curated, preserved     floor, features, featured, plan  (matched by unit)
+#   brand-new units        created, then FLAGGED — they need a human to set
+#                          the plan key and features before they read well
+#   vanished units         dropped
+#
+# Two things it cannot do for itself, and both are surfaced in the run summary
+# rather than left in the log:
+#   • a new unit that needs its plan/features written
+#   • a moved price floor or changed bedroom mix, which the SEO copy and any
+#     Google Ads headline quoting a "from" price still reference by hand
+#
+# Run it by hand any time from the Actions tab; --dry-run reports and writes
+# nothing.
+
+on:
+  schedule:
+    - cron: '0 15 * * *'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Report what would change, and change nothing'
+        type: boolean
+        required: false
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: availability-feed
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - name: Pull the feed
+        run: |
+          node scripts/refresh-availability.mjs \
+            ${{ inputs.dry_run && '--dry-run' || '' }} 2>&1 | tee /tmp/availability.log
+
+      # The site has to still build with the new numbers before they are
+      # committed — a malformed feed should fail here, not on the live site.
+      - name: Build with the new numbers
+        if: '!inputs.dry_run'
+        run: npm run build
+
+      - name: Commit
+        if: '!inputs.dry_run'
+        run: |
+          summary() { { echo "### $1"; echo ''; shift; for l in "$@"; do echo "$l"; echo ''; done; echo '```'; cat /tmp/availability.log; echo '```'; } >> "$GITHUB_STEP_SUMMARY"; }
+
+          # The script's own trailer, rather than re-deriving any of this.
+          floor=$(grep -oP '^PRICE_FLOOR=\K.*' /tmp/availability.log | tail -1)
+          was=$(grep -oP '^PRICE_FLOOR_WAS=\K.*' /tmp/availability.log | tail -1)
+          floor_moved=$(grep -oP '^PRICE_FLOOR_CHANGED=\K.*' /tmp/availability.log | tail -1)
+          comma() { node -e "process.stdout.write(Number(process.argv[1] || 0).toLocaleString('en-US'))" "$1"; }
+          floor=$(comma "$floor"); was=$(comma "$was")
+          mix_moved=$(grep -oP '^BEDROOM_MIX_CHANGED=\K.*' /tmp/availability.log | tail -1)
+
+          # Steps run under `bash -e`, so these are `if` blocks rather than
+          # `[ ... ] && ...` — a false test there would end the step.
+          notes=()
+          if [ "$floor_moved" = 'true' ]; then
+            notes+=("⚠ Price floor moved \$${was} → \$${floor}. The SEO description, and any ad headline quoting a \"from\" price, are written by hand and still say the old number.")
+          fi
+          if [ "$mix_moved" = 'true' ]; then
+            notes+=('⚠ Bedroom mix changed. The Google Ads ad groups and the negative keyword list need a human — see the log.')
+          fi
+          if grep -q 'NEW units need human review' /tmp/availability.log; then
+            notes+=("$(grep 'NEW units need human review' /tmp/availability.log | tail -1)")
+          fi
+
+          if git diff --quiet -- src/site/units.json; then
+            summary 'Availability unchanged' "${notes[@]}"
+            exit 0
+          fi
+
+          n=$(node -e "console.log(JSON.parse(require('fs').readFileSync('src/site/units.json','utf8')).units.length)")
+          git config user.name  'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add src/site/units.json
+          git commit \
+            -m "Availability: ${n} homes listed, from \$${floor}" \
+            -m "Written by .github/workflows/availability.yml from the AppFolio feed. Nothing here is hand-edited."
+
+          # A daily job racing the Monday events job, or a person pushing while
+          # this runs, is a rebase — not a failure.
+          for i in 1 2 3; do
+            git push && break
+            git pull --rebase --autostash origin "$GITHUB_REF_NAME" || exit 1
+            sleep $((i * 4))
+          done
+
+          summary "Availability updated — ${n} homes" "${notes[@]}"
