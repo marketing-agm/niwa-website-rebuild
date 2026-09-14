@@ -8,13 +8,15 @@ const pets = c.pets ?? {};
 const s = c.sightmap ?? {};
 const showMap = !!(s.enabled && s.embedUrl);
 const range = (a: number, b: number) => (a === b ? int(a) : `${int(a)}–${int(b)}`);
-// What the row says on its right-hand side now that the rent has come off it.
-// The row still has to earn the click, and availability is the other thing a
-// reader wants to know and the other thing the feed actually knows — so it
-// takes the price's place rather than leaving an arrow on its own. Same three
-// states the panel uses, said shorter.
-const availLabel = (h: { now: number; soon: number }) =>
-  h.now ? `${h.now} available` : h.soon ? `${h.soon} coming soon` : 'Join the waitlist';
+// What the row says on its right-hand side. Not the rent, which came off at
+// the client's request, and no longer the availability count either: that came
+// out of the panel for being wrong — units.json has not been refreshed since
+// August, so homes were listed as "coming soon" on dates already past — and
+// leaving the same number on the row would have meant the page still asserting
+// on one line what it had just stopped asserting on the next.
+//
+// The size range instead. It is true, it does not go stale, and it is the
+// thing a reader is actually choosing between at this point in the page.
 ---
 <section class="section homes" id="floor-plans">
   <div class="sec-title">
@@ -33,7 +35,7 @@ const availLabel = (h: { now: number; soon: number }) =>
         <li>
           <button type="button" class="home-row" data-open-dialog={`home-${h.key}`} data-reveal>
             <span class="home-name">{h.name}</span>
-            <span class="home-go label">{availLabel(h)} <span class="arr" aria-hidden="true">→</span></span>
+            <span class="home-go label">{range(h.sqftMin, h.sqftMax)} sq ft <span class="arr" aria-hidden="true">→</span></span>
           </button>
         </li>
       ))}
@@ -130,7 +132,6 @@ const availLabel = (h: { now: number; soon: number }) =>
         <dl class="hdlg-facts">
           <div><dt class="label label--dim">Size</dt><dd>{range(h.sqftMin, h.sqftMax)} sq ft</dd></div>
           <div><dt class="label label--dim">Bath</dt><dd>{h.baths}</dd></div>
-          <div><dt class="label label--dim">Available</dt><dd>{h.now ? `${h.now} now` : ''}{h.now && h.soon ? ', ' : ''}{h.soon ? `${h.soon} coming soon` : ''}{!h.now && !h.soon ? 'Join the waitlist' : ''}</dd></div>
         </dl>
         <p class="small">{h.key === 'studio' ? 'Studios run across floors two through eight, several with balcony decks and city views.' : h.key === '1br' ? 'One bedrooms with a full kitchen, in-unit washer and dryer, and room for a dining table. Tour it furnished or unfurnished.' : 'Two bedrooms with one bath, in-unit washer and dryer, and select homes with kitchen islands and vaulted ceilings.'}</p>
         {h.tours.length > 0 && (

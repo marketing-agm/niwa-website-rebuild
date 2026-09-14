@@ -292,8 +292,7 @@
       {
         "name": "Dogs",
         "limit": "75 lb weight limit, two dogs combined",
-        "rent": "$50 / month",
-        "note": "Interview required"
+        "rent": "$50 / month"
       }
     ],
     "breedRestrictions": [
