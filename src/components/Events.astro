@@ -482,8 +482,15 @@ const miles = (e: SiteEvent) => (e.miles == null ? '' : e.miles < 0.15 ? 'next d
   /* ---- controls ---- */
   /* Tapping a pin scrolls here, and the nav is fixed — without this the chip
      that says what was just filtered lands underneath it. */
-  .ev-bar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px; padding: clamp(18px, 2vw, 28px) var(--inset); border-bottom: 1px solid var(--line); scroll-margin-top: calc(var(--nav-h, 64px) + 10px); }
-  .ev-filters { display: flex; flex-wrap: wrap; gap: 8px; }
+  /* The view toggle holds the top right; the chips take what is left and wrap
+     under themselves.
+     Both used to be items of one wrapping row, so the moment the chips filled a
+     line the toggle was pushed onto the next one — arriving bottom left, under
+     the chips, at chip size, reading as a third row of categories rather than
+     as a different kind of control. It is pinned now, and the chips wrap in
+     their own box beside it. */
+  .ev-bar { display: flex; flex-wrap: nowrap; align-items: flex-start; justify-content: space-between; gap: 16px clamp(20px, 3vw, 44px); padding: clamp(18px, 2vw, 28px) var(--inset); border-bottom: 1px solid var(--line); scroll-margin-top: calc(var(--nav-h, 64px) + 10px); }
+  .ev-filters { flex: 1 1 auto; min-width: 0; display: flex; flex-wrap: wrap; gap: 8px; }
   .ev-chip, .ev-view {
     font-family: inherit; font-size: var(--t-label); letter-spacing: 0.06em; text-transform: uppercase;
     color: var(--fg-3); background: none; border: 1px solid var(--line); border-radius: 999px;
@@ -504,7 +511,7 @@ const miles = (e: SiteEvent) => (e.miles == null ? '' : e.miles < 0.15 ? 'next d
     .ev-chip, .ev-view { min-height: 44px; padding-top: 0; padding-bottom: 0; display: inline-flex; align-items: center; }
   }
   @media (hover: hover) { .ev-chip:not(.is-on):hover, .ev-view:not(.is-on):hover { color: var(--fg); border-color: var(--fg-3); } }
-  .ev-views { display: flex; gap: 0; }
+  .ev-views { flex: none; display: flex; gap: 0; }
   .ev-views .ev-view { border-radius: 0; }
   .ev-views .ev-view:first-child { border-radius: 999px 0 0 999px; }
   .ev-views .ev-view:last-child { border-radius: 0 999px 999px 0; margin-left: -1px; }
@@ -599,5 +606,11 @@ const miles = (e: SiteEvent) => (e.miles == null ? '' : e.miles < 0.15 ? 'next d
        `balance` to go with it: balanced lines are even, which reads as
        deliberate when centred and as a half-empty column when it is not. */
     .ev-map-note { text-align: left; text-wrap: pretty; }
+    /* A phone has no width to give it: "Museums & galleries" alone is most of
+       the row. So it goes back to a line of its own, and stays in document
+       order there — moving it above the chips with `order` would have sent a
+       keyboard back up the page after the last chip. */
+    .ev-bar { flex-wrap: wrap; }
+    .ev-filters { flex: 1 1 100%; }
   }
 </style>
