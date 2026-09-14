@@ -1,0 +1,191 @@
+name: Site data
+
+# Everything the site refreshes for itself, in one run, on one clock.
+#
+# Daily at 13:00 UTC — 6am in Seattle, before leasing hours. Availability and
+# events used to be two jobs two hours apart, which meant two commits, two
+# deploys and two different "as of" times on one website. One job means the
+# rents on the homes section and the listings on What's On carry the same stamp,
+# because they were read within seconds of each other.
+#
+#   Availability   src/site/units.json, from the AGM availabilities feed
+#                  (AppFolio, already parsed). No key.
+#   Events         src/site/events.json, from five calendars. Only Ticketmaster
+#                  needs anything: the repository secret TICKETMASTER_API_KEY.
+#                  Without it that one source is skipped and the run still
+#                  succeeds on the other four.
+#
+# Both files are rewritten every run, change or no change, because each carries
+# a `checked` stamp that the page prints — and a page that says it was checked
+# this morning has to be built this morning to say it. So this commits and
+# deploys daily. `updated`, alongside it, still only moves when the data does,
+# so the history says when a price or a listing last actually turned over.
+#
+# Neither refresh can stop the other: one calendar being down should not hold
+# up a rent change. Each runs, each records how it went, and the job reports a
+# failure at the end having already committed whatever did work.
+#
+# Two things no script can do for itself are lifted out of the logs into the run
+# summary rather than left to be found: a new unit that still needs its plan and
+# features written, and a moved price floor or changed bedroom mix, which the
+# SEO copy and any ad headline quoting a "from" price reference by hand.
+
+on:
+  schedule:
+    - cron: '0 13 * * *'
+  workflow_dispatch:
+    inputs:
+      only:
+        description: 'Which feed to pull'
+        type: choice
+        options: [both, availability, events]
+        default: both
+        required: false
+      dry_run:
+        description: 'Report what would change, and change nothing'
+        type: boolean
+        required: false
+        default: false
+      radius:
+        description: 'Events: search radius in miles from the building'
+        required: false
+        default: '3'
+      days:
+        description: 'Events: how many days ahead to look'
+        required: false
+        default: '30'
+      probe:
+        description: 'Events: report what each calendar is serving, and change nothing'
+        type: boolean
+        required: false
+        default: false
+
+permissions:
+  contents: write
+
+concurrency:
+  group: site-data
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      # Reconnaissance, on demand: prints which endpoints each calendar answers
+      # on. Nothing is fetched into the feed and nothing is committed.
+      - name: Probe the calendars
+        if: inputs.probe
+        run: |
+          node scripts/refresh-events.mjs --probe | tee /tmp/probe.log
+          { echo '### Calendar probe'; echo ''; echo '```'; cat /tmp/probe.log; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+
+      # continue-on-error on both: a failure here is reported at the end, after
+      # whatever succeeded has been committed.
+      - name: Pull availability
+        id: availability
+        if: ${{ !inputs.probe && inputs.only != 'events' }}
+        continue-on-error: true
+        run: |
+          node scripts/refresh-availability.mjs \
+            ${{ inputs.dry_run && '--dry-run' || '' }} 2>&1 | tee /tmp/availability.log
+
+      - name: Pull events
+        id: events
+        if: ${{ !inputs.probe && inputs.only != 'availability' }}
+        continue-on-error: true
+        env:
+          TICKETMASTER_API_KEY: ${{ secrets.TICKETMASTER_API_KEY }}
+        run: |
+          node scripts/refresh-events.mjs \
+            --radius "${{ inputs.radius || '3' }}" \
+            --days "${{ inputs.days || '30' }}" \
+            ${{ inputs.dry_run && '--dry-run' || '' }} 2>&1 | tee /tmp/events.log
+
+      # The site has to still build with the new data before it is committed —
+      # a malformed feed should fail here, not on the live site.
+      - name: Build with the new data
+        if: ${{ !inputs.probe && !inputs.dry_run }}
+        run: npm run build
+
+      - name: Commit
+        if: ${{ !inputs.probe && !inputs.dry_run }}
+        run: |
+          # Every helper returns 0 on the empty case. The step runs under
+          # `bash -e`, where a bare `[ -f x ] && { ... }` that finds no file is
+          # a failed command and ends the step before it has said anything.
+          summary() { { echo "### $1"; echo ''; shift; for l in "$@"; do echo "$l"; echo ''; done; } >> "$GITHUB_STEP_SUMMARY"; }
+          log() { if [ -f "$1" ]; then { echo "<details><summary>$2</summary>"; echo ''; echo '```'; cat "$1"; echo '```'; echo '</details>'; echo ''; } >> "$GITHUB_STEP_SUMMARY"; fi; }
+          grab() { if [ -f "$2" ]; then grep -oP "^$1=\K.*" "$2" | tail -1; fi; }
+
+          # The availability script's own trailer, rather than re-deriving any
+          # of it here.
+          floor=$(grab PRICE_FLOOR /tmp/availability.log)
+          was=$(grab PRICE_FLOOR_WAS /tmp/availability.log)
+          floor_moved=$(grab PRICE_FLOOR_CHANGED /tmp/availability.log)
+          mix_moved=$(grab BEDROOM_MIX_CHANGED /tmp/availability.log)
+          comma() { node -e "process.stdout.write(Number(process.argv[1] || 0).toLocaleString('en-US'))" "$1"; }
+          if [ -n "$floor" ]; then floor=$(comma "$floor"); fi
+          if [ -n "$was" ]; then was=$(comma "$was"); fi
+
+          notes=()
+          if [ "$floor_moved" = 'true' ]; then
+            notes+=("⚠ Price floor moved \$${was} → \$${floor}. The SEO description, and any ad headline quoting a \"from\" price, are written by hand and still say the old number.")
+          fi
+          if [ "$mix_moved" = 'true' ]; then
+            notes+=('⚠ Bedroom mix changed. The Google Ads ad groups and the negative keyword list need a human — see the log.')
+          fi
+          if [ -f /tmp/availability.log ] && grep -q 'NEW units need human review' /tmp/availability.log; then
+            notes+=("$(grep 'NEW units need human review' /tmp/availability.log | tail -1)")
+          fi
+          if [ '${{ steps.availability.outcome }}' = 'failure' ]; then
+            notes+=('❌ The availability refresh failed. The homes section still shows the last good read — see the log.')
+          fi
+          if [ '${{ steps.events.outcome }}' = 'failure' ]; then
+            notes+=('❌ The events refresh failed. What'"'"'s On still shows the last good read — see the log.')
+          fi
+
+          if git diff --quiet -- src/site/units.json src/site/events.json; then
+            summary 'Site data unchanged' "${notes[@]}"
+            log /tmp/availability.log 'Availability log'
+            log /tmp/events.log 'Events log'
+            exit 0
+          fi
+
+          homes=$(node -e "const u=require('./src/site/units.json').units;console.log(u.length)")
+          evs=$(node -e "console.log(require('./src/site/events.json').events.length)")
+          git config user.name  'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add src/site/units.json src/site/events.json
+          git commit \
+            -m "Site data: ${homes} homes from \$${floor:-?}, ${evs} events" \
+            -m "Written by .github/workflows/data.yml. Nothing here is hand-edited."
+
+          # Someone pushing while this runs is a rebase, not a failure.
+          for i in 1 2 3; do
+            git push && break
+            git pull --rebase --autostash origin "$GITHUB_REF_NAME" || exit 1
+            sleep $((i * 4))
+          done
+
+          summary "Site data updated — ${homes} homes, ${evs} events" "${notes[@]}"
+          log /tmp/availability.log 'Availability log'
+          log /tmp/events.log 'Events log'
+
+      # Last, so a failed calendar does not cost the run the data that did come
+      # back — but still a red run, because a source that stays down is a real
+      # thing to look at.
+      - name: Report a failed refresh
+        if: ${{ !inputs.probe && (steps.availability.outcome == 'failure' || steps.events.outcome == 'failure') }}
+        run: |
+          echo "availability: ${{ steps.availability.outcome }}"
+          echo "events: ${{ steps.events.outcome }}"
+          exit 1

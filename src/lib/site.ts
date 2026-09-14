@@ -47,12 +47,34 @@ export function mapsUrl(config: any, kind: 'place' | 'directions' = 'place'): st
   return base + encodeURIComponent(q);
 }
 
+/**
+ * When a machine-written feed was last looked at, as the page says it.
+ *
+ * "Checked" rather than "updated": both feeds are pulled every morning whether
+ * or not anything has moved, and the question a reader has is whether what they
+ * are reading is current — not whether it happens to differ from yesterday.
+ * Seattle's clock, so the stamp matches the hours on the same page.
+ */
+export function stampLabel(iso: string | null | undefined): string {
+  if (!iso) return '';
+  const d = new Date(iso);
+  if (Number.isNaN(d.getTime())) return '';
+  const tz = 'America/Los_Angeles';
+  const date = new Intl.DateTimeFormat('en-US', { timeZone: tz, month: 'long', day: 'numeric' }).format(d);
+  const time = new Intl.DateTimeFormat('en-US', { timeZone: tz, hour: 'numeric', minute: '2-digit' })
+    .format(d)
+    .toLowerCase();
+  return `${date}, ${time}`;
+}
+
 export function getSite() {
   return {
     id: 'niwa',
     config: config as any,
     data: {
       units: (unitsJson as any).units,
+      /** When AppFolio was last read. See stampLabel. */
+      unitsChecked: (unitsJson as any).checked ?? null,
       places: (placesJson as any).places,
       photos: (photosJson as any).photos,
       busStops: busStopsJson as any,

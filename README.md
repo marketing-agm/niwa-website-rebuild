@@ -132,11 +132,19 @@ npm run events -- --probe                     # what is each site serving?
 A source that fails or has no key is reported and skipped; the others still
 run, and the job only fails if every one of them failed.
 
-`.github/workflows/events.yml` runs it every morning at 6am Seattle time,
-rebuilds to prove the site still compiles with the new data, and commits only
-when something actually changed. It can also be run by hand from the Actions
-tab, including a **probe** run that reports what each calendar is serving and
+`.github/workflows/data.yml` runs it every morning at 6am Seattle time,
+alongside the availability refresh and in the same commit, so the rents on the
+homes section and the listings on What's On carry the same "checked" stamp. It
+rebuilds to prove the site still compiles with the new data before committing
+anything. It can also be run by hand from the Actions tab — one feed or both,
+a dry run, or a **probe** that reports what each calendar is serving and
 changes nothing.
+
+Both files are rewritten every run, change or no change, because each carries a
+`checked` stamp the page prints; `updated`, alongside it, moves only when the
+data does. Neither refresh can stop the other — a calendar being down does not
+hold up a rent change, and the run goes red at the end having already committed
+whatever did work.
 
 **Optional setup:** add a repository secret `TICKETMASTER_API_KEY` (Settings →
 Secrets and variables → Actions) for a free key from

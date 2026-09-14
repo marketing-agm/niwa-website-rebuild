@@ -1,7 +1,7 @@
 // What's on near the building, resolved at build time.
 //
 // events.json is machine-written: scripts/refresh-events.mjs replaces it from a
-// live feed on a schedule (see .github/workflows/events.yml), so nothing in
+// live feed on a schedule (see .github/workflows/data.yml), so nothing in
 // here is hand-maintained and nothing in here is invented. An empty file is a
 // valid state — the page says so rather than filling the space.
 import eventsJson from '../site/events.json';
@@ -144,6 +144,9 @@ function decorate(e: RawEvent): SiteEvent {
 }
 
 export type EventsFeed = {
+  /** When the calendars were last read, change or no change. What the page shows. */
+  checked: string | null;
+  /** When the listings last actually turned over. */
   updated: string | null;
   /** The calendars that contributed, for the credit line. */
   sources: string[];
@@ -173,6 +176,7 @@ export function getEvents(): EventsFeed {
   const categories = [...new Set(events.map((e) => e.category).filter(Boolean) as string[])].sort();
   const maxMiles = events.reduce((m, e) => Math.max(m, e.miles ?? 0), 0);
   return {
+    checked: feed.checked ?? feed.updated ?? null,
     updated: feed.updated ?? null,
     sources: Array.isArray(feed.sources) ? feed.sources : (feed.source ? [feed.source] : []),
     window: feed.window ?? { days: 30, radiusMiles: 3 },

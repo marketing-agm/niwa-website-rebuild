@@ -1,5 +1,6 @@
 ---
 import { getEvents, byDay, type SiteEvent } from '../lib/events';
+import { stampLabel } from '../lib/site';
 const { site } = Astro.props as { site: any };
 const c = site.config;
 const feed = getEvents();
@@ -124,9 +125,7 @@ const clusterLabel = (cl: Cluster) => {
 };
 
 const groups = byDay(events);
-const updated = feed.updated
-  ? new Intl.DateTimeFormat('en-US', { timeZone: 'America/Los_Angeles', month: 'long', day: 'numeric' }).format(new Date(feed.updated))
-  : null;
+const updated = stampLabel(feed.checked);
 // "A and B", "A, B and C" — a credit line, not a list of vendors.
 const credit = feed.sources.length
   ? feed.sources.length === 1
@@ -144,7 +143,7 @@ const miles = (e: SiteEvent) => (e.miles == null ? '' : e.miles < 0.15 ? 'next d
         ? `The neighbourhood's own calendar and everything on sale within ${win.radiusMiles} miles of the front door, over the next ${win.days} days. Climate Pledge Arena is at the end of the block; most of the rest is a walk.`
         : `This page lists what's on within ${win.radiusMiles} miles of the front door. The feed refreshes every morning — nothing is listed right now.`}
     </p>
-    {updated && <p class="mono ev-updated">Updated {updated}{credit ? ` · ${credit}` : ''}</p>}
+    {updated && <p class="mono ev-updated">Checked {updated}{credit ? ` · ${credit}` : ''}</p>}
   </div>
 
   {events.length > 0 && (

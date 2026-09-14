@@ -454,11 +454,21 @@ if (!events.length && notes.length === chosen.length) {
   process.exit(1);
 }
 
-// `updated` only moves when the events do, so a week with no change produces no
-// diff and no deploy.
+// Two stamps. `checked` moves on every run and is the one the page shows —
+// a reader wants to know the listings were looked at this morning, which is
+// true whether or not anything had changed. `updated` still only moves when the
+// events do, so the history keeps a record of when the feed last actually
+// turned over.
+//
+// This used to skip the write on an unchanged week, to avoid a pointless
+// deploy. It writes every run now: retiring yesterday's events is itself a
+// daily change, and a page claiming to have been checked today has to be
+// rebuilt today to claim it.
+const now = new Date().toISOString();
 const sameEvents = JSON.stringify(before.events ?? []) === JSON.stringify(events);
 const next = {
-  updated: sameEvents ? (before.updated ?? new Date().toISOString()) : new Date().toISOString(),
+  checked: now,
+  updated: sameEvents ? (before.updated ?? now) : now,
   sources: used,
   window: { days, radiusMiles },
   events,
@@ -466,9 +476,7 @@ const next = {
 
 if (dryRun) {
   console.log('[events] --dry-run: nothing written');
-} else if (sameEvents && before.window?.days === days && before.window?.radiusMiles === radiusMiles) {
-  console.log('[events] no change');
 } else {
   writeFileSync(eventsPath, JSON.stringify(next, null, 2) + '\n');
-  console.log(`[events] wrote ${eventsPath}`);
+  console.log(`[events] wrote ${eventsPath}${sameEvents ? ' (stamp only — no change to the listings)' : ''}`);
 }
