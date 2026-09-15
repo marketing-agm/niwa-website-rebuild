@@ -1,10 +1,20 @@
 ---
 import { Image } from 'astro:assets';
 import { photo } from '../lib/photos';
+// Five, down from ten, and one per subject. The ten repeated themselves — four
+// views of the outside of the building, two of the circulation, two of the roof
+// — so the strip was long without being more informative, and the scroll it
+// costs is the whole objection to it. One photograph each: the building, the
+// way in, the clubroom, the roof, the gym.
+//
+// Cut here rather than in photos.json: the file is the library, and the
+// building strip and the neighbourhood section draw from the same shelf.
 const slugs = [
-  'exterior-on-1st-ave-n', 'exterior-entrance', 'exterior-paseo', 'exterior-monument-sign',
-  'interior-vestibule', 'interior-elevator-hall', 'interior-clubroom-terrace',
-  'interior-clubroom-kitchen', 'exterior-terrace-walk', 'interior-fitness-room',
+  'exterior-on-1st-ave-n',
+  'interior-vestibule',
+  'interior-clubroom-kitchen',
+  'exterior-terrace-walk',
+  'interior-fitness-room',
 ];
 const items = slugs.map(photo);
 ---

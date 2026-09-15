@@ -13,6 +13,7 @@ const range = (a: number, b: number) => (a === b ? int(a) : `${int(a)}–${int(b
 // reader whether they are looking at this morning's rent or at whatever was
 // true when somebody last thought to type it in.
 const checked = stampLabel(site.data?.unitsChecked);
+const pets = c.pets ?? {};
 // The row carries the starting rent again, and this time it is true.
 //
 // It came off because the figures behind it were five weeks stale — units.json
@@ -50,6 +51,70 @@ const checked = stampLabel(site.data?.unitsChecked);
         </li>
       ))}
     </ol>
+
+    {/* All three back. Pets returns at Gerry's request with his two
+        corrections — cats carry no weight limit, and there is no dog
+        interview — both read off the config so the rows cannot drift from
+        the terms. The other two come back beside it, which is also what
+        returns the row to three cells: on its own, Pets had to take the full
+        width or leave two thirds of the grid's hairline showing. */}
+    <div class="grid home-notes">
+      {pets.allowed && (
+        <div class="cell note" data-reveal>
+          <span class="label label--dim">Pets</span>
+          {/* Said once. It was also repeated under the dog row, on the
+              reasoning that "two dogs combined" invites the thought "two dogs
+              and some cats" — but Gerry read the panel and found this line
+              already answered it. */}
+          <p class="note-lead">Up to {pets.maxPerHome} pets per home.</p>
+          <ul class="pet-rows">
+            {(pets.types ?? []).map((t: any) => (
+              <li class="pet-row">
+                <svg class="pet-ico" viewBox="0 0 24 24" fill="none" aria-hidden="true"
+                     stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round">
+                  {t.name === 'Cats' ? (
+                    <Fragment>
+                      <path d="M4.6 9.2 4.1 4.6l3.7 2.5" />
+                      <path d="M19.4 9.2l.5-4.6-3.7 2.5" />
+                      <path d="M4.6 9.2a7.4 7.4 0 0 0-.6 2.9c0 4 3.6 7.1 8 7.1s8-3.1 8-7.1a7.4 7.4 0 0 0-.6-2.9" />
+                      <path d="M9.6 12.2h.01M14.4 12.2h.01" />
+                      <path d="M12 14.6v1.1M12 15.7c-.5.7-1.3 1-2 1M12 15.7c.5.7 1.3 1 2 1" />
+                      <path d="M2.6 13.6h3.1M18.3 13.6h3.1" />
+                    </Fragment>
+                  ) : (
+                    <Fragment>
+                      <path d="M6.4 8.1C4.6 8.4 3.4 10.2 3.7 12.3c.3 1.8 1.6 3 3 2.9" />
+                      <path d="M17.6 8.1c1.8.3 3 2.1 2.7 4.2-.3 1.8-1.6 3-3 2.9" />
+                      <path d="M6.4 8.1C7 6.2 9.2 4.9 12 4.9s5 1.3 5.6 3.2c.3 1 .4 2 .4 3.1 0 4-2.6 6.7-6 6.7s-6-2.7-6-6.7c0-1.1.1-2.1.4-3.1Z" />
+                      <path d="M9.9 11.6h.01M14.1 11.6h.01" />
+                      <path d="M12 14.1v1.2" />
+                      <path d="M10.3 15.5a2 2 0 0 0 3.4 0" />
+                    </Fragment>
+                  )}
+                </svg>
+                {/* Joined, not concatenated: cats carry no weight limit and
+                    no note, and the old template put a separator there
+                    whether or not there was anything to separate. */}
+                <span class="small pet-txt">
+                  <b>{t.name}</b>{[t.limit, t.rent, t.note?.toLowerCase()].filter(Boolean).map((bit: string) => <Fragment> · {bit}</Fragment>)}
+                </span>
+              </li>
+            ))}
+          </ul>
+          <p class="small">{pets.deposit}, charged per pet. Some breeds are restricted. There is a pet wash in the building.</p>
+        </div>
+      )}
+      <div class="cell note" data-reveal>
+        <span class="label label--dim">Income-restricted homes</span>
+        <p class="note-lead">MFTE, MHA and ADA homes are available.</p>
+        <p class="small">{c.housingPrograms?.note}</p>
+      </div>
+      <div class="cell note" data-reveal>
+        <span class="label label--dim">Terms</span>
+        <p class="note-lead">Rent varies by home, floor and date.</p>
+        <p class="small">{c.rentalTerms?.pending}</p>
+      </div>
+    </div>
 
     </div>
   </div>
@@ -125,6 +190,14 @@ const checked = stampLabel(site.data?.unitsChecked);
      head gives the row back. */
   .homes-stamp { grid-column: 9 / span 4; align-self: start; margin-top: 10px; color: var(--fg-3); }
   @media (max-width: 1100px) { .homes-stamp { grid-column: 1 / -1; } }
+
+  .home-notes { margin-top: clamp(28px, 3vw, 44px); }
+  .note-lead { font-size: var(--t-lead); line-height: 1.2; letter-spacing: -0.02em; max-width: 20ch; }
+  .pet-rows { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
+  .pet-row { display: grid; grid-template-columns: 22px minmax(0, 1fr); gap: 10px; align-items: start; }
+  .pet-ico { width: 22px; height: 22px; color: var(--fg-3); margin-top: -1px; flex: none; }
+  .pet-txt { color: var(--fg-2); }
+  .pet-txt b { color: var(--fg); font-weight: 400; }
 
   .tabs { display: flex; gap: clamp(20px, 3vw, 56px); padding: 0 var(--inset); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
   .tab { position: relative; padding: clamp(14px, 1.5vw, 24px) 0; font-size: var(--t-lead); letter-spacing: -0.02em; color: var(--fg-3); transition: color 0.3s; }
