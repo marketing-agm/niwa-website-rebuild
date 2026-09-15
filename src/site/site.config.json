@@ -22,10 +22,13 @@
         "closes": "17:00"
       }
     ],
-    "corporate": {
-      "label": "AGM corporate office",
+    "phoneLabel": "Leasing office",
+    "emailLabel": "Leasing email",
+    "afterHours": {
+      "label": "After hours emergency",
       "phone": "+1-206-622-8600",
-      "phoneHref": "tel:2066228600"
+      "phoneHref": "tel:2066228600",
+      "note": "You will be routed to an answering service after 5pm on weekdays and all day on weekends. Calls will be answered by our Facilities Team."
     }
   },
   "address": {
