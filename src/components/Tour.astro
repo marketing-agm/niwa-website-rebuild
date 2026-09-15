@@ -4,7 +4,11 @@ const { site } = Astro.props as { site: any };
 const c = site.config;
 const a = c.address;
 const phone = formatPhone(c.contact?.phone);
-const after = c.contact?.afterHours ?? {};
+// AGM's corporate switchboard, named as itself. It used to sit under "Office
+// hours" behind a sentence about an answering service and the Facilities Team —
+// a mechanism nobody had confirmed, attached to a number Gerry says belongs to a
+// different office. Both claims are gone; the number stays, labelled.
+const corp = c.contact?.corporate ?? {};
 const hours = c.contact?.officeHours?.[0];
 const fmtHour = (t: string) => { const [h] = t.split(':').map(Number); return `${((h + 11) % 12) + 1}${h < 12 ? 'am' : 'pm'}`; };
 const beds = [['studio', 'a studio'], ['1br', 'a one-bedroom'], ['2br', 'a two-bedroom'], ['either', 'not sure yet']];
@@ -110,6 +114,9 @@ const slots = [['Morning', 'morning'], ['Midday', 'midday'], ['Afternoon', 'afte
           <span class="label tour-label">Call or write</span>
           <p class="rail-big"><a href={c.contact?.phoneHref}>{phone}</a></p>
           <p class="rail-sm"><a class="link" href={`mailto:${c.contact?.email}`}>{c.contact?.email}</a></p>
+          {corp.phone && (
+            <p class="rail-sm rail-corp">{corp.label} <a class="link" href={corp.phoneHref}>{formatPhone(corp.phone)}</a></p>
+          )}
         </div>
         <div class="rail-cell">
           <span class="label tour-label">Send this to someone</span>
@@ -126,7 +133,6 @@ const slots = [['Morning', 'morning'], ['Midday', 'midday'], ['Afternoon', 'afte
         <div class="rail-cell">
           <span class="label tour-label">Office hours</span>
           {hours && <p class="rail-big">Mon – Fri, {fmtHour(hours.opens)} – {fmtHour(hours.closes)}</p>}
-          <p class="rail-sm">{after.note} <a class="link" href={after.phoneHref}>{formatPhone(after.phone)}</a>.</p>
         </div>
       </aside>
     </div>
@@ -190,6 +196,9 @@ const slots = [['Morning', 'morning'], ['Midday', 'midday'], ['Afternoon', 'afte
   .rail-cell:first-child { border-top: 0; padding-top: 0; }
   .rail-big { font-size: var(--t-lead); line-height: 1.2; letter-spacing: -0.02em; }
   .rail-sm { font-size: var(--t-small); color: var(--ink-2); line-height: 1.5; }
+  /* A step quieter and set apart, because it is a different office. The Niwa
+     number is the one on this page; this one is here to be found, not offered. */
+  .rail-corp { color: var(--ink-3); margin-top: 6px; }
   .rail-link { justify-self: start; margin-top: 6px; color: var(--ink); font-size: var(--t-label); letter-spacing: 0.08em; text-transform: uppercase; }
 
   /* Two ways to take the building away with you. Ghost buttons sit on gold with

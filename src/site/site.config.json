@@ -22,10 +22,10 @@
         "closes": "17:00"
       }
     ],
-    "afterHours": {
+    "corporate": {
+      "label": "AGM corporate office",
       "phone": "+1-206-622-8600",
-      "phoneHref": "tel:2066228600",
-      "note": "Calls are routed to an answering service after 5pm on weekdays and all day at weekends, and answered by the Facilities Team."
+      "phoneHref": "tel:2066228600"
     }
   },
   "address": {
