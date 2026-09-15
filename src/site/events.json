@@ -1,6 +1,6 @@
 {
-  "checked": "2026-09-14T17:37:37.421Z",
-  "updated": "2026-09-14T16:33:54.206Z",
+  "checked": "2026-09-15T15:38:18.986Z",
+  "updated": "2026-09-15T15:38:18.986Z",
   "sources": [
     "Visit Seattle",
     "City of Seattle",
@@ -13,150 +13,6 @@
     "radiusMiles": 3
   },
   "events": [
-    {
-      "id": "sc-46402",
-      "title": "Seattle Center Sculpture Walk 2026",
-      "start": "2026-09-14T07:00:00Z",
-      "end": null,
-      "allDay": true,
-      "venue": {
-        "name": "Seattle Center",
-        "address": null,
-        "lat": 47.6219473,
-        "lng": -122.3517443
-      },
-      "category": "Museums & galleries",
-      "url": "https://www.seattlecenter.com/events/event-calendar/seattle-center-sculpture-walk-2026-x46402",
-      "image": null,
-      "priceFrom": 0,
-      "source": "seattle-center"
-    },
-    {
-      "id": "tm-vvG1HZ_eEqLFQ-",
-      "title": "Seattle Mariners Ballpark Tour",
-      "start": "2026-09-14T07:00:00Z",
-      "end": null,
-      "allDay": true,
-      "venue": {
-        "name": "T-Mobile Park",
-        "address": "1250 1st Ave S.",
-        "lat": 47.590333,
-        "lng": -122.33285
-      },
-      "category": "Community",
-      "url": "https://www.ticketmaster.com/seattle-mariners-ballpark-tour-seattle-washington-09-14-2026/event/0F006429DD7C86A1",
-      "image": "https://s1.ticketm.net/dam/a/1a6/5487c2cb-fc09-4cf4-8f7f-f29e74fa71a6_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": null,
-      "source": "ticketmaster"
-    },
-    {
-      "id": "sg-206884195",
-      "title": "Bridgerton Stroll",
-      "start": "2026-09-14T20:00:00Z",
-      "end": "2026-09-26T21:00:00.000Z",
-      "allDay": false,
-      "venue": {
-        "name": "Volunteer Park - Burke Monument",
-        "address": "Volunteer Park, 1247 15th Ave E, Seattle, WA 98112",
-        "lat": null,
-        "lng": null
-      },
-      "category": "Tours",
-      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D206884195",
-      "image": null,
-      "priceFrom": null,
-      "source": "seattle-gov"
-    },
-    {
-      "id": "sg-194808501",
-      "title": "Council Briefing",
-      "start": "2026-09-14T21:00:00.000Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "Council Chambers",
-        "address": "600 4th Ave, Seattle, WA 98104",
-        "lat": null,
-        "lng": null
-      },
-      "category": "Public meetings",
-      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D194808501",
-      "image": null,
-      "priceFrom": null,
-      "source": "seattle-gov"
-    },
-    {
-      "id": "sg-202724440",
-      "title": "Zumba",
-      "start": "2026-09-15T00:30:00.000Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "Freeway Park",
-        "address": "Freeway Park, 700 Seneca St, Seattle, WA 98101",
-        "lat": null,
-        "lng": null
-      },
-      "category": null,
-      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D202724440",
-      "image": null,
-      "priceFrom": null,
-      "source": "seattle-gov"
-    },
-    {
-      "id": "tm-Z7r9jZ1AAZA16",
-      "title": "greek",
-      "start": "2026-09-15T02:00:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "Neumos",
-        "address": "925 East Pike Street",
-        "lat": 47.610802,
-        "lng": -122.302803
-      },
-      "category": "Music",
-      "url": "https://www.ticketmaster.com/event/Z7r9jZ1AAZA16",
-      "image": "https://s1.ticketm.net/dam/a/17a/a6d40ab3-ba61-4ba4-9a58-86493469717a_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": null,
-      "source": "ticketmaster"
-    },
-    {
-      "id": "tm-rZ7HnEZ1Af0dOS",
-      "title": "Mustard Service, Pity Party (Girls Club) , Manwolves , Chicano Mosh",
-      "start": "2026-09-15T02:00:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "The Crocodile",
-        "address": "2505 1st Ave",
-        "lat": 47.61458,
-        "lng": -122.34915
-      },
-      "category": "Music",
-      "url": "https://www.ticketweb.com/event/mustard-service-pity-party-girls-the-crocodile-tickets/14903833",
-      "image": "https://s1.ticketm.net/dam/c/fbc/b293c0ad-c904-4215-bc59-8d7f2414dfbc_106141_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": 37.35,
-      "source": "ticketmaster"
-    },
-    {
-      "id": "tm-rZ7HnEZ1AfxZaN",
-      "title": "Boys Go To Jupiter, Alt Bloom",
-      "start": "2026-09-15T03:00:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "Baba Yaga",
-        "address": "124 S Washington St",
-        "lat": 47.601427,
-        "lng": -122.333146
-      },
-      "category": "Music",
-      "url": "https://www.ticketweb.com/event/boys-go-to-jupiter-alt-baba-yaga-tickets/14880263",
-      "image": "https://s1.ticketm.net/dam/a/e28/ee2232a1-dd03-472c-be58-cc04969c1e28_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": 28.7,
-      "source": "ticketmaster"
-    },
     {
       "id": "sc-46403",
       "title": "Seattle Center Sculpture Walk 2026",
@@ -243,6 +99,24 @@
       },
       "category": null,
       "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D202724463",
+      "image": null,
+      "priceFrom": null,
+      "source": "seattle-gov"
+    },
+    {
+      "id": "sg-206884195",
+      "title": "Bridgerton Stroll",
+      "start": "2026-09-15T20:00:00Z",
+      "end": "2026-09-26T21:00:00.000Z",
+      "allDay": false,
+      "venue": {
+        "name": "Volunteer Park - Burke Monument",
+        "address": "Volunteer Park, 1247 15th Ave E, Seattle, WA 98112",
+        "lat": null,
+        "lng": null
+      },
+      "category": "Tours",
+      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D206884195",
       "image": null,
       "priceFrom": null,
       "source": "seattle-gov"
@@ -370,6 +244,42 @@
       "category": "Music",
       "url": "https://www.ticketmaster.com/event/Z7r9jZ1AAZ8GI",
       "image": "https://s1.ticketm.net/dam/a/b05/86458cb4-3b36-4038-a164-665231047b05_RETINA_LANDSCAPE_16_9.jpg",
+      "priceFrom": null,
+      "source": "ticketmaster"
+    },
+    {
+      "id": "sc-46404",
+      "title": "Seattle Center Sculpture Walk 2026",
+      "start": "2026-09-16T07:00:00Z",
+      "end": null,
+      "allDay": true,
+      "venue": {
+        "name": "Seattle Center",
+        "address": null,
+        "lat": 47.6219473,
+        "lng": -122.3517443
+      },
+      "category": "Museums & galleries",
+      "url": "https://www.seattlecenter.com/events/event-calendar/seattle-center-sculpture-walk-2026-x46404",
+      "image": null,
+      "priceFrom": 0,
+      "source": "seattle-center"
+    },
+    {
+      "id": "tm-vvG1HZ_eEq-zQt",
+      "title": "Seattle Mariners Ballpark Tour",
+      "start": "2026-09-16T07:00:00Z",
+      "end": null,
+      "allDay": true,
+      "venue": {
+        "name": "T-Mobile Park",
+        "address": "1250 1st Ave S.",
+        "lat": 47.590333,
+        "lng": -122.33285
+      },
+      "category": "Community",
+      "url": "https://www.ticketmaster.com/seattle-mariners-ballpark-tour-seattle-washington-09-16-2026/event/0F006429DD8786A9",
+      "image": "https://s1.ticketm.net/dam/a/1a6/5487c2cb-fc09-4cf4-8f7f-f29e74fa71a6_RETINA_LANDSCAPE_16_9.jpg",
       "priceFrom": null,
       "source": "ticketmaster"
     },
@@ -680,6 +590,24 @@
       "source": "seattle-gov"
     },
     {
+      "id": "sg-206407406",
+      "title": "Governance & Utilities Committee - Special Meeting",
+      "start": "2026-09-17T21:00:00.000Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "Council Chambers",
+        "address": "600 4th Ave #2, Seattle, WA 98104",
+        "lat": null,
+        "lng": null
+      },
+      "category": "Public meetings",
+      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D206407406",
+      "image": null,
+      "priceFrom": null,
+      "source": "seattle-gov"
+    },
+    {
       "id": "sc-artsfund-2026-celebration-of-the-arts",
       "title": "Artsfund 2026 Celebration of the Arts",
       "start": "2026-09-18T00:00:00Z",
@@ -718,7 +646,7 @@
     {
       "id": "sc-seattle-storm-vs-las-vegas-aces",
       "title": "Seattle Storm vs Las Vegas Aces",
-      "start": "2026-09-18T01:00:00Z",
+      "start": "2026-09-18T02:00:00Z",
       "end": null,
       "allDay": false,
       "venue": {
@@ -748,6 +676,42 @@
       "category": "Music",
       "url": "https://www.ticketmaster.com/stephen-wilson-jr-gary-the-torch-seattle-washington-09-17-2026/event/0F00646DD8A7B52F",
       "image": "https://s1.ticketm.net/dam/a/5ad/90f536e4-3d67-4a3a-b3b7-3e0ada72a5ad_RETINA_LANDSCAPE_16_9.jpg",
+      "priceFrom": null,
+      "source": "ticketmaster"
+    },
+    {
+      "id": "tm-rZ7HnEZ1Afada0",
+      "title": "Tio Nacho's House, Como Qué, Cal Osten",
+      "start": "2026-09-18T03:00:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "Chop Suey",
+        "address": "1325 E Madison St.",
+        "lat": 47.613485,
+        "lng": -122.314457
+      },
+      "category": "Music",
+      "url": "https://www.ticketweb.com/event/tio-nachos-house-como-qu-chop-suey-tickets/14243264",
+      "image": "https://s1.ticketm.net/dam/c/797/5e693c26-2881-4776-8f0c-3aa94bfa3797_106511_RETINA_LANDSCAPE_16_9.jpg",
+      "priceFrom": 15.47,
+      "source": "ticketmaster"
+    },
+    {
+      "id": "tm-Z7r9jZ1A70Ejg",
+      "title": "Waylon Wyatt",
+      "start": "2026-09-18T03:00:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "The Showbox",
+        "address": "1426 1st Ave.",
+        "lat": 47.602402,
+        "lng": -122.325996
+      },
+      "category": null,
+      "url": "https://www.ticketmaster.com/event/Z7r9jZ1A70Ejg",
+      "image": "https://s1.ticketm.net/dam/c/f51/ee785ed6-f806-4195-98f4-69f67e09df51_106201_RETINA_LANDSCAPE_16_9.jpg",
       "priceFrom": null,
       "source": "ticketmaster"
     },
@@ -786,6 +750,42 @@
       "image": null,
       "priceFrom": null,
       "source": "events12"
+    },
+    {
+      "id": "sg-207247712",
+      "title": "Daybreak Community & Land Tending",
+      "start": "2026-09-18T18:00:00.000Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "Seattle",
+        "address": null,
+        "lat": null,
+        "lng": null
+      },
+      "category": "Volunteering",
+      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D207247712",
+      "image": null,
+      "priceFrom": null,
+      "source": "seattle-gov"
+    },
+    {
+      "id": "sg-205759419",
+      "title": "Messy Art and the Mobile Playground",
+      "start": "2026-09-19T00:00:00.000Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "Yesler SHA",
+        "address": "917 E Yesler Wy, Seattle, WA 98122",
+        "lat": null,
+        "lng": null
+      },
+      "category": "Museums & galleries",
+      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D205759419",
+      "image": null,
+      "priceFrom": null,
+      "source": "seattle-gov"
     },
     {
       "id": "sc-johnny-blue-skies-the-dark-clouds-mutiny",
