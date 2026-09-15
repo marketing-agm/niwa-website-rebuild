@@ -107,9 +107,20 @@ const slots = [['Morning', 'morning'], ['Midday', 'midday'], ['Afternoon', 'afte
           <a class="link mono rail-link" href={mapsUrl(c, 'directions')} target="_blank" rel="noopener">Directions ↗</a>
         </div>
         <div class="rail-cell">
-          <span class="label tour-label">Call or write</span>
-          <p class="rail-big"><a href={c.contact?.phoneHref}>{phone}</a></p>
-          <p class="rail-sm"><a class="link" href={`mailto:${c.contact?.email}`}>{c.contact?.email}</a></p>
+          {/* Label, rule, number — the shape the printed contact card uses, so a
+              resident reading one and then the other is reading the same thing.
+              What it buys over a bare list is that "after hours emergency" is
+              said out loud: the number underneath it is not an alternative
+              switchboard, it is the one to ring at 9pm with a burst pipe. */}
+          <span class="label tour-label">Contact Niwa</span>
+          <p class="rail-pair"><span class="rail-k">{c.contact?.phoneLabel ?? 'Leasing office'}</span><a href={c.contact?.phoneHref}>{phone}</a></p>
+          <p class="rail-pair"><span class="rail-k">{c.contact?.emailLabel ?? 'Leasing email'}</span><a class="link" href={`mailto:${c.contact?.email}`}>{c.contact?.email}</a></p>
+          {after.phone && (
+            <>
+              <p class="rail-pair rail-pair--urgent"><span class="rail-k">{after.label}</span><a href={after.phoneHref}>{formatPhone(after.phone)}</a></p>
+              {after.note && <p class="rail-note">{after.note}</p>}
+            </>
+          )}
         </div>
         <div class="rail-cell">
           <span class="label tour-label">Send this to someone</span>
@@ -126,7 +137,6 @@ const slots = [['Morning', 'morning'], ['Midday', 'midday'], ['Afternoon', 'afte
         <div class="rail-cell">
           <span class="label tour-label">Office hours</span>
           {hours && <p class="rail-big">Mon – Fri, {fmtHour(hours.opens)} – {fmtHour(hours.closes)}</p>}
-          <p class="rail-sm">{after.note} <a class="link" href={after.phoneHref}>{formatPhone(after.phone)}</a>.</p>
         </div>
       </aside>
     </div>
@@ -190,6 +200,19 @@ const slots = [['Morning', 'morning'], ['Midday', 'midday'], ['Afternoon', 'afte
   .rail-cell:first-child { border-top: 0; padding-top: 0; }
   .rail-big { font-size: var(--t-lead); line-height: 1.2; letter-spacing: -0.02em; }
   .rail-sm { font-size: var(--t-small); color: var(--ink-2); line-height: 1.5; }
+
+  /* Label above value, not the card's "label | number" on one line. This rail is
+     a narrow column and the email alone fills it, so the pair wrapped — which
+     left the dividing rule stranded at the head of the wrapped line, reading as
+     a stray tick rather than a divider. Stacked, it holds at every width and
+     says the same thing. */
+  .rail-pair { display: grid; gap: 1px; font-size: var(--t-body); line-height: 1.45; }
+  .rail-k { font-size: var(--t-label); letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-3); }
+  /* Set apart and a shade louder: it is the one line on this page somebody reads
+     in an emergency, and the rule above it marks where office hours stop. */
+  .rail-pair--urgent { margin-top: 18px; padding-top: 16px; border-top: 1px solid var(--ink-line); }
+  .rail-pair--urgent .rail-k { color: var(--ink); }
+  .rail-note { font-size: var(--t-small); color: var(--ink-3); line-height: 1.5; max-width: 42ch; margin-top: 4px; }
   .rail-link { justify-self: start; margin-top: 6px; color: var(--ink); font-size: var(--t-label); letter-spacing: 0.08em; text-transform: uppercase; }
 
   /* Two ways to take the building away with you. Ghost buttons sit on gold with

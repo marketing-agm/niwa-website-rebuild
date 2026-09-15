@@ -98,8 +98,12 @@ const facts = [
     display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: var(--gap); align-items: end;
     padding: clamp(28px, 4vw, 64px) var(--inset) clamp(28px, 3.4vw, 56px);
   }
-  .hero-intro { grid-column: 1 / span 5; max-width: 26ch; }
-  .hero-cta { grid-column: 6 / span 3; display: flex; flex-wrap: wrap; gap: 10px; align-self: end; }
+  /* Four columns, not three. The two buttons measure 398px side by side at
+     1440 and the three-column slot gave them 320, so they wrapped — at every
+     desktop width from 1100 to 3840, not only the tight ones. The intro gives
+     up the column: it is capped at 26ch and was not using it. */
+  .hero-intro { grid-column: 1 / span 4; max-width: 26ch; }
+  .hero-cta { grid-column: 5 / span 4; display: flex; flex-wrap: wrap; gap: 10px; align-self: end; }
   .hero-facts { grid-column: 9 / span 4; display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--line); border: 1px solid var(--line); margin: 0; }
   .hero-fact { background: var(--bg); padding: clamp(12px, 1.2vw, 18px) clamp(14px, 1.3vw, 22px) clamp(14px, 1.4vw, 22px); display: grid; gap: 6px; transition: background-color 0.28s cubic-bezier(0.2, 0, 0, 1), color 0.28s cubic-bezier(0.2, 0, 0, 1); }
   @media (hover: hover) { .hero-fact:hover { background: var(--gold); transition-duration: 0.55s; } }
@@ -150,11 +154,22 @@ const facts = [
   .hero-shade { position: absolute; inset: 0; background: linear-gradient(180deg, rgba(11,11,11,0.14) 0%, rgba(11,11,11,0.04) 45%, rgba(11,11,11,0.2) 100%); pointer-events: none; }
   .hero-media { border-bottom: 1px solid var(--line); }
 
-  @media (max-width: 1024px) {
+  /* Raised from 1024. Four columns holds both buttons down to about 1400, and
+     below that the five-column arrangement here does — so the facts block takes
+     its own row a little earlier than it used to, which is what buys the row
+     above it the width. */
+  @media (max-width: 1400px) {
     .hero-intro { grid-column: 1 / span 7; }
     .hero-cta { grid-column: 8 / span 5; justify-content: flex-end; }
     .hero-facts { grid-column: 1 / -1; grid-template-columns: repeat(4, 1fr); }
   }
+  /* Below about 1024 even five columns is short — 342px against the 374 the
+     buttons want at 900 — so they take a row of their own under the intro
+     rather than being squeezed beside it. */
+  @media (max-width: 1024px) {
+    .hero-cta { grid-column: 1 / -1; justify-content: flex-start; }
+  }
+
   @media (max-width: 720px) {
     /* Stacked, and with room between them: both rows now grow their own
        pressable box, and at the old 6px gap the special's 12px of top pad
