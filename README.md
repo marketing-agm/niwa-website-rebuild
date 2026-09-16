@@ -132,7 +132,7 @@ npm run events -- --probe                     # what is each site serving?
 A source that fails or has no key is reported and skipped; the others still
 run, and the job only fails if every one of them failed.
 
-`.github/workflows/data.yml` runs it every morning at 6am Seattle time,
+`.github/workflows/data.yml` runs it every morning at 3:17am Seattle time,
 alongside the availability refresh and in the same commit, so the rents on the
 homes section and the listings on What's On carry the same "checked" stamp. It
 rebuilds to prove the site still compiles with the new data before committing
