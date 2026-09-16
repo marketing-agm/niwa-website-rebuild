@@ -2,7 +2,24 @@ name: Site data
 
 # Everything the site refreshes for itself, in one run, on one clock.
 #
-# Daily at 13:00 UTC — 6am in Seattle, before leasing hours. Availability and
+# Daily at 10:17 UTC — 3:17am in Seattle. Two deliberate oddities in that:
+#
+#   The minute is 17, not 0. A scheduled workflow is the lowest-priority thing
+#   GitHub runs, and the top of the hour is where everyone puts theirs, so :00
+#   queues behind the whole platform.
+#
+#   The hour is three earlier than the 6am it wants to be. The first scheduled
+#   run under `0 13 * * *` started at 17:32 UTC — four and a half hours late —
+#   and the next had not arrived two hours past its slot either. Lateness like
+#   that cannot be fixed, only absorbed. Starting at 3:17 clears the worst
+#   delay actually measured before the office opens at 8, and a delay long
+#   enough to beat that still lands the same morning — which is the thing that
+#   matters, because the page prints the stamp and "this morning" is the claim.
+#   The alternative, a second slot later in the day, costs a second deploy on
+#   every day both run; it is worth adding if a morning is ever missed
+#   outright rather than merely late.
+#
+# Availability and
 # events used to be two jobs two hours apart, which meant two commits, two
 # deploys and two different "as of" times on one website. One job means the
 # rents on the homes section and the listings on What's On carry the same stamp,
@@ -32,7 +49,7 @@ name: Site data
 
 on:
   schedule:
-    - cron: '0 13 * * *'
+    - cron: '17 10 * * *'
   workflow_dispatch:
     inputs:
       only:
