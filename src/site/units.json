@@ -1,6 +1,6 @@
 {
-  "checked": "2026-09-17T15:01:26.576Z",
-  "updated": "2026-09-14T16:42:01.850Z",
+  "checked": "2026-09-18T14:32:16.995Z",
+  "updated": "2026-09-18T14:32:16.995Z",
   "units": [
     {
       "uid": "niwa-apartments-206",
@@ -29,8 +29,8 @@
       "rent": 2825,
       "floor": "Second floor",
       "floorNum": 2,
-      "available": "Sep 15, 2026",
-      "availType": "soon",
+      "available": "Now",
+      "availType": "now",
       "features": [],
       "plan": "2br1ba"
     },
@@ -42,7 +42,7 @@
       "beds": 0,
       "baths": 1,
       "sqft": 349,
-      "rent": 1625,
+      "rent": 1595,
       "floor": "Second floor",
       "floorNum": 2,
       "available": "Oct 8, 2026",
@@ -76,7 +76,7 @@
       "beds": 1,
       "baths": 1,
       "sqft": 703,
-      "rent": 2820,
+      "rent": 2795,
       "floor": "Third floor",
       "floorNum": 3,
       "available": "Now",
@@ -112,11 +112,11 @@
       "beds": 0,
       "baths": 1,
       "sqft": 361,
-      "rent": 1650,
+      "rent": 1645,
       "floor": "Sixth floor",
       "floorNum": 6,
-      "available": "Sep 15, 2026",
-      "availType": "soon",
+      "available": "Now",
+      "availType": "now",
       "features": [
         "On-site laundry"
       ],
@@ -166,11 +166,11 @@
       "beds": 0,
       "baths": 1,
       "sqft": 360,
-      "rent": 1650,
+      "rent": 1645,
       "floor": "Eighth floor",
       "floorNum": 8,
-      "available": "Sep 15, 2026",
-      "availType": "soon",
+      "available": "Now",
+      "availType": "now",
       "features": [
         "On-site laundry"
       ],
@@ -229,24 +229,6 @@
         "On-site laundry"
       ],
       "plan": "2br1ba"
-    },
-    {
-      "uid": "niwa-apartments-811",
-      "id": "811",
-      "property": "Niwa Apartments",
-      "address": "513 1st Ave N",
-      "beds": 1,
-      "baths": 1,
-      "sqft": 717,
-      "rent": 2945,
-      "floor": "Eighth floor",
-      "floorNum": 8,
-      "available": "Now",
-      "availType": "now",
-      "features": [
-        "On-site laundry"
-      ],
-      "plan": "1br"
     }
   ]
 }
