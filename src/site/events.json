@@ -1,6 +1,6 @@
 {
-  "checked": "2026-09-21T16:29:12.319Z",
-  "updated": "2026-09-21T16:29:12.319Z",
+  "checked": "2026-09-22T14:56:28.443Z",
+  "updated": "2026-09-22T14:56:28.443Z",
   "sources": [
     "Visit Seattle",
     "City of Seattle",
@@ -13,168 +13,6 @@
     "radiusMiles": 3
   },
   "events": [
-    {
-      "id": "sc-journey-final-frontier-tour",
-      "title": "Journey: Final Frontier Tour",
-      "start": "2026-09-21T07:00:00Z",
-      "end": null,
-      "allDay": true,
-      "venue": {
-        "name": "Climate Pledge Arena",
-        "address": null,
-        "lat": 47.6221,
-        "lng": -122.353988
-      },
-      "category": null,
-      "url": "https://www.seattlecenter.com/events/event-calendar/journey-final-frontier-tour",
-      "image": null,
-      "priceFrom": null,
-      "source": "seattle-center"
-    },
-    {
-      "id": "tm-vvG1HZ_8nsPn2d",
-      "title": "Lumen Field Stadium Tours",
-      "start": "2026-09-21T07:00:00Z",
-      "end": null,
-      "allDay": true,
-      "venue": {
-        "name": "Lumen Field Stadium Tours",
-        "address": "800 Occidental Ave S",
-        "lat": 47.596704,
-        "lng": -122.332085
-      },
-      "category": "Community",
-      "url": "https://www.ticketmaster.com/lumen-field-stadium-tours-seattle-washington-09-21-2026/event/0F00650AB196A3C3",
-      "image": "https://s1.ticketm.net/dam/a/6ba/cca88b1c-9704-49ea-83ff-23d0e4c246ba_1665171_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": null,
-      "source": "ticketmaster"
-    },
-    {
-      "id": "sc-46409",
-      "title": "Seattle Center Sculpture Walk 2026",
-      "start": "2026-09-21T07:00:00Z",
-      "end": null,
-      "allDay": true,
-      "venue": {
-        "name": "Seattle Center",
-        "address": null,
-        "lat": 47.6219473,
-        "lng": -122.3517443
-      },
-      "category": "Museums & galleries",
-      "url": "https://www.seattlecenter.com/events/event-calendar/seattle-center-sculpture-walk-2026-x46409",
-      "image": null,
-      "priceFrom": 0,
-      "source": "seattle-center"
-    },
-    {
-      "id": "tm-vvG1HZ_eEqPIQV",
-      "title": "Seattle Mariners Ballpark Tour",
-      "start": "2026-09-21T07:00:00Z",
-      "end": null,
-      "allDay": true,
-      "venue": {
-        "name": "T-Mobile Park",
-        "address": "1250 1st Ave S.",
-        "lat": 47.590333,
-        "lng": -122.33285
-      },
-      "category": "Community",
-      "url": "https://www.ticketmaster.com/seattle-mariners-ballpark-tour-seattle-washington-09-21-2026/event/0F006429DD9686B4",
-      "image": "https://s1.ticketm.net/dam/a/1a6/5487c2cb-fc09-4cf4-8f7f-f29e74fa71a6_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": null,
-      "source": "ticketmaster"
-    },
-    {
-      "id": "sg-206884195",
-      "title": "Bridgerton Stroll",
-      "start": "2026-09-21T20:00:00Z",
-      "end": "2026-09-26T21:00:00.000Z",
-      "allDay": false,
-      "venue": {
-        "name": "Volunteer Park - Burke Monument",
-        "address": "Volunteer Park, 1247 15th Ave E, Seattle, WA 98112",
-        "lat": null,
-        "lng": null
-      },
-      "category": "Tours",
-      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D206884195",
-      "image": null,
-      "priceFrom": null,
-      "source": "seattle-gov"
-    },
-    {
-      "id": "sg-178649593",
-      "title": "Community Involvement Commission Meeting",
-      "start": "2026-09-22T00:00:00.000Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "Seattle City Hall",
-        "address": null,
-        "lat": null,
-        "lng": null
-      },
-      "category": "Public meetings",
-      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D178649593",
-      "image": null,
-      "priceFrom": null,
-      "source": "seattle-gov"
-    },
-    {
-      "id": "sg-150686300",
-      "title": "Seattle Women's Commission Monthly Meeting",
-      "start": "2026-09-22T00:30:00.000Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "Seattle City Hall",
-        "address": null,
-        "lat": null,
-        "lng": null
-      },
-      "category": "Public meetings",
-      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D150686300",
-      "image": null,
-      "priceFrom": null,
-      "source": "seattle-gov"
-    },
-    {
-      "id": "sg-202724441",
-      "title": "Zumba",
-      "start": "2026-09-22T00:30:00.000Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "Freeway Park",
-        "address": "Freeway Park, 700 Seneca St, Seattle, WA 98101",
-        "lat": null,
-        "lng": null
-      },
-      "category": null,
-      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D202724441",
-      "image": null,
-      "priceFrom": null,
-      "source": "seattle-gov"
-    },
-    {
-      "id": "tm-rZ7HnEZ1Af0oaK",
-      "title": "Everything Everything - Get To Heaven, 10th Anniversary, North America 2026 w/ Psymon Spine",
-      "start": "2026-09-22T03:00:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "The Crocodile",
-        "address": "2505 1st Ave",
-        "lat": 47.61458,
-        "lng": -122.34915
-      },
-      "category": "Music",
-      "url": "https://www.ticketweb.com/event/everything-everything-get-the-crocodile-tickets/14911253",
-      "image": "https://s1.ticketm.net/dam/a/748/cff99c4d-9230-45aa-96cd-f5c79832e748_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": 57.88,
-      "source": "ticketmaster"
-    },
     {
       "id": "e12-118511",
       "title": "Baseball",
@@ -249,7 +87,7 @@
     },
     {
       "id": "sg-195091252",
-      "title": "Public Safety Committee",
+      "title": "Public Safety Committee - Public Hearing",
       "start": "2026-09-22T16:30:00.000Z",
       "end": null,
       "allDay": false,
@@ -279,6 +117,24 @@
       },
       "category": null,
       "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D202724464",
+      "image": null,
+      "priceFrom": null,
+      "source": "seattle-gov"
+    },
+    {
+      "id": "sg-206884195",
+      "title": "Bridgerton Stroll",
+      "start": "2026-09-22T20:00:00Z",
+      "end": "2026-09-26T21:00:00.000Z",
+      "allDay": false,
+      "venue": {
+        "name": "Volunteer Park - Burke Monument",
+        "address": "Volunteer Park, 1247 15th Ave E, Seattle, WA 98112",
+        "lat": null,
+        "lng": null
+      },
+      "category": "Tours",
+      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D206884195",
       "image": null,
       "priceFrom": null,
       "source": "seattle-gov"
@@ -516,6 +372,42 @@
       "image": null,
       "priceFrom": null,
       "source": "events12"
+    },
+    {
+      "id": "sc-46411",
+      "title": "Seattle Center Sculpture Walk 2026",
+      "start": "2026-09-23T07:00:00Z",
+      "end": null,
+      "allDay": true,
+      "venue": {
+        "name": "Seattle Center",
+        "address": null,
+        "lat": 47.6219473,
+        "lng": -122.3517443
+      },
+      "category": "Museums & galleries",
+      "url": "https://www.seattlecenter.com/events/event-calendar/seattle-center-sculpture-walk-2026-x46411",
+      "image": null,
+      "priceFrom": 0,
+      "source": "seattle-center"
+    },
+    {
+      "id": "tm-vvG1HZbM3CsJl3",
+      "title": "Seattle Mariners Ballpark Tour",
+      "start": "2026-09-23T07:00:00Z",
+      "end": null,
+      "allDay": true,
+      "venue": {
+        "name": "T-Mobile Park",
+        "address": "1250 1st Ave S.",
+        "lat": 47.590333,
+        "lng": -122.33285
+      },
+      "category": "Community",
+      "url": "https://www.ticketmaster.com/seattle-mariners-ballpark-tour-seattle-washington-09-23-2026/event/0F0063748EC66AD2",
+      "image": "https://s1.ticketm.net/dam/a/1a6/5487c2cb-fc09-4cf4-8f7f-f29e74fa71a6_RETINA_LANDSCAPE_16_9.jpg",
+      "priceFrom": null,
+      "source": "ticketmaster"
     },
     {
       "id": "e12-118512",
@@ -788,6 +680,24 @@
       "source": "events12"
     },
     {
+      "id": "tm-vvG1HZ_8nsEB2N",
+      "title": "Lumen Field Stadium Tours",
+      "start": "2026-09-24T07:00:00Z",
+      "end": null,
+      "allDay": true,
+      "venue": {
+        "name": "Lumen Field Stadium Tours",
+        "address": "800 Occidental Ave S",
+        "lat": 47.596704,
+        "lng": -122.332085
+      },
+      "category": "Community",
+      "url": "https://www.ticketmaster.com/lumen-field-stadium-tours-seattle-washington-09-24-2026/event/0F00650AB19FA3E3",
+      "image": "https://s1.ticketm.net/dam/a/6ba/cca88b1c-9704-49ea-83ff-23d0e4c246ba_1665171_RETINA_LANDSCAPE_16_9.jpg",
+      "priceFrom": null,
+      "source": "ticketmaster"
+    },
+    {
       "id": "e12-100153",
       "title": "Sketch comedy festival",
       "start": "2026-09-24T07:00:00Z",
@@ -837,6 +747,78 @@
       },
       "category": null,
       "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D202724492",
+      "image": null,
+      "priceFrom": null,
+      "source": "seattle-gov"
+    },
+    {
+      "id": "sg-207247713",
+      "title": "Daybreak Community & Land Tending",
+      "start": "2026-09-24T18:00:00.000Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "Seattle",
+        "address": null,
+        "lat": null,
+        "lng": null
+      },
+      "category": "Volunteering",
+      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D207247713",
+      "image": null,
+      "priceFrom": null,
+      "source": "seattle-gov"
+    },
+    {
+      "id": "tm-Z7r9jZ1AAZepb",
+      "title": "A Chorus Line",
+      "start": "2026-09-24T20:30:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "5th Avenue Theatre",
+        "address": "1308 5th Ave",
+        "lat": 47.6115,
+        "lng": -122.334297
+      },
+      "category": "Arts & theatre",
+      "url": "https://www.ticketmaster.com/event/Z7r9jZ1AAZepb",
+      "image": "https://s1.ticketm.net/dam/a/1d1/30fb5437-e219-4e3f-b317-f30027f071d1_521301_RETINA_LANDSCAPE_16_9.jpg",
+      "priceFrom": null,
+      "source": "ticketmaster"
+    },
+    {
+      "id": "sg-209067677",
+      "title": "Select Budget Committee (Session II)",
+      "start": "2026-09-24T21:00:00.000Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "City Hall Council Chambers",
+        "address": "600 4th Ave, Seattle, WA 98104",
+        "lat": null,
+        "lng": null
+      },
+      "category": "Public meetings",
+      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D209067677",
+      "image": null,
+      "priceFrom": null,
+      "source": "seattle-gov"
+    },
+    {
+      "id": "sg-205890072",
+      "title": "Kuumba Gathering",
+      "start": "2026-09-24T23:00:00.000Z",
+      "end": "2026-09-25T02:30:00.000Z",
+      "allDay": false,
+      "venue": {
+        "name": "ARTS at King Street Station",
+        "address": "303 S Jackson St Top floor, Seattle, WA 98104",
+        "lat": null,
+        "lng": null
+      },
+      "category": null,
+      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D205890072",
       "image": null,
       "priceFrom": null,
       "source": "seattle-gov"
@@ -1056,6 +1038,24 @@
       "image": null,
       "priceFrom": null,
       "source": "events12"
+    },
+    {
+      "id": "sc-50712",
+      "title": "Italian festival",
+      "start": "2026-09-26T07:00:00Z",
+      "end": null,
+      "allDay": true,
+      "venue": {
+        "name": "Armory",
+        "address": null,
+        "lat": 47.6215514,
+        "lng": -122.3509426
+      },
+      "category": "Festivals",
+      "url": "https://www.seattlecenter.com/events/event-calendar/the-italian-festival-x50712",
+      "image": null,
+      "priceFrom": 0,
+      "source": "seattle-center"
     },
     {
       "id": "vs-442213253",
