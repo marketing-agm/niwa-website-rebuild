@@ -1,6 +1,6 @@
 {
-  "checked": "2026-09-22T14:56:28.443Z",
-  "updated": "2026-09-22T14:56:28.443Z",
+  "checked": "2026-09-23T15:02:33.746Z",
+  "updated": "2026-09-23T15:02:33.746Z",
   "sources": [
     "Visit Seattle",
     "City of Seattle",
@@ -13,312 +13,6 @@
     "radiusMiles": 3
   },
   "events": [
-    {
-      "id": "e12-118511",
-      "title": "Baseball",
-      "start": "2026-09-22T07:00:00Z",
-      "end": "2026-09-27T07:00:00Z",
-      "allDay": true,
-      "venue": {
-        "name": "SoDo",
-        "address": "T-Mobile Park, 1250 1st Ave S, Seattle, WA 98134",
-        "lat": null,
-        "lng": null
-      },
-      "category": null,
-      "url": "https://www.mlb.com/mariners/schedule/2026-09",
-      "image": null,
-      "priceFrom": null,
-      "source": "events12"
-    },
-    {
-      "id": "tm-vvG1HZ_8nsJB23",
-      "title": "Lumen Field Stadium Tours",
-      "start": "2026-09-22T07:00:00Z",
-      "end": null,
-      "allDay": true,
-      "venue": {
-        "name": "Lumen Field Stadium Tours",
-        "address": "800 Occidental Ave S",
-        "lat": 47.596704,
-        "lng": -122.332085
-      },
-      "category": "Community",
-      "url": "https://www.ticketmaster.com/lumen-field-stadium-tours-seattle-washington-09-22-2026/event/0F00650AB19BA3D2",
-      "image": "https://s1.ticketm.net/dam/a/6ba/cca88b1c-9704-49ea-83ff-23d0e4c246ba_1665171_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": null,
-      "source": "ticketmaster"
-    },
-    {
-      "id": "sc-46410",
-      "title": "Seattle Center Sculpture Walk 2026",
-      "start": "2026-09-22T07:00:00Z",
-      "end": null,
-      "allDay": true,
-      "venue": {
-        "name": "Seattle Center",
-        "address": null,
-        "lat": 47.6219473,
-        "lng": -122.3517443
-      },
-      "category": "Museums & galleries",
-      "url": "https://www.seattlecenter.com/events/event-calendar/seattle-center-sculpture-walk-2026-x46410",
-      "image": null,
-      "priceFrom": 0,
-      "source": "seattle-center"
-    },
-    {
-      "id": "tm-vvG1HZbM3Cskl5",
-      "title": "Seattle Mariners Ballpark Tour",
-      "start": "2026-09-22T07:00:00Z",
-      "end": null,
-      "allDay": true,
-      "venue": {
-        "name": "T-Mobile Park",
-        "address": "1250 1st Ave S.",
-        "lat": 47.590333,
-        "lng": -122.33285
-      },
-      "category": "Community",
-      "url": "https://www.ticketmaster.com/seattle-mariners-ballpark-tour-seattle-washington-09-22-2026/event/0F0063748EC46ACB",
-      "image": "https://s1.ticketm.net/dam/a/1a6/5487c2cb-fc09-4cf4-8f7f-f29e74fa71a6_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": null,
-      "source": "ticketmaster"
-    },
-    {
-      "id": "sg-195091252",
-      "title": "Public Safety Committee - Public Hearing",
-      "start": "2026-09-22T16:30:00.000Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "Council Chambers",
-        "address": "600 4th Ave, Seattle, WA 98104",
-        "lat": null,
-        "lng": null
-      },
-      "category": "Public meetings",
-      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D195091252",
-      "image": null,
-      "priceFrom": null,
-      "source": "seattle-gov"
-    },
-    {
-      "id": "sg-202724464",
-      "title": "Tuesday Senior Exercise",
-      "start": "2026-09-22T17:00:00.000Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "Hing Hay Park",
-        "address": "Hing Hay Park, 423 Maynard Ave S, Seattle, WA 98104",
-        "lat": null,
-        "lng": null
-      },
-      "category": null,
-      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D202724464",
-      "image": null,
-      "priceFrom": null,
-      "source": "seattle-gov"
-    },
-    {
-      "id": "sg-206884195",
-      "title": "Bridgerton Stroll",
-      "start": "2026-09-22T20:00:00Z",
-      "end": "2026-09-26T21:00:00.000Z",
-      "allDay": false,
-      "venue": {
-        "name": "Volunteer Park - Burke Monument",
-        "address": "Volunteer Park, 1247 15th Ave E, Seattle, WA 98112",
-        "lat": null,
-        "lng": null
-      },
-      "category": "Tours",
-      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D206884195",
-      "image": null,
-      "priceFrom": null,
-      "source": "seattle-gov"
-    },
-    {
-      "id": "sg-177898347",
-      "title": "Open Adoption Hours",
-      "start": "2026-09-22T20:00:00.000Z",
-      "end": "2026-09-23T00:00:00.000Z",
-      "allDay": false,
-      "venue": {
-        "name": "2061 15th Ave. W.",
-        "address": "2061 15th Ave W, Seattle, WA 98119",
-        "lat": null,
-        "lng": null
-      },
-      "category": null,
-      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D177898347",
-      "image": null,
-      "priceFrom": null,
-      "source": "seattle-gov"
-    },
-    {
-      "id": "sg-194808568",
-      "title": "City Council",
-      "start": "2026-09-22T21:00:00.000Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "Council Chambers",
-        "address": "600 4th Ave, Seattle, WA 98104",
-        "lat": null,
-        "lng": null
-      },
-      "category": "Public meetings",
-      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D194808568",
-      "image": null,
-      "priceFrom": null,
-      "source": "seattle-gov"
-    },
-    {
-      "id": "tm-vvG1HZbgRmT9u3",
-      "title": "Seattle Mariners vs. Houston Astros",
-      "start": "2026-09-23T01:40:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "T-Mobile Park",
-        "address": "1250 1st Ave S.",
-        "lat": 47.590333,
-        "lng": -122.33285
-      },
-      "category": "Sports",
-      "url": "https://www.ticketmaster.com/seattle-mariners-vs-houston-astros-seattle-washington-09-22-2026/event/0F00635BEEFD7352",
-      "image": "https://s1.ticketm.net/dam/e/3b4/e0486840-c512-4785-a5c7-14754628c3b4_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": null,
-      "source": "ticketmaster"
-    },
-    {
-      "id": "tm-rZ7HnEZ1AfqIuS",
-      "title": "Joanne McNally",
-      "start": "2026-09-23T02:00:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "The Crocodile",
-        "address": "2505 1st Ave",
-        "lat": 47.61458,
-        "lng": -122.34915
-      },
-      "category": "Arts & theatre",
-      "url": "https://www.ticketweb.com/event/joanne-mcnally-the-crocodile-tickets/14768373",
-      "image": "https://s1.ticketm.net/dam/a/544/c15cfebb-79c2-4245-959b-64746735e544_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": 49.87,
-      "source": "ticketmaster"
-    },
-    {
-      "id": "tm-Z7r9jZ1AAvffk",
-      "title": "Lauren Anderson w/ XKYLAR",
-      "start": "2026-09-23T02:00:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "Neumos",
-        "address": "925 East Pike Street",
-        "lat": 47.610802,
-        "lng": -122.302803
-      },
-      "category": "Music",
-      "url": "https://www.ticketmaster.com/event/Z7r9jZ1AAvffk",
-      "image": "https://s1.ticketm.net/dam/c/060/c5c08e7a-9912-456c-a060-2758be94e060_105881_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": null,
-      "source": "ticketmaster"
-    },
-    {
-      "id": "tm-rZ7HnEZ1Afe6GV",
-      "title": "SCRAMBLER JAM!",
-      "start": "2026-09-23T02:00:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "Chop Suey",
-        "address": "1325 E Madison St.",
-        "lat": 47.613485,
-        "lng": -122.314457
-      },
-      "category": "Music",
-      "url": "https://www.ticketweb.com/event/scrambler-jam-chop-suey-tickets/14087334",
-      "image": "https://s1.ticketm.net/dam/c/060/c5c08e7a-9912-456c-a060-2758be94e060_105881_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": null,
-      "source": "ticketmaster"
-    },
-    {
-      "id": "tm-vvG1HZ_5pck5hg",
-      "title": "Sonic Live in Concert",
-      "start": "2026-09-23T02:30:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "Paramount Theatre",
-        "address": "911 Pine St",
-        "lat": 47.613566,
-        "lng": -122.33191
-      },
-      "category": "Arts & theatre",
-      "url": "https://www.ticketmaster.com/sonic-live-in-concert-seattle-washington-09-22-2026/event/0F0064B5AD18B6F5",
-      "image": "https://s1.ticketm.net/dam/a/f8d/a2759b35-f441-4493-9453-468b2f700f8d_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": null,
-      "source": "ticketmaster"
-    },
-    {
-      "id": "sc-50715",
-      "title": "Accelerate 2026: Playground Closure",
-      "start": "2026-09-23T03:00:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "Fisher Pavilion",
-        "address": null,
-        "lat": 47.6211235,
-        "lng": -122.352168
-      },
-      "category": "Museums & galleries",
-      "url": "https://www.seattlecenter.com/events/event-calendar/accelerate-2026-playground-closure-x50715",
-      "image": null,
-      "priceFrom": null,
-      "source": "seattle-center"
-    },
-    {
-      "id": "tm-Z7r9jZ1A7PEjM",
-      "title": "Iguana Death Cult (21+ Event)",
-      "start": "2026-09-23T03:00:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "Baba Yaga",
-        "address": "124 S Washington St",
-        "lat": 47.602402,
-        "lng": -122.325996
-      },
-      "category": "Music",
-      "url": "https://www.ticketmaster.com/event/Z7r9jZ1A7PEjM",
-      "image": "https://s1.ticketm.net/dam/c/060/c5c08e7a-9912-456c-a060-2758be94e060_105881_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": null,
-      "source": "ticketmaster"
-    },
-    {
-      "id": "tm-Z7r9jZ1A7Pgub",
-      "title": "Soulwax",
-      "start": "2026-09-23T03:00:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "The Showbox",
-        "address": "1426 1st Ave.",
-        "lat": 47.602402,
-        "lng": -122.325996
-      },
-      "category": "Music",
-      "url": "https://www.ticketmaster.com/event/Z7r9jZ1A7Pgub",
-      "image": "https://s1.ticketm.net/dam/a/30b/691ad30a-ea74-47df-b208-e70b9d41830b_1305801_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": null,
-      "source": "ticketmaster"
-    },
     {
       "id": "sc-accelerate-2026-playground-closure",
       "title": "Accelerate 2026: Playground Closure",
@@ -336,6 +30,24 @@
       "image": null,
       "priceFrom": null,
       "source": "seattle-center"
+    },
+    {
+      "id": "e12-118511",
+      "title": "Baseball",
+      "start": "2026-09-23T07:00:00Z",
+      "end": "2026-09-27T07:00:00Z",
+      "allDay": true,
+      "venue": {
+        "name": "SoDo",
+        "address": "T-Mobile Park, 1250 1st Ave S, Seattle, WA 98134",
+        "lat": null,
+        "lng": null
+      },
+      "category": null,
+      "url": "https://www.mlb.com/mariners/schedule/2026-09",
+      "image": null,
+      "priceFrom": null,
+      "source": "events12"
     },
     {
       "id": "e12-118513",
@@ -459,6 +171,24 @@
       },
       "category": "Arts & theatre",
       "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D202724477",
+      "image": null,
+      "priceFrom": null,
+      "source": "seattle-gov"
+    },
+    {
+      "id": "sg-206884195",
+      "title": "Bridgerton Stroll",
+      "start": "2026-09-23T20:00:00Z",
+      "end": "2026-09-26T21:00:00.000Z",
+      "allDay": false,
+      "venue": {
+        "name": "Volunteer Park - Burke Monument",
+        "address": "Volunteer Park, 1247 15th Ave E, Seattle, WA 98112",
+        "lat": null,
+        "lng": null
+      },
+      "category": "Tours",
+      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D206884195",
       "image": null,
       "priceFrom": null,
       "source": "seattle-gov"
@@ -698,6 +428,42 @@
       "source": "ticketmaster"
     },
     {
+      "id": "sc-46412",
+      "title": "Seattle Center Sculpture Walk 2026",
+      "start": "2026-09-24T07:00:00Z",
+      "end": null,
+      "allDay": true,
+      "venue": {
+        "name": "Seattle Center",
+        "address": null,
+        "lat": 47.6219473,
+        "lng": -122.3517443
+      },
+      "category": "Museums & galleries",
+      "url": "https://www.seattlecenter.com/events/event-calendar/seattle-center-sculpture-walk-2026-x46412",
+      "image": null,
+      "priceFrom": 0,
+      "source": "seattle-center"
+    },
+    {
+      "id": "tm-vvG1HZbM3Cwplq",
+      "title": "Seattle Mariners Ballpark Tour",
+      "start": "2026-09-24T07:00:00Z",
+      "end": null,
+      "allDay": true,
+      "venue": {
+        "name": "T-Mobile Park",
+        "address": "1250 1st Ave S.",
+        "lat": 47.590333,
+        "lng": -122.33285
+      },
+      "category": "Community",
+      "url": "https://www.ticketmaster.com/seattle-mariners-ballpark-tour-seattle-washington-09-24-2026/event/0F0063748EC96ADD",
+      "image": "https://s1.ticketm.net/dam/a/1a6/5487c2cb-fc09-4cf4-8f7f-f29e74fa71a6_RETINA_LANDSCAPE_16_9.jpg",
+      "priceFrom": null,
+      "source": "ticketmaster"
+    },
+    {
       "id": "e12-100153",
       "title": "Sketch comedy festival",
       "start": "2026-09-24T07:00:00Z",
@@ -717,7 +483,7 @@
     },
     {
       "id": "sg-206231086",
-      "title": "Select Budget Committee (Session I)",
+      "title": "Select Budget Committee",
       "start": "2026-09-24T16:30:00.000Z",
       "end": null,
       "allDay": false,
@@ -770,6 +536,24 @@
       "source": "seattle-gov"
     },
     {
+      "id": "sg-177896295",
+      "title": "Open Adoption Hours",
+      "start": "2026-09-24T20:00:00.000Z",
+      "end": "2026-09-25T00:00:00.000Z",
+      "allDay": false,
+      "venue": {
+        "name": "2061 15th Ave. W.",
+        "address": "2061 15th Ave W, Seattle, WA 98119",
+        "lat": null,
+        "lng": null
+      },
+      "category": null,
+      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D177896295",
+      "image": null,
+      "priceFrom": null,
+      "source": "seattle-gov"
+    },
+    {
       "id": "tm-Z7r9jZ1AAZepb",
       "title": "A Chorus Line",
       "start": "2026-09-24T20:30:00Z",
@@ -788,24 +572,6 @@
       "source": "ticketmaster"
     },
     {
-      "id": "sg-209067677",
-      "title": "Select Budget Committee (Session II)",
-      "start": "2026-09-24T21:00:00.000Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "City Hall Council Chambers",
-        "address": "600 4th Ave, Seattle, WA 98104",
-        "lat": null,
-        "lng": null
-      },
-      "category": "Public meetings",
-      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D209067677",
-      "image": null,
-      "priceFrom": null,
-      "source": "seattle-gov"
-    },
-    {
       "id": "sg-205890072",
       "title": "Kuumba Gathering",
       "start": "2026-09-24T23:00:00.000Z",
@@ -822,6 +588,96 @@
       "image": null,
       "priceFrom": null,
       "source": "seattle-gov"
+    },
+    {
+      "id": "tm-vvG1HZ_G3O1BF1",
+      "title": "Preseason Game 2 - Seattle Kraken vs. Calgary Flames",
+      "start": "2026-09-25T01:40:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "Climate Pledge Arena",
+        "address": "334 1st Ave N",
+        "lat": 47.622126,
+        "lng": -122.354016
+      },
+      "category": "Sports",
+      "url": "https://www.ticketmaster.com/preseason-game-2-seattle-kraken-vs-seattle-washington-09-24-2026/event/0F0064C4A02BA20A",
+      "image": "https://s1.ticketm.net/dam/a/1da/790764fd-6deb-4208-8138-f64722c0d1da_1791341_RETINA_LANDSCAPE_16_9.jpg",
+      "priceFrom": null,
+      "source": "ticketmaster"
+    },
+    {
+      "id": "tm-vvG1HZbgRRv6up",
+      "title": "Seattle Mariners vs. Los Angeles Angels",
+      "start": "2026-09-25T01:40:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "T-Mobile Park",
+        "address": "1250 1st Ave S.",
+        "lat": 47.590333,
+        "lng": -122.33285
+      },
+      "category": "Sports",
+      "url": "https://www.ticketmaster.com/seattle-mariners-vs-los-angeles-angels-seattle-washington-09-24-2026/event/0F00635BEF047356",
+      "image": "https://s1.ticketm.net/dam/e/26d/4cef8699-1b3e-492c-b88a-ef59b868926d_RETINA_LANDSCAPE_16_9.jpg",
+      "priceFrom": null,
+      "source": "ticketmaster"
+    },
+    {
+      "id": "tm-vvG1HZ_GxL19Ok",
+      "title": "Jay Park with special guest LNGSHOT: Serenades & Body Rolls",
+      "start": "2026-09-25T02:00:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "WAMU Theater",
+        "address": "800 Occidental Ave S",
+        "lat": 47.596704,
+        "lng": -122.332085
+      },
+      "category": "Music",
+      "url": "https://www.ticketmaster.com/jay-park-with-special-guest-lngshot-seattle-washington-09-24-2026/event/0F0064C89F297806",
+      "image": "https://s1.ticketm.net/dam/a/30a/799a2119-006d-4e2b-96c1-eff41aba230a_RETINA_LANDSCAPE_16_9.jpg",
+      "priceFrom": null,
+      "source": "ticketmaster"
+    },
+    {
+      "id": "tm-Z7r9jZ1A7Pa--",
+      "title": "Tim Atlas",
+      "start": "2026-09-25T02:00:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "Barboza",
+        "address": "925 E. Pike St.",
+        "lat": 47.610802,
+        "lng": -122.302803
+      },
+      "category": "Music",
+      "url": "https://www.ticketmaster.com/event/Z7r9jZ1A7Pa--",
+      "image": "https://s1.ticketm.net/dam/a/4d0/4ff4693c-270c-427e-9ca9-3ff0cc5b94d0_RETINA_LANDSCAPE_16_9.jpg",
+      "priceFrom": null,
+      "source": "ticketmaster"
+    },
+    {
+      "id": "tm-vvG1HZ_GJrcF6l",
+      "title": "WAMU Theater Amplified Access: Jay Park (Not an Event Ticket)",
+      "start": "2026-09-25T02:00:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "WAMU Theater",
+        "address": "800 Occidental Ave S",
+        "lat": 47.596704,
+        "lng": -122.332085
+      },
+      "category": "Community",
+      "url": "https://www.ticketmaster.com/wamu-theater-amplified-access-jay-park-seattle-washington-09-24-2026/event/0F0064C99EB481EB",
+      "image": "https://s1.ticketm.net/dam/a/d63/6147eefd-07e8-4de4-8407-9043605abd63_RETINA_LANDSCAPE_16_9.jpg",
+      "priceFrom": null,
+      "source": "ticketmaster"
     },
     {
       "id": "sc-eulogy-or-how-to-plan-your-own-funeral-a",
@@ -858,6 +714,60 @@
       "image": null,
       "priceFrom": null,
       "source": "seattle-center"
+    },
+    {
+      "id": "tm-rZ7HnEZ1AfaOxf",
+      "title": "Good Enough, Manila Folder, Tanisha Deka",
+      "start": "2026-09-25T03:00:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "Chop Suey",
+        "address": "1325 E Madison St.",
+        "lat": 47.613485,
+        "lng": -122.314457
+      },
+      "category": "Music",
+      "url": "https://www.ticketweb.com/event/good-enough-manila-folder-tanisha-chop-suey-tickets/14260894",
+      "image": "https://s1.ticketm.net/dam/c/797/5e693c26-2881-4776-8f0c-3aa94bfa3797_106511_RETINA_LANDSCAPE_16_9.jpg",
+      "priceFrom": 15.47,
+      "source": "ticketmaster"
+    },
+    {
+      "id": "tm-vvG1HZ_CLIo1yA",
+      "title": "Lily Allen Performs West End Girl",
+      "start": "2026-09-25T03:00:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "Paramount Theatre",
+        "address": "911 Pine St",
+        "lat": 47.613566,
+        "lng": -122.33191
+      },
+      "category": "Music",
+      "url": "https://www.ticketmaster.com/lily-allen-performs-west-end-girl-seattle-washington-09-24-2026/event/0F0064E7E844AE45",
+      "image": "https://s1.ticketm.net/dam/a/78b/e73d29f4-b17c-497d-ac4a-0a8c7503c78b_RETINA_LANDSCAPE_16_9.jpg",
+      "priceFrom": null,
+      "source": "ticketmaster"
+    },
+    {
+      "id": "tm-rZ7HnEZ1Afvp70",
+      "title": "Solya, TELE NOVELLA",
+      "start": "2026-09-25T03:00:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "The Crocodile",
+        "address": "2505 1st Ave",
+        "lat": 47.61458,
+        "lng": -122.34915
+      },
+      "category": "Music",
+      "url": "https://www.ticketweb.com/event/solya-tele-novella-the-crocodile-tickets/14056124",
+      "image": "https://s1.ticketm.net/dam/a/8d4/36cb49af-c0c8-45d6-9014-39c947ced8d4_RETINA_LANDSCAPE_16_9.jpg",
+      "priceFrom": 37.2,
+      "source": "ticketmaster"
     },
     {
       "id": "e12-119607",
@@ -912,6 +822,78 @@
       "image": null,
       "priceFrom": 0,
       "source": "events12"
+    },
+    {
+      "id": "sg-206231092",
+      "title": "Select Budget Committee",
+      "start": "2026-09-25T16:30:00.000Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "City Hall Council Chambers",
+        "address": "600 4th Ave, Seattle, WA 98104",
+        "lat": null,
+        "lng": null
+      },
+      "category": "Public meetings",
+      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D206231092",
+      "image": null,
+      "priceFrom": null,
+      "source": "seattle-gov"
+    },
+    {
+      "id": "sg-207247714",
+      "title": "Daybreak Community & Land Tending",
+      "start": "2026-09-25T18:00:00.000Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "Seattle",
+        "address": null,
+        "lat": null,
+        "lng": null
+      },
+      "category": "Volunteering",
+      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D207247714",
+      "image": null,
+      "priceFrom": null,
+      "source": "seattle-gov"
+    },
+    {
+      "id": "sg-206611565",
+      "title": "The Night Shift: After-Hours Arts & Music Series",
+      "start": "2026-09-25T22:00:00.000Z",
+      "end": "2026-09-26T04:00:00.000Z",
+      "allDay": false,
+      "venue": {
+        "name": "Pike Place Market",
+        "address": "85 Pike St, Seattle, WA 98101",
+        "lat": null,
+        "lng": null
+      },
+      "category": "Music",
+      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D206611565",
+      "image": null,
+      "priceFrom": null,
+      "source": "seattle-gov"
+    },
+    {
+      "id": "sg-205759420",
+      "title": "Messy Art and the Mobile Playground",
+      "start": "2026-09-26T00:00:00.000Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "Yesler SHA",
+        "address": "917 E Yesler Wy, Seattle, WA 98122",
+        "lat": null,
+        "lng": null
+      },
+      "category": "Museums & galleries",
+      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D205759420",
+      "image": null,
+      "priceFrom": null,
+      "source": "seattle-gov"
     },
     {
       "id": "sc-b-52s-devo-cosmic-de-evolution-tour-2026",
@@ -1022,24 +1004,6 @@
       "source": "events12"
     },
     {
-      "id": "e12-119075",
-      "title": "Gourmet cooking class",
-      "start": "2026-09-26T07:00:00Z",
-      "end": null,
-      "allDay": true,
-      "venue": {
-        "name": "Belltown",
-        "address": "Hotel Andra, 2000 4th Ave, Seattle, WA 98121",
-        "lat": null,
-        "lng": null
-      },
-      "category": null,
-      "url": "https://www.hotstovesociety.com/store/events/",
-      "image": null,
-      "priceFrom": null,
-      "source": "events12"
-    },
-    {
       "id": "sc-50712",
       "title": "Italian festival",
       "start": "2026-09-26T07:00:00Z",
@@ -1056,6 +1020,42 @@
       "image": null,
       "priceFrom": 0,
       "source": "seattle-center"
+    },
+    {
+      "id": "sc-northwest-tea-festival",
+      "title": "Northwest Tea Festival",
+      "start": "2026-09-26T07:00:00Z",
+      "end": null,
+      "allDay": true,
+      "venue": {
+        "name": "Seattle Center Exhibition Hall",
+        "address": null,
+        "lat": 47.6240056,
+        "lng": -122.351606
+      },
+      "category": "Festivals",
+      "url": "https://www.seattlecenter.com/events/event-calendar/northwest-tea-festival",
+      "image": null,
+      "priceFrom": null,
+      "source": "seattle-center"
+    },
+    {
+      "id": "e12-120220",
+      "title": "Charity tasting",
+      "start": "2026-09-30T07:00:00Z",
+      "end": null,
+      "allDay": true,
+      "venue": {
+        "name": "Central District",
+        "address": "Washington Hall, 153 14th Ave, Seattle, WA 98122",
+        "lat": null,
+        "lng": null
+      },
+      "category": null,
+      "url": "https://communityrootshousing.org/events/omnivorous/",
+      "image": null,
+      "priceFrom": null,
+      "source": "events12"
     },
     {
       "id": "vs-442213253",
