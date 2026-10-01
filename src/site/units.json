@@ -1,6 +1,6 @@
 {
-  "checked": "2026-09-30T16:25:27.222Z",
-  "updated": "2026-09-18T14:32:16.995Z",
+  "checked": "2026-10-01T17:02:45.386Z",
+  "updated": "2026-10-01T17:02:45.386Z",
   "units": [
     {
       "uid": "niwa-apartments-206",
@@ -13,8 +13,8 @@
       "rent": 1495,
       "floor": "Second floor",
       "floorNum": 2,
-      "available": "Sep 21, 2026",
-      "availType": "soon",
+      "available": "Now",
+      "availType": "now",
       "features": [],
       "plan": "studio"
     },
@@ -53,6 +53,38 @@
       "plan": "studio"
     },
     {
+      "uid": "niwa-apartments-215",
+      "id": "215",
+      "property": "Niwa Apartments",
+      "address": "513 1st Ave N",
+      "beds": 0,
+      "baths": 1,
+      "sqft": 349,
+      "rent": 1595,
+      "floor": "Second floor",
+      "floorNum": 2,
+      "available": "Nov 1, 2026",
+      "availType": "soon",
+      "features": [],
+      "plan": "studio"
+    },
+    {
+      "uid": "niwa-apartments-218",
+      "id": "218",
+      "property": "Niwa Apartments",
+      "address": "513 1st Ave N",
+      "beds": 0,
+      "baths": 1,
+      "sqft": 349,
+      "rent": 1595,
+      "floor": "Second floor",
+      "floorNum": 2,
+      "available": "Oct 15, 2026",
+      "availType": "soon",
+      "features": [],
+      "plan": "studio"
+    },
+    {
       "uid": "niwa-apartments-317",
       "id": "317",
       "property": "Niwa Apartments",
@@ -76,7 +108,7 @@
       "beds": 1,
       "baths": 1,
       "sqft": 703,
-      "rent": 2795,
+      "rent": 2895,
       "floor": "Third floor",
       "floorNum": 3,
       "available": "Now",
@@ -85,6 +117,54 @@
         "On-site laundry"
       ],
       "plan": "1br"
+    },
+    {
+      "uid": "niwa-apartments-415",
+      "id": "415",
+      "property": "Niwa Apartments",
+      "address": "513 1st Ave N",
+      "beds": 1,
+      "baths": 1,
+      "sqft": 438,
+      "rent": 1795,
+      "floor": "Fourth floor",
+      "floorNum": 4,
+      "available": "Oct 15, 2026",
+      "availType": "soon",
+      "features": [],
+      "plan": "1br"
+    },
+    {
+      "uid": "niwa-apartments-501",
+      "id": "501",
+      "property": "Niwa Apartments",
+      "address": "513 1st Ave N",
+      "beds": 1,
+      "baths": 1,
+      "sqft": 625,
+      "rent": 1835,
+      "floor": "Fifth floor",
+      "floorNum": 5,
+      "available": "Now",
+      "availType": "now",
+      "features": [],
+      "plan": "1br"
+    },
+    {
+      "uid": "niwa-apartments-509",
+      "id": "509",
+      "property": "Niwa Apartments",
+      "address": "513 1st Ave N",
+      "beds": 0,
+      "baths": 1,
+      "sqft": 388,
+      "rent": 1700,
+      "floor": "Fifth floor",
+      "floorNum": 5,
+      "available": "Now",
+      "availType": "now",
+      "features": [],
+      "plan": "studio"
     },
     {
       "uid": "niwa-apartments-603",
@@ -97,8 +177,8 @@
       "rent": 1695,
       "floor": "Sixth floor",
       "floorNum": 6,
-      "available": "Sep 21, 2026",
-      "availType": "soon",
+      "available": "Now",
+      "availType": "now",
       "features": [
         "On-site laundry"
       ],
@@ -121,6 +201,22 @@
         "On-site laundry"
       ],
       "plan": "studio"
+    },
+    {
+      "uid": "niwa-apartments-608",
+      "id": "608",
+      "property": "Niwa Apartments",
+      "address": "513 1st Ave N",
+      "beds": 2,
+      "baths": 1,
+      "sqft": 668,
+      "rent": 2895,
+      "floor": "Sixth floor",
+      "floorNum": 6,
+      "available": "Oct 10, 2026",
+      "availType": "soon",
+      "features": [],
+      "plan": "2br1ba"
     },
     {
       "uid": "niwa-apartments-704",
@@ -167,24 +263,6 @@
       "baths": 1,
       "sqft": 360,
       "rent": 1645,
-      "floor": "Eighth floor",
-      "floorNum": 8,
-      "available": "Now",
-      "availType": "now",
-      "features": [
-        "On-site laundry"
-      ],
-      "plan": "studio"
-    },
-    {
-      "uid": "niwa-apartments-805",
-      "id": "805",
-      "property": "Niwa Apartments",
-      "address": "513 1st Ave N",
-      "beds": 0,
-      "baths": 1,
-      "sqft": 360,
-      "rent": 1650,
       "floor": "Eighth floor",
       "floorNum": 8,
       "available": "Now",
