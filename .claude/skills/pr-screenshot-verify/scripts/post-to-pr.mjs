@@ -1,164 +1,120 @@
-// post-to-pr.mjs — host screenshots on an assets branch and post them to a PR comment.
+// post-to-pr.mjs: put the captures on an assets branch and post the PR comment.
 //
 // Usage:
-//   node .claude/skills/pr-screenshot-verify/scripts/post-to-pr.mjs <prNumber> <shotsDir> [introFile]
+//   node post-to-pr.mjs <prNumber> <shotsDir> [introFile] [--title "..."] [--outro file] [--body-only] [--dry-run]
 //
-// Why an assets branch: GitHub's image proxy (camo) cannot fetch raw images from a PRIVATE
-// repo, so inline ![](raw) embeds won't render if the files live only in a normal branch the
-// viewer isn't on. Committing them to a dedicated branch and linking the in-repo blob URL lets
-// authenticated collaborators view them; we embed AND link so it degrades gracefully.
+//   --title      what the comment is about, as in "## Screenshots for <title>"
+//   --outro      a file with the closing part: edge cases checked, anything else fixed
+//   --body-only  upload the images and write comment.md, but do not post. Read it
+//                through, then post it yourself (in Claude Code on the web, with the
+//                GitHub tool) and link it from the PR description.
+//   --dry-run    change nothing: no upload, no post. Writes comment.md with the
+//                addresses the images would have.
 //
-// Auth: no gh CLI and no token env var. Two setups both work:
-//   - a local checkout, where `git credential fill` returns the token `git push` uses;
-//   - a hosted session behind an egress proxy, which injects GitHub credentials itself. There is no
-//     credential helper there, and `git credential fill` does not fail quietly — it tries to prompt
-//     for a username and dies with "terminal prompts disabled" — so the call is guarded.
-// Do NOT reach for GITHUB_TOKEN as a substitute: in a proxied session that variable can be set and
-// still not be a valid GitHub API token, so it turns a working request into a 401.
-import { readFileSync, existsSync, mkdirSync, copyFileSync, readdirSync } from "node:fs";
-import { execSync, execFileSync } from "node:child_process";
+// WHERE THE IMAGES GO. A branch named assets/pr-<n>-shots, in the folder
+// verification/pr-<n>/<commit>/. The branch is not part of the code changes, so
+// the images never show in "Files changed". Each run adds a folder, so posting
+// again on a later commit never breaks what an earlier comment shows. The branch
+// is written through a temporary git worktree (a second checkout in another
+// folder), so your own checkout never switches branch.
+//
+// HOW THE IMAGES ARE LINKED. https://github.com/OWNER/REPO/raw/BRANCH/PATH. In a
+// private repo that is the only form that shows inline. raw.githubusercontent.com
+// (and blob/...?raw=true, which redirects there) is a different site that gets no
+// GitHub sign-in, so GitHub's image proxy receives a 404 and shows a broken image.
+//
+// SIGN-IN. GITHUB_TOKEN or GH_TOKEN when set, otherwise the stored git credential
+// (the same one `git push` uses). Never printed.
+import { readFileSync, writeFileSync, existsSync, mkdirSync, copyFileSync, mkdtempSync } from "node:fs";
+import { execSync } from "node:child_process";
+import os from "node:os";
 import path from "node:path";
+import { buildComment } from "./build-comment.mjs";
 
-const prNumber = process.argv[2];
-const shotsDir = path.resolve(process.argv[3] || ".pr-shots");
-const introFile = process.argv[4];
-if (!prNumber || !/^\d+$/.test(prNumber)) { console.error("usage: post-to-pr.mjs <prNumber> <shotsDir> [introFile]"); process.exit(2); }
-
-const sh = (cmd, opts = {}) => execSync(cmd, { encoding: "utf8", ...opts }).trim();
-const repoRoot = sh("git rev-parse --show-toplevel");
-
-// owner/repo from the origin remote.
-const remote = sh("git remote get-url origin");
-const m = remote.match(/github\.com[:/]([^/]+)\/([^/.]+)(?:\.git)?/);
-if (!m) { console.error("Could not parse owner/repo from: " + remote); process.exit(1); }
-const owner = m[1], repo = m[2];
-
-// Read the manifest for captions + error summary (written by drive.mjs).
-const manifestPath = path.join(shotsDir, "manifest.json");
-const manifest = existsSync(manifestPath) ? JSON.parse(readFileSync(manifestPath, "utf8")) : { shots: [], errors: [] };
-const shots = manifest.shots.length
-  ? manifest.shots
-  : readdirSync(shotsDir).filter((f) => f.endsWith(".png")).map((name) => ({ name, caption: "" }));
-if (!shots.length) { console.error("No screenshots found in " + shotsDir); process.exit(1); }
-
-const proxy = process.env.HTTPS_PROXY || process.env.https_proxy || "";
-
-// Token, never printed. Optional: behind an egress proxy that injects GitHub
-// credentials there is nothing to find and nothing needed.
-function readToken() {
-  try {
-    return sh("git credential fill", { input: "protocol=https\nhost=github.com\n\n", stdio: ["pipe", "pipe", "pipe"] })
-      .split("\n").find((l) => l.startsWith("password="))?.slice("password=".length);
-  } catch {
-    return undefined;   // no helper configured, or it tried to prompt for a username
-  }
-}
-const token = readToken();
-if (!token && !proxy) {
-  console.error("No GitHub credential: configure a git credential helper (the one `git push` uses).");
+// ---- Arguments: three plain values, two flags with a value, two switches. ----
+const args = process.argv.slice(2);
+const valueOf = (name) => { const i = args.indexOf("--" + name); return i >= 0 ? args[i + 1] : ""; };
+const plain = args.filter((a, i) => !a.startsWith("--") && !["--title", "--outro"].includes(args[i - 1]));
+const [prNumber, shotsArg, introFile] = plain;
+const dryRun = args.includes("--dry-run");
+const bodyOnly = dryRun || args.includes("--body-only");
+if (!/^\d+$/.test(prNumber || "")) {
+  console.error('usage: post-to-pr.mjs <prNumber> <shotsDir> [introFile] [--title "..."] [--outro file] [--body-only] [--dry-run]');
   process.exit(2);
 }
+const shotsDir = path.resolve(shotsArg || ".pr-shots");
 
-const startBranch = sh("git rev-parse --abbrev-ref HEAD");
-if (sh("git status --porcelain")) { console.error("Working tree is dirty — commit/stash before posting."); process.exit(1); }
+const sh = (cmd, opts = {}) => execSync(cmd, { encoding: "utf8", ...opts }).trim();
+const read = (f) => (f && existsSync(f) ? readFileSync(f, "utf8") : "");
 
-// Per-commit subdir + accumulate on the existing assets branch, so posting again
-// (a later commit, a follow-up comment) never clobbers screenshots that earlier
-// PR comments still embed.
-const runTag = sh("git rev-parse --short HEAD");
-const assetsBranch = `assets/pr-${prNumber}-shots`;
-const destRel = `verification/pr-${prNumber}/${runTag}`;
-const remoteHasAssets = (() => { try { return !!sh(`git ls-remote --heads origin ${assetsBranch}`); } catch { return false; } })();
-try {
-  if (remoteHasAssets) {
-    sh(`git fetch origin ${assetsBranch} --quiet`);
-    sh(`git checkout -B ${assetsBranch} origin/${assetsBranch}`);
-  } else {
-    // Base the assets branch on the repo's ACTUAL default branch, resolved from
-    // origin/HEAD. Hardcoding "main" broke here: this repo's default branch is
-    // claude/niwa-website-rebuild-setup-4i1y68 and origin/main does not exist,
-    // so the fetch failed and no screenshots were ever posted.
-    const defaultBranch = (() => {
-      try {
-        return sh("git symbolic-ref --short refs/remotes/origin/HEAD").replace(/^origin\//, "");
-      } catch {
-        try {
-          const m = sh("git remote show origin").match(/HEAD branch:\s*(\S+)/);
-          if (m) return m[1];
-        } catch {}
-        return "main";
-      }
-    })();
-    sh(`git fetch origin ${defaultBranch} --quiet`);
-    sh(`git checkout -B ${assetsBranch} origin/${defaultBranch}`);
+// owner/repo from the origin remote.
+const m = sh("git remote get-url origin").match(/github\.com[:/]([^/]+)\/([^/.]+)(?:\.git)?/);
+if (!m) { console.error("Could not read owner/repo from the origin remote."); process.exit(1); }
+const [owner, repo] = [m[1], m[2]];
+
+// ---- What to upload: every file the manifest names that exists. ----
+const manifestPath = path.join(shotsDir, "manifest.json");
+if (!existsSync(manifestPath)) { console.error("No manifest.json in " + shotsDir + ". Run drive.mjs first."); process.exit(1); }
+const manifest = JSON.parse(readFileSync(manifestPath, "utf8"));
+const files = manifest.shots.flatMap((s) => [s.name, s.strip].filter(Boolean)).filter((f) => {
+  if (existsSync(path.join(shotsDir, f))) return true;
+  console.warn(`warning: ${f} is missing${f.endsWith(".gif") ? " (run frames-to-gif.py on its -frames folder)" : ""}; skipped`);
+  return false;
+});
+manifest.shots = manifest.shots.filter((s) => files.includes(s.name));
+if (!files.length) { console.error("Nothing to upload in " + shotsDir); process.exit(1); }
+if (sh("git status --porcelain --untracked-files=no")) console.warn("warning: uncommitted changes; the captures may not match the commit named in the comment.");
+
+/** Commits the files to the assets branch through a temporary worktree and pushes it. */
+function publish(branch, destRel) {
+  const hasBranch = !!sh(`git ls-remote --heads origin ${branch}`);
+  sh(`git fetch --quiet origin ${hasBranch ? branch : "main"}`);
+  const wt = mkdtempSync(path.join(os.tmpdir(), "pr-shots-"));
+  try {
+    sh(`git worktree add --quiet --detach "${wt}" FETCH_HEAD`);
+    mkdirSync(path.join(wt, destRel), { recursive: true });
+    for (const f of files) copyFileSync(path.join(shotsDir, f), path.join(wt, destRel, f));
+    sh(`git -C "${wt}" add "${destRel}"`);
+    // [CF-Pages-Skip] stops Cloudflare building this branch. Without it every post
+    // makes a deployment of old code plus PNGs, listed as the newest deployment.
+    sh(`git -C "${wt}" commit -q -m "chore: PR #${prNumber} verification screenshots (${destRel}) [CF-Pages-Skip]"`);
+    sh(`git -C "${wt}" push -q origin HEAD:refs/heads/${branch}`);
+  } finally {
+    try { sh(`git worktree remove --force "${wt}"`); } catch { /* already removed */ }
   }
-  const destAbs = path.join(repoRoot, destRel);
-  mkdirSync(destAbs, { recursive: true });
-  for (const s of shots) copyFileSync(path.join(shotsDir, s.name), path.join(destAbs, s.name));
-  sh(`git add ${destRel}`);
-  // [CF-Pages-Skip] stops Cloudflare building this branch.
-  //
-  // Without it every screenshot post creates a deployment: this branch is the
-  // production code plus a folder of PNGs, so Cloudflare builds it and it lands
-  // at the top of the deployment list — the newest deployment by time, carrying
-  // the oldest code on the list. That is what made the site look like it was
-  // flip-flopping between palettes; it was really alternating between real
-  // preview branches and these.
-  //
-  // The dashboard fix is to exclude assets/* under branch control, but this
-  // belongs in the repo where it cannot be un-set by accident. Cloudflare also
-  // honours [CI Skip], [Skip CI] and [CF Pages Skip] — any one of them is enough.
-  sh(`git commit -q -m "chore: PR #${prNumber} verification screenshots (${runTag}) [CF-Pages-Skip]"`);
-  sh(`git push -u origin ${assetsBranch}`);
-} finally {
-  sh(`git checkout ${startBranch}`);
 }
 
-// Build the comment.
-const blob = (name) => `https://github.com/${owner}/${repo}/blob/${assetsBranch}/${destRel}/${name}`;
-const intro = introFile && existsSync(introFile) ? readFileSync(introFile, "utf8").trim() + "\n\n" : "";
-let md = `## 🧪 Runtime verification — screenshots\n\n${intro}`;
-md += `Captured by driving the running app in a headless browser with a seeded session. `;
-md += manifest.errors?.length
-  ? `⚠️ **${manifest.errors.length} console/page error(s):** ${manifest.errors.slice(0, 5).map((e) => "`" + e.slice(0, 120) + "`").join("; ")}\n\n`
-  : `**0 console/page errors.**\n\n`;
-md += `> Screenshots live on the \`${assetsBranch}\` branch (kept out of the code diff). If an image doesn't render inline (GitHub proxies private-repo images), use the **view** link.\n\n`;
-for (const s of shots) {
-  md += `**${s.name.replace(/\.png$/, "")}**${s.caption ? " — " + s.caption : ""} &nbsp; <sub>([view](${blob(s.name)}))</sub>\n`;
-  md += `![${s.name}](${blob(s.name)}?raw=true)\n\n`;
+/** The GitHub token, or "" when there is none. */
+function token() {
+  if (process.env.GITHUB_TOKEN || process.env.GH_TOKEN) return process.env.GITHUB_TOKEN || process.env.GH_TOKEN;
+  try {
+    return sh("git credential fill", { input: "protocol=https\nhost=github.com\n\n" })
+      .split("\n").find((l) => l.startsWith("password="))?.slice(9) || "";
+  } catch { return ""; }
 }
 
-const apiUrl = `https://api.github.com/repos/${owner}/${repo}/issues/${prNumber}/comments`;
-const payload = JSON.stringify({ body: md });
+async function main() {
+  const commit = sh("git rev-parse --short HEAD");
+  const branch = `assets/pr-${prNumber}-shots`;
+  const destRel = `verification/pr-${prNumber}/${commit}`;
+  if (!dryRun) publish(branch, destRel);
 
-/**
- * POST the comment. Two transports, because Node's built-in fetch ignores
- * HTTPS_PROXY: behind an egress proxy it would connect direct, get rejected, and
- * report "Bad credentials" — an auth error for what is actually a routing
- * problem. curl honours the proxy, so use it whenever one is configured.
- */
-async function postComment() {
-  if (proxy) {
-    const args = ["-sS", "-X", "POST", apiUrl,
-      "-H", "Accept: application/vnd.github+json",
-      "-H", "User-Agent: pr-screenshot-verify",
-      "-H", "Content-Type: application/json",
-      "--data-binary", "@-"];
-    // Only send a token if we have one; a proxy that injects credentials will
-    // reject a request that arrives with a competing Authorization header.
-    if (token) args.push("-H", "Authorization: token " + token);
-    const out = execFileSync("curl", args, { input: payload, encoding: "utf8", maxBuffer: 10 * 1024 * 1024 });
-    return JSON.parse(out);
-  }
-  const res = await fetch(apiUrl, {
+  const url = (f) => `https://github.com/${owner}/${repo}/raw/${branch}/${destRel}/${f}`;
+  const body = buildComment({ manifest, url, title: valueOf("title") || undefined, intro: read(introFile), outro: read(valueOf("outro")) });
+  const out = path.join(shotsDir, "comment.md");
+  writeFileSync(out, body);
+  console.log(`${dryRun ? "dry run, nothing uploaded" : `uploaded ${files.length} file(s) to ${branch}/${destRel}`}`);
+  if (bodyOnly) { console.log("COMMENT_FILE=" + out); return; }
+
+  const t = token();
+  if (!t) { console.error("No GitHub token found. comment.md is ready to post by hand: " + out); process.exit(2); }
+  const res = await fetch(`https://api.github.com/repos/${owner}/${repo}/issues/${prNumber}/comments`, {
     method: "POST",
-    headers: { Authorization: "token " + token, Accept: "application/vnd.github+json", "User-Agent": "pr-screenshot-verify", "Content-Type": "application/json" },
-    body: payload,
+    headers: { Authorization: "token " + t, Accept: "application/vnd.github+json", "User-Agent": "pr-screenshot-verify", "Content-Type": "application/json" },
+    body: JSON.stringify({ body }),
   });
-  return res.json();
+  const data = await res.json();
+  if (!res.ok) { console.error("HTTP " + res.status + ": " + (data.message || "")); process.exit(1); }
+  console.log("COMMENT_URL=" + data.html_url);
 }
-
-const data = await postComment();
-if (!data?.html_url) { console.error("Comment not created:"); console.error(JSON.stringify(data, null, 2)); process.exit(1); }
-console.log("COMMENT_URL=" + data.html_url);
-console.log("ASSETS_BRANCH=" + assetsBranch);
+main().catch((e) => { console.error("FATAL", e.message); process.exit(1); });
