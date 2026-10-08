@@ -1,6 +1,6 @@
 {
-  "checked": "2026-10-07T17:26:38.754Z",
-  "updated": "2026-10-07T17:26:38.754Z",
+  "checked": "2026-10-08T17:25:12.719Z",
+  "updated": "2026-10-08T17:25:12.719Z",
   "sources": [
     "Visit Seattle",
     "City of Seattle",
@@ -13,168 +13,6 @@
     "radiusMiles": 3
   },
   "events": [
-    {
-      "id": "e12-120161",
-      "title": "Sailboat",
-      "start": "2026-10-07T07:00:00Z",
-      "end": "2026-10-31T07:00:00Z",
-      "allDay": true,
-      "venue": {
-        "name": "Waterfront",
-        "address": "Seattle",
-        "lat": null,
-        "lng": null
-      },
-      "category": null,
-      "url": "https://www.viator.com/tours/Seattle/Seattle-Sailing-Harbor-Tour/d704-318046P2?pid=P00051759&mcid=42383&medium=link&campaign=119020u",
-      "image": null,
-      "priceFrom": null,
-      "source": "events12"
-    },
-    {
-      "id": "sc-46425",
-      "title": "Seattle Center Sculpture Walk 2026",
-      "start": "2026-10-07T07:00:00Z",
-      "end": null,
-      "allDay": true,
-      "venue": {
-        "name": "Seattle Center",
-        "address": null,
-        "lat": 47.6219473,
-        "lng": -122.3517443
-      },
-      "category": "Museums & galleries",
-      "url": "https://www.seattlecenter.com/events/event-calendar/seattle-center-sculpture-walk-2026-x46425",
-      "image": null,
-      "priceFrom": 0,
-      "source": "seattle-center"
-    },
-    {
-      "id": "vs-442264213",
-      "title": "Serenade",
-      "start": "2026-10-07T07:00:00Z",
-      "end": "2026-10-24T07:00:00Z",
-      "allDay": true,
-      "venue": {
-        "name": "Marion Oliver McCaw Hall",
-        "address": null,
-        "lat": null,
-        "lng": null
-      },
-      "category": "Arts & theatre",
-      "url": "https://www.pnb.org/season/serenade/",
-      "image": null,
-      "priceFrom": null,
-      "source": "visit-seattle"
-    },
-    {
-      "id": "sg-210338912",
-      "title": "Community Police Commission October Monthly Meeting",
-      "start": "2026-10-07T16:00:00.000Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "Seattle City Hall",
-        "address": null,
-        "lat": null,
-        "lng": null
-      },
-      "category": "Public meetings",
-      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D210338912",
-      "image": null,
-      "priceFrom": null,
-      "source": "seattle-gov"
-    },
-    {
-      "id": "sg-178151764",
-      "title": "Open Adoption Hours",
-      "start": "2026-10-07T20:00:00.000Z",
-      "end": "2026-10-08T00:00:00.000Z",
-      "allDay": false,
-      "venue": {
-        "name": "2061 15th Ave. W.",
-        "address": "2061 15th Ave W, Seattle, WA 98119",
-        "lat": null,
-        "lng": null
-      },
-      "category": null,
-      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D178151764",
-      "image": null,
-      "priceFrom": null,
-      "source": "seattle-gov"
-    },
-    {
-      "id": "tm-Z7r9jZ1A7PfJe",
-      "title": "Castle Rat w/ Unto Others",
-      "start": "2026-10-08T02:30:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "The Showbox",
-        "address": "1426 1st Ave.",
-        "lat": 47.602402,
-        "lng": -122.325996
-      },
-      "category": "Music",
-      "url": "https://www.ticketmaster.com/event/Z7r9jZ1A7PfJe",
-      "image": "https://s1.ticketm.net/dam/a/23d/f306c3ac-ca95-461a-95f0-acf8105e623d_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": null,
-      "source": "ticketmaster"
-    },
-    {
-      "id": "sc-50632",
-      "title": "Eureka Day",
-      "start": "2026-10-08T02:30:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "Seattle Repertory Theatre",
-        "address": null,
-        "lat": 47.6239152,
-        "lng": -122.3536861
-      },
-      "category": null,
-      "url": "https://www.seattlecenter.com/events/event-calendar/eureka-day-x50632",
-      "image": null,
-      "priceFrom": null,
-      "source": "seattle-center"
-    },
-    {
-      "id": "tm-vvG1HZ_GJXPDd-",
-      "title": "Water for Elephants (Touring)",
-      "start": "2026-10-08T02:30:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "Paramount Theatre",
-        "address": "911 Pine St",
-        "lat": 47.613566,
-        "lng": -122.33191
-      },
-      "category": "Arts & theatre",
-      "url": "https://www.ticketmaster.com/water-for-elephants-touring-seattle-washington-10-07-2026/event/0F0064C9BE97B0E1",
-      "image": "https://s1.ticketm.net/dam/a/65f/eb67f402-ccb1-4382-a7a4-0db73bcb365f_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": null,
-      "source": "ticketmaster"
-    },
-    {
-      "id": "tm-rZ7HnEZ1AfG-47",
-      "title": "Lucia Flores-Wiseman, MANISHA, Mirabai Kukathas",
-      "start": "2026-10-08T03:00:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "Chop Suey",
-        "address": "1325 E Madison St.",
-        "lat": 47.613485,
-        "lng": -122.314457
-      },
-      "category": "Music",
-      "url": "https://www.ticketweb.com/event/lucia-flores-wiseman-manisha-mirabai-chop-suey-tickets/14321544",
-      "image": "https://s1.ticketm.net/dam/c/797/5e693c26-2881-4776-8f0c-3aa94bfa3797_106511_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": 15.47,
-      "source": "ticketmaster"
-    },
     {
       "id": "e12-102224",
       "title": "Experimental dance",
@@ -212,6 +50,24 @@
       "source": "events12"
     },
     {
+      "id": "e12-120161",
+      "title": "Sailboat",
+      "start": "2026-10-08T07:00:00Z",
+      "end": "2026-10-31T07:00:00Z",
+      "allDay": true,
+      "venue": {
+        "name": "Waterfront",
+        "address": "Seattle",
+        "lat": null,
+        "lng": null
+      },
+      "category": null,
+      "url": "https://www.viator.com/tours/Seattle/Seattle-Sailing-Harbor-Tour/d704-318046P2?pid=P00051759&mcid=42383&medium=link&campaign=119020u",
+      "image": null,
+      "priceFrom": null,
+      "source": "events12"
+    },
+    {
       "id": "sc-46426",
       "title": "Seattle Center Sculpture Walk 2026",
       "start": "2026-10-08T07:00:00Z",
@@ -228,6 +84,24 @@
       "image": null,
       "priceFrom": 0,
       "source": "seattle-center"
+    },
+    {
+      "id": "vs-442264213",
+      "title": "Serenade",
+      "start": "2026-10-08T07:00:00Z",
+      "end": "2026-10-24T07:00:00Z",
+      "allDay": true,
+      "venue": {
+        "name": "Marion Oliver McCaw Hall",
+        "address": null,
+        "lat": null,
+        "lng": null
+      },
+      "category": "Arts & theatre",
+      "url": "https://www.pnb.org/season/serenade/",
+      "image": null,
+      "priceFrom": null,
+      "source": "visit-seattle"
     },
     {
       "id": "sg-206407408",
@@ -339,7 +213,7 @@
     },
     {
       "id": "sc-eureka-day-open-captioning",
-      "title": "Eureka Day: Open Captioning",
+      "title": "Eureka Day",
       "start": "2026-10-09T02:30:00Z",
       "end": null,
       "allDay": false,
@@ -500,6 +374,24 @@
       "source": "events12"
     },
     {
+      "id": "sc-46427",
+      "title": "Seattle Center Sculpture Walk 2026",
+      "start": "2026-10-09T07:00:00Z",
+      "end": null,
+      "allDay": true,
+      "venue": {
+        "name": "Seattle Center",
+        "address": null,
+        "lat": 47.6219473,
+        "lng": -122.3517443
+      },
+      "category": "Museums & galleries",
+      "url": "https://www.seattlecenter.com/events/event-calendar/seattle-center-sculpture-walk-2026-x46427",
+      "image": null,
+      "priceFrom": 0,
+      "source": "seattle-center"
+    },
+    {
       "id": "tm-vvG1HZ_eEqsbhL",
       "title": "Seattle Mariners Ballpark Tour",
       "start": "2026-10-09T07:00:00Z",
@@ -536,6 +428,24 @@
       "source": "events12"
     },
     {
+      "id": "sg-210770515",
+      "title": "Council Briefing - Special Meeting",
+      "start": "2026-10-09T16:30:00.000Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "Council Chambers",
+        "address": "600 4th Ave, Seattle, WA 98104",
+        "lat": null,
+        "lng": null
+      },
+      "category": "Public meetings",
+      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D210770515",
+      "image": null,
+      "priceFrom": null,
+      "source": "seattle-gov"
+    },
+    {
       "id": "sg-207247718",
       "title": "Daybreak Community & Land Tending",
       "start": "2026-10-09T18:00:00.000Z",
@@ -549,6 +459,24 @@
       },
       "category": "Volunteering",
       "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D207247718",
+      "image": null,
+      "priceFrom": null,
+      "source": "seattle-gov"
+    },
+    {
+      "id": "sg-182114585",
+      "title": "Open Adoption Hours",
+      "start": "2026-10-09T20:00:00.000Z",
+      "end": "2026-10-10T00:00:00.000Z",
+      "allDay": false,
+      "venue": {
+        "name": "2061 15th Ave. W.",
+        "address": null,
+        "lat": null,
+        "lng": null
+      },
+      "category": null,
+      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D182114585",
       "image": null,
       "priceFrom": null,
       "source": "seattle-gov"
@@ -770,6 +698,42 @@
       "source": "ticketmaster"
     },
     {
+      "id": "tm-Z7r9jZ1AAZAQ7",
+      "title": "Telescreens",
+      "start": "2026-10-10T03:00:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "Baba Yaga",
+        "address": "124 S Washington St",
+        "lat": 47.602402,
+        "lng": -122.325996
+      },
+      "category": null,
+      "url": "https://www.ticketmaster.com/event/Z7r9jZ1AAZAQ7",
+      "image": "https://s1.ticketm.net/dam/c/f51/ee785ed6-f806-4195-98f4-69f67e09df51_106201_RETINA_LANDSCAPE_16_9.jpg",
+      "priceFrom": null,
+      "source": "ticketmaster"
+    },
+    {
+      "id": "tm-vvG1HZ_GJXIhdc",
+      "title": "Water for Elephants (Touring)",
+      "start": "2026-10-10T03:00:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "Paramount Theatre",
+        "address": "911 Pine St",
+        "lat": 47.613566,
+        "lng": -122.33191
+      },
+      "category": "Arts & theatre",
+      "url": "https://www.ticketmaster.com/water-for-elephants-touring-seattle-washington-10-09-2026/event/0F0064C9BEA1B0ED",
+      "image": "https://s1.ticketm.net/dam/a/65f/eb67f402-ccb1-4382-a7a4-0db73bcb365f_RETINA_LANDSCAPE_16_9.jpg",
+      "priceFrom": null,
+      "source": "ticketmaster"
+    },
+    {
       "id": "e12-120402",
       "title": "Fantasy scavenger hunt",
       "start": "2026-10-10T07:00:00Z",
@@ -932,7 +896,7 @@
       "source": "seattle-center"
     },
     {
-      "id": "sc-50556",
+      "id": "sc-turkfest",
       "title": "Turkfest",
       "start": "2026-10-10T19:00:00Z",
       "end": null,
@@ -944,7 +908,7 @@
         "lng": -122.3509426
       },
       "category": "Museums & galleries",
-      "url": "https://www.seattlecenter.com/events/event-calendar/turkfest-x50556",
+      "url": "https://www.seattlecenter.com/events/event-calendar/turkfest",
       "image": null,
       "priceFrom": 0,
       "source": "seattle-center"
@@ -966,6 +930,24 @@
       "image": null,
       "priceFrom": null,
       "source": "seattle-gov"
+    },
+    {
+      "id": "sc-eureka-day-sensory-friendly",
+      "title": "Eureka Day: Sensory-Friendly",
+      "start": "2026-10-10T21:00:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "Seattle Repertory Theatre",
+        "address": null,
+        "lat": 47.6239152,
+        "lng": -122.3536861
+      },
+      "category": null,
+      "url": "https://www.seattlecenter.com/events/event-calendar/eureka-day-sensory-friendly",
+      "image": null,
+      "priceFrom": null,
+      "source": "seattle-center"
     },
     {
       "id": "sg-197865343",
@@ -1089,6 +1071,24 @@
       },
       "category": "Arts & theatre",
       "url": "https://www.pnb.org/season/ghost-stories/",
+      "image": null,
+      "priceFrom": null,
+      "source": "visit-seattle"
+    },
+    {
+      "id": "vs-442213321",
+      "title": "Festal: Diwali – Lights of India",
+      "start": "2026-11-07T08:00:00Z",
+      "end": null,
+      "allDay": true,
+      "venue": {
+        "name": "Seattle Center",
+        "address": null,
+        "lat": null,
+        "lng": null
+      },
+      "category": "Festivals",
+      "url": "https://www.seattlecenter.com/events/featured-events/festal/diwali-lights-of-india",
       "image": null,
       "priceFrom": null,
       "source": "visit-seattle"
