@@ -1,6 +1,6 @@
 {
-  "checked": "2026-10-22T15:18:27.039Z",
-  "updated": "2026-10-22T15:18:27.039Z",
+  "checked": "2026-10-23T15:06:07.643Z",
+  "updated": "2026-10-23T15:06:07.643Z",
   "units": [
     {
       "uid": "niwa-apartments-205",
@@ -171,7 +171,7 @@
       "id": "415",
       "property": "Niwa Apartments",
       "address": "513 1st Ave N",
-      "beds": 0,
+      "beds": 1,
       "baths": 1,
       "sqft": 438,
       "rent": 1795,
