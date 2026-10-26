@@ -1,6 +1,6 @@
 {
-  "checked": "2026-10-25T14:23:51.538Z",
-  "updated": "2026-10-25T14:23:51.538Z",
+  "checked": "2026-10-26T16:48:28.338Z",
+  "updated": "2026-10-26T16:48:28.338Z",
   "sources": [
     "Visit Seattle",
     "City of Seattle",
@@ -13,510 +13,6 @@
     "radiusMiles": 3
   },
   "events": [
-    {
-      "id": "sc-46980",
-      "title": "Antiquarian Book Fair",
-      "start": "2026-10-25T07:00:00Z",
-      "end": null,
-      "allDay": true,
-      "venue": {
-        "name": "Seattle Center Exhibition Hall",
-        "address": null,
-        "lat": 47.6240056,
-        "lng": -122.351606
-      },
-      "category": "Festivals",
-      "url": "https://www.seattlecenter.com/events/event-calendar/antiquarian-book-fair-x46980",
-      "image": null,
-      "priceFrom": null,
-      "source": "seattle-center"
-    },
-    {
-      "id": "e12-100180",
-      "title": "Geek girl convention",
-      "start": "2026-10-25T07:00:00Z",
-      "end": null,
-      "allDay": true,
-      "venue": {
-        "name": "Downtown",
-        "address": "Seattle Convention Center Arch, 800 Pike St, Seattle, WA 98101",
-        "lat": null,
-        "lng": null
-      },
-      "category": null,
-      "url": "https://geekgirlcon.com/",
-      "image": null,
-      "priceFrom": null,
-      "source": "events12"
-    },
-    {
-      "id": "e12-110130",
-      "title": "Halloween show",
-      "start": "2026-10-25T07:00:00Z",
-      "end": "2026-10-30T07:00:00Z",
-      "allDay": true,
-      "venue": {
-        "name": "Downtown",
-        "address": "The Triple Door, 216 Union St, Seattle, WA 98101",
-        "lat": null,
-        "lng": null
-      },
-      "category": null,
-      "url": "https://www.cancanseattle.com/this-is-halloween-2026",
-      "image": null,
-      "priceFrom": null,
-      "source": "events12"
-    },
-    {
-      "id": "e12-118955",
-      "title": "Immersive bar show",
-      "start": "2026-10-25T07:00:00Z",
-      "end": "2026-10-31T07:00:00Z",
-      "allDay": true,
-      "venue": {
-        "name": "Capitol Hill",
-        "address": "DAR Rainier Chapter House, 800 E Roy St, Seattle, WA 98102",
-        "lat": null,
-        "lng": null
-      },
-      "category": null,
-      "url": "https://hauntedsoiree.com/seattle/",
-      "image": null,
-      "priceFrom": null,
-      "source": "events12"
-    },
-    {
-      "id": "e12-120260",
-      "title": "Kids’ party",
-      "start": "2026-10-25T07:00:00Z",
-      "end": null,
-      "allDay": true,
-      "venue": {
-        "name": "Queen Anne",
-        "address": "KEXP, 472 1st Ave N, Seattle, WA 98108",
-        "lat": null,
-        "lng": null
-      },
-      "category": "Family",
-      "url": "https://www.kexp.org/events/kexp-events/kids-halloween-dance-party-2026/",
-      "image": null,
-      "priceFrom": null,
-      "source": "events12"
-    },
-    {
-      "id": "e12-120443",
-      "title": "Opera",
-      "start": "2026-10-25T07:00:00Z",
-      "end": "2026-10-31T07:00:00Z",
-      "allDay": true,
-      "venue": {
-        "name": "Seattle Center",
-        "address": "McCaw Hall, 321 Mercer St, Seattle, WA 98109",
-        "lat": null,
-        "lng": null
-      },
-      "category": "Arts & theatre",
-      "url": "https://www.seattleopera.org/performances-events/salome/",
-      "image": null,
-      "priceFrom": null,
-      "source": "events12"
-    },
-    {
-      "id": "e12-120451",
-      "title": "Performance art",
-      "start": "2026-10-25T07:00:00Z",
-      "end": null,
-      "allDay": true,
-      "venue": {
-        "name": "Capitol Hill",
-        "address": "Kerry Hall, 710 E Roy St, Seattle, WA 98102",
-        "lat": null,
-        "lng": null
-      },
-      "category": "Museums & galleries",
-      "url": "https://astrolab.productions/starstuff/",
-      "image": null,
-      "priceFrom": null,
-      "source": "events12"
-    },
-    {
-      "id": "e12-105256",
-      "title": "Polish film festival",
-      "start": "2026-10-25T07:00:00Z",
-      "end": null,
-      "allDay": true,
-      "venue": {
-        "name": "Lower Queen Anne",
-        "address": "SIFF Cinema Uptown, 511 Queen Anne Ave N, Seattle, WA 98109",
-        "lat": null,
-        "lng": null
-      },
-      "category": "Festivals",
-      "url": "https://www.polishfilms.org",
-      "image": null,
-      "priceFrom": 0,
-      "source": "events12"
-    },
-    {
-      "id": "e12-100138",
-      "title": "Rare book sale",
-      "start": "2026-10-25T07:00:00Z",
-      "end": null,
-      "allDay": true,
-      "venue": {
-        "name": "Seattle Center",
-        "address": "Seattle Center Exhibition Hall, 301 Mercer St, Seattle, WA 98109",
-        "lat": null,
-        "lng": null
-      },
-      "category": null,
-      "url": "https://www.seattlebookfair.com",
-      "image": null,
-      "priceFrom": null,
-      "source": "events12"
-    },
-    {
-      "id": "e12-120161",
-      "title": "Sailboat",
-      "start": "2026-10-25T07:00:00Z",
-      "end": "2026-10-31T07:00:00Z",
-      "allDay": true,
-      "venue": {
-        "name": "Waterfront",
-        "address": "Seattle",
-        "lat": null,
-        "lng": null
-      },
-      "category": null,
-      "url": "https://www.viator.com/tours/Seattle/Seattle-Sailing-Harbor-Tour/d704-318046P2?pid=P00051759&mcid=42383&medium=link&campaign=119020u",
-      "image": null,
-      "priceFrom": null,
-      "source": "events12"
-    },
-    {
-      "id": "sc-46443",
-      "title": "Seattle Center Sculpture Walk 2026",
-      "start": "2026-10-25T07:00:00Z",
-      "end": null,
-      "allDay": true,
-      "venue": {
-        "name": "Seattle Center",
-        "address": null,
-        "lat": 47.6219473,
-        "lng": -122.3517443
-      },
-      "category": "Museums & galleries",
-      "url": "https://www.seattlecenter.com/events/event-calendar/seattle-center-sculpture-walk-2026-x46443",
-      "image": null,
-      "priceFrom": 0,
-      "source": "seattle-center"
-    },
-    {
-      "id": "e12-118554",
-      "title": "Weird expo",
-      "start": "2026-10-25T07:00:00Z",
-      "end": null,
-      "allDay": true,
-      "venue": {
-        "name": "Downtown",
-        "address": "Seattle Convention Center, 705 Pike St, Seattle, WA 98101",
-        "lat": null,
-        "lng": null
-      },
-      "category": null,
-      "url": "https://www.facebook.com/events/1735265817158963",
-      "image": null,
-      "priceFrom": null,
-      "source": "events12"
-    },
-    {
-      "id": "tm-vvG1HZ_2T00foX",
-      "title": "Starstuff: A Festival of Solo Artists (Day Pass)",
-      "start": "2026-10-25T17:00:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "Kerry Hall",
-        "address": "710 E. Roy Street",
-        "lat": 47.62543,
-        "lng": -122.32302
-      },
-      "category": "Music",
-      "url": "https://www.ticketmaster.com/starstuff-a-festival-of-solo-artists-seattle-washington-10-25-2026/event/0F0064FFE491447E",
-      "image": "https://s1.ticketm.net/dam/a/0d1/f3254653-e6b4-4fd6-8325-ca2fec7fa0d1_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": null,
-      "source": "ticketmaster"
-    },
-    {
-      "id": "sg-211408673",
-      "title": "Clean Start Adoption Event",
-      "start": "2026-10-25T20:00:00.000Z",
-      "end": "2026-10-26T01:00:00.000Z",
-      "allDay": false,
-      "venue": {
-        "name": "2061 15th Ave W",
-        "address": "2061 15th Ave W, Seattle, WA 98119",
-        "lat": null,
-        "lng": null
-      },
-      "category": "Museums & galleries",
-      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D211408673",
-      "image": null,
-      "priceFrom": null,
-      "source": "seattle-gov"
-    },
-    {
-      "id": "sg-178398124",
-      "title": "Open Adoption Hours",
-      "start": "2026-10-25T20:00:00.000Z",
-      "end": "2026-10-26T00:00:00.000Z",
-      "allDay": false,
-      "venue": {
-        "name": "2061 15th Ave. W.",
-        "address": "2061 15th Ave W, Seattle, WA 98119",
-        "lat": null,
-        "lng": null
-      },
-      "category": null,
-      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D178398124",
-      "image": null,
-      "priceFrom": null,
-      "source": "seattle-gov"
-    },
-    {
-      "id": "sc-50648",
-      "title": "Eureka Day",
-      "start": "2026-10-25T21:00:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "Seattle Repertory Theatre",
-        "address": null,
-        "lat": 47.6239152,
-        "lng": -122.3536861
-      },
-      "category": null,
-      "url": "https://www.seattlecenter.com/events/event-calendar/eureka-day-x50648",
-      "image": null,
-      "priceFrom": null,
-      "source": "seattle-center"
-    },
-    {
-      "id": "sg-210143032",
-      "title": "Freddy Fuego Orchestra (Sunday Matinee) @ Town Hall Seattle",
-      "start": "2026-10-25T21:00:00.000Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "1119 8th Ave",
-        "address": "1119 8th Ave, Seattle, WA 98101",
-        "lat": null,
-        "lng": null
-      },
-      "category": null,
-      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D210143032",
-      "image": null,
-      "priceFrom": null,
-      "source": "seattle-gov"
-    },
-    {
-      "id": "sc-47359",
-      "title": "Salome",
-      "start": "2026-10-25T21:00:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "Marion Oliver McCaw Hall",
-        "address": null,
-        "lat": 47.6239994,
-        "lng": -122.3502714
-      },
-      "category": "Museums & galleries",
-      "url": "https://www.seattlecenter.com/events/event-calendar/salome-x47359",
-      "image": null,
-      "priceFrom": null,
-      "source": "seattle-center"
-    },
-    {
-      "id": "tm-Z7r9jZ1A7PIax",
-      "title": "Table 17",
-      "start": "2026-10-25T21:00:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "Union Arts Center",
-        "address": "700 Union Street",
-        "lat": 47.6115,
-        "lng": -122.334297
-      },
-      "category": null,
-      "url": "https://www.ticketmaster.com/event/Z7r9jZ1A7PIax",
-      "image": "https://s1.ticketm.net/dam/c/f51/ee785ed6-f806-4195-98f4-69f67e09df51_106201_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": null,
-      "source": "ticketmaster"
-    },
-    {
-      "id": "tm-vvG1HZ_F5J093T",
-      "title": "Seattle Seahawks vs. Kansas City Chiefs",
-      "start": "2026-10-26T00:20:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "Lumen Field",
-        "address": "800 Occidental Ave S",
-        "lat": 47.595083,
-        "lng": -122.331607
-      },
-      "category": "Sports",
-      "url": "https://www.ticketmaster.com/seattle-seahawks-vs-kansas-city-chiefs-seattle-washington-10-25-2026/event/0F006482E69174BF",
-      "image": "https://s1.ticketm.net/dam/a/2db/0bae3d29-946e-44fd-aebd-2618ce30b2db_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": null,
-      "source": "ticketmaster"
-    },
-    {
-      "id": "tm-Z7r9jZ1AA79G7",
-      "title": "Big Ass Truck",
-      "start": "2026-10-26T01:30:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "El Corazon",
-        "address": "109 Eastlake Avenue East",
-        "lat": 47.630699,
-        "lng": -122.3461
-      },
-      "category": "Music",
-      "url": "https://www.ticketmaster.com/event/Z7r9jZ1AA79G7",
-      "image": "https://s1.ticketm.net/dam/a/5f7/098d51cc-0c4c-443b-9d46-305fe57cb5f7_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": null,
-      "source": "ticketmaster"
-    },
-    {
-      "id": "tm-vvG1HZ_uJ3N9gL",
-      "title": "Dracula ballet",
-      "start": "2026-10-26T02:00:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "The 5th Avenue Theatre",
-        "address": "1308 5th Ave",
-        "lat": 47.608903,
-        "lng": -122.333926
-      },
-      "category": "Arts & theatre",
-      "url": "https://www.ticketmaster.com/international-ballet-theatre-dracula-seattle-washington-10-25-2026/event/0F0064D9928D7D5F",
-      "image": "https://s1.ticketm.net/dam/a/4aa/305cf8cf-9755-468f-a15a-b092648a04aa_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": null,
-      "source": "ticketmaster"
-    },
-    {
-      "id": "tm-Z7r9jZ1A7PIq9",
-      "title": "Stanley Simmons",
-      "start": "2026-10-26T02:00:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "The Vera Project",
-        "address": "305 Harrison Street",
-        "lat": 47.630699,
-        "lng": -122.3461
-      },
-      "category": null,
-      "url": "https://www.ticketmaster.com/event/Z7r9jZ1A7PIq9",
-      "image": "https://s1.ticketm.net/dam/c/8cf/a6653880-7899-4f67-8067-1f95f4d158cf_124761_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": null,
-      "source": "ticketmaster"
-    },
-    {
-      "id": "tm-vvG1HZ_70acPW7",
-      "title": "W.A.S.P. - 1984 TO HEADLESS with specials guests KK's PRIEST",
-      "start": "2026-10-26T02:30:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "Moore Theatre",
-        "address": "1932 2nd Ave",
-        "lat": 47.61196,
-        "lng": -122.34142
-      },
-      "category": "Music",
-      "url": "https://www.ticketmaster.com/wasp-1984-to-headless-with-specials-seattle-washington-10-25-2026/event/0F00644909B65F44",
-      "image": "https://s1.ticketm.net/dam/a/4a2/f044bd80-ab67-4319-ad3a-3a94631394a2_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": null,
-      "source": "ticketmaster"
-    },
-    {
-      "id": "tm-Z7r9jZ1AAZ_u4",
-      "title": "George Clanton",
-      "start": "2026-10-26T03:00:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "The Crocodile",
-        "address": "2200 2nd. Ave.",
-        "lat": 47.6157,
-        "lng": -122.344498
-      },
-      "category": "Music",
-      "url": "https://www.ticketmaster.com/event/Z7r9jZ1AAZ_u4",
-      "image": "https://s1.ticketm.net/dam/c/060/c5c08e7a-9912-456c-a060-2758be94e060_105881_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": null,
-      "source": "ticketmaster"
-    },
-    {
-      "id": "tm-rZ7HnEZ1AfPzxK",
-      "title": "We Are Scientists",
-      "start": "2026-10-26T03:00:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "Baba Yaga",
-        "address": "124 S Washington St",
-        "lat": 47.601427,
-        "lng": -122.333146
-      },
-      "category": "Music",
-      "url": "https://www.ticketweb.com/event/we-are-scientists-baba-yaga-tickets/14978893",
-      "image": "https://s1.ticketm.net/dam/a/997/4add6aeb-5adb-42be-8763-fee2a1e04997_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": 32.3,
-      "source": "ticketmaster"
-    },
-    {
-      "id": "tm-vvG1HZ_52nooej",
-      "title": "THE CHICKS - TAKING THE LONG WAY",
-      "start": "2026-10-26T03:30:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "Benaroya Hall - S. Mark Taper Auditorium",
-        "address": "200 University Street",
-        "lat": 47.607827,
-        "lng": -122.337549
-      },
-      "category": "Music",
-      "url": "https://www.ticketmaster.com/the-chicks-taking-the-long-way-seattle-washington-10-25-2026/event/0F0064B3EA45109C",
-      "image": "https://s1.ticketm.net/dam/a/447/17624bbd-1bde-49bf-8817-52a3aaeae447_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": null,
-      "source": "ticketmaster"
-    },
-    {
-      "id": "tm-rZ7HnEZ1AfZe40",
-      "title": "Flammable",
-      "start": "2026-10-26T05:00:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "Chop Suey",
-        "address": "1325 E Madison St.",
-        "lat": 47.613485,
-        "lng": -122.314457
-      },
-      "category": "Music",
-      "url": "https://www.ticketweb.com/event/flammable-chop-suey-tickets/14002564",
-      "image": "https://s1.ticketm.net/dam/c/df8/81eadad8-4449-412e-a2b1-3d8bbb78edf8_106181_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": null,
-      "source": "ticketmaster"
-    },
     {
       "id": "e12-113279",
       "title": "Amateur horror films",
@@ -534,6 +30,42 @@
       "image": null,
       "priceFrom": null,
       "source": "events12"
+    },
+    {
+      "id": "vs-442263155",
+      "title": "Eureka Day",
+      "start": "2026-10-26T07:00:00Z",
+      "end": "2026-11-15T08:00:00Z",
+      "allDay": true,
+      "venue": {
+        "name": "Seattle Rep",
+        "address": null,
+        "lat": null,
+        "lng": null
+      },
+      "category": "Arts & theatre",
+      "url": "https://www.seattlerep.org/plays/202627-season/eureka-day",
+      "image": null,
+      "priceFrom": null,
+      "source": "visit-seattle"
+    },
+    {
+      "id": "vs-442263519",
+      "title": "Salome",
+      "start": "2026-10-26T07:00:00Z",
+      "end": "2026-10-31T07:00:00Z",
+      "allDay": true,
+      "venue": {
+        "name": "Marion Oliver McCaw Hall",
+        "address": null,
+        "lat": null,
+        "lng": null
+      },
+      "category": "Arts & theatre",
+      "url": "https://www.seattleopera.org/performances-events/salome/",
+      "image": null,
+      "priceFrom": null,
+      "source": "visit-seattle"
     },
     {
       "id": "sc-46444",
@@ -734,6 +266,24 @@
       "source": "ticketmaster"
     },
     {
+      "id": "sc-46445",
+      "title": "Seattle Center Sculpture Walk 2026",
+      "start": "2026-10-27T07:00:00Z",
+      "end": null,
+      "allDay": true,
+      "venue": {
+        "name": "Seattle Center",
+        "address": null,
+        "lat": 47.6219473,
+        "lng": -122.3517443
+      },
+      "category": "Museums & galleries",
+      "url": "https://www.seattlecenter.com/events/event-calendar/seattle-center-sculpture-walk-2026-x46445",
+      "image": null,
+      "priceFrom": 0,
+      "source": "seattle-center"
+    },
+    {
       "id": "sg-211685622",
       "title": "Junes Cathedral - Prepare for Planting",
       "start": "2026-10-27T16:30:00.000Z",
@@ -878,6 +428,114 @@
       "source": "ticketmaster"
     },
     {
+      "id": "tm-Z7r9jZ1A7PIaN",
+      "title": "Table 17",
+      "start": "2026-10-28T02:00:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "Union Arts Center",
+        "address": "700 Union Street",
+        "lat": 47.6115,
+        "lng": -122.334297
+      },
+      "category": null,
+      "url": "https://www.ticketmaster.com/event/Z7r9jZ1A7PIaN",
+      "image": "https://s1.ticketm.net/dam/c/f51/ee785ed6-f806-4195-98f4-69f67e09df51_106201_RETINA_LANDSCAPE_16_9.jpg",
+      "priceFrom": null,
+      "source": "ticketmaster"
+    },
+    {
+      "id": "tm-Z7r9jZ1AA79G6",
+      "title": "Febuary",
+      "start": "2026-10-28T02:30:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "El Corazon",
+        "address": "109 Eastlake Avenue East",
+        "lat": 47.630699,
+        "lng": -122.3461
+      },
+      "category": "Music",
+      "url": "https://www.ticketmaster.com/event/Z7r9jZ1AA79G6",
+      "image": "https://s1.ticketm.net/dam/c/fbc/b293c0ad-c904-4215-bc59-8d7f2414dfbc_106141_RETINA_LANDSCAPE_16_9.jpg",
+      "priceFrom": null,
+      "source": "ticketmaster"
+    },
+    {
+      "id": "tm-vvG1HZ_awRTnMb",
+      "title": "Kacey Musgraves - Middle of Nowhere Tour",
+      "start": "2026-10-28T02:30:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "Climate Pledge Arena",
+        "address": "334 1st Ave N",
+        "lat": 47.622126,
+        "lng": -122.354016
+      },
+      "category": "Music",
+      "url": "https://www.ticketmaster.com/kacey-musgraves-middle-of-nowhere-tour-seattle-washington-10-27-2026/event/0F00649CAFFEADD8",
+      "image": "https://s1.ticketm.net/dam/a/8c3/a6be573f-37e6-4adc-9bad-cd25711378c3_RETINA_LANDSCAPE_16_9.jpg",
+      "priceFrom": null,
+      "source": "ticketmaster"
+    },
+    {
+      "id": "tm-Z7r9jZ1AAZAQd",
+      "title": "Shes Green",
+      "start": "2026-10-28T03:00:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "Baba Yaga",
+        "address": "124 S Washington St",
+        "lat": 47.602402,
+        "lng": -122.325996
+      },
+      "category": null,
+      "url": "https://www.ticketmaster.com/event/Z7r9jZ1AAZAQd",
+      "image": "https://s1.ticketm.net/dam/c/8cf/a6653880-7899-4f67-8067-1f95f4d158cf_124761_RETINA_LANDSCAPE_16_9.jpg",
+      "priceFrom": null,
+      "source": "ticketmaster"
+    },
+    {
+      "id": "tm-vvG1HZ_2S4Hq0R",
+      "title": "All Access Pass – Climate Pledge Arena Tours",
+      "start": "2026-10-28T07:00:00Z",
+      "end": null,
+      "allDay": true,
+      "venue": {
+        "name": "Climate Pledge Arena",
+        "address": "334 1st Ave N",
+        "lat": 47.622126,
+        "lng": -122.354016
+      },
+      "category": "Community",
+      "url": "https://www.ticketmaster.com/all-access-pass-climate-pledge-arena-seattle-washington-10-28-2026/event/0F0064FCD5F1D92F",
+      "image": "https://s1.ticketm.net/dam/e/807/5f0a0fd8-8114-4f52-8493-8e3df1129807_RETINA_LANDSCAPE_16_9.jpg",
+      "priceFrom": null,
+      "source": "ticketmaster"
+    },
+    {
+      "id": "e12-110130",
+      "title": "Halloween show",
+      "start": "2026-10-28T07:00:00Z",
+      "end": "2026-10-29T07:00:00Z",
+      "allDay": true,
+      "venue": {
+        "name": "Downtown",
+        "address": "The Triple Door, 216 Union St, Seattle, WA 98101",
+        "lat": null,
+        "lng": null
+      },
+      "category": null,
+      "url": "https://www.cancanseattle.com/this-is-halloween-2026",
+      "image": null,
+      "priceFrom": null,
+      "source": "events12"
+    },
+    {
       "id": "e12-118516",
       "title": "Hockey",
       "start": "2026-10-28T07:00:00Z",
@@ -891,6 +549,42 @@
       },
       "category": null,
       "url": "https://www.nhl.com/kraken/schedule/2026-10-01",
+      "image": null,
+      "priceFrom": null,
+      "source": "events12"
+    },
+    {
+      "id": "e12-118955",
+      "title": "Immersive bar show",
+      "start": "2026-10-28T07:00:00Z",
+      "end": "2026-10-31T07:00:00Z",
+      "allDay": true,
+      "venue": {
+        "name": "Capitol Hill",
+        "address": "DAR Rainier Chapter House, 800 E Roy St, Seattle, WA 98102",
+        "lat": null,
+        "lng": null
+      },
+      "category": null,
+      "url": "https://hauntedsoiree.com/seattle/",
+      "image": null,
+      "priceFrom": null,
+      "source": "events12"
+    },
+    {
+      "id": "e12-119862",
+      "title": "Scary movies",
+      "start": "2026-10-28T07:00:00Z",
+      "end": null,
+      "allDay": true,
+      "venue": {
+        "name": "Seattle Center",
+        "address": "SIFF Film Center, 167 Republican St, Seattle, WA 98109",
+        "lat": null,
+        "lng": null
+      },
+      "category": "Film",
+      "url": "https://www.siff.net/programs-and-events/scarecrowber-2026",
       "image": null,
       "priceFrom": null,
       "source": "events12"
@@ -932,6 +626,24 @@
       "source": "seattle-gov"
     },
     {
+      "id": "sg-178394151",
+      "title": "Open Adoption Hours",
+      "start": "2026-10-28T20:00:00.000Z",
+      "end": "2026-10-29T00:00:00.000Z",
+      "allDay": false,
+      "venue": {
+        "name": "2061 15th Ave. W.",
+        "address": "2061 15th Ave W, Seattle, WA 98119",
+        "lat": null,
+        "lng": null
+      },
+      "category": null,
+      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D178394151",
+      "image": null,
+      "priceFrom": null,
+      "source": "seattle-gov"
+    },
+    {
       "id": "sc-seattle-kraken-vs-toronto-maple-leafs",
       "title": "Seattle Kraken vs Toronto Maple Leafs",
       "start": "2026-10-29T02:00:00Z",
@@ -948,6 +660,24 @@
       "image": null,
       "priceFrom": null,
       "source": "seattle-center"
+    },
+    {
+      "id": "tm-Z7r9jZ1A7PIoy",
+      "title": "Table 17",
+      "start": "2026-10-29T02:00:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "Union Arts Center",
+        "address": "700 Union Street",
+        "lat": 47.6115,
+        "lng": -122.334297
+      },
+      "category": null,
+      "url": "https://www.ticketmaster.com/event/Z7r9jZ1A7PIoy",
+      "image": "https://s1.ticketm.net/dam/c/f51/ee785ed6-f806-4195-98f4-69f67e09df51_106201_RETINA_LANDSCAPE_16_9.jpg",
+      "priceFrom": null,
+      "source": "ticketmaster"
     },
     {
       "id": "sc-50649",
@@ -968,6 +698,24 @@
       "source": "seattle-center"
     },
     {
+      "id": "tm-Z7r9jZ1AA79GF",
+      "title": "Fenix Flexin",
+      "start": "2026-10-29T02:30:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "El Corazon",
+        "address": "109 Eastlake Avenue East",
+        "lat": 47.630699,
+        "lng": -122.3461
+      },
+      "category": "Music",
+      "url": "https://www.ticketmaster.com/event/Z7r9jZ1AA79GF",
+      "image": "https://s1.ticketm.net/dam/c/060/c5c08e7a-9912-456c-a060-2758be94e060_105881_RETINA_LANDSCAPE_16_9.jpg",
+      "priceFrom": null,
+      "source": "ticketmaster"
+    },
+    {
       "id": "sc-47360",
       "title": "Salome",
       "start": "2026-10-29T02:30:00Z",
@@ -986,6 +734,78 @@
       "source": "seattle-center"
     },
     {
+      "id": "tm-vvG1HZbz2cbytf",
+      "title": "Seattle Sounders FC vs. Houston Dynamo",
+      "start": "2026-10-29T02:30:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "Lumen Field",
+        "address": "800 Occidental Ave S",
+        "lat": 47.595083,
+        "lng": -122.331607
+      },
+      "category": "Sports",
+      "url": "https://www.ticketmaster.com/seattle-sounders-fc-vs-houston-dynamo-seattle-washington-10-28-2026/event/0F006383ED639A54",
+      "image": "https://s1.ticketm.net/dam/a/8f3/b06bbb55-43d4-48b4-b5ba-d606b93968f3_RETINA_LANDSCAPE_16_9.jpg",
+      "priceFrom": null,
+      "source": "ticketmaster"
+    },
+    {
+      "id": "tm-Z7r9jZ1AAZMf0",
+      "title": "The Haunt (21+ Event)",
+      "start": "2026-10-29T02:30:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "Baba Yaga",
+        "address": "124 S Washington St",
+        "lat": 47.602402,
+        "lng": -122.325996
+      },
+      "category": "Music",
+      "url": "https://www.ticketmaster.com/event/Z7r9jZ1AAZMf0",
+      "image": "https://s1.ticketm.net/dam/a/da4/11ac73f6-155b-4a3b-bc2a-96c9fc65eda4_RETINA_LANDSCAPE_16_9.jpg",
+      "priceFrom": null,
+      "source": "ticketmaster"
+    },
+    {
+      "id": "e12-118979",
+      "title": "Aquarium party",
+      "start": "2026-10-29T07:00:00Z",
+      "end": null,
+      "allDay": true,
+      "venue": {
+        "name": "Waterfront",
+        "address": "Seattle Aquarium, 1483 Alaskan Way Pier 59, Seattle, WA 98101",
+        "lat": null,
+        "lng": null
+      },
+      "category": null,
+      "url": "https://www.seattleaquarium.org/events/after-hours-halloween/",
+      "image": null,
+      "priceFrom": null,
+      "source": "events12"
+    },
+    {
+      "id": "e12-104315",
+      "title": "Halloween show & party",
+      "start": "2026-10-29T07:00:00Z",
+      "end": "2026-10-31T07:00:00Z",
+      "allDay": true,
+      "venue": {
+        "name": "SoDo",
+        "address": "Emerald City Trapeze Arts, 2702 6th Ave S, Seattle, WA 98134",
+        "lat": null,
+        "lng": null
+      },
+      "category": null,
+      "url": "https://emeraldcitytrapeze.com/carnevolar-xiv-ascension/",
+      "image": null,
+      "priceFrom": null,
+      "source": "events12"
+    },
+    {
       "id": "sg-200134773",
       "title": "Firefighter Story Time at Central Library",
       "start": "2026-10-29T17:30:00.000Z",
@@ -999,6 +819,24 @@
       },
       "category": null,
       "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D200134773",
+      "image": null,
+      "priceFrom": null,
+      "source": "seattle-gov"
+    },
+    {
+      "id": "sg-207247723",
+      "title": "Daybreak Community & Land Tending",
+      "start": "2026-10-29T18:00:00.000Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "Seattle",
+        "address": null,
+        "lat": null,
+        "lng": null
+      },
+      "category": "Volunteering",
+      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D207247723",
       "image": null,
       "priceFrom": null,
       "source": "seattle-gov"
@@ -1020,6 +858,114 @@
       "image": null,
       "priceFrom": null,
       "source": "seattle-center"
+    },
+    {
+      "id": "e12-119075",
+      "title": "Gourmet cooking class",
+      "start": "2026-10-30T07:00:00Z",
+      "end": "2026-10-31T07:00:00Z",
+      "allDay": true,
+      "venue": {
+        "name": "Belltown",
+        "address": "Hotel Andra, 2000 4th Ave, Seattle, WA 98121",
+        "lat": null,
+        "lng": null
+      },
+      "category": null,
+      "url": "https://www.hotstovesociety.com/store/events/",
+      "image": null,
+      "priceFrom": null,
+      "source": "events12"
+    },
+    {
+      "id": "e12-119986",
+      "title": "Modern ballet",
+      "start": "2026-10-30T07:00:00Z",
+      "end": "2026-10-31T07:00:00Z",
+      "allDay": true,
+      "venue": {
+        "name": "Downtown",
+        "address": "The Paramount Theatre, 911 Pine St, Seattle, WA 98101",
+        "lat": null,
+        "lng": null
+      },
+      "category": "Arts & theatre",
+      "url": "https://www.stgpresents.org/events/dance-theatre-of-harlem/",
+      "image": null,
+      "priceFrom": null,
+      "source": "events12"
+    },
+    {
+      "id": "e12-119878",
+      "title": "Party at Smith Tower",
+      "start": "2026-10-30T07:00:00Z",
+      "end": "2026-10-31T07:00:00Z",
+      "allDay": true,
+      "venue": {
+        "name": "Downtown",
+        "address": "Smith Tower, 506 2nd Ave, Seattle, WA 98104",
+        "lat": null,
+        "lng": null
+      },
+      "category": null,
+      "url": "https://fareharbor.com/embeds/book/smithtower/items/758322/calendar/?flow=1131869&full-items=yes",
+      "image": null,
+      "priceFrom": null,
+      "source": "events12"
+    },
+    {
+      "id": "e12-104278",
+      "title": "Spooky comedy",
+      "start": "2026-10-30T07:00:00Z",
+      "end": "2026-10-31T07:00:00Z",
+      "allDay": true,
+      "venue": {
+        "name": "Downtown",
+        "address": "Unexpected Productions Improv, 1428 Post Alley, Seattle, WA 98101",
+        "lat": null,
+        "lng": null
+      },
+      "category": "Arts & theatre",
+      "url": "https://www.eventbrite.com/e/poe-unexpected-edgar-allan-poe-improvised-tickets-1982202036651",
+      "image": null,
+      "priceFrom": null,
+      "source": "events12"
+    },
+    {
+      "id": "e12-118596",
+      "title": "Spooky concert",
+      "start": "2026-10-30T07:00:00Z",
+      "end": "2026-10-31T07:00:00Z",
+      "allDay": true,
+      "venue": {
+        "name": "Pioneer Square",
+        "address": "WaMu Theater, 800 Occidental Ave S, Seattle, WA 98134",
+        "lat": null,
+        "lng": null
+      },
+      "category": "Music",
+      "url": "https://seattle.boo-halloween.com",
+      "image": null,
+      "priceFrom": null,
+      "source": "events12"
+    },
+    {
+      "id": "sg-207247724",
+      "title": "Daybreak Community & Land Tending",
+      "start": "2026-10-30T18:00:00.000Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "Seattle",
+        "address": null,
+        "lat": null,
+        "lng": null
+      },
+      "category": "Volunteering",
+      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D207247724",
+      "image": null,
+      "priceFrom": null,
+      "source": "seattle-gov"
     },
     {
       "id": "sc-d-a-de-muertos-festival-seattle-dia-de-m",
@@ -1071,6 +1017,60 @@
       },
       "category": null,
       "url": "https://www.seattlecenter.com/events/event-calendar/seduction",
+      "image": null,
+      "priceFrom": null,
+      "source": "seattle-center"
+    },
+    {
+      "id": "sc-50563",
+      "title": "Día de Muertos Festival Seattle: Dia de Muertos",
+      "start": "2026-11-01T07:00:00Z",
+      "end": null,
+      "allDay": true,
+      "venue": {
+        "name": "Armory",
+        "address": null,
+        "lat": 47.6215514,
+        "lng": -122.3509426
+      },
+      "category": "Festivals",
+      "url": "https://www.seattlecenter.com/events/event-calendar/dia-de-muertos-festival-seattle-dia-de-muertos-x50563",
+      "image": null,
+      "priceFrom": 0,
+      "source": "seattle-center"
+    },
+    {
+      "id": "sc-50294",
+      "title": "Seattle Kraken vs Calgary Flames",
+      "start": "2026-11-05T03:00:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "Climate Pledge Arena",
+        "address": null,
+        "lat": 47.6221,
+        "lng": -122.353988
+      },
+      "category": "Sports",
+      "url": "https://www.seattlecenter.com/events/event-calendar/seattle-kraken-vs-calgary-flames-x50294",
+      "image": null,
+      "priceFrom": null,
+      "source": "seattle-center"
+    },
+    {
+      "id": "sc-teddy-swims-the-ugly-tour",
+      "title": "Teddy Swims: The Ugly Tour",
+      "start": "2026-11-06T03:00:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "Climate Pledge Arena",
+        "address": null,
+        "lat": 47.6221,
+        "lng": -122.353988
+      },
+      "category": "Music",
+      "url": "https://www.seattlecenter.com/events/event-calendar/teddy-swims-the-ugly-tour",
       "image": null,
       "priceFrom": null,
       "source": "seattle-center"
