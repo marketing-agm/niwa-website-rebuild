@@ -1,6 +1,6 @@
 {
-  "checked": "2026-10-31T15:45:06.308Z",
-  "updated": "2026-10-31T15:45:06.308Z",
+  "checked": "2026-11-01T16:49:12.495Z",
+  "updated": "2026-11-01T16:49:12.495Z",
   "sources": [
     "Visit Seattle",
     "City of Seattle",
@@ -13,672 +13,6 @@
     "radiusMiles": 3
   },
   "events": [
-    {
-      "id": "e12-118647",
-      "title": "Adult costume party",
-      "start": "2026-10-31T07:00:00Z",
-      "end": null,
-      "allDay": true,
-      "venue": {
-        "name": "Seattle Center",
-        "address": "Seattle Center Exhibition Hall, 301 Mercer St, Seattle, WA 98109",
-        "lat": null,
-        "lng": null
-      },
-      "category": null,
-      "url": "https://www.seaf.art/seduction-2/",
-      "image": null,
-      "priceFrom": null,
-      "source": "events12"
-    },
-    {
-      "id": "e12-114382",
-      "title": "Adult science night",
-      "start": "2026-10-31T07:00:00Z",
-      "end": null,
-      "allDay": true,
-      "venue": {
-        "name": "Seattle Center",
-        "address": "Pacific Science Center, 200 2nd Ave N, Seattle, WA 98109",
-        "lat": null,
-        "lng": null
-      },
-      "category": null,
-      "url": "https://pacificsciencecenter.org/events/science-after-dark/",
-      "image": null,
-      "priceFrom": null,
-      "source": "events12"
-    },
-    {
-      "id": "sc-d-a-de-muertos-festival-seattle-dia-de-m",
-      "title": "Día de Muertos Festival Seattle: Dia de Muertos",
-      "start": "2026-10-31T07:00:00Z",
-      "end": null,
-      "allDay": true,
-      "venue": {
-        "name": "Armory",
-        "address": null,
-        "lat": 47.6215514,
-        "lng": -122.3509426
-      },
-      "category": "Festivals",
-      "url": "https://www.seattlecenter.com/events/event-calendar/dia-de-muertos-festival-seattle",
-      "image": null,
-      "priceFrom": 0,
-      "source": "seattle-center"
-    },
-    {
-      "id": "e12-104442",
-      "title": "Fremont Troll celebration",
-      "start": "2026-10-31T07:00:00Z",
-      "end": null,
-      "allDay": true,
-      "venue": {
-        "name": "Fremont",
-        "address": "Fremont Troll, N 36th St, Seattle, WA 98103",
-        "lat": null,
-        "lng": null
-      },
-      "category": "Festivals",
-      "url": "https://fremontartscouncil.org/trolloween",
-      "image": null,
-      "priceFrom": 0,
-      "source": "events12"
-    },
-    {
-      "id": "e12-118671",
-      "title": "Ghost tour",
-      "start": "2026-10-31T07:00:00Z",
-      "end": null,
-      "allDay": true,
-      "venue": {
-        "name": "Capitol Hill",
-        "address": "The Elliott Bay Book Company, 1521 10th Ave, Seattle, WA 98122",
-        "lat": null,
-        "lng": null
-      },
-      "category": "Tours",
-      "url": "https://www.facebook.com/NWlegendsmuseum/posts/pfbid02Mdhby9Kjtfchp7uowyyT9hx1fNiNpuyhB3njxEf8iYMs4LLTvsrQ1ihUybdgKv4Cl",
-      "image": null,
-      "priceFrom": null,
-      "source": "events12"
-    },
-    {
-      "id": "e12-119075",
-      "title": "Gourmet cooking class",
-      "start": "2026-10-31T07:00:00Z",
-      "end": null,
-      "allDay": true,
-      "venue": {
-        "name": "Belltown",
-        "address": "Hotel Andra, 2000 4th Ave, Seattle, WA 98121",
-        "lat": null,
-        "lng": null
-      },
-      "category": null,
-      "url": "https://www.hotstovesociety.com/store/events/",
-      "image": null,
-      "priceFrom": null,
-      "source": "events12"
-    },
-    {
-      "id": "e12-120370",
-      "title": "Halloween bar crawl",
-      "start": "2026-10-31T07:00:00Z",
-      "end": null,
-      "allDay": true,
-      "venue": {
-        "name": "Pioneer Square",
-        "address": "Merchant",
-        "lat": null,
-        "lng": null
-      },
-      "category": null,
-      "url": "https://www.eventbrite.com/e/seattle-halloweencon-2026-tickets-1979555511824",
-      "image": null,
-      "priceFrom": null,
-      "source": "events12"
-    },
-    {
-      "id": "e12-120392",
-      "title": "Halloween music for families",
-      "start": "2026-10-31T07:00:00Z",
-      "end": null,
-      "allDay": true,
-      "venue": {
-        "name": "Downtown",
-        "address": "Benaroya Hall, 200 University St, Seattle, WA 98101",
-        "lat": null,
-        "lng": null
-      },
-      "category": "Music",
-      "url": "https://benaroyahall.org/en/concerttickets/calendar/2026-2027/26fam1",
-      "image": null,
-      "priceFrom": null,
-      "source": "events12"
-    },
-    {
-      "id": "e12-104026",
-      "title": "Halloween party at MoPOP",
-      "start": "2026-10-31T07:00:00Z",
-      "end": null,
-      "allDay": true,
-      "venue": {
-        "name": "Seattle Center",
-        "address": "Museum of Pop Culture, 325 5th Ave N, Seattle, WA 98109",
-        "lat": null,
-        "lng": null
-      },
-      "category": null,
-      "url": "https://www.mopop.org/events/fashionably-undead-space",
-      "image": null,
-      "priceFrom": null,
-      "source": "events12"
-    },
-    {
-      "id": "e12-119471",
-      "title": "Hotel party",
-      "start": "2026-10-31T07:00:00Z",
-      "end": null,
-      "allDay": true,
-      "venue": {
-        "name": "Downtown",
-        "address": "W Seattle, 1112 4th Ave, Seattle, WA 98101",
-        "lat": null,
-        "lng": null
-      },
-      "category": null,
-      "url": "https://vipnightlife.com/events/haunted-w-seattle-halloween-party-2/",
-      "image": null,
-      "priceFrom": null,
-      "source": "events12"
-    },
-    {
-      "id": "e12-118955",
-      "title": "Immersive bar show",
-      "start": "2026-10-31T07:00:00Z",
-      "end": null,
-      "allDay": true,
-      "venue": {
-        "name": "Capitol Hill",
-        "address": "DAR Rainier Chapter House, 800 E Roy St, Seattle, WA 98102",
-        "lat": null,
-        "lng": null
-      },
-      "category": null,
-      "url": "https://hauntedsoiree.com/seattle/",
-      "image": null,
-      "priceFrom": null,
-      "source": "events12"
-    },
-    {
-      "id": "e12-119986",
-      "title": "Modern ballet",
-      "start": "2026-10-31T07:00:00Z",
-      "end": null,
-      "allDay": true,
-      "venue": {
-        "name": "Downtown",
-        "address": "The Paramount Theatre, 911 Pine St, Seattle, WA 98101",
-        "lat": null,
-        "lng": null
-      },
-      "category": "Arts & theatre",
-      "url": "https://www.stgpresents.org/events/dance-theatre-of-harlem/",
-      "image": null,
-      "priceFrom": null,
-      "source": "events12"
-    },
-    {
-      "id": "e12-120443",
-      "title": "Opera",
-      "start": "2026-10-31T07:00:00Z",
-      "end": null,
-      "allDay": true,
-      "venue": {
-        "name": "Seattle Center",
-        "address": "McCaw Hall, 321 Mercer St, Seattle, WA 98109",
-        "lat": null,
-        "lng": null
-      },
-      "category": "Arts & theatre",
-      "url": "https://www.seattleopera.org/performances-events/salome/",
-      "image": null,
-      "priceFrom": null,
-      "source": "events12"
-    },
-    {
-      "id": "e12-119878",
-      "title": "Party at Smith Tower",
-      "start": "2026-10-31T07:00:00Z",
-      "end": null,
-      "allDay": true,
-      "venue": {
-        "name": "Downtown",
-        "address": "Smith Tower, 506 2nd Ave, Seattle, WA 98104",
-        "lat": null,
-        "lng": null
-      },
-      "category": null,
-      "url": "https://fareharbor.com/embeds/book/smithtower/items/758322/calendar/?flow=1131869&full-items=yes",
-      "image": null,
-      "priceFrom": null,
-      "source": "events12"
-    },
-    {
-      "id": "e12-120161",
-      "title": "Sailboat",
-      "start": "2026-10-31T07:00:00Z",
-      "end": null,
-      "allDay": true,
-      "venue": {
-        "name": "Waterfront",
-        "address": "Seattle",
-        "lat": null,
-        "lng": null
-      },
-      "category": null,
-      "url": "https://www.viator.com/tours/Seattle/Seattle-Sailing-Harbor-Tour/d704-318046P2?pid=P00051759&mcid=42383&medium=link&campaign=119020u",
-      "image": null,
-      "priceFrom": null,
-      "source": "events12"
-    },
-    {
-      "id": "sc-46449",
-      "title": "Seattle Center Sculpture Walk 2026",
-      "start": "2026-10-31T07:00:00Z",
-      "end": null,
-      "allDay": true,
-      "venue": {
-        "name": "Seattle Center",
-        "address": null,
-        "lat": 47.6219473,
-        "lng": -122.3517443
-      },
-      "category": "Museums & galleries",
-      "url": "https://www.seattlecenter.com/events/event-calendar/seattle-center-sculpture-walk-2026-x46449",
-      "image": null,
-      "priceFrom": 0,
-      "source": "seattle-center"
-    },
-    {
-      "id": "e12-104278",
-      "title": "Spooky comedy",
-      "start": "2026-10-31T07:00:00Z",
-      "end": null,
-      "allDay": true,
-      "venue": {
-        "name": "Downtown",
-        "address": "Unexpected Productions Improv, 1428 Post Alley, Seattle, WA 98101",
-        "lat": null,
-        "lng": null
-      },
-      "category": "Arts & theatre",
-      "url": "https://www.eventbrite.com/e/poe-unexpected-edgar-allan-poe-improvised-tickets-1982202036651",
-      "image": null,
-      "priceFrom": null,
-      "source": "events12"
-    },
-    {
-      "id": "e12-118596",
-      "title": "Spooky concert",
-      "start": "2026-10-31T07:00:00Z",
-      "end": null,
-      "allDay": true,
-      "venue": {
-        "name": "Pioneer Square",
-        "address": "WaMu Theater, 800 Occidental Ave S, Seattle, WA 98134",
-        "lat": null,
-        "lng": null
-      },
-      "category": "Music",
-      "url": "https://seattle.boo-halloween.com",
-      "image": null,
-      "priceFrom": null,
-      "source": "events12"
-    },
-    {
-      "id": "sg-209131486",
-      "title": "Tree Planting the Forest Edge",
-      "start": "2026-10-31T16:30:00.000Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "3801 W Government Way",
-        "address": null,
-        "lat": null,
-        "lng": null
-      },
-      "category": "Volunteering",
-      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D209131486",
-      "image": null,
-      "priceFrom": null,
-      "source": "seattle-gov"
-    },
-    {
-      "id": "sg-210704399",
-      "title": "Public Meeting - Magnolia Play Area",
-      "start": "2026-10-31T17:00:00.000Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "Just south of Magnolia Community Center",
-        "address": "2550 34th Ave W, Seattle, WA 98199",
-        "lat": null,
-        "lng": null
-      },
-      "category": "Arts & theatre",
-      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D210704399",
-      "image": null,
-      "priceFrom": null,
-      "source": "seattle-gov"
-    },
-    {
-      "id": "sg-212357931",
-      "title": "Evergreen Chrysanthemum Association 79th Annual Show",
-      "start": "2026-10-31T18:00:00.000Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "Volunteer Park Conservatory",
-        "address": "Volunteer Park Conservatory, 1400 E Galer St, Seattle, WA 98112",
-        "lat": null,
-        "lng": null
-      },
-      "category": null,
-      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D212357931",
-      "image": null,
-      "priceFrom": null,
-      "source": "seattle-gov"
-    },
-    {
-      "id": "tm-Z7r9jZ1AAZaPg",
-      "title": "Halloween Spooktacular w/ Seattle Symphony",
-      "start": "2026-10-31T18:00:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "Taper Auditorium",
-        "address": "200 University St",
-        "lat": 47.6115,
-        "lng": -122.334297
-      },
-      "category": "Arts & theatre",
-      "url": "https://www.ticketmaster.com/event/Z7r9jZ1AAZaPg",
-      "image": "https://s1.ticketm.net/dam/c/393/b74d3ddc-a5f3-4e09-a801-89c36b774393_106071_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": null,
-      "source": "ticketmaster"
-    },
-    {
-      "id": "tm-vvG1HZ_Gn_cbAz",
-      "title": "Boo! Seattle",
-      "start": "2026-10-31T19:00:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "WAMU Theater",
-        "address": "800 Occidental Ave S",
-        "lat": 47.596704,
-        "lng": -122.332085
-      },
-      "category": "Music",
-      "url": "https://on.fgtix.com/trk/YXGQ",
-      "image": "https://s1.ticketm.net/dam/a/600/67774ac4-89b9-4219-b367-bb17e2a74600_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": null,
-      "source": "ticketmaster"
-    },
-    {
-      "id": "tm-vvG1HZ_G6sHXOL",
-      "title": "Dance Theatre of Harlem",
-      "start": "2026-10-31T20:00:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "Paramount Theatre",
-        "address": "911 Pine St",
-        "lat": 47.613566,
-        "lng": -122.33191
-      },
-      "category": "Arts & theatre",
-      "url": "https://www.ticketmaster.com/dance-theatre-of-harlem-seattle-washington-10-31-2026/event/0F0064C1F1F3E81F",
-      "image": "https://s1.ticketm.net/dam/e/c53/09f283ab-a1f1-4545-9f26-74124513dc53_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": null,
-      "source": "ticketmaster"
-    },
-    {
-      "id": "sg-178398126",
-      "title": "Open Adoption Hours",
-      "start": "2026-10-31T20:00:00.000Z",
-      "end": "2026-11-01T00:00:00.000Z",
-      "allDay": false,
-      "venue": {
-        "name": "2061 15th Ave. W.",
-        "address": "2061 15th Ave W, Seattle, WA 98119",
-        "lat": null,
-        "lng": null
-      },
-      "category": null,
-      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D178398126",
-      "image": null,
-      "priceFrom": null,
-      "source": "seattle-gov"
-    },
-    {
-      "id": "sc-50652",
-      "title": "Eureka Day",
-      "start": "2026-10-31T21:00:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "Seattle Repertory Theatre",
-        "address": null,
-        "lat": 47.6239152,
-        "lng": -122.3536861
-      },
-      "category": null,
-      "url": "https://www.seattlecenter.com/events/event-calendar/eureka-day-x50652",
-      "image": null,
-      "priceFrom": null,
-      "source": "seattle-center"
-    },
-    {
-      "id": "sg-211883478",
-      "title": "Waterfront Park Firepit Socials (Bonfires)",
-      "start": "2026-10-31T22:00:00.000Z",
-      "end": "2026-11-01T01:00:00.000Z",
-      "allDay": false,
-      "venue": {
-        "name": "Waterfront Park",
-        "address": "1951 Alaskan Wy, Seattle, WA 98101",
-        "lat": null,
-        "lng": null
-      },
-      "category": null,
-      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D211883478",
-      "image": null,
-      "priceFrom": null,
-      "source": "seattle-gov"
-    },
-    {
-      "id": "tm-vvG1HZ_o1cjFRR",
-      "title": "Lumen Field Stadium Tours",
-      "start": "2026-10-31T23:30:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "Lumen Field Stadium Tours",
-        "address": "800 Occidental Ave S",
-        "lat": 47.596704,
-        "lng": -122.332085
-      },
-      "category": "Community",
-      "url": "https://www.ticketmaster.com/lumen-field-stadium-tours-seattle-washington-10-31-2026/event/0F006512AD708BEF",
-      "image": "https://s1.ticketm.net/dam/a/6ba/cca88b1c-9704-49ea-83ff-23d0e4c246ba_1665171_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": null,
-      "source": "ticketmaster"
-    },
-    {
-      "id": "tm-rZ7HnEZ1Af0P_d",
-      "title": "Ax and the Hatchetmen",
-      "start": "2026-11-01T01:00:00Z",
-      "end": "2026-11-01T04:00:00Z",
-      "allDay": false,
-      "venue": {
-        "name": "The Crocodile",
-        "address": "2505 1st Ave",
-        "lat": 47.61458,
-        "lng": -122.34915
-      },
-      "category": "Music",
-      "url": "https://www.ticketweb.com/event/ax-and-the-hatchetmen-the-the-crocodile-tickets/14925643",
-      "image": "https://s1.ticketm.net/dam/a/cfd/8e36f0d9-e75d-42e8-87c5-37a61a9d6cfd_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": 39.92,
-      "source": "ticketmaster"
-    },
-    {
-      "id": "tm-vvG1HZ_dSiLBjY",
-      "title": "Kanan Gill: Not This Again",
-      "start": "2026-11-01T02:00:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "Moore Theatre",
-        "address": "1932 2nd Ave",
-        "lat": 47.61196,
-        "lng": -122.34142
-      },
-      "category": "Arts & theatre",
-      "url": "https://www.ticketmaster.com/kanan-gill-not-this-again-seattle-washington-10-31-2026/event/0F00643CEC7FA730",
-      "image": "https://s1.ticketm.net/dam/a/608/a6f972d1-ae17-4195-8deb-ae9dcf613608_1785481_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": null,
-      "source": "ticketmaster"
-    },
-    {
-      "id": "sc-gorillaz",
-      "title": "Gorillaz",
-      "start": "2026-11-01T02:30:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "Climate Pledge Arena",
-        "address": null,
-        "lat": 47.6221,
-        "lng": -122.353988
-      },
-      "category": "Music",
-      "url": "https://www.seattlecenter.com/events/event-calendar/gorillaz",
-      "image": null,
-      "priceFrom": null,
-      "source": "seattle-center"
-    },
-    {
-      "id": "tm-vvG1HZ_AEloQv3",
-      "title": "Gorillaz - The Mountain Tour",
-      "start": "2026-11-01T02:30:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "Climate Pledge Arena",
-        "address": "334 1st Ave N",
-        "lat": 47.622126,
-        "lng": -122.354016
-      },
-      "category": "Music",
-      "url": "https://www.ticketmaster.com/gorillaz-the-mountain-tour-seattle-washington-10-31-2026/event/0F006459EB45A052",
-      "image": "https://s1.ticketm.net/dam/a/88b/ce224ebd-7acf-4b04-8f04-0038dddc988b_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": null,
-      "source": "ticketmaster"
-    },
-    {
-      "id": "tm-vvG1HZ_d8psh1F",
-      "title": "Leonid & Friends 2026 Tour",
-      "start": "2026-11-01T02:30:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "The 5th Avenue Theatre",
-        "address": "1308 5th Ave",
-        "lat": 47.608903,
-        "lng": -122.333926
-      },
-      "category": "Music",
-      "url": "https://www.ticketmaster.com/leonid-friends-2026-tour-seattle-washington-10-31-2026/event/0F00643416C5B288",
-      "image": "https://s1.ticketm.net/dam/a/04d/ff62c781-05be-424b-880e-7d2d3b00804d_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": null,
-      "source": "ticketmaster"
-    },
-    {
-      "id": "sc-47361",
-      "title": "Salome",
-      "start": "2026-11-01T02:30:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "Marion Oliver McCaw Hall",
-        "address": null,
-        "lat": 47.6239994,
-        "lng": -122.3502714
-      },
-      "category": "Museums & galleries",
-      "url": "https://www.seattlecenter.com/events/event-calendar/salome-x47361",
-      "image": null,
-      "priceFrom": null,
-      "source": "seattle-center"
-    },
-    {
-      "id": "tm-Z7r9jZ1A7PSu7",
-      "title": "Rival Sons w/ The Blue Stones",
-      "start": "2026-11-01T03:00:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "The Showbox",
-        "address": "1426 1st Ave.",
-        "lat": 47.602402,
-        "lng": -122.325996
-      },
-      "category": "Music",
-      "url": "https://www.ticketmaster.com/event/Z7r9jZ1A7PSu7",
-      "image": "https://s1.ticketm.net/dam/a/c56/187bca83-9e8f-44d7-8d46-ecc0f9c06c56_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": null,
-      "source": "ticketmaster"
-    },
-    {
-      "id": "sc-seduction",
-      "title": "Seduction",
-      "start": "2026-11-01T03:00:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "Seattle Center Exhibition Hall",
-        "address": null,
-        "lat": 47.6240056,
-        "lng": -122.351606
-      },
-      "category": null,
-      "url": "https://www.seattlecenter.com/events/event-calendar/seduction",
-      "image": null,
-      "priceFrom": null,
-      "source": "seattle-center"
-    },
-    {
-      "id": "tm-rZ7HnEZ1A4ZfbS",
-      "title": "GHOULFEST: A Halloween Club Night!",
-      "start": "2026-11-01T04:00:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "Chop Suey",
-        "address": "1325 E Madison St.",
-        "lat": 47.613485,
-        "lng": -122.314457
-      },
-      "category": "Music",
-      "url": "https://www.ticketweb.com/event/ghoulfest-a-halloween-club-night-chop-suey-tickets/15014633",
-      "image": "https://s1.ticketm.net/dam/c/df8/81eadad8-4449-412e-a2b1-3d8bbb78edf8_106181_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": 31.16,
-      "source": "ticketmaster"
-    },
     {
       "id": "sc-d-a-de-muertos-festival-seattle-dia-de-m",
       "title": "Día de Muertos Festival Seattle: Dia de Muertos",
@@ -698,6 +32,60 @@
       "source": "seattle-center"
     },
     {
+      "id": "e12-117260",
+      "title": "Gourmet tasting",
+      "start": "2026-11-01T07:00:00Z",
+      "end": null,
+      "allDay": true,
+      "venue": {
+        "name": "Downtown",
+        "address": "Four Seasons Hotel, 99 Union St, Seattle, WA 98101",
+        "lat": null,
+        "lng": null
+      },
+      "category": null,
+      "url": "https://www.jamesbeard.org/events/taste-america-seattle",
+      "image": null,
+      "priceFrom": null,
+      "source": "events12"
+    },
+    {
+      "id": "e12-119522",
+      "title": "Japanese day",
+      "start": "2026-11-01T07:00:00Z",
+      "end": null,
+      "allDay": true,
+      "venue": {
+        "name": "Central District",
+        "address": "Japanese Cultural & Community Center of Washington, 1414 S Weller St, Seattle, WA 98144",
+        "lat": null,
+        "lng": null
+      },
+      "category": null,
+      "url": "https://www.jcccw.org/bunka-no-hi",
+      "image": null,
+      "priceFrom": 0,
+      "source": "events12"
+    },
+    {
+      "id": "e12-118737",
+      "title": "Jazz",
+      "start": "2026-11-01T07:00:00Z",
+      "end": null,
+      "allDay": true,
+      "venue": {
+        "name": "First Hill",
+        "address": "Seattle First Baptist, 1111 Harvard Ave, Seattle, WA 98122",
+        "lat": null,
+        "lng": null
+      },
+      "category": "Music",
+      "url": "https://www.facebook.com/events/3613306708835252",
+      "image": null,
+      "priceFrom": 0,
+      "source": "events12"
+    },
+    {
       "id": "sc-46450",
       "title": "Seattle Center Sculpture Walk 2026",
       "start": "2026-11-01T07:00:00Z",
@@ -714,6 +102,42 @@
       "image": null,
       "priceFrom": 0,
       "source": "seattle-center"
+    },
+    {
+      "id": "e12-119759",
+      "title": "Soccer",
+      "start": "2026-11-01T07:00:00Z",
+      "end": null,
+      "allDay": true,
+      "venue": {
+        "name": "Pioneer Square",
+        "address": "Lumen Field, 800 Occidental Ave S, Seattle, WA 98134",
+        "lat": null,
+        "lng": null
+      },
+      "category": null,
+      "url": "https://www.reignfc.com/schedule",
+      "image": null,
+      "priceFrom": null,
+      "source": "events12"
+    },
+    {
+      "id": "e12-118772",
+      "title": "World explorer show",
+      "start": "2026-11-01T07:00:00Z",
+      "end": "2026-11-03T08:00:00Z",
+      "allDay": true,
+      "venue": {
+        "name": "Downtown",
+        "address": "Benaroya Hall, 200 University St, Seattle, WA 98101",
+        "lat": null,
+        "lng": null
+      },
+      "category": null,
+      "url": "https://benaroyahall.org/en/benaroyahall/bh-calendar/2026-2027/26natgeo1",
+      "image": null,
+      "priceFrom": null,
+      "source": "events12"
     },
     {
       "id": "sg-212357932",
@@ -932,6 +356,114 @@
       "source": "ticketmaster"
     },
     {
+      "id": "sc-46451",
+      "title": "Seattle Center Sculpture Walk 2026",
+      "start": "2026-11-02T08:00:00Z",
+      "end": null,
+      "allDay": true,
+      "venue": {
+        "name": "Seattle Center",
+        "address": null,
+        "lat": 47.6219473,
+        "lng": -122.3517443
+      },
+      "category": "Museums & galleries",
+      "url": "https://www.seattlecenter.com/events/event-calendar/seattle-center-sculpture-walk-2026-x46451",
+      "image": null,
+      "priceFrom": 0,
+      "source": "seattle-center"
+    },
+    {
+      "id": "tm-vvG1HZ_7HojcKe",
+      "title": "Seattle Mariners Ballpark Tour",
+      "start": "2026-11-02T08:00:00Z",
+      "end": null,
+      "allDay": true,
+      "venue": {
+        "name": "T-Mobile Park",
+        "address": "1250 1st Ave S.",
+        "lat": 47.590333,
+        "lng": -122.33285
+      },
+      "category": "Community",
+      "url": "https://www.ticketmaster.com/seattle-mariners-ballpark-tour-seattle-washington-11-02-2026/event/0F00644F1172D4C2",
+      "image": "https://s1.ticketm.net/dam/a/1a6/5487c2cb-fc09-4cf4-8f7f-f29e74fa71a6_RETINA_LANDSCAPE_16_9.jpg",
+      "priceFrom": null,
+      "source": "ticketmaster"
+    },
+    {
+      "id": "tm-vvG1HZ_F5J-M3l",
+      "title": "Seattle Seahawks vs. Chicago Bears",
+      "start": "2026-11-03T01:15:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "Lumen Field",
+        "address": "800 Occidental Ave S",
+        "lat": 47.595083,
+        "lng": -122.331607
+      },
+      "category": "Sports",
+      "url": "https://www.ticketmaster.com/seattle-seahawks-vs-chicago-bears-seattle-washington-11-02-2026/event/0F006482E68774AB",
+      "image": "https://s1.ticketm.net/dam/a/2db/0bae3d29-946e-44fd-aebd-2618ce30b2db_RETINA_LANDSCAPE_16_9.jpg",
+      "priceFrom": null,
+      "source": "ticketmaster"
+    },
+    {
+      "id": "tm-Z7r9jZ1A7Pk-M",
+      "title": "Battling Bloodsuckers - National Geographic Live",
+      "start": "2026-11-03T03:30:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "Benaroya Hall",
+        "address": "200 University St.",
+        "lat": 47.6115,
+        "lng": -122.334297
+      },
+      "category": "Community",
+      "url": "https://www.ticketmaster.com/event/Z7r9jZ1A7Pk-M",
+      "image": "https://s1.ticketm.net/dam/a/6ae/e2188b56-1bee-470a-ae23-ecac5d80e6ae_248851_RETINA_LANDSCAPE_16_9.jpg",
+      "priceFrom": null,
+      "source": "ticketmaster"
+    },
+    {
+      "id": "tm-Z7r9jZ1A7PxZS",
+      "title": "Sienna Spiro",
+      "start": "2026-11-03T04:00:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "The Showbox",
+        "address": "1426 1st Ave.",
+        "lat": 47.602402,
+        "lng": -122.325996
+      },
+      "category": "Music",
+      "url": "https://www.ticketmaster.com/event/Z7r9jZ1A7PxZS",
+      "image": "https://s1.ticketm.net/dam/a/b07/09e0979d-7b3d-4cd4-badf-67d6ced79b07_RETINA_LANDSCAPE_16_9.jpg",
+      "priceFrom": null,
+      "source": "ticketmaster"
+    },
+    {
+      "id": "tm-vvG1HZ_f1eaSI8",
+      "title": "Lumen Field Stadium Tours",
+      "start": "2026-11-03T08:00:00Z",
+      "end": null,
+      "allDay": true,
+      "venue": {
+        "name": "Lumen Field Stadium Tours",
+        "address": "800 Occidental Ave S",
+        "lat": 47.596704,
+        "lng": -122.332085
+      },
+      "category": "Community",
+      "url": "https://www.ticketmaster.com/lumen-field-stadium-tours-seattle-washington-11-03-2026/event/0F00654282273A10",
+      "image": "https://s1.ticketm.net/dam/a/6ba/cca88b1c-9704-49ea-83ff-23d0e4c246ba_1665171_RETINA_LANDSCAPE_16_9.jpg",
+      "priceFrom": null,
+      "source": "ticketmaster"
+    },
+    {
       "id": "sg-204684388",
       "title": "Connect and Assist: Utility Bill Assistance",
       "start": "2026-11-03T18:00:00.000Z",
@@ -945,6 +477,24 @@
       },
       "category": null,
       "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D204684388",
+      "image": null,
+      "priceFrom": null,
+      "source": "seattle-gov"
+    },
+    {
+      "id": "sg-178717794",
+      "title": "Open Adoption Hours",
+      "start": "2026-11-03T21:00:00.000Z",
+      "end": "2026-11-04T01:00:00.000Z",
+      "allDay": false,
+      "venue": {
+        "name": "2061 15th Ave. W.",
+        "address": "2061 15th Ave W, Seattle, WA 98119",
+        "lat": null,
+        "lng": null
+      },
+      "category": null,
+      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D178717794",
       "image": null,
       "priceFrom": null,
       "source": "seattle-gov"
@@ -966,6 +516,186 @@
       "image": null,
       "priceFrom": null,
       "source": "seattle-gov"
+    },
+    {
+      "id": "tm-Z7r9jZ1AA79Go",
+      "title": "Icon for Hire",
+      "start": "2026-11-04T03:00:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "El Corazon",
+        "address": "109 Eastlake Avenue East",
+        "lat": 47.630699,
+        "lng": -122.3461
+      },
+      "category": "Music",
+      "url": "https://www.ticketmaster.com/event/Z7r9jZ1AA79Go",
+      "image": "https://s1.ticketm.net/dam/a/fb9/52fca4c8-7ddd-4e92-a636-2e86c91b3fb9_RETINA_LANDSCAPE_16_9.jpg",
+      "priceFrom": null,
+      "source": "ticketmaster"
+    },
+    {
+      "id": "tm-Z7r9jZ1A7Pkx7",
+      "title": "Battling Bloodsuckers - National Geographic Live",
+      "start": "2026-11-04T03:30:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "Benaroya Hall",
+        "address": "200 University St.",
+        "lat": 47.6115,
+        "lng": -122.334297
+      },
+      "category": "Community",
+      "url": "https://www.ticketmaster.com/event/Z7r9jZ1A7Pkx7",
+      "image": "https://s1.ticketm.net/dam/a/6ae/e2188b56-1bee-470a-ae23-ecac5d80e6ae_248851_RETINA_LANDSCAPE_16_9.jpg",
+      "priceFrom": null,
+      "source": "ticketmaster"
+    },
+    {
+      "id": "tm-vvG1HZ_CJwcydW",
+      "title": "Oh, Mary! (Touring)",
+      "start": "2026-11-04T03:30:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "Paramount Theatre",
+        "address": "911 Pine St",
+        "lat": 47.613566,
+        "lng": -122.33191
+      },
+      "category": "Arts & theatre",
+      "url": "https://www.ticketmaster.com/oh-mary-touring-seattle-washington-11-03-2026/event/0F0064E9B2B790FD",
+      "image": "https://s1.ticketm.net/dam/a/3dc/40656816-b50d-4ec0-91c8-57509bbcb3dc_RETINA_LANDSCAPE_16_9.jpg",
+      "priceFrom": null,
+      "source": "ticketmaster"
+    },
+    {
+      "id": "tm-rZ7HnEZ1AfqIad",
+      "title": "BAHAMAS: Industrial Sport & Sound Tour with Sister Ray",
+      "start": "2026-11-04T04:00:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "The Crocodile",
+        "address": "2505 1st Ave",
+        "lat": 47.61458,
+        "lng": -122.34915
+      },
+      "category": "Music",
+      "url": "https://www.ticketweb.com/event/bahamas-industrial-sport-sound-the-crocodile-tickets/14768243",
+      "image": "https://s1.ticketm.net/dam/a/2c5/65f75ee0-28ae-4f02-a775-411bf4cb92c5_RETINA_LANDSCAPE_16_9.jpg",
+      "priceFrom": 43.59,
+      "source": "ticketmaster"
+    },
+    {
+      "id": "tm-vvG1HZ_oKhg9ms",
+      "title": "Jessie Reyez: A Little Vengeance Tour",
+      "start": "2026-11-04T04:00:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "WAMU Theater",
+        "address": "800 Occidental Ave S",
+        "lat": 47.596704,
+        "lng": -122.332085
+      },
+      "category": "Music",
+      "url": "https://www.ticketmaster.com/jessie-reyez-a-little-vengeance-tour-seattle-washington-11-03-2026/event/0F006514DBD57BB1",
+      "image": "https://s1.ticketm.net/dam/a/d21/b7dd9eb7-3100-4f20-a850-e277be1e1d21_RETINA_LANDSCAPE_16_9.jpg",
+      "priceFrom": null,
+      "source": "ticketmaster"
+    },
+    {
+      "id": "tm-Z7r9jZ1A70sfZ",
+      "title": "Pinhead Gunpowder",
+      "start": "2026-11-04T04:00:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "The Showbox",
+        "address": "1426 1st Ave.",
+        "lat": 47.602402,
+        "lng": -122.325996
+      },
+      "category": "Music",
+      "url": "https://www.ticketmaster.com/event/Z7r9jZ1A70sfZ",
+      "image": "https://s1.ticketm.net/dam/c/060/c5c08e7a-9912-456c-a060-2758be94e060_105881_RETINA_LANDSCAPE_16_9.jpg",
+      "priceFrom": null,
+      "source": "ticketmaster"
+    },
+    {
+      "id": "tm-vvG1HZ_oxJKai_",
+      "title": "WAMU Theater Amplified Access: Jessie Reyez (Not an Event Ticket)",
+      "start": "2026-11-04T04:00:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "WAMU Theater",
+        "address": "800 Occidental Ave S",
+        "lat": 47.596704,
+        "lng": -122.332085
+      },
+      "category": "Community",
+      "url": "https://www.ticketmaster.com/wamu-theater-amplified-access-jessie-reyez-seattle-washington-11-03-2026/event/0F006518A64C9B19",
+      "image": "https://s1.ticketm.net/dam/a/d63/6147eefd-07e8-4de4-8407-9043605abd63_RETINA_LANDSCAPE_16_9.jpg",
+      "priceFrom": null,
+      "source": "ticketmaster"
+    },
+    {
+      "id": "tm-vvG1HZ_2S4Wc0y",
+      "title": "All Access Pass – Climate Pledge Arena Tours",
+      "start": "2026-11-04T08:00:00Z",
+      "end": null,
+      "allDay": true,
+      "venue": {
+        "name": "Climate Pledge Arena",
+        "address": "334 1st Ave N",
+        "lat": 47.622126,
+        "lng": -122.354016
+      },
+      "category": "Community",
+      "url": "https://www.ticketmaster.com/all-access-pass-climate-pledge-arena-seattle-washington-11-04-2026/event/0F0064FCD5F6D939",
+      "image": "https://s1.ticketm.net/dam/e/983/ef2bfc75-41d4-4c14-8bd6-7649252e8983_RETINA_LANDSCAPE_16_9.jpg",
+      "priceFrom": null,
+      "source": "ticketmaster"
+    },
+    {
+      "id": "e12-118516",
+      "title": "Hockey",
+      "start": "2026-11-04T08:00:00Z",
+      "end": null,
+      "allDay": true,
+      "venue": {
+        "name": "Seattle Center",
+        "address": "Climate Pledge Arena, 334 1st Ave N, Seattle, WA 98109",
+        "lat": null,
+        "lng": null
+      },
+      "category": null,
+      "url": "https://www.nhl.com/kraken/schedule/2026-11-01",
+      "image": null,
+      "priceFrom": null,
+      "source": "events12"
+    },
+    {
+      "id": "tm-vvG1HZ_f1e5dIb",
+      "title": "Lumen Field Stadium Tours",
+      "start": "2026-11-04T08:00:00Z",
+      "end": null,
+      "allDay": true,
+      "venue": {
+        "name": "Lumen Field Stadium Tours",
+        "address": "800 Occidental Ave S",
+        "lat": 47.596704,
+        "lng": -122.332085
+      },
+      "category": "Community",
+      "url": "https://www.ticketmaster.com/lumen-field-stadium-tours-seattle-washington-11-04-2026/event/0F006542822C3A18",
+      "image": "https://s1.ticketm.net/dam/a/6ba/cca88b1c-9704-49ea-83ff-23d0e4c246ba_1665171_RETINA_LANDSCAPE_16_9.jpg",
+      "priceFrom": null,
+      "source": "ticketmaster"
     },
     {
       "id": "sg-206231114",
@@ -1004,6 +734,24 @@
       "source": "seattle-gov"
     },
     {
+      "id": "tm-Z7r9jZ1A70tr4",
+      "title": "King Buffalo (21 and Over)",
+      "start": "2026-11-05T03:00:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "Neumos",
+        "address": "925 East Pike Street",
+        "lat": 47.610802,
+        "lng": -122.302803
+      },
+      "category": "Music",
+      "url": "https://www.ticketmaster.com/event/Z7r9jZ1A70tr4",
+      "image": "https://s1.ticketm.net/dam/a/a6b/0a0e5e53-7b49-4207-b2d4-1e0c2b8a2a6b_RETINA_LANDSCAPE_16_9.jpg",
+      "priceFrom": null,
+      "source": "ticketmaster"
+    },
+    {
       "id": "sc-50294",
       "title": "Seattle Kraken vs Calgary Flames",
       "start": "2026-11-05T03:00:00Z",
@@ -1020,6 +768,114 @@
       "image": null,
       "priceFrom": null,
       "source": "seattle-center"
+    },
+    {
+      "id": "sc-50656",
+      "title": "Eureka Day",
+      "start": "2026-11-05T03:30:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "Seattle Repertory Theatre",
+        "address": null,
+        "lat": 47.6239152,
+        "lng": -122.3536861
+      },
+      "category": null,
+      "url": "https://www.seattlecenter.com/events/event-calendar/eureka-day-x50656",
+      "image": null,
+      "priceFrom": null,
+      "source": "seattle-center"
+    },
+    {
+      "id": "e12-120231",
+      "title": "Charity dinner",
+      "start": "2026-11-05T08:00:00Z",
+      "end": null,
+      "allDay": true,
+      "venue": {
+        "name": "Belltown",
+        "address": "Block 41, 115 Bell St, Seattle, WA 98121",
+        "lat": null,
+        "lng": null
+      },
+      "category": null,
+      "url": "https://secure.qgiv.com/event/rootsriseupcarnival",
+      "image": null,
+      "priceFrom": null,
+      "source": "events12"
+    },
+    {
+      "id": "sg-204684389",
+      "title": "Connect and Assist: Utility Bill Assistance",
+      "start": "2026-11-05T18:00:00.000Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "Seattle Municipal Tower",
+        "address": "700 5th Ave, Seattle, WA 98104",
+        "lat": null,
+        "lng": null
+      },
+      "category": null,
+      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D204684389",
+      "image": null,
+      "priceFrom": null,
+      "source": "seattle-gov"
+    },
+    {
+      "id": "sg-207247725",
+      "title": "Daybreak Community & Land Tending",
+      "start": "2026-11-05T19:00:00.000Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "Seattle",
+        "address": null,
+        "lat": null,
+        "lng": null
+      },
+      "category": "Volunteering",
+      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D207247725",
+      "image": null,
+      "priceFrom": null,
+      "source": "seattle-gov"
+    },
+    {
+      "id": "sg-179619235",
+      "title": "Seattle Center Advisory Commission Meeting",
+      "start": "2026-11-05T20:00:00.000Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "Seattle Center",
+        "address": "305 Harrison St, Seattle, WA 98109",
+        "lat": null,
+        "lng": null
+      },
+      "category": "Public meetings",
+      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D179619235",
+      "image": null,
+      "priceFrom": null,
+      "source": "seattle-gov"
+    },
+    {
+      "id": "sg-206231115",
+      "title": "Select Budget Committee - Public Hearing (Session I)",
+      "start": "2026-11-05T21:00:00.000Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "City Hall Council Chambers",
+        "address": "600 4th Ave, Seattle, WA 98104",
+        "lat": null,
+        "lng": null
+      },
+      "category": "Public meetings",
+      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D206231115",
+      "image": null,
+      "priceFrom": null,
+      "source": "seattle-gov"
     },
     {
       "id": "sc-teddy-swims-the-ugly-tour",
@@ -1040,6 +896,42 @@
       "source": "seattle-center"
     },
     {
+      "id": "e12-120455",
+      "title": "Ballet",
+      "start": "2026-11-06T08:00:00Z",
+      "end": "2026-11-15T08:00:00Z",
+      "allDay": true,
+      "venue": {
+        "name": "Seattle Center",
+        "address": "McCaw Hall, 321 Mercer St, Seattle, WA 98109",
+        "lat": null,
+        "lng": null
+      },
+      "category": "Arts & theatre",
+      "url": "https://www.pnb.org/season/ghost-stories/",
+      "image": null,
+      "priceFrom": null,
+      "source": "events12"
+    },
+    {
+      "id": "e12-112786",
+      "title": "Wine tasting",
+      "start": "2026-11-06T08:00:00Z",
+      "end": null,
+      "allDay": true,
+      "venue": {
+        "name": "SoDo",
+        "address": "Club Sur, 2901 1st Ave S, Seattle, WA 98134",
+        "lat": null,
+        "lng": null
+      },
+      "category": null,
+      "url": "https://www.strangertickets.com/events/187052514/pour-2026-presented-by-seattle-urban-wineries",
+      "image": null,
+      "priceFrom": null,
+      "source": "events12"
+    },
+    {
       "id": "sc-ghost-stories",
       "title": "Ghost Stories",
       "start": "2026-11-07T03:30:00Z",
@@ -1058,22 +950,130 @@
       "source": "seattle-center"
     },
     {
-      "id": "vs-442264211",
-      "title": "George Balanchine’s The Nutcracker",
-      "start": "2026-11-27T08:00:00Z",
-      "end": "2026-12-27T08:00:00Z",
+      "id": "sc-smashing-pumpkins-rats-in-a-cage-tour",
+      "title": "Smashing Pumpkins: Rats in a Cage Tour",
+      "start": "2026-11-07T04:00:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "Climate Pledge Arena",
+        "address": null,
+        "lat": 47.6221,
+        "lng": -122.353988
+      },
+      "category": "Music",
+      "url": "https://www.seattlecenter.com/events/event-calendar/smashing-pumpkins-rats-in-a-cage-tour",
+      "image": null,
+      "priceFrom": null,
+      "source": "seattle-center"
+    },
+    {
+      "id": "e12-119313",
+      "title": "Cat convention",
+      "start": "2026-11-07T08:00:00Z",
+      "end": "2026-11-08T08:00:00Z",
       "allDay": true,
       "venue": {
-        "name": "Marion Oliver McCaw Hall",
-        "address": null,
+        "name": "Seattle Center",
+        "address": "Seattle Center Exhibition Hall, 301 Mercer St, Seattle, WA 98109",
         "lat": null,
         "lng": null
       },
-      "category": "Museums & galleries",
-      "url": "https://www.pnb.org/nutcracker/",
+      "category": null,
+      "url": "https://www.seameowconvention.com/",
       "image": null,
       "priceFrom": null,
-      "source": "visit-seattle"
+      "source": "events12"
+    },
+    {
+      "id": "e12-117598",
+      "title": "Festival of India",
+      "start": "2026-11-07T08:00:00Z",
+      "end": null,
+      "allDay": true,
+      "venue": {
+        "name": "Seattle Center",
+        "address": "Seattle Center Armory, 305 Harrison St, Seattle, WA 98109",
+        "lat": null,
+        "lng": null
+      },
+      "category": "Festivals",
+      "url": "https://seattlecenter.com/events/featured-events/festal/diwali-lights-of-india",
+      "image": null,
+      "priceFrom": 0,
+      "source": "events12"
+    },
+    {
+      "id": "e12-104394",
+      "title": "Films from Turkey",
+      "start": "2026-11-07T08:00:00Z",
+      "end": "2026-11-08T08:00:00Z",
+      "allDay": true,
+      "venue": {
+        "name": "Lower Queen Anne",
+        "address": "SIFF Cinema Uptown, 511 Queen Anne Ave N, Seattle, WA 98109",
+        "lat": null,
+        "lng": null
+      },
+      "category": "Film",
+      "url": "https://www.stff.org",
+      "image": null,
+      "priceFrom": null,
+      "source": "events12"
+    },
+    {
+      "id": "sc-47196",
+      "title": "Sea-Meow Convention",
+      "start": "2026-11-07T18:00:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "Seattle Center Exhibition Hall",
+        "address": null,
+        "lat": 47.6240056,
+        "lng": -122.351606
+      },
+      "category": null,
+      "url": "https://www.seattlecenter.com/events/event-calendar/sea-meow-convention-x47196",
+      "image": null,
+      "priceFrom": null,
+      "source": "seattle-center"
+    },
+    {
+      "id": "sc-diwali-lights-of-india",
+      "title": "Diwali: Lights of India",
+      "start": "2026-11-07T20:00:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "Armory",
+        "address": null,
+        "lat": 47.6215514,
+        "lng": -122.3509426
+      },
+      "category": "Museums & galleries",
+      "url": "https://www.seattlecenter.com/events/event-calendar/diwali-lights-of-india",
+      "image": null,
+      "priceFrom": 0,
+      "source": "seattle-center"
+    },
+    {
+      "id": "sc-47363",
+      "title": "Ghost Stories",
+      "start": "2026-11-07T22:00:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "Marion Oliver McCaw Hall",
+        "address": null,
+        "lat": 47.6239994,
+        "lng": -122.3502714
+      },
+      "category": "Museums & galleries",
+      "url": "https://www.seattlecenter.com/events/event-calendar/ghost-stories-x47363",
+      "image": null,
+      "priceFrom": null,
+      "source": "seattle-center"
     },
     {
       "id": "vs-442263158",
