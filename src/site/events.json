@@ -1,6 +1,6 @@
 {
-  "checked": "2026-11-02T20:22:59.044Z",
-  "updated": "2026-11-02T20:22:59.044Z",
+  "checked": "2026-11-03T17:52:03.136Z",
+  "updated": "2026-11-03T17:52:03.136Z",
   "sources": [
     "Visit Seattle",
     "City of Seattle",
@@ -16,7 +16,7 @@
     {
       "id": "vs-442263155",
       "title": "Eureka Day",
-      "start": "2026-11-02T08:00:00Z",
+      "start": "2026-11-03T08:00:00Z",
       "end": "2026-11-15T08:00:00Z",
       "allDay": true,
       "venue": {
@@ -30,132 +30,6 @@
       "image": null,
       "priceFrom": null,
       "source": "visit-seattle"
-    },
-    {
-      "id": "e12-118515",
-      "title": "Football",
-      "start": "2026-11-02T08:00:00Z",
-      "end": null,
-      "allDay": true,
-      "venue": {
-        "name": "Pioneer Square",
-        "address": "Lumen Field, 800 Occidental Ave S, Seattle, WA 98134",
-        "lat": null,
-        "lng": null
-      },
-      "category": null,
-      "url": "https://www.seahawks.com",
-      "image": null,
-      "priceFrom": null,
-      "source": "events12"
-    },
-    {
-      "id": "sc-46451",
-      "title": "Seattle Center Sculpture Walk 2026",
-      "start": "2026-11-02T08:00:00Z",
-      "end": null,
-      "allDay": true,
-      "venue": {
-        "name": "Seattle Center",
-        "address": null,
-        "lat": 47.6219473,
-        "lng": -122.3517443
-      },
-      "category": "Museums & galleries",
-      "url": "https://www.seattlecenter.com/events/event-calendar/seattle-center-sculpture-walk-2026-x46451",
-      "image": null,
-      "priceFrom": 0,
-      "source": "seattle-center"
-    },
-    {
-      "id": "tm-vvG1HZ_7HojcKe",
-      "title": "Seattle Mariners Ballpark Tour",
-      "start": "2026-11-02T08:00:00Z",
-      "end": null,
-      "allDay": true,
-      "venue": {
-        "name": "T-Mobile Park",
-        "address": "1250 1st Ave S.",
-        "lat": 47.590333,
-        "lng": -122.33285
-      },
-      "category": "Community",
-      "url": "https://www.ticketmaster.com/seattle-mariners-ballpark-tour-seattle-washington-11-02-2026/event/0F00644F1172D4C2",
-      "image": "https://s1.ticketm.net/dam/a/1a6/5487c2cb-fc09-4cf4-8f7f-f29e74fa71a6_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": null,
-      "source": "ticketmaster"
-    },
-    {
-      "id": "e12-118772",
-      "title": "World explorer show",
-      "start": "2026-11-02T08:00:00Z",
-      "end": "2026-11-03T08:00:00Z",
-      "allDay": true,
-      "venue": {
-        "name": "Downtown",
-        "address": "Benaroya Hall, 200 University St, Seattle, WA 98101",
-        "lat": null,
-        "lng": null
-      },
-      "category": null,
-      "url": "https://benaroyahall.org/en/benaroyahall/bh-calendar/2026-2027/26natgeo1",
-      "image": null,
-      "priceFrom": null,
-      "source": "events12"
-    },
-    {
-      "id": "tm-vvG1HZ_F5J-M3l",
-      "title": "Seattle Seahawks vs. Chicago Bears",
-      "start": "2026-11-03T01:15:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "Lumen Field",
-        "address": "800 Occidental Ave S",
-        "lat": 47.595083,
-        "lng": -122.331607
-      },
-      "category": "Sports",
-      "url": "https://www.ticketmaster.com/seattle-seahawks-vs-chicago-bears-seattle-washington-11-02-2026/event/0F006482E68774AB",
-      "image": "https://s1.ticketm.net/dam/a/2db/0bae3d29-946e-44fd-aebd-2618ce30b2db_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": null,
-      "source": "ticketmaster"
-    },
-    {
-      "id": "tm-Z7r9jZ1A7Pk-M",
-      "title": "Battling Bloodsuckers - National Geographic Live",
-      "start": "2026-11-03T03:30:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "Benaroya Hall",
-        "address": "200 University St.",
-        "lat": 47.6115,
-        "lng": -122.334297
-      },
-      "category": "Community",
-      "url": "https://www.ticketmaster.com/event/Z7r9jZ1A7Pk-M",
-      "image": "https://s1.ticketm.net/dam/a/6ae/e2188b56-1bee-470a-ae23-ecac5d80e6ae_248851_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": null,
-      "source": "ticketmaster"
-    },
-    {
-      "id": "tm-Z7r9jZ1A7PxZS",
-      "title": "Sienna Spiro",
-      "start": "2026-11-03T04:00:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "The Showbox",
-        "address": "1426 1st Ave.",
-        "lat": 47.602402,
-        "lng": -122.325996
-      },
-      "category": "Music",
-      "url": "https://www.ticketmaster.com/event/Z7r9jZ1A7PxZS",
-      "image": "https://s1.ticketm.net/dam/a/b07/09e0979d-7b3d-4cd4-badf-67d6ced79b07_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": null,
-      "source": "ticketmaster"
     },
     {
       "id": "tm-vvG1HZ_f1eaSI8",
@@ -192,6 +66,24 @@
       "image": null,
       "priceFrom": 0,
       "source": "seattle-center"
+    },
+    {
+      "id": "e12-118772",
+      "title": "World explorer show",
+      "start": "2026-11-03T08:00:00Z",
+      "end": null,
+      "allDay": true,
+      "venue": {
+        "name": "Downtown",
+        "address": "Benaroya Hall, 200 University St, Seattle, WA 98101",
+        "lat": null,
+        "lng": null
+      },
+      "category": null,
+      "url": "https://benaroyahall.org/en/benaroyahall/bh-calendar/2026-2027/26natgeo1",
+      "image": null,
+      "priceFrom": null,
+      "source": "events12"
     },
     {
       "id": "sg-204684388",
@@ -357,7 +249,7 @@
     },
     {
       "id": "tm-vvG1HZ_oxJKai_",
-      "title": "WAMU Theater Amplified Access: Jessie Reyez (Not an Event Ticket)",
+      "title": "WAMU Theater Amplified: Jessie Reyez (Not an Event Ticket)",
       "start": "2026-11-04T04:00:00Z",
       "end": null,
       "allDay": false,
@@ -368,7 +260,7 @@
         "lng": -122.332085
       },
       "category": "Community",
-      "url": "https://www.ticketmaster.com/wamu-theater-amplified-access-jessie-reyez-seattle-washington-11-03-2026/event/0F006518A64C9B19",
+      "url": "https://www.ticketmaster.com/wamu-theater-amplified-jessie-reyez-not-seattle-washington-11-03-2026/event/0F006518A64C9B19",
       "image": "https://s1.ticketm.net/dam/a/d63/6147eefd-07e8-4de4-8407-9043605abd63_RETINA_LANDSCAPE_16_9.jpg",
       "priceFrom": null,
       "source": "ticketmaster"
@@ -426,6 +318,24 @@
       "image": "https://s1.ticketm.net/dam/a/6ba/cca88b1c-9704-49ea-83ff-23d0e4c246ba_1665171_RETINA_LANDSCAPE_16_9.jpg",
       "priceFrom": null,
       "source": "ticketmaster"
+    },
+    {
+      "id": "sc-46453",
+      "title": "Seattle Center Sculpture Walk 2026",
+      "start": "2026-11-04T08:00:00Z",
+      "end": null,
+      "allDay": true,
+      "venue": {
+        "name": "Seattle Center",
+        "address": null,
+        "lat": 47.6219473,
+        "lng": -122.3517443
+      },
+      "category": "Museums & galleries",
+      "url": "https://www.seattlecenter.com/events/event-calendar/seattle-center-sculpture-walk-2026-x46453",
+      "image": null,
+      "priceFrom": 0,
+      "source": "seattle-center"
     },
     {
       "id": "sg-206231114",
@@ -788,6 +698,78 @@
       "source": "ticketmaster"
     },
     {
+      "id": "tm-Z7r9jZ1A7PKuy",
+      "title": "Countess Luann (21 and Over)",
+      "start": "2026-11-06T04:00:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "The Showbox",
+        "address": "1426 1st Ave.",
+        "lat": 47.602402,
+        "lng": -122.325996
+      },
+      "category": "Arts & theatre",
+      "url": "https://www.ticketmaster.com/event/Z7r9jZ1A7PKuy",
+      "image": "https://s1.ticketm.net/dam/a/1a2/8f1defb7-209b-4db9-9113-b3cb5faf51a2_RETINA_LANDSCAPE_16_9.jpg",
+      "priceFrom": null,
+      "source": "ticketmaster"
+    },
+    {
+      "id": "tm-rZ7HnEZ1AfG3Af",
+      "title": "IROIRO Record Release with Mt Fog and ONONOS",
+      "start": "2026-11-06T04:00:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "Chop Suey",
+        "address": "1325 E Madison St.",
+        "lat": 47.613485,
+        "lng": -122.314457
+      },
+      "category": "Music",
+      "url": "https://www.ticketweb.com/event/iroiro-record-release-with-mt-chop-suey-tickets/14312154",
+      "image": "https://s1.ticketm.net/dam/c/797/5e693c26-2881-4776-8f0c-3aa94bfa3797_106511_RETINA_LANDSCAPE_16_9.jpg",
+      "priceFrom": 19.31,
+      "source": "ticketmaster"
+    },
+    {
+      "id": "tm-rZ7HnEZ1AfP9Zd",
+      "title": "Stop Light Observations",
+      "start": "2026-11-06T04:00:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "Hidden Hall",
+        "address": "400 N 35th St",
+        "lat": 47.651918,
+        "lng": -122.354206
+      },
+      "category": "Music",
+      "url": "https://www.ticketweb.com/event/stop-light-observations-hidden-hall-tickets/14957003",
+      "image": "https://s1.ticketm.net/dam/a/c53/36c86c06-9b79-46df-9d95-3e7faeed0c53_RETINA_LANDSCAPE_16_9.jpg",
+      "priceFrom": 33.85,
+      "source": "ticketmaster"
+    },
+    {
+      "id": "tm-rZ7HnEZ1AfPeZN",
+      "title": "The Tallest Man on Earth",
+      "start": "2026-11-06T04:00:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "The Crocodile",
+        "address": "2505 1st Ave",
+        "lat": 47.61458,
+        "lng": -122.34915
+      },
+      "category": "Music",
+      "url": "https://www.ticketweb.com/event/the-tallest-man-on-earth-the-crocodile-tickets/14942023",
+      "image": "https://s1.ticketm.net/dam/a/f3f/60b51953-3814-4d47-be0e-6724bc570f3f_RETINA_LANDSCAPE_16_9.jpg",
+      "priceFrom": 55.3,
+      "source": "ticketmaster"
+    },
+    {
       "id": "e12-120455",
       "title": "Ballet",
       "start": "2026-11-06T08:00:00Z",
@@ -965,6 +947,24 @@
       "url": "https://elliottsoysterhouse.com/oyster-new-year/",
       "image": null,
       "priceFrom": null,
+      "source": "events12"
+    },
+    {
+      "id": "e12-104292",
+      "title": "Polish food & bazaar",
+      "start": "2026-11-07T08:00:00Z",
+      "end": null,
+      "allDay": true,
+      "venue": {
+        "name": "Capitol Hill",
+        "address": "Polish Cultural Center, 1714 18th Ave, Seattle, WA 98122",
+        "lat": null,
+        "lng": null
+      },
+      "category": "Market",
+      "url": "https://www.facebook.com/events/1102933015706358",
+      "image": null,
+      "priceFrom": 0,
       "source": "events12"
     },
     {
