@@ -1,6 +1,6 @@
 {
-  "checked": "2026-11-07T16:27:40.723Z",
-  "updated": "2026-11-05T18:02:28.081Z",
+  "checked": "2026-11-08T16:40:56.739Z",
+  "updated": "2026-11-08T16:40:56.739Z",
   "units": [
     {
       "uid": "niwa-apartments-205",
@@ -179,6 +179,22 @@
       "floorNum": 4,
       "available": "Now",
       "availType": "now",
+      "features": [],
+      "plan": "1br"
+    },
+    {
+      "uid": "niwa-apartments-502",
+      "id": "502",
+      "property": "Niwa Apartments",
+      "address": "513 1st Ave N",
+      "beds": 1,
+      "baths": 1,
+      "sqft": 616,
+      "rent": 2350,
+      "floor": "Fifth floor",
+      "floorNum": 5,
+      "available": "Nov 30, 2026",
+      "availType": "soon",
       "features": [],
       "plan": "1br"
     },
