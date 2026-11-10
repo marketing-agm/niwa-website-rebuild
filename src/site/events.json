@@ -1,6 +1,6 @@
 {
-  "checked": "2026-11-09T20:46:14.082Z",
-  "updated": "2026-11-09T20:46:14.082Z",
+  "checked": "2026-11-10T17:52:18.998Z",
+  "updated": "2026-11-10T17:52:18.998Z",
   "sources": [
     "Visit Seattle",
     "City of Seattle",
@@ -16,7 +16,7 @@
     {
       "id": "vs-442263155",
       "title": "Eureka Day",
-      "start": "2026-11-09T08:00:00Z",
+      "start": "2026-11-10T08:00:00Z",
       "end": "2026-11-15T08:00:00Z",
       "allDay": true,
       "venue": {
@@ -34,7 +34,7 @@
     {
       "id": "vs-442264215",
       "title": "Ghost Stories",
-      "start": "2026-11-09T08:00:00Z",
+      "start": "2026-11-10T08:00:00Z",
       "end": "2026-11-15T08:00:00Z",
       "allDay": true,
       "venue": {
@@ -48,96 +48,6 @@
       "image": null,
       "priceFrom": null,
       "source": "visit-seattle"
-    },
-    {
-      "id": "tm-vvG1HZ_f1eCSIT",
-      "title": "Lumen Field Stadium Tours",
-      "start": "2026-11-09T08:00:00Z",
-      "end": null,
-      "allDay": true,
-      "venue": {
-        "name": "Lumen Field Stadium Tours",
-        "address": "800 Occidental Ave S",
-        "lat": 47.596704,
-        "lng": -122.332085
-      },
-      "category": "Community",
-      "url": "https://www.ticketmaster.com/lumen-field-stadium-tours-seattle-washington-11-09-2026/event/0F006542823B3A3F",
-      "image": "https://s1.ticketm.net/dam/a/6ba/cca88b1c-9704-49ea-83ff-23d0e4c246ba_1665171_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": null,
-      "source": "ticketmaster"
-    },
-    {
-      "id": "sc-46458",
-      "title": "Seattle Center Sculpture Walk 2026",
-      "start": "2026-11-09T08:00:00Z",
-      "end": null,
-      "allDay": true,
-      "venue": {
-        "name": "Seattle Center",
-        "address": null,
-        "lat": 47.6219473,
-        "lng": -122.3517443
-      },
-      "category": "Museums & galleries",
-      "url": "https://www.seattlecenter.com/events/event-calendar/seattle-center-sculpture-walk-2026-x46458",
-      "image": null,
-      "priceFrom": 0,
-      "source": "seattle-center"
-    },
-    {
-      "id": "tm-vvG1HZ_7HorWK9",
-      "title": "Seattle Mariners Ballpark Tour",
-      "start": "2026-11-09T08:00:00Z",
-      "end": null,
-      "allDay": true,
-      "venue": {
-        "name": "T-Mobile Park",
-        "address": "1250 1st Ave S.",
-        "lat": 47.590333,
-        "lng": -122.33285
-      },
-      "category": "Community",
-      "url": "https://www.ticketmaster.com/seattle-mariners-ballpark-tour-seattle-washington-11-09-2026/event/0F00644F117BD4D7",
-      "image": "https://s1.ticketm.net/dam/a/1a6/5487c2cb-fc09-4cf4-8f7f-f29e74fa71a6_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": null,
-      "source": "ticketmaster"
-    },
-    {
-      "id": "tm-vvG1HZ_26b1chK",
-      "title": "Derek Hough Dance For The Holidays",
-      "start": "2026-11-10T04:00:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "McCaw Hall",
-        "address": "321 Mercer Street",
-        "lat": 47.624473,
-        "lng": -122.35064
-      },
-      "category": "Arts & theatre",
-      "url": "https://www.ticketmaster.com/derek-hough-dance-for-the-holidays-seattle-washington-11-09-2026/event/0F0064F1D82AD6D3",
-      "image": "https://s1.ticketm.net/dam/a/ebe/eeecd753-f647-4379-853f-cc21bdee9ebe_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": null,
-      "source": "ticketmaster"
-    },
-    {
-      "id": "tm-Z7r9jZ1AAv7qU",
-      "title": "Lucy Bedroque w/ pinponpanpon",
-      "start": "2026-11-10T04:00:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "The Showbox",
-        "address": "1426 1st Ave.",
-        "lat": 47.602402,
-        "lng": -122.325996
-      },
-      "category": null,
-      "url": "https://www.ticketmaster.com/event/Z7r9jZ1AAv7qU",
-      "image": "https://s1.ticketm.net/dam/c/f51/ee785ed6-f806-4195-98f4-69f67e09df51_106201_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": null,
-      "source": "ticketmaster"
     },
     {
       "id": "sc-46459",
@@ -336,6 +246,24 @@
       "image": "https://s1.ticketm.net/dam/a/f12/7af4ec8a-0c56-4e91-b48f-ce9ca83a1f12_RETINA_LANDSCAPE_16_9.jpg",
       "priceFrom": 49.36,
       "source": "ticketmaster"
+    },
+    {
+      "id": "sc-46460",
+      "title": "Seattle Center Sculpture Walk 2026",
+      "start": "2026-11-11T08:00:00Z",
+      "end": null,
+      "allDay": true,
+      "venue": {
+        "name": "Seattle Center",
+        "address": null,
+        "lat": 47.6219473,
+        "lng": -122.3517443
+      },
+      "category": "Museums & galleries",
+      "url": "https://www.seattlecenter.com/events/event-calendar/seattle-center-sculpture-walk-2026-x46460",
+      "image": null,
+      "priceFrom": 0,
+      "source": "seattle-center"
     },
     {
       "id": "sg-178710936",
@@ -730,6 +658,78 @@
       "category": "Music",
       "url": "https://www.ticketmaster.com/event/Z7r9jZ1A7PkOE",
       "image": "https://s1.ticketm.net/dam/c/f7b/ef64d601-8740-43cd-86ea-ed9b392e4f7b_105961_RETINA_LANDSCAPE_16_9.jpg",
+      "priceFrom": null,
+      "source": "ticketmaster"
+    },
+    {
+      "id": "tm-vvG1HZ_1pLozWy",
+      "title": "Not For Radio - A Summer In The Forest: North America Tour",
+      "start": "2026-11-13T04:00:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "Paramount Theatre",
+        "address": "911 Pine St",
+        "lat": 47.613566,
+        "lng": -122.33191
+      },
+      "category": "Music",
+      "url": "https://www.ticketmaster.com/not-for-radio-a-summer-in-seattle-washington-11-12-2026/event/0F0064A59F478F79",
+      "image": "https://s1.ticketm.net/dam/a/01b/86ac80db-94fe-44c2-8955-d7dd8eb8901b_RETINA_LANDSCAPE_16_9.jpg",
+      "priceFrom": null,
+      "source": "ticketmaster"
+    },
+    {
+      "id": "tm-rZ7HnEZ1AfCZP7",
+      "title": "porch kiss, Heavy Bloom, eishe, Brian Noyes",
+      "start": "2026-11-13T04:00:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "Chop Suey",
+        "address": "1325 E Madison St.",
+        "lat": 47.613485,
+        "lng": -122.314457
+      },
+      "category": "Music",
+      "url": "https://www.ticketweb.com/event/porch-kiss-heavy-bloom-eishe-chop-suey-tickets/14380944",
+      "image": "https://s1.ticketm.net/dam/c/797/5e693c26-2881-4776-8f0c-3aa94bfa3797_106511_RETINA_LANDSCAPE_16_9.jpg",
+      "priceFrom": 15.47,
+      "source": "ticketmaster"
+    },
+    {
+      "id": "tm-Z7r9jZ1AAZ3vo",
+      "title": "Yuki Chiba",
+      "start": "2026-11-13T04:00:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "The Showbox",
+        "address": "1426 1st Ave.",
+        "lat": 47.602402,
+        "lng": -122.325996
+      },
+      "category": null,
+      "url": "https://www.ticketmaster.com/event/Z7r9jZ1AAZ3vo",
+      "image": "https://s1.ticketm.net/dam/c/8cf/a6653880-7899-4f67-8067-1f95f4d158cf_124761_RETINA_LANDSCAPE_16_9.jpg",
+      "priceFrom": null,
+      "source": "ticketmaster"
+    },
+    {
+      "id": "tm-rZ7HnEZ1Af1o-7",
+      "title": "Geordie Kieffer",
+      "start": "2026-11-13T04:30:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "Hidden Hall",
+        "address": "400 N 35th St",
+        "lat": 47.651918,
+        "lng": -122.354206
+      },
+      "category": "Music",
+      "url": "https://www.ticketweb.com/event/geordie-kieffer-hidden-hall-tickets/14291844",
+      "image": "https://s1.ticketm.net/dam/c/4f2/0109888a-61b5-4525-8432-b026ef04f4f2_105631_RETINA_LANDSCAPE_16_9.jpg",
       "priceFrom": null,
       "source": "ticketmaster"
     },
