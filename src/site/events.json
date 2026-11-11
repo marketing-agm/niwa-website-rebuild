@@ -1,6 +1,6 @@
 {
-  "checked": "2026-11-10T17:52:18.998Z",
-  "updated": "2026-11-10T17:52:18.998Z",
+  "checked": "2026-11-11T17:55:19.677Z",
+  "updated": "2026-11-11T17:55:19.677Z",
   "sources": [
     "Visit Seattle",
     "City of Seattle",
@@ -14,27 +14,9 @@
   },
   "events": [
     {
-      "id": "vs-442263155",
-      "title": "Eureka Day",
-      "start": "2026-11-10T08:00:00Z",
-      "end": "2026-11-15T08:00:00Z",
-      "allDay": true,
-      "venue": {
-        "name": "Seattle Rep",
-        "address": null,
-        "lat": null,
-        "lng": null
-      },
-      "category": "Arts & theatre",
-      "url": "https://www.seattlerep.org/plays/202627-season/eureka-day",
-      "image": null,
-      "priceFrom": null,
-      "source": "visit-seattle"
-    },
-    {
       "id": "vs-442264215",
       "title": "Ghost Stories",
-      "start": "2026-11-10T08:00:00Z",
+      "start": "2026-11-11T08:00:00Z",
       "end": "2026-11-15T08:00:00Z",
       "allDay": true,
       "venue": {
@@ -48,204 +30,6 @@
       "image": null,
       "priceFrom": null,
       "source": "visit-seattle"
-    },
-    {
-      "id": "sc-46459",
-      "title": "Seattle Center Sculpture Walk 2026",
-      "start": "2026-11-10T08:00:00Z",
-      "end": null,
-      "allDay": true,
-      "venue": {
-        "name": "Seattle Center",
-        "address": null,
-        "lat": 47.6219473,
-        "lng": -122.3517443
-      },
-      "category": "Museums & galleries",
-      "url": "https://www.seattlecenter.com/events/event-calendar/seattle-center-sculpture-walk-2026-x46459",
-      "image": null,
-      "priceFrom": 0,
-      "source": "seattle-center"
-    },
-    {
-      "id": "sg-204684390",
-      "title": "Connect and Assist: Utility Bill Assistance",
-      "start": "2026-11-10T18:00:00.000Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "Seattle Municipal Tower",
-        "address": "700 5th Ave, Seattle, WA 98104",
-        "lat": null,
-        "lng": null
-      },
-      "category": null,
-      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D204684390",
-      "image": null,
-      "priceFrom": null,
-      "source": "seattle-gov"
-    },
-    {
-      "id": "sg-178717797",
-      "title": "Open Adoption Hours",
-      "start": "2026-11-10T21:00:00.000Z",
-      "end": "2026-11-11T01:00:00.000Z",
-      "allDay": false,
-      "venue": {
-        "name": "2061 15th Ave. W.",
-        "address": "2061 15th Ave W, Seattle, WA 98119",
-        "lat": null,
-        "lng": null
-      },
-      "category": null,
-      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D178717797",
-      "image": null,
-      "priceFrom": null,
-      "source": "seattle-gov"
-    },
-    {
-      "id": "sg-194808575",
-      "title": "City Council",
-      "start": "2026-11-10T22:00:00.000Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "Council Chambers",
-        "address": "600 4th Ave, Seattle, WA 98104",
-        "lat": null,
-        "lng": null
-      },
-      "category": "Public meetings",
-      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D194808575",
-      "image": null,
-      "priceFrom": null,
-      "source": "seattle-gov"
-    },
-    {
-      "id": "sg-210836787",
-      "title": "Community CPR class at Seattle Fire Department Headquarters",
-      "start": "2026-11-11T01:30:00.000Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "Seattle Fire Department Headquarters",
-        "address": null,
-        "lat": null,
-        "lng": null
-      },
-      "category": null,
-      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D210836787",
-      "image": null,
-      "priceFrom": null,
-      "source": "seattle-gov"
-    },
-    {
-      "id": "tm-vvG1HZ_3K6crIg",
-      "title": "ISAIAH RASHAD: Lil Sunny's Awful Road Trip",
-      "start": "2026-11-11T04:00:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "Paramount Theatre",
-        "address": "911 Pine St",
-        "lat": 47.613566,
-        "lng": -122.33191
-      },
-      "category": "Music",
-      "url": "https://www.ticketmaster.com/isaiah-rashad-lil-sunnys-awful-road-seattle-washington-11-10-2026/event/0F006524C7B5EA35",
-      "image": "https://s1.ticketm.net/dam/a/2b3/d3c09135-2615-4cde-a37a-743ac37c42b3_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": null,
-      "source": "ticketmaster"
-    },
-    {
-      "id": "tm-Z7r9jZ1A70Of-",
-      "title": "L7 - 21 and Over",
-      "start": "2026-11-11T04:00:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "The Showbox",
-        "address": "1426 1st Ave.",
-        "lat": 47.602402,
-        "lng": -122.325996
-      },
-      "category": "Music",
-      "url": "https://www.ticketmaster.com/event/Z7r9jZ1A70Of-",
-      "image": "https://s1.ticketm.net/dam/a/215/a8fedb17-86c7-4fb7-ac83-fc963c5ac215_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": null,
-      "source": "ticketmaster"
-    },
-    {
-      "id": "tm-vvG1HZ_o3DfQsX",
-      "title": "Ms Lauryn Hill & Wyclef Jean: Celebrating 30 Years of Fugees'The Score",
-      "start": "2026-11-11T04:00:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "Climate Pledge Arena",
-        "address": "334 1st Ave N",
-        "lat": 47.622126,
-        "lng": -122.354016
-      },
-      "category": "Music",
-      "url": "https://www.ticketmaster.com/ms-lauryn-hill-wyclef-jean-celebrating-seattle-washington-11-10-2026/event/0F006514BB51AC7E",
-      "image": "https://s1.ticketm.net/dam/e/fab/90c50791-f4fe-4656-aea5-e7bf67caffab_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": null,
-      "source": "ticketmaster"
-    },
-    {
-      "id": "tm-vvG1HZ_K6HyEab",
-      "title": "Syd - Early Entry VIP Upgrade",
-      "start": "2026-11-11T04:00:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "Moore Theatre",
-        "address": "1932 2nd Ave",
-        "lat": 47.61196,
-        "lng": -122.34142
-      },
-      "category": "Music",
-      "url": "https://www.vipnation.com/tour_date/syd-seattle-wa-11-10-2026",
-      "image": "https://s1.ticketm.net/dam/a/ac1/e85e5dcb-7c13-403a-90a8-a32cfff1cac1_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": null,
-      "source": "ticketmaster"
-    },
-    {
-      "id": "tm-vvG1HZ_3BUvMsY",
-      "title": "Syd: Beard Tour",
-      "start": "2026-11-11T04:00:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "Moore Theatre",
-        "address": "1932 2nd Ave",
-        "lat": 47.61196,
-        "lng": -122.34142
-      },
-      "category": "Music",
-      "url": "https://www.ticketmaster.com/syd-beard-tour-seattle-washington-11-10-2026/event/0F00652EB6077C70",
-      "image": "https://s1.ticketm.net/dam/a/ac1/e85e5dcb-7c13-403a-90a8-a32cfff1cac1_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": null,
-      "source": "ticketmaster"
-    },
-    {
-      "id": "tm-rZ7HnEZ1Afr4Pd",
-      "title": "Tank and The Bangas - The Last Balloon Tour 2026 w/ Ariel J. & Zeus",
-      "start": "2026-11-11T04:00:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "The Crocodile",
-        "address": "2505 1st Ave",
-        "lat": 47.61458,
-        "lng": -122.34915
-      },
-      "category": "Music",
-      "url": "https://www.ticketweb.com/event/tank-and-the-bangas-the-crocodile-tickets/14795943",
-      "image": "https://s1.ticketm.net/dam/a/f12/7af4ec8a-0c56-4e91-b48f-ce9ca83a1f12_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": 49.36,
-      "source": "ticketmaster"
     },
     {
       "id": "sc-46460",
@@ -410,6 +194,24 @@
       "source": "events12"
     },
     {
+      "id": "sc-46461",
+      "title": "Seattle Center Sculpture Walk 2026",
+      "start": "2026-11-12T08:00:00Z",
+      "end": null,
+      "allDay": true,
+      "venue": {
+        "name": "Seattle Center",
+        "address": null,
+        "lat": 47.6219473,
+        "lng": -122.3517443
+      },
+      "category": "Museums & galleries",
+      "url": "https://www.seattlecenter.com/events/event-calendar/seattle-center-sculpture-walk-2026-x46461",
+      "image": null,
+      "priceFrom": 0,
+      "source": "seattle-center"
+    },
+    {
       "id": "e12-120459",
       "title": "Spooky cabaret",
       "start": "2026-11-12T08:00:00Z",
@@ -495,6 +297,24 @@
       },
       "category": "Volunteering",
       "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D207247728",
+      "image": null,
+      "priceFrom": null,
+      "source": "seattle-gov"
+    },
+    {
+      "id": "sg-178715517",
+      "title": "Open Adoption Hours",
+      "start": "2026-11-12T21:00:00.000Z",
+      "end": "2026-11-13T01:00:00.000Z",
+      "allDay": false,
+      "venue": {
+        "name": "2061 15th Ave. W.",
+        "address": "2061 15th Ave W, Seattle, WA 98119",
+        "lat": null,
+        "lng": null
+      },
+      "category": null,
+      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D178715517",
       "image": null,
       "priceFrom": null,
       "source": "seattle-gov"
@@ -624,6 +444,24 @@
       "image": "https://s1.ticketm.net/dam/c/f51/ee785ed6-f806-4195-98f4-69f67e09df51_106201_RETINA_LANDSCAPE_16_9.jpg",
       "priceFrom": null,
       "source": "ticketmaster"
+    },
+    {
+      "id": "sc-50664",
+      "title": "Eureka Day",
+      "start": "2026-11-13T03:30:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "Seattle Repertory Theatre",
+        "address": null,
+        "lat": 47.6239152,
+        "lng": -122.3536861
+      },
+      "category": null,
+      "url": "https://www.seattlecenter.com/events/event-calendar/eureka-day-x50664",
+      "image": null,
+      "priceFrom": null,
+      "source": "seattle-center"
     },
     {
       "id": "tm-vvG1HZ_4dKkD9j",
@@ -806,6 +644,42 @@
       "source": "events12"
     },
     {
+      "id": "tm-vvG1HZ_f1e8dtA",
+      "title": "Lumen Field Stadium Tours",
+      "start": "2026-11-13T08:00:00Z",
+      "end": null,
+      "allDay": true,
+      "venue": {
+        "name": "Lumen Field Stadium Tours",
+        "address": "800 Occidental Ave S",
+        "lat": 47.596704,
+        "lng": -122.332085
+      },
+      "category": "Community",
+      "url": "https://www.ticketmaster.com/lumen-field-stadium-tours-seattle-washington-11-13-2026/event/0F00654282403A45",
+      "image": "https://s1.ticketm.net/dam/a/6ba/cca88b1c-9704-49ea-83ff-23d0e4c246ba_1665171_RETINA_LANDSCAPE_16_9.jpg",
+      "priceFrom": null,
+      "source": "ticketmaster"
+    },
+    {
+      "id": "tm-vvG1HZ_7HoOuKj",
+      "title": "Seattle Mariners Ballpark Tour",
+      "start": "2026-11-13T08:00:00Z",
+      "end": null,
+      "allDay": true,
+      "venue": {
+        "name": "T-Mobile Park",
+        "address": "1250 1st Ave S.",
+        "lat": 47.590333,
+        "lng": -122.33285
+      },
+      "category": "Community",
+      "url": "https://www.ticketmaster.com/seattle-mariners-ballpark-tour-seattle-washington-11-13-2026/event/0F00644F1180D4DC",
+      "image": "https://s1.ticketm.net/dam/a/1a6/5487c2cb-fc09-4cf4-8f7f-f29e74fa71a6_RETINA_LANDSCAPE_16_9.jpg",
+      "priceFrom": null,
+      "source": "ticketmaster"
+    },
+    {
       "id": "sg-206231362",
       "title": "Select Budget Committee",
       "start": "2026-11-13T17:30:00.000Z",
@@ -822,6 +696,96 @@
       "image": null,
       "priceFrom": null,
       "source": "seattle-gov"
+    },
+    {
+      "id": "sg-207247729",
+      "title": "Daybreak Community & Land Tending",
+      "start": "2026-11-13T19:00:00.000Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "Seattle",
+        "address": null,
+        "lat": null,
+        "lng": null
+      },
+      "category": "Volunteering",
+      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D207247729",
+      "image": null,
+      "priceFrom": null,
+      "source": "seattle-gov"
+    },
+    {
+      "id": "tm-vvG1HZ_8DSE3eC",
+      "title": "Brett Goldstein: Sex, Death & Small Talk",
+      "start": "2026-11-14T03:00:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "Moore Theatre",
+        "address": "1932 2nd Ave",
+        "lat": 47.61196,
+        "lng": -122.34142
+      },
+      "category": "Arts & theatre",
+      "url": "https://www.ticketmaster.com/brett-goldstein-sex-death-small-talk-seattle-washington-11-13-2026/event/0F00650EF39D208E",
+      "image": "https://s1.ticketm.net/dam/a/fb8/f09abbd9-bcb8-4a09-83ab-c43806315fb8_RETINA_LANDSCAPE_16_9.jpg",
+      "priceFrom": null,
+      "source": "ticketmaster"
+    },
+    {
+      "id": "tm-vvG1HZ_o6A0Q_x",
+      "title": "Personalized Signed Tour Poster",
+      "start": "2026-11-14T03:00:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "Moore Theatre",
+        "address": "1932 2nd Ave",
+        "lat": 47.61196,
+        "lng": -122.34142
+      },
+      "category": "Community",
+      "url": "https://www.ticketmaster.com/personalized-signed-tour-poster-seattle-washington-11-13-2026/event/0F006511C591A662",
+      "image": "https://s1.ticketm.net/dam/c/03e/e15ef00f-2c87-4421-ae61-d740851a703e_105891_RETINA_LANDSCAPE_16_9.jpg",
+      "priceFrom": null,
+      "source": "ticketmaster"
+    },
+    {
+      "id": "tm-rZ7HnEZ1Afxp_d",
+      "title": "Son Volt, Kelly Willis",
+      "start": "2026-11-14T03:00:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "The Crocodile",
+        "address": "2505 1st Ave",
+        "lat": 47.61458,
+        "lng": -122.34915
+      },
+      "category": "Music",
+      "url": "https://www.ticketweb.com/event/son-volt-kelly-willis-the-crocodile-tickets/14896643",
+      "image": "https://s1.ticketm.net/dam/a/be9/d489e4b1-e026-4066-90d0-44a4637fcbe9_RETINA_LANDSCAPE_16_9.jpg",
+      "priceFrom": 43.63,
+      "source": "ticketmaster"
+    },
+    {
+      "id": "tm-vvG1HZ_AKdxsc7",
+      "title": "World Ballet Company: Swan Lake with LIVE Orchestra",
+      "start": "2026-11-14T03:00:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "Paramount Theatre",
+        "address": "911 Pine St",
+        "lat": 47.613566,
+        "lng": -122.33191
+      },
+      "category": "Arts & theatre",
+      "url": "https://www.ticketmaster.com/world-ballet-company-swan-lake-with-seattle-washington-11-13-2026/event/0F006454C38B1B44",
+      "image": "https://s1.ticketm.net/dam/a/739/102a2975-83a7-48b1-9312-132b25ecf739_RETINA_LANDSCAPE_16_9.jpg",
+      "priceFrom": null,
+      "source": "ticketmaster"
     },
     {
       "id": "sc-47365",
@@ -860,6 +824,24 @@
       "source": "events12"
     },
     {
+      "id": "e12-120470",
+      "title": "Cabaret party",
+      "start": "2026-11-14T08:00:00Z",
+      "end": null,
+      "allDay": true,
+      "venue": {
+        "name": "Downtown",
+        "address": "ArtLove Salon, 110 Union St, Seattle, WA 98101",
+        "lat": null,
+        "lng": null
+      },
+      "category": null,
+      "url": "https://www.strangertickets.com/events/187484586/show-some-love-for-seattle-cabaret-festival-scf-at-the-artlove-salon",
+      "image": null,
+      "priceFrom": null,
+      "source": "events12"
+    },
+    {
       "id": "e12-119075",
       "title": "Gourmet cooking class",
       "start": "2026-11-14T08:00:00Z",
@@ -876,6 +858,42 @@
       "image": null,
       "priceFrom": null,
       "source": "events12"
+    },
+    {
+      "id": "sg-212187570",
+      "title": "Madison Park Fall Cleanup",
+      "start": "2026-11-14T17:00:00.000Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "4112 E Madison St",
+        "address": "4112 E Madison St, Seattle, WA 98112",
+        "lat": null,
+        "lng": null
+      },
+      "category": "Volunteering",
+      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D212187570",
+      "image": null,
+      "priceFrom": null,
+      "source": "seattle-gov"
+    },
+    {
+      "id": "sg-205995659",
+      "title": "Chinatown/ID Monthly Community Cleanup",
+      "start": "2026-11-14T18:00:00.000Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "Hing Hay Park (423 Maynard Ave S",
+        "address": "Hing Hay Park, 423 Maynard Ave S, Seattle, WA 98104",
+        "lat": null,
+        "lng": null
+      },
+      "category": "Volunteering",
+      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D205995659",
+      "image": null,
+      "priceFrom": null,
+      "source": "seattle-gov"
     },
     {
       "id": "sc-seattle-hmong-new-year",
@@ -965,24 +983,6 @@
       "url": "https://www.facebook.com/events/4645302902424436",
       "image": null,
       "priceFrom": null,
-      "source": "events12"
-    },
-    {
-      "id": "e12-107166",
-      "title": "Gingerbread Village",
-      "start": "2026-11-19T08:00:00Z",
-      "end": null,
-      "allDay": true,
-      "venue": {
-        "name": "Downtown",
-        "address": "Sheraton Grand Seattle, 1400 6th Ave, Seattle, WA 98101",
-        "lat": null,
-        "lng": null
-      },
-      "category": null,
-      "url": "https://www.breakthrought1d.org/greaternorthwest/events/gingerbread-village-november-19-january-1/",
-      "image": null,
-      "priceFrom": 0,
       "source": "events12"
     },
     {
@@ -1076,22 +1076,22 @@
       "source": "seattle-center"
     },
     {
-      "id": "sc-43753",
-      "title": "2026 Seattle Christmas Market",
-      "start": "2026-11-21T08:00:00Z",
-      "end": null,
+      "id": "vs-442263160",
+      "title": "The Best Christmas Pageant Ever",
+      "start": "2026-12-11T08:00:00Z",
+      "end": "2026-12-20T08:00:00Z",
       "allDay": true,
       "venue": {
-        "name": "Fisher Pavilion",
+        "name": "Seattle Rep",
         "address": null,
-        "lat": 47.6211235,
-        "lng": -122.352168
+        "lat": null,
+        "lng": null
       },
-      "category": "Market",
-      "url": "https://www.seattlecenter.com/events/event-calendar/2026-seattle-christmas-market-x43753",
+      "category": "Arts & theatre",
+      "url": "https://www.seattlerep.org/events/special-events/the-best-christmas-pageant-ever",
       "image": null,
       "priceFrom": null,
-      "source": "seattle-center"
+      "source": "visit-seattle"
     }
   ]
 }
