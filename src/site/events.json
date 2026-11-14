@@ -1,6 +1,6 @@
 {
-  "checked": "2026-11-13T17:45:45.517Z",
-  "updated": "2026-11-13T17:45:45.517Z",
+  "checked": "2026-11-14T16:36:52.219Z",
+  "updated": "2026-11-14T16:36:52.219Z",
   "sources": [
     "Visit Seattle",
     "City of Seattle",
@@ -13,402 +13,6 @@
     "radiusMiles": 3
   },
   "events": [
-    {
-      "id": "e12-100249",
-      "title": "Auto show",
-      "start": "2026-11-13T08:00:00Z",
-      "end": "2026-11-15T08:00:00Z",
-      "allDay": true,
-      "venue": {
-        "name": "SoDo",
-        "address": "Lumen Field Event Center, 800 Occidental Ave S, Seattle, WA 98134",
-        "lat": null,
-        "lng": null
-      },
-      "category": null,
-      "url": "https://www.seattleautoshow.com",
-      "image": null,
-      "priceFrom": null,
-      "source": "events12"
-    },
-    {
-      "id": "e12-120455",
-      "title": "Ballet",
-      "start": "2026-11-13T08:00:00Z",
-      "end": "2026-11-15T08:00:00Z",
-      "allDay": true,
-      "venue": {
-        "name": "Seattle Center",
-        "address": "McCaw Hall, 321 Mercer St, Seattle, WA 98109",
-        "lat": null,
-        "lng": null
-      },
-      "category": "Arts & theatre",
-      "url": "https://www.pnb.org/season/ghost-stories/",
-      "image": null,
-      "priceFrom": null,
-      "source": "events12"
-    },
-    {
-      "id": "e12-120052",
-      "title": "Classical concert",
-      "start": "2026-11-13T08:00:00Z",
-      "end": null,
-      "allDay": true,
-      "venue": {
-        "name": "South Lake Union",
-        "address": "Emerald City Music, 415 Westlake Ave N, Seattle, WA 98109",
-        "lat": null,
-        "lng": null
-      },
-      "category": "Music",
-      "url": "https://www.emeraldcitymusic.org/concerts/beethovens-piano-sonatas-sea",
-      "image": null,
-      "priceFrom": null,
-      "source": "events12"
-    },
-    {
-      "id": "e12-110247",
-      "title": "Films from Romania",
-      "start": "2026-11-13T08:00:00Z",
-      "end": "2026-11-15T08:00:00Z",
-      "allDay": true,
-      "venue": {
-        "name": "Lower Queen Anne",
-        "address": "SIFF Cinema Uptown, 511 Queen Anne Ave N, Seattle, WA 98109",
-        "lat": null,
-        "lng": null
-      },
-      "category": "Film",
-      "url": "https://arcsproject.org/event/romanian-film-festival-seattle-13th-edition/",
-      "image": null,
-      "priceFrom": null,
-      "source": "events12"
-    },
-    {
-      "id": "tm-vvG1HZ_f1e8dtA",
-      "title": "Lumen Field Stadium Tours",
-      "start": "2026-11-13T08:00:00Z",
-      "end": null,
-      "allDay": true,
-      "venue": {
-        "name": "Lumen Field Stadium Tours",
-        "address": "800 Occidental Ave S",
-        "lat": 47.596704,
-        "lng": -122.332085
-      },
-      "category": "Community",
-      "url": "https://www.ticketmaster.com/lumen-field-stadium-tours-seattle-washington-11-13-2026/event/0F00654282403A45",
-      "image": "https://s1.ticketm.net/dam/a/6ba/cca88b1c-9704-49ea-83ff-23d0e4c246ba_1665171_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": null,
-      "source": "ticketmaster"
-    },
-    {
-      "id": "sc-46462",
-      "title": "Seattle Center Sculpture Walk 2026",
-      "start": "2026-11-13T08:00:00Z",
-      "end": null,
-      "allDay": true,
-      "venue": {
-        "name": "Seattle Center",
-        "address": null,
-        "lat": 47.6219473,
-        "lng": -122.3517443
-      },
-      "category": "Museums & galleries",
-      "url": "https://www.seattlecenter.com/events/event-calendar/seattle-center-sculpture-walk-2026-x46462",
-      "image": null,
-      "priceFrom": 0,
-      "source": "seattle-center"
-    },
-    {
-      "id": "tm-vvG1HZ_7HoOuKj",
-      "title": "Seattle Mariners Ballpark Tour",
-      "start": "2026-11-13T08:00:00Z",
-      "end": null,
-      "allDay": true,
-      "venue": {
-        "name": "T-Mobile Park",
-        "address": "1250 1st Ave S.",
-        "lat": 47.590333,
-        "lng": -122.33285
-      },
-      "category": "Community",
-      "url": "https://www.ticketmaster.com/seattle-mariners-ballpark-tour-seattle-washington-11-13-2026/event/0F00644F1180D4DC",
-      "image": "https://s1.ticketm.net/dam/a/1a6/5487c2cb-fc09-4cf4-8f7f-f29e74fa71a6_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": null,
-      "source": "ticketmaster"
-    },
-    {
-      "id": "e12-120459",
-      "title": "Spooky cabaret",
-      "start": "2026-11-13T08:00:00Z",
-      "end": "2026-11-14T08:00:00Z",
-      "allDay": true,
-      "venue": {
-        "name": "Downtown",
-        "address": "The Triple Door, 216 Union St, Seattle, WA 98101",
-        "lat": null,
-        "lng": null
-      },
-      "category": null,
-      "url": "https://tickets.thetripledoor.net/eventperformances.asp?evt=2243",
-      "image": null,
-      "priceFrom": null,
-      "source": "events12"
-    },
-    {
-      "id": "sg-206231362",
-      "title": "Select Budget Committee",
-      "start": "2026-11-13T17:30:00.000Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "City Hall Council Chambers",
-        "address": "600 4th Ave, Seattle, WA 98104",
-        "lat": null,
-        "lng": null
-      },
-      "category": "Public meetings",
-      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D206231362",
-      "image": null,
-      "priceFrom": null,
-      "source": "seattle-gov"
-    },
-    {
-      "id": "sg-207247729",
-      "title": "Daybreak Community & Land Tending",
-      "start": "2026-11-13T19:00:00.000Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "Seattle",
-        "address": null,
-        "lat": null,
-        "lng": null
-      },
-      "category": "Volunteering",
-      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D207247729",
-      "image": null,
-      "priceFrom": null,
-      "source": "seattle-gov"
-    },
-    {
-      "id": "sg-182114590",
-      "title": "Open Adoption Hours",
-      "start": "2026-11-13T21:00:00.000Z",
-      "end": "2026-11-14T01:00:00.000Z",
-      "allDay": false,
-      "venue": {
-        "name": "2061 15th Ave. W.",
-        "address": null,
-        "lat": null,
-        "lng": null
-      },
-      "category": null,
-      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D182114590",
-      "image": null,
-      "priceFrom": null,
-      "source": "seattle-gov"
-    },
-    {
-      "id": "tm-vvG1HZ_8DSE3eC",
-      "title": "Brett Goldstein: Sex, Death & Small Talk",
-      "start": "2026-11-14T03:00:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "Moore Theatre",
-        "address": "1932 2nd Ave",
-        "lat": 47.61196,
-        "lng": -122.34142
-      },
-      "category": "Arts & theatre",
-      "url": "https://www.ticketmaster.com/brett-goldstein-sex-death-small-talk-seattle-washington-11-13-2026/event/0F00650EF39D208E",
-      "image": "https://s1.ticketm.net/dam/a/fb8/f09abbd9-bcb8-4a09-83ab-c43806315fb8_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": null,
-      "source": "ticketmaster"
-    },
-    {
-      "id": "tm-vvG1HZ_o6A0Q_x",
-      "title": "Personalized Signed Tour Poster",
-      "start": "2026-11-14T03:00:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "Moore Theatre",
-        "address": "1932 2nd Ave",
-        "lat": 47.61196,
-        "lng": -122.34142
-      },
-      "category": "Community",
-      "url": "https://www.ticketmaster.com/personalized-signed-tour-poster-seattle-washington-11-13-2026/event/0F006511C591A662",
-      "image": "https://s1.ticketm.net/dam/c/03e/e15ef00f-2c87-4421-ae61-d740851a703e_105891_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": null,
-      "source": "ticketmaster"
-    },
-    {
-      "id": "tm-rZ7HnEZ1Afxp_d",
-      "title": "Son Volt, Kelly Willis",
-      "start": "2026-11-14T03:00:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "The Crocodile",
-        "address": "2505 1st Ave",
-        "lat": 47.61458,
-        "lng": -122.34915
-      },
-      "category": "Music",
-      "url": "https://www.ticketweb.com/event/son-volt-kelly-willis-the-crocodile-tickets/14896643",
-      "image": "https://s1.ticketm.net/dam/a/be9/d489e4b1-e026-4066-90d0-44a4637fcbe9_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": 43.63,
-      "source": "ticketmaster"
-    },
-    {
-      "id": "tm-vvG1HZ_AKdxsc7",
-      "title": "World Ballet Company: Swan Lake with LIVE Orchestra",
-      "start": "2026-11-14T03:00:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "Paramount Theatre",
-        "address": "911 Pine St",
-        "lat": 47.613566,
-        "lng": -122.33191
-      },
-      "category": "Arts & theatre",
-      "url": "https://www.ticketmaster.com/world-ballet-company-swan-lake-with-seattle-washington-11-13-2026/event/0F006454C38B1B44",
-      "image": "https://s1.ticketm.net/dam/a/739/102a2975-83a7-48b1-9312-132b25ecf739_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": null,
-      "source": "ticketmaster"
-    },
-    {
-      "id": "sc-50665",
-      "title": "Eureka Day",
-      "start": "2026-11-14T03:30:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "Seattle Repertory Theatre",
-        "address": null,
-        "lat": 47.6239152,
-        "lng": -122.3536861
-      },
-      "category": null,
-      "url": "https://www.seattlecenter.com/events/event-calendar/eureka-day-x50665",
-      "image": null,
-      "priceFrom": null,
-      "source": "seattle-center"
-    },
-    {
-      "id": "sc-47365",
-      "title": "Ghost Stories",
-      "start": "2026-11-14T03:30:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "Marion Oliver McCaw Hall",
-        "address": null,
-        "lat": 47.6239994,
-        "lng": -122.3502714
-      },
-      "category": "Museums & galleries",
-      "url": "https://www.seattlecenter.com/events/event-calendar/ghost-stories-x47365",
-      "image": null,
-      "priceFrom": null,
-      "source": "seattle-center"
-    },
-    {
-      "id": "tm-vvG1HZ_fStanbP",
-      "title": "Garth Brooks - Blame It All On My Roots Arena Tour",
-      "start": "2026-11-14T04:00:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "Climate Pledge Arena",
-        "address": "334 1st Ave N",
-        "lat": 47.622126,
-        "lng": -122.354016
-      },
-      "category": "Music",
-      "url": "https://www.ticketmaster.com/garth-brooks-blame-it-all-on-seattle-washington-11-13-2026/event/0F00654CE926A625",
-      "image": "https://s1.ticketm.net/dam/a/98d/152fc3eb-991c-4e98-b742-8aaf0285c98d_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": null,
-      "source": "ticketmaster"
-    },
-    {
-      "id": "tm-Z7r9jZ1A7-AoJ",
-      "title": "Inna",
-      "start": "2026-11-14T04:00:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "The Showbox",
-        "address": "1426 1st Ave.",
-        "lat": 47.602402,
-        "lng": -122.325996
-      },
-      "category": "Music",
-      "url": "https://www.ticketmaster.com/event/Z7r9jZ1A7-AoJ",
-      "image": "https://s1.ticketm.net/dam/c/060/c5c08e7a-9912-456c-a060-2758be94e060_105881_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": null,
-      "source": "ticketmaster"
-    },
-    {
-      "id": "tm-Z7r9jZ1AA79G3",
-      "title": "The Goddamn Gallows - Ages 21+",
-      "start": "2026-11-14T04:00:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "El Corazon",
-        "address": "109 Eastlake Avenue East",
-        "lat": 47.630699,
-        "lng": -122.3461
-      },
-      "category": "Music",
-      "url": "https://www.ticketmaster.com/event/Z7r9jZ1AA79G3",
-      "image": "https://s1.ticketm.net/dam/a/e3a/25cd3847-d134-4900-ad8f-c36a924bee3a_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": null,
-      "source": "ticketmaster"
-    },
-    {
-      "id": "tm-rZ7HnEZ1Afu_AV",
-      "title": "Sorry For Party Rocking (2010 - 2015 Pop & EDM Bangers All Night Long)",
-      "start": "2026-11-14T05:00:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "Chop Suey",
-        "address": "1325 E Madison St.",
-        "lat": 47.613485,
-        "lng": -122.314457
-      },
-      "category": "Music",
-      "url": "https://www.ticketweb.com/event/sorry-for-party-rocking-2010-chop-suey-tickets/14359174",
-      "image": "https://s1.ticketm.net/dam/c/df8/81eadad8-4449-412e-a2b1-3d8bbb78edf8_106181_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": null,
-      "source": "ticketmaster"
-    },
-    {
-      "id": "tm-Z7r9jZ1AAv7j3",
-      "title": "HVDES - Ages 21+",
-      "start": "2026-11-14T05:30:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "VICE Seattle",
-        "address": "1532 Minor Ave",
-        "lat": 47.6115,
-        "lng": -122.334297
-      },
-      "category": null,
-      "url": "https://www.ticketmaster.com/event/Z7r9jZ1AAv7j3",
-      "image": "https://s1.ticketm.net/dam/c/f51/ee785ed6-f806-4195-98f4-69f67e09df51_106201_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": null,
-      "source": "ticketmaster"
-    },
     {
       "id": "e12-120253",
       "title": "Asian dance festival",
@@ -428,6 +32,42 @@
       "source": "events12"
     },
     {
+      "id": "e12-100249",
+      "title": "Auto show",
+      "start": "2026-11-14T08:00:00Z",
+      "end": "2026-11-15T08:00:00Z",
+      "allDay": true,
+      "venue": {
+        "name": "SoDo",
+        "address": "Lumen Field Event Center, 800 Occidental Ave S, Seattle, WA 98134",
+        "lat": null,
+        "lng": null
+      },
+      "category": null,
+      "url": "https://www.seattleautoshow.com",
+      "image": null,
+      "priceFrom": null,
+      "source": "events12"
+    },
+    {
+      "id": "e12-120455",
+      "title": "Ballet",
+      "start": "2026-11-14T08:00:00Z",
+      "end": "2026-11-15T08:00:00Z",
+      "allDay": true,
+      "venue": {
+        "name": "Seattle Center",
+        "address": "McCaw Hall, 321 Mercer St, Seattle, WA 98109",
+        "lat": null,
+        "lng": null
+      },
+      "category": "Arts & theatre",
+      "url": "https://www.pnb.org/season/ghost-stories/",
+      "image": null,
+      "priceFrom": null,
+      "source": "events12"
+    },
+    {
       "id": "e12-120470",
       "title": "Cabaret party",
       "start": "2026-11-14T08:00:00Z",
@@ -441,6 +81,24 @@
       },
       "category": null,
       "url": "https://www.strangertickets.com/events/187484586/show-some-love-for-seattle-cabaret-festival-scf-at-the-artlove-salon",
+      "image": null,
+      "priceFrom": null,
+      "source": "events12"
+    },
+    {
+      "id": "e12-110247",
+      "title": "Films from Romania",
+      "start": "2026-11-14T08:00:00Z",
+      "end": "2026-11-15T08:00:00Z",
+      "allDay": true,
+      "venue": {
+        "name": "Lower Queen Anne",
+        "address": "SIFF Cinema Uptown, 511 Queen Anne Ave N, Seattle, WA 98109",
+        "lat": null,
+        "lng": null
+      },
+      "category": "Film",
+      "url": "https://arcsproject.org/event/romanian-film-festival-seattle-13th-edition/",
       "image": null,
       "priceFrom": null,
       "source": "events12"
@@ -498,6 +156,24 @@
       "image": null,
       "priceFrom": 0,
       "source": "seattle-center"
+    },
+    {
+      "id": "e12-120459",
+      "title": "Spooky cabaret",
+      "start": "2026-11-14T08:00:00Z",
+      "end": null,
+      "allDay": true,
+      "venue": {
+        "name": "Downtown",
+        "address": "The Triple Door, 216 Union St, Seattle, WA 98101",
+        "lat": null,
+        "lng": null
+      },
+      "category": null,
+      "url": "https://tickets.thetripledoor.net/eventperformances.asp?evt=2243",
+      "image": null,
+      "priceFrom": null,
+      "source": "events12"
     },
     {
       "id": "sg-212187570",
@@ -681,7 +357,7 @@
     },
     {
       "id": "tm-rZ7HnEZ1AfPZPN",
-      "title": "The Sejongs, Yost, Bingo Riot",
+      "title": "The Sejongs, Yost, Hank Webster",
       "start": "2026-11-15T01:30:00Z",
       "end": null,
       "allDay": false,
@@ -692,27 +368,9 @@
         "lng": -122.314457
       },
       "category": "Music",
-      "url": "https://www.ticketweb.com/event/the-sejongs-yost-bingo-riot-chop-suey-tickets/14940963",
+      "url": "https://www.ticketweb.com/event/the-sejongs-yost-hank-webster-chop-suey-tickets/14940963",
       "image": "https://s1.ticketm.net/dam/c/797/5e693c26-2881-4776-8f0c-3aa94bfa3797_106511_RETINA_LANDSCAPE_16_9.jpg",
       "priceFrom": 15.47,
-      "source": "ticketmaster"
-    },
-    {
-      "id": "tm-vvG1HZ_4h422nQ",
-      "title": "Men's Basketball vs Idaho State",
-      "start": "2026-11-15T03:00:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "Seattle University Redhawk Center",
-        "address": "550 14th Ave",
-        "lat": 47.606668,
-        "lng": -122.314139
-      },
-      "category": "Sports",
-      "url": "https://www.ticketmaster.com/mens-basketball-vs-idaho-state-seattle-washington-11-14-2026/event/0F006556D53CFA9A",
-      "image": "https://s1.ticketm.net/dam/e/404/c48b829a-7beb-4848-aaee-e9ea7dfa9404_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": null,
       "source": "ticketmaster"
     },
     {
@@ -860,6 +518,42 @@
       "source": "events12"
     },
     {
+      "id": "tm-vvG1HZ_f1e3Ntb",
+      "title": "Lumen Field Stadium Tours",
+      "start": "2026-11-15T08:00:00Z",
+      "end": null,
+      "allDay": true,
+      "venue": {
+        "name": "Lumen Field Stadium Tours",
+        "address": "800 Occidental Ave S",
+        "lat": 47.596704,
+        "lng": -122.332085
+      },
+      "category": "Community",
+      "url": "https://www.ticketmaster.com/lumen-field-stadium-tours-seattle-washington-11-15-2026/event/0F006542824A3A58",
+      "image": "https://s1.ticketm.net/dam/a/6ba/cca88b1c-9704-49ea-83ff-23d0e4c246ba_1665171_RETINA_LANDSCAPE_16_9.jpg",
+      "priceFrom": null,
+      "source": "ticketmaster"
+    },
+    {
+      "id": "sc-46464",
+      "title": "Seattle Center Sculpture Walk 2026",
+      "start": "2026-11-15T08:00:00Z",
+      "end": null,
+      "allDay": true,
+      "venue": {
+        "name": "Seattle Center",
+        "address": null,
+        "lat": 47.6219473,
+        "lng": -122.3517443
+      },
+      "category": "Museums & galleries",
+      "url": "https://www.seattlecenter.com/events/event-calendar/seattle-center-sculpture-walk-2026-x46464",
+      "image": null,
+      "priceFrom": 0,
+      "source": "seattle-center"
+    },
+    {
       "id": "sg-210836789",
       "title": "Community CPR class at Seattle Fire Department Headquarters",
       "start": "2026-11-15T17:00:00.000Z",
@@ -894,6 +588,96 @@
       "image": null,
       "priceFrom": null,
       "source": "seattle-center"
+    },
+    {
+      "id": "sc-47368",
+      "title": "Ghost Stories",
+      "start": "2026-11-15T21:00:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "Marion Oliver McCaw Hall",
+        "address": null,
+        "lat": 47.6239994,
+        "lng": -122.3502714
+      },
+      "category": "Museums & galleries",
+      "url": "https://www.seattlecenter.com/events/event-calendar/ghost-stories-x47368",
+      "image": null,
+      "priceFrom": null,
+      "source": "seattle-center"
+    },
+    {
+      "id": "tm-vvG1HZ_4h422nQ",
+      "title": "Men's Basketball vs Idaho State",
+      "start": "2026-11-15T21:00:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "Seattle University Redhawk Center",
+        "address": "550 14th Ave",
+        "lat": 47.606668,
+        "lng": -122.314139
+      },
+      "category": "Sports",
+      "url": "https://www.ticketmaster.com/mens-basketball-vs-idaho-state-seattle-washington-11-15-2026/event/0F006556D53CFA9A",
+      "image": "https://s1.ticketm.net/dam/e/404/c48b829a-7beb-4848-aaee-e9ea7dfa9404_RETINA_LANDSCAPE_16_9.jpg",
+      "priceFrom": null,
+      "source": "ticketmaster"
+    },
+    {
+      "id": "sg-179000194",
+      "title": "Open Adoption Hours",
+      "start": "2026-11-15T21:00:00.000Z",
+      "end": "2026-11-16T01:00:00.000Z",
+      "allDay": false,
+      "venue": {
+        "name": "2061 15th Ave. W.",
+        "address": "2061 15th Ave W, Seattle, WA 98119",
+        "lat": null,
+        "lng": null
+      },
+      "category": null,
+      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D179000194",
+      "image": null,
+      "priceFrom": null,
+      "source": "seattle-gov"
+    },
+    {
+      "id": "sc-50668",
+      "title": "Eureka Day",
+      "start": "2026-11-15T22:00:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "Seattle Repertory Theatre",
+        "address": null,
+        "lat": 47.6239152,
+        "lng": -122.3536861
+      },
+      "category": null,
+      "url": "https://www.seattlecenter.com/events/event-calendar/eureka-day-x50668",
+      "image": null,
+      "priceFrom": null,
+      "source": "seattle-center"
+    },
+    {
+      "id": "tm-vvG1HZ_4dKZhpM",
+      "title": "Garth Brooks - Blame It All On My Roots Arena Tour",
+      "start": "2026-11-15T22:00:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "Climate Pledge Arena",
+        "address": "334 1st Ave N",
+        "lat": 47.622126,
+        "lng": -122.354016
+      },
+      "category": "Music",
+      "url": "https://www.ticketmaster.com/garth-brooks-blame-it-all-on-seattle-washington-11-15-2026/event/0F006550D301B5B7",
+      "image": "https://s1.ticketm.net/dam/a/98d/152fc3eb-991c-4e98-b742-8aaf0285c98d_RETINA_LANDSCAPE_16_9.jpg",
+      "priceFrom": null,
+      "source": "ticketmaster"
     },
     {
       "id": "tm-Z7r9jZ1A7PEPv",
@@ -932,6 +716,96 @@
       "source": "seattle-gov"
     },
     {
+      "id": "tm-rZ7HnEZ1Afut0f",
+      "title": "Motel Dolores, Side Hustle, Sex Mitten",
+      "start": "2026-11-16T01:30:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "Chop Suey",
+        "address": "1325 E Madison St.",
+        "lat": 47.613485,
+        "lng": -122.314457
+      },
+      "category": "Music",
+      "url": "https://www.ticketweb.com/event/motel-dolores-side-hustle-sex-chop-suey-tickets/14369914",
+      "image": "https://s1.ticketm.net/dam/c/797/5e693c26-2881-4776-8f0c-3aa94bfa3797_106511_RETINA_LANDSCAPE_16_9.jpg",
+      "priceFrom": 15.47,
+      "source": "ticketmaster"
+    },
+    {
+      "id": "tm-Z7r9jZ1AAeeqb",
+      "title": "2slimey",
+      "start": "2026-11-16T04:00:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "El Corazon",
+        "address": "109 Eastlake Avenue East",
+        "lat": 47.630699,
+        "lng": -122.3461
+      },
+      "category": null,
+      "url": "https://www.ticketmaster.com/event/Z7r9jZ1AAeeqb",
+      "image": "https://s1.ticketm.net/dam/c/8cf/a6653880-7899-4f67-8067-1f95f4d158cf_124761_RETINA_LANDSCAPE_16_9.jpg",
+      "priceFrom": null,
+      "source": "ticketmaster"
+    },
+    {
+      "id": "tm-Z7r9jZ1A7Pg8S",
+      "title": "Russian Circles w/ Primitive Man",
+      "start": "2026-11-16T04:00:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "The Showbox",
+        "address": "1426 1st Ave.",
+        "lat": 47.602402,
+        "lng": -122.325996
+      },
+      "category": "Music",
+      "url": "https://www.ticketmaster.com/event/Z7r9jZ1A7Pg8S",
+      "image": "https://s1.ticketm.net/dam/a/48d/c8242ed7-1b99-4f28-a99e-b52c9968e48d_RETINA_LANDSCAPE_16_9.jpg",
+      "priceFrom": null,
+      "source": "ticketmaster"
+    },
+    {
+      "id": "tm-rZ7HnEZ1AfZeoV",
+      "title": "Flammable",
+      "start": "2026-11-16T06:00:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "Chop Suey",
+        "address": "1325 E Madison St.",
+        "lat": 47.613485,
+        "lng": -122.314457
+      },
+      "category": "Music",
+      "url": "https://www.ticketweb.com/event/flammable-chop-suey-tickets/14002474",
+      "image": "https://s1.ticketm.net/dam/c/df8/81eadad8-4449-412e-a2b1-3d8bbb78edf8_106181_RETINA_LANDSCAPE_16_9.jpg",
+      "priceFrom": null,
+      "source": "ticketmaster"
+    },
+    {
+      "id": "tm-vvG1HZ_7Ho-qKP",
+      "title": "Seattle Mariners Ballpark Tour",
+      "start": "2026-11-16T08:00:00Z",
+      "end": null,
+      "allDay": true,
+      "venue": {
+        "name": "T-Mobile Park",
+        "address": "1250 1st Ave S.",
+        "lat": 47.590333,
+        "lng": -122.33285
+      },
+      "category": "Community",
+      "url": "https://www.ticketmaster.com/seattle-mariners-ballpark-tour-seattle-washington-11-16-2026/event/0F00644F1185D4E5",
+      "image": "https://s1.ticketm.net/dam/a/1a6/5487c2cb-fc09-4cf4-8f7f-f29e74fa71a6_RETINA_LANDSCAPE_16_9.jpg",
+      "priceFrom": null,
+      "source": "ticketmaster"
+    },
+    {
       "id": "sg-206231363",
       "title": "Select Budget Committee",
       "start": "2026-11-16T17:30:00.000Z",
@@ -948,6 +822,114 @@
       "image": null,
       "priceFrom": null,
       "source": "seattle-gov"
+    },
+    {
+      "id": "sg-178649595",
+      "title": "Community Involvement Commission Meeting",
+      "start": "2026-11-17T01:00:00.000Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "Seattle City Hall",
+        "address": null,
+        "lat": null,
+        "lng": null
+      },
+      "category": "Public meetings",
+      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D178649595",
+      "image": null,
+      "priceFrom": null,
+      "source": "seattle-gov"
+    },
+    {
+      "id": "sg-150686302",
+      "title": "Seattle Women's Commission Monthly Meeting",
+      "start": "2026-11-17T01:30:00.000Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "Seattle City Hall",
+        "address": null,
+        "lat": null,
+        "lng": null
+      },
+      "category": "Public meetings",
+      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D150686302",
+      "image": null,
+      "priceFrom": null,
+      "source": "seattle-gov"
+    },
+    {
+      "id": "tm-Z7r9jZ1A7Ptod",
+      "title": "Arch Enemy w/ The Black Dahlia Murder",
+      "start": "2026-11-17T02:00:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "The Showbox",
+        "address": "1426 1st Ave.",
+        "lat": 47.602402,
+        "lng": -122.325996
+      },
+      "category": "Music",
+      "url": "https://www.ticketmaster.com/event/Z7r9jZ1A7Ptod",
+      "image": "https://s1.ticketm.net/dam/a/3b5/08cefbd6-5bc5-4252-bd8b-f3e0e8ba33b5_RETINA_LANDSCAPE_16_9.jpg",
+      "priceFrom": null,
+      "source": "ticketmaster"
+    },
+    {
+      "id": "tm-vvG1HZ_G3m3lmw",
+      "title": "Underoath - Define the Great Line 20th Anniversary Tour",
+      "start": "2026-11-17T02:30:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "Paramount Theatre",
+        "address": "911 Pine St",
+        "lat": 47.613566,
+        "lng": -122.33191
+      },
+      "category": "Music",
+      "url": "https://www.ticketmaster.com/underoath-define-the-great-line-20th-seattle-washington-11-16-2026/event/0F0064C4AE4ABBB2",
+      "image": "https://s1.ticketm.net/dam/a/1b1/46d7f500-de08-4e5c-86c5-4d8ee08211b1_RETINA_LANDSCAPE_16_9.jpg",
+      "priceFrom": null,
+      "source": "ticketmaster"
+    },
+    {
+      "id": "tm-Z7r9jZ1A7x9xA",
+      "title": "Bayonne",
+      "start": "2026-11-17T03:00:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "Barboza",
+        "address": "925 E. Pike St.",
+        "lat": 47.610802,
+        "lng": -122.302803
+      },
+      "category": "Music",
+      "url": "https://www.ticketmaster.com/event/Z7r9jZ1A7x9xA",
+      "image": "https://s1.ticketm.net/dam/c/060/c5c08e7a-9912-456c-a060-2758be94e060_105881_RETINA_LANDSCAPE_16_9.jpg",
+      "priceFrom": null,
+      "source": "ticketmaster"
+    },
+    {
+      "id": "tm-Z7r9jZ1A70UOa",
+      "title": "Olivia O'Brien",
+      "start": "2026-11-17T04:00:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "Neumos",
+        "address": "925 East Pike Street",
+        "lat": 47.610802,
+        "lng": -122.302803
+      },
+      "category": "Music",
+      "url": "https://www.ticketmaster.com/event/Z7r9jZ1A70UOa",
+      "image": "https://s1.ticketm.net/dam/a/47d/0b28e636-e054-4ffa-b29d-41ba5dc7f47d_RETINA_LANDSCAPE_16_9.jpg",
+      "priceFrom": null,
+      "source": "ticketmaster"
     },
     {
       "id": "e12-104318",
@@ -1001,6 +983,24 @@
       "url": "https://www.breakthrought1d.org/greaternorthwest/events/gingerbread-village-november-19-january-1/",
       "image": null,
       "priceFrom": 0,
+      "source": "events12"
+    },
+    {
+      "id": "e12-118516",
+      "title": "Hockey",
+      "start": "2026-11-19T08:00:00Z",
+      "end": null,
+      "allDay": true,
+      "venue": {
+        "name": "Seattle Center",
+        "address": "Climate Pledge Arena, 334 1st Ave N, Seattle, WA 98109",
+        "lat": null,
+        "lng": null
+      },
+      "category": null,
+      "url": "https://www.nhl.com/kraken/schedule/2026-11-01",
+      "image": null,
+      "priceFrom": null,
       "source": "events12"
     },
     {

@@ -1,6 +1,6 @@
 {
-  "checked": "2026-11-13T17:45:26.846Z",
-  "updated": "2026-11-12T18:20:27.876Z",
+  "checked": "2026-11-14T16:36:36.143Z",
+  "updated": "2026-11-14T16:36:36.143Z",
   "units": [
     {
       "uid": "niwa-apartments-205",
@@ -225,8 +225,8 @@
       "rent": 1595,
       "floor": "Fifth floor",
       "floorNum": 5,
-      "available": "Nov 13, 2026",
-      "availType": "soon",
+      "available": "Now",
+      "availType": "now",
       "features": [],
       "plan": "studio"
     },
