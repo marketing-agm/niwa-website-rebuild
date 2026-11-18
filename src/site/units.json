@@ -1,6 +1,6 @@
 {
-  "checked": "2026-11-17T19:11:40.150Z",
-  "updated": "2026-11-14T16:36:36.143Z",
+  "checked": "2026-11-18T18:52:17.722Z",
+  "updated": "2026-11-18T18:52:17.722Z",
   "units": [
     {
       "uid": "niwa-apartments-205",
@@ -369,24 +369,6 @@
         "On-site laundry"
       ],
       "plan": "studio"
-    },
-    {
-      "uid": "niwa-apartments-808",
-      "id": "808",
-      "property": "Niwa Apartments",
-      "address": "513 1st Ave N",
-      "beds": 2,
-      "baths": 1,
-      "sqft": 715,
-      "rent": 3195,
-      "floor": "Eighth floor",
-      "floorNum": 8,
-      "available": "Now",
-      "availType": "now",
-      "features": [
-        "On-site laundry"
-      ],
-      "plan": "2br1ba"
     }
   ]
 }
