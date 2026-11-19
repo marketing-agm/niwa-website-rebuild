@@ -1,6 +1,6 @@
 {
-  "checked": "2026-11-18T18:52:33.721Z",
-  "updated": "2026-11-18T18:52:33.721Z",
+  "checked": "2026-11-19T18:59:48.037Z",
+  "updated": "2026-11-19T18:59:48.037Z",
   "sources": [
     "Visit Seattle",
     "City of Seattle",
@@ -13,186 +13,6 @@
     "radiusMiles": 3
   },
   "events": [
-    {
-      "id": "e12-120480",
-      "title": "Book swap",
-      "start": "2026-11-18T08:00:00Z",
-      "end": null,
-      "allDay": true,
-      "venue": {
-        "name": "Downtown",
-        "address": "WeRise Wine Bar, 1913 2nd Ave, Seattle, WA 98101",
-        "lat": null,
-        "lng": null
-      },
-      "category": null,
-      "url": "https://www.eventbrite.com/e/sip-swap-book-swap-tickets-2004165809888",
-      "image": null,
-      "priceFrom": 0,
-      "source": "events12"
-    },
-    {
-      "id": "sc-46467",
-      "title": "Seattle Center Sculpture Walk 2026",
-      "start": "2026-11-18T08:00:00Z",
-      "end": null,
-      "allDay": true,
-      "venue": {
-        "name": "Seattle Center",
-        "address": null,
-        "lat": 47.6219473,
-        "lng": -122.3517443
-      },
-      "category": "Museums & galleries",
-      "url": "https://www.seattlecenter.com/events/event-calendar/seattle-center-sculpture-walk-2026-x46467",
-      "image": null,
-      "priceFrom": 0,
-      "source": "seattle-center"
-    },
-    {
-      "id": "sg-205921497",
-      "title": "City Light Review Panel Meeting",
-      "start": "2026-11-18T17:00:00.000Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "Seattle Municipal Tower",
-        "address": "700 5th Ave, Seattle, WA 98104",
-        "lat": null,
-        "lng": null
-      },
-      "category": "Public meetings",
-      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D205921497",
-      "image": null,
-      "priceFrom": null,
-      "source": "seattle-gov"
-    },
-    {
-      "id": "sg-211876634",
-      "title": "November Landlord Workshop",
-      "start": "2026-11-18T18:30:00.000Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "Bertha Knight Landes Seattle City Hall",
-        "address": null,
-        "lat": null,
-        "lng": null
-      },
-      "category": null,
-      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D211876634",
-      "image": null,
-      "priceFrom": null,
-      "source": "seattle-gov"
-    },
-    {
-      "id": "tm-vvG1HZ_4lK11mC",
-      "title": "Women's Basketball vs Pacific Lutheran",
-      "start": "2026-11-18T19:00:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "Seattle University Redhawk Center",
-        "address": "550 14th Ave",
-        "lat": 47.606668,
-        "lng": -122.314139
-      },
-      "category": "Sports",
-      "url": "https://www.ticketmaster.com/womens-basketball-vs-pacific-lutheran-seattle-washington-11-18-2026/event/0F00655AD328AB8E",
-      "image": "https://s1.ticketm.net/dam/e/a91/522865cb-eb57-47fd-80af-cbd902651a91_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": null,
-      "source": "ticketmaster"
-    },
-    {
-      "id": "sg-205232548",
-      "title": "Seattle Music Commission",
-      "start": "2026-11-18T20:00:00.000Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "City Hall (In-Person Attendance) Boards &…",
-        "address": "600 4th Ave l2 280, Seattle, WA 98104",
-        "lat": null,
-        "lng": null
-      },
-      "category": "Music",
-      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D205232548",
-      "image": null,
-      "priceFrom": null,
-      "source": "seattle-gov"
-    },
-    {
-      "id": "sg-178994000",
-      "title": "Open Adoption Hours",
-      "start": "2026-11-18T21:00:00.000Z",
-      "end": "2026-11-19T01:00:00.000Z",
-      "allDay": false,
-      "venue": {
-        "name": "2061 15th Ave. W.",
-        "address": "2061 15th Ave W, Seattle, WA 98119",
-        "lat": null,
-        "lng": null
-      },
-      "category": null,
-      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D178994000",
-      "image": null,
-      "priceFrom": null,
-      "source": "seattle-gov"
-    },
-    {
-      "id": "tm-Z7r9jZ1AAZy_J",
-      "title": "Jervis Campbell (21+ Event)",
-      "start": "2026-11-19T03:00:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "Barboza",
-        "address": "925 E. Pike St.",
-        "lat": 47.610802,
-        "lng": -122.302803
-      },
-      "category": null,
-      "url": "https://www.ticketmaster.com/event/Z7r9jZ1AAZy_J",
-      "image": "https://s1.ticketm.net/dam/c/f51/ee785ed6-f806-4195-98f4-69f67e09df51_106201_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": null,
-      "source": "ticketmaster"
-    },
-    {
-      "id": "tm-Z7r9jZ1A7PO3K",
-      "title": "State Champs w/ Cartel",
-      "start": "2026-11-19T03:00:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "The Showbox",
-        "address": "1426 1st Ave.",
-        "lat": 47.602402,
-        "lng": -122.325996
-      },
-      "category": "Music",
-      "url": "https://www.ticketmaster.com/event/Z7r9jZ1A7PO3K",
-      "image": "https://s1.ticketm.net/dam/a/08b/9a17598b-5f9e-4668-915a-2689c5e5308b_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": null,
-      "source": "ticketmaster"
-    },
-    {
-      "id": "tm-rZ7HnEZ1Af83oV",
-      "title": "WIG!",
-      "start": "2026-11-19T05:00:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "Chop Suey",
-        "address": "1325 E Madison St.",
-        "lat": 47.613485,
-        "lng": -122.314457
-      },
-      "category": "Music",
-      "url": "https://www.ticketweb.com/event/wig-chop-suey-tickets/14412474",
-      "image": "https://s1.ticketm.net/dam/c/df8/81eadad8-4449-412e-a2b1-3d8bbb78edf8_106181_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": 13.41,
-      "source": "ticketmaster"
-    },
     {
       "id": "e12-120462",
       "title": "1980s sing along",
@@ -554,6 +374,24 @@
       "source": "ticketmaster"
     },
     {
+      "id": "sc-46469",
+      "title": "Seattle Center Sculpture Walk 2026",
+      "start": "2026-11-20T08:00:00Z",
+      "end": null,
+      "allDay": true,
+      "venue": {
+        "name": "Seattle Center",
+        "address": null,
+        "lat": 47.6219473,
+        "lng": -122.3517443
+      },
+      "category": "Museums & galleries",
+      "url": "https://www.seattlecenter.com/events/event-calendar/seattle-center-sculpture-walk-2026-x46469",
+      "image": null,
+      "priceFrom": 0,
+      "source": "seattle-center"
+    },
+    {
       "id": "tm-vvG1HZ_7HoxcKS",
       "title": "Seattle Mariners Ballpark Tour",
       "start": "2026-11-20T08:00:00Z",
@@ -639,6 +477,24 @@
       },
       "category": "Public meetings",
       "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D213342357",
+      "image": null,
+      "priceFrom": null,
+      "source": "seattle-gov"
+    },
+    {
+      "id": "sg-182114591",
+      "title": "Open Adoption Hours",
+      "start": "2026-11-20T21:00:00.000Z",
+      "end": "2026-11-21T01:00:00.000Z",
+      "allDay": false,
+      "venue": {
+        "name": "2061 15th Ave. W.",
+        "address": null,
+        "lat": null,
+        "lng": null
+      },
+      "category": null,
+      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D182114591",
       "image": null,
       "priceFrom": null,
       "source": "seattle-gov"
@@ -950,6 +806,24 @@
       "source": "seattle-gov"
     },
     {
+      "id": "sg-214104637",
+      "title": "Intermingle at Interlaken with People and Plants",
+      "start": "2026-11-21T19:00:00.000Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "2451 Delmar Dr E",
+        "address": null,
+        "lat": null,
+        "lng": null
+      },
+      "category": "Volunteering",
+      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D214104637",
+      "image": null,
+      "priceFrom": null,
+      "source": "seattle-gov"
+    },
+    {
       "id": "sg-211497880",
       "title": "Visions of Worldbuilding: Creative Rituals for Grief & Remembrance",
       "start": "2026-11-21T21:00:00.000Z",
@@ -1002,6 +876,114 @@
       "image": null,
       "priceFrom": null,
       "source": "seattle-center"
+    },
+    {
+      "id": "sg-211883484",
+      "title": "Waterfront Park Firepit Socials (Bonfires)",
+      "start": "2026-11-21T23:00:00.000Z",
+      "end": "2026-11-22T02:00:00.000Z",
+      "allDay": false,
+      "venue": {
+        "name": "Waterfront Park",
+        "address": "1951 Alaskan Wy, Seattle, WA 98101",
+        "lat": null,
+        "lng": null
+      },
+      "category": null,
+      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D211883484",
+      "image": null,
+      "priceFrom": null,
+      "source": "seattle-gov"
+    },
+    {
+      "id": "tm-vvG1HZ_FbrwX8g",
+      "title": "COMEDY BAND CAMP ESSENTIALS UPGRADE",
+      "start": "2026-11-22T01:00:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "Paramount Theatre",
+        "address": "911 Pine St",
+        "lat": 47.613566,
+        "lng": -122.33191
+      },
+      "category": "Community",
+      "url": "https://www.ticketmaster.com/comedy-band-camp-essentials-upgrade-seattle-washington-11-21-2026/event/0F0064861ECBE435",
+      "image": "https://s1.ticketm.net/dam/c/03e/e15ef00f-2c87-4421-ae61-d740851a703e_105891_RETINA_LANDSCAPE_16_9.jpg",
+      "priceFrom": null,
+      "source": "ticketmaster"
+    },
+    {
+      "id": "tm-vvG1HZ_AmlUlA1",
+      "title": "JOSH JOHNSON'S COMEDY BAND CAMP",
+      "start": "2026-11-22T01:00:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "Paramount Theatre",
+        "address": "911 Pine St",
+        "lat": 47.613566,
+        "lng": -122.33191
+      },
+      "category": "Arts & theatre",
+      "url": "https://www.ticketmaster.com/josh-johnsons-comedy-band-camp-seattle-washington-11-21-2026/event/0F00645BABDAB14A",
+      "image": "https://s1.ticketm.net/dam/a/a1f/6aec4b02-7063-4485-bcc9-242f0eef6a1f_RETINA_LANDSCAPE_16_9.jpg",
+      "priceFrom": null,
+      "source": "ticketmaster"
+    },
+    {
+      "id": "tm-Z7r9jZ1AAv3Zx",
+      "title": "Psycroptic",
+      "start": "2026-11-22T03:30:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "El Corazon",
+        "address": "109 Eastlake Avenue East",
+        "lat": 47.630699,
+        "lng": -122.3461
+      },
+      "category": "Music",
+      "url": "https://www.ticketmaster.com/event/Z7r9jZ1AAv3Zx",
+      "image": "https://s1.ticketm.net/dam/a/c17/9e496d0b-8ab1-4cd5-b4da-9ce1f17c7c17_RETINA_LANDSCAPE_16_9.jpg",
+      "priceFrom": null,
+      "source": "ticketmaster"
+    },
+    {
+      "id": "tm-vvG1HZ_3xv_ffj",
+      "title": "Warren Miller \"Days Off\" - ft. Katie Burrell LIVE",
+      "start": "2026-11-22T03:30:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "McCaw Hall",
+        "address": "321 Mercer Street",
+        "lat": 47.624473,
+        "lng": -122.35064
+      },
+      "category": "Film",
+      "url": "https://www.ticketmaster.com/warren-miller-days-off-ft-katie-seattle-washington-11-21-2026/event/0F0065288165451C",
+      "image": "https://s1.ticketm.net/dam/a/701/5d0dbd7a-e0d4-436b-b299-cfd2adeda701_483451_RETINA_LANDSCAPE_16_9.jpg",
+      "priceFrom": null,
+      "source": "ticketmaster"
+    },
+    {
+      "id": "tm-vvG1HZ_1he5Tgp",
+      "title": "Switchfoot with special guest Anberlin - Forever Now Tour",
+      "start": "2026-11-22T04:00:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "Moore Theatre",
+        "address": "1932 2nd Ave",
+        "lat": 47.61196,
+        "lng": -122.34142
+      },
+      "category": "Music",
+      "url": "https://www.ticketmaster.com/switchfoot-with-special-guest-anberlin-forever-seattle-washington-11-21-2026/event/0F0064A6C22FFD56",
+      "image": "https://s1.ticketm.net/dam/a/3b1/21f0aa08-a149-4823-b3be-a1563b4a63b1_RETINA_LANDSCAPE_16_9.jpg",
+      "priceFrom": null,
+      "source": "ticketmaster"
     },
     {
       "id": "sc-51740",
@@ -1071,6 +1053,24 @@
       },
       "category": null,
       "url": "https://downtownseattle.org/event/tree-lighting-celebration-at-westlake-park/",
+      "image": null,
+      "priceFrom": 0,
+      "source": "events12"
+    },
+    {
+      "id": "e12-100121",
+      "title": "Pike Place holiday",
+      "start": "2026-11-28T08:00:00Z",
+      "end": null,
+      "allDay": true,
+      "venue": {
+        "name": "Downtown",
+        "address": "Pike Place Market, 85 Pike St, Seattle, WA 98101",
+        "lat": null,
+        "lng": null
+      },
+      "category": null,
+      "url": "https://www.pikeplacemarket.org/events-calendar/31st-annual-magic-in-the-market/",
       "image": null,
       "priceFrom": 0,
       "source": "events12"
