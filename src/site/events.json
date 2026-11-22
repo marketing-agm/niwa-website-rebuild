@@ -1,6 +1,6 @@
 {
-  "checked": "2026-11-21T17:35:04.006Z",
-  "updated": "2026-11-21T17:35:04.006Z",
+  "checked": "2026-11-22T17:50:48.572Z",
+  "updated": "2026-11-22T17:50:48.572Z",
   "sources": [
     "Visit Seattle",
     "City of Seattle",
@@ -13,438 +13,6 @@
     "radiusMiles": 3
   },
   "events": [
-    {
-      "id": "sc-43753",
-      "title": "2026 Seattle Christmas Market",
-      "start": "2026-11-21T08:00:00Z",
-      "end": null,
-      "allDay": true,
-      "venue": {
-        "name": "Fisher Pavilion",
-        "address": null,
-        "lat": 47.6211235,
-        "lng": -122.352168
-      },
-      "category": "Market",
-      "url": "https://www.seattlecenter.com/events/event-calendar/2026-seattle-christmas-market-x43753",
-      "image": null,
-      "priceFrom": null,
-      "source": "seattle-center"
-    },
-    {
-      "id": "e12-119719",
-      "title": "Beer at the science center",
-      "start": "2026-11-21T08:00:00Z",
-      "end": null,
-      "allDay": true,
-      "venue": {
-        "name": "Seattle Center",
-        "address": "Pacific Science Center, 200 2nd Ave N, Seattle, WA 98109",
-        "lat": null,
-        "lng": null
-      },
-      "category": null,
-      "url": "https://pacificsciencecenter.org/events/brewology/",
-      "image": null,
-      "priceFrom": null,
-      "source": "events12"
-    },
-    {
-      "id": "e12-120475",
-      "title": "Documentary films",
-      "start": "2026-11-21T08:00:00Z",
-      "end": "2026-11-22T08:00:00Z",
-      "allDay": true,
-      "venue": {
-        "name": "Waterfront",
-        "address": "Pier 66, 2225 Alaskan Way, Seattle, WA 98101",
-        "lat": null,
-        "lng": null
-      },
-      "category": "Film",
-      "url": "https://waterfrontparkseattle.org/blog/event/the-stories-water-keeps/",
-      "image": null,
-      "priceFrom": 0,
-      "source": "events12"
-    },
-    {
-      "id": "e12-107166",
-      "title": "Gingerbread Village",
-      "start": "2026-11-21T08:00:00Z",
-      "end": null,
-      "allDay": true,
-      "venue": {
-        "name": "Downtown",
-        "address": "Sheraton Grand Seattle, 1400 6th Ave, Seattle, WA 98101",
-        "lat": null,
-        "lng": null
-      },
-      "category": null,
-      "url": "https://www.breakthrought1d.org/greaternorthwest/events/gingerbread-village-november-19-january-1/",
-      "image": null,
-      "priceFrom": 0,
-      "source": "events12"
-    },
-    {
-      "id": "e12-104318",
-      "title": "Italian film festival",
-      "start": "2026-11-21T08:00:00Z",
-      "end": "2026-11-22T08:00:00Z",
-      "allDay": true,
-      "venue": {
-        "name": "Lower Queen Anne",
-        "address": "SIFF Cinema Uptown, 511 Queen Anne Ave N, Seattle, WA 98109",
-        "lat": null,
-        "lng": null
-      },
-      "category": "Festivals",
-      "url": "https://www.cinemaitalianstyleseattle.org/",
-      "image": null,
-      "priceFrom": null,
-      "source": "events12"
-    },
-    {
-      "id": "tm-vvG1HZ_f1e4dtM",
-      "title": "Lumen Field Stadium Tours",
-      "start": "2026-11-21T08:00:00Z",
-      "end": null,
-      "allDay": true,
-      "venue": {
-        "name": "Lumen Field Stadium Tours",
-        "address": "800 Occidental Ave S",
-        "lat": 47.596704,
-        "lng": -122.332085
-      },
-      "category": "Community",
-      "url": "https://www.ticketmaster.com/lumen-field-stadium-tours-seattle-washington-11-21-2026/event/0F00654282543A77",
-      "image": "https://s1.ticketm.net/dam/a/6ba/cca88b1c-9704-49ea-83ff-23d0e4c246ba_1665171_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": null,
-      "source": "ticketmaster"
-    },
-    {
-      "id": "sc-46470",
-      "title": "Seattle Center Sculpture Walk 2026",
-      "start": "2026-11-21T08:00:00Z",
-      "end": null,
-      "allDay": true,
-      "venue": {
-        "name": "Seattle Center",
-        "address": null,
-        "lat": 47.6219473,
-        "lng": -122.3517443
-      },
-      "category": "Museums & galleries",
-      "url": "https://www.seattlecenter.com/events/event-calendar/seattle-center-sculpture-walk-2026-x46470",
-      "image": null,
-      "priceFrom": 0,
-      "source": "seattle-center"
-    },
-    {
-      "id": "e12-113465",
-      "title": "Thanksgiving scavenger hunt",
-      "start": "2026-11-21T08:00:00Z",
-      "end": null,
-      "allDay": true,
-      "venue": {
-        "name": "Central District",
-        "address": "Byrd Barr Place, 722 18th Ave, Seattle, WA 98122",
-        "lat": null,
-        "lng": null
-      },
-      "category": null,
-      "url": "https://cascade.org/cranksgiving-2026",
-      "image": null,
-      "priceFrom": null,
-      "source": "events12"
-    },
-    {
-      "id": "sc-47819",
-      "title": "International Gem & Jewelry Show",
-      "start": "2026-11-21T18:00:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "Seattle Center Exhibition Hall",
-        "address": null,
-        "lat": 47.6240056,
-        "lng": -122.351606
-      },
-      "category": null,
-      "url": "https://www.seattlecenter.com/events/event-calendar/international-gem-and-jewelry-show-x47819",
-      "image": null,
-      "priceFrom": null,
-      "source": "seattle-center"
-    },
-    {
-      "id": "sg-209131482",
-      "title": "Planting at St. Mark's Greenbelt",
-      "start": "2026-11-21T18:00:00.000Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "1500 Lakeview Blvd E Seattle",
-        "address": null,
-        "lat": null,
-        "lng": null
-      },
-      "category": "Volunteering",
-      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D209131482",
-      "image": null,
-      "priceFrom": null,
-      "source": "seattle-gov"
-    },
-    {
-      "id": "sg-214104637",
-      "title": "Intermingle at Interlaken with People and Plants",
-      "start": "2026-11-21T19:00:00.000Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "2451 Delmar Dr E",
-        "address": null,
-        "lat": null,
-        "lng": null
-      },
-      "category": "Volunteering",
-      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D214104637",
-      "image": null,
-      "priceFrom": null,
-      "source": "seattle-gov"
-    },
-    {
-      "id": "sg-179000196",
-      "title": "Open Adoption Hours",
-      "start": "2026-11-21T21:00:00.000Z",
-      "end": "2026-11-22T01:00:00.000Z",
-      "allDay": false,
-      "venue": {
-        "name": "2061 15th Ave. W.",
-        "address": "2061 15th Ave W, Seattle, WA 98119",
-        "lat": null,
-        "lng": null
-      },
-      "category": null,
-      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D179000196",
-      "image": null,
-      "priceFrom": null,
-      "source": "seattle-gov"
-    },
-    {
-      "id": "sg-211497880",
-      "title": "Visions of Worldbuilding: Creative Rituals for Grief & Remembrance",
-      "start": "2026-11-21T21:00:00.000Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "ARTS at King Street Station",
-        "address": null,
-        "lat": null,
-        "lng": null
-      },
-      "category": null,
-      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D211497880",
-      "image": null,
-      "priceFrom": null,
-      "source": "seattle-gov"
-    },
-    {
-      "id": "sg-211497896",
-      "title": "VoW Guided Tour with Eula Scott Bynoe",
-      "start": "2026-11-21T21:00:00.000Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "ARTS at King Street Station",
-        "address": null,
-        "lat": null,
-        "lng": null
-      },
-      "category": "Tours",
-      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D211497896",
-      "image": null,
-      "priceFrom": null,
-      "source": "seattle-gov"
-    },
-    {
-      "id": "sc-51738",
-      "title": "Chicka Chicka Boom Boom: The Holiday Show",
-      "start": "2026-11-21T22:00:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "Seattle Children&#39;s Theatre",
-        "address": null,
-        "lat": 47.6204545,
-        "lng": -122.3523744
-      },
-      "category": "Festivals",
-      "url": "https://www.seattlecenter.com/events/event-calendar/chicka-chicka-boom-boom-the-holiday-show-x51738",
-      "image": null,
-      "priceFrom": null,
-      "source": "seattle-center"
-    },
-    {
-      "id": "sg-211883484",
-      "title": "Waterfront Park Firepit Socials (Bonfires)",
-      "start": "2026-11-21T23:00:00.000Z",
-      "end": "2026-11-22T02:00:00.000Z",
-      "allDay": false,
-      "venue": {
-        "name": "Waterfront Park",
-        "address": "1951 Alaskan Wy, Seattle, WA 98101",
-        "lat": null,
-        "lng": null
-      },
-      "category": null,
-      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D211883484",
-      "image": null,
-      "priceFrom": null,
-      "source": "seattle-gov"
-    },
-    {
-      "id": "tm-vvG1HZ_FbrwX8g",
-      "title": "COMEDY BAND CAMP ESSENTIALS UPGRADE",
-      "start": "2026-11-22T01:00:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "Paramount Theatre",
-        "address": "911 Pine St",
-        "lat": 47.613566,
-        "lng": -122.33191
-      },
-      "category": "Community",
-      "url": "https://www.ticketmaster.com/comedy-band-camp-essentials-upgrade-seattle-washington-11-21-2026/event/0F0064861ECBE435",
-      "image": "https://s1.ticketm.net/dam/c/03e/e15ef00f-2c87-4421-ae61-d740851a703e_105891_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": null,
-      "source": "ticketmaster"
-    },
-    {
-      "id": "tm-vvG1HZ_AmlUlA1",
-      "title": "JOSH JOHNSON'S COMEDY BAND CAMP",
-      "start": "2026-11-22T01:00:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "Paramount Theatre",
-        "address": "911 Pine St",
-        "lat": 47.613566,
-        "lng": -122.33191
-      },
-      "category": "Arts & theatre",
-      "url": "https://www.ticketmaster.com/josh-johnsons-comedy-band-camp-seattle-washington-11-21-2026/event/0F00645BABDAB14A",
-      "image": "https://s1.ticketm.net/dam/a/a1f/6aec4b02-7063-4485-bcc9-242f0eef6a1f_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": null,
-      "source": "ticketmaster"
-    },
-    {
-      "id": "tm-Z7r9jZ1AAv3Zx",
-      "title": "Psycroptic",
-      "start": "2026-11-22T03:30:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "El Corazon",
-        "address": "109 Eastlake Avenue East",
-        "lat": 47.630699,
-        "lng": -122.3461
-      },
-      "category": "Music",
-      "url": "https://www.ticketmaster.com/event/Z7r9jZ1AAv3Zx",
-      "image": "https://s1.ticketm.net/dam/a/c17/9e496d0b-8ab1-4cd5-b4da-9ce1f17c7c17_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": null,
-      "source": "ticketmaster"
-    },
-    {
-      "id": "tm-vvG1HZ_3xv_ffj",
-      "title": "Warren Miller \"Days Off\" - ft. Katie Burrell LIVE",
-      "start": "2026-11-22T03:30:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "McCaw Hall",
-        "address": "321 Mercer Street",
-        "lat": 47.624473,
-        "lng": -122.35064
-      },
-      "category": "Film",
-      "url": "https://www.ticketmaster.com/warren-miller-days-off-ft-katie-seattle-washington-11-21-2026/event/0F0065288165451C",
-      "image": "https://s1.ticketm.net/dam/a/701/5d0dbd7a-e0d4-436b-b299-cfd2adeda701_483451_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": null,
-      "source": "ticketmaster"
-    },
-    {
-      "id": "tm-vvG1HZ_1he5Tgp",
-      "title": "Switchfoot with special guest Anberlin - Forever Now Tour",
-      "start": "2026-11-22T04:00:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "Moore Theatre",
-        "address": "1932 2nd Ave",
-        "lat": 47.61196,
-        "lng": -122.34142
-      },
-      "category": "Music",
-      "url": "https://www.ticketmaster.com/switchfoot-with-special-guest-anberlin-forever-seattle-washington-11-21-2026/event/0F0064A6C22FFD56",
-      "image": "https://s1.ticketm.net/dam/a/3b1/21f0aa08-a149-4823-b3be-a1563b4a63b1_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": null,
-      "source": "ticketmaster"
-    },
-    {
-      "id": "tm-rZ7HnEZ1AfGzC7",
-      "title": "Bae Rave - A Night of R&B Bae Remixes, Edits & Originals",
-      "start": "2026-11-22T05:00:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "Chop Suey",
-        "address": "1325 E Madison St.",
-        "lat": 47.613485,
-        "lng": -122.314457
-      },
-      "category": "Music",
-      "url": "https://www.ticketweb.com/event/bae-rave-a-chop-suey-tickets/14338384",
-      "image": "https://s1.ticketm.net/dam/c/df8/81eadad8-4449-412e-a2b1-3d8bbb78edf8_106181_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": null,
-      "source": "ticketmaster"
-    },
-    {
-      "id": "tm-Z7r9jZ1A7PgC4",
-      "title": "Jai Wolf",
-      "start": "2026-11-22T05:00:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "The Showbox",
-        "address": "1426 1st Ave.",
-        "lat": 47.602402,
-        "lng": -122.325996
-      },
-      "category": "Music",
-      "url": "https://www.ticketmaster.com/event/Z7r9jZ1A7PgC4",
-      "image": "https://s1.ticketm.net/dam/a/549/721f7dd0-23f4-4dbd-9e41-03d1147fc549_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": null,
-      "source": "ticketmaster"
-    },
-    {
-      "id": "tm-Z7r9jZ1AA70ub",
-      "title": "Gimme Gimme Disco - 21+",
-      "start": "2026-11-22T06:00:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "The Crocodile",
-        "address": "2200 2nd. Ave.",
-        "lat": 47.6157,
-        "lng": -122.344498
-      },
-      "category": "Music",
-      "url": "https://www.ticketmaster.com/event/Z7r9jZ1AA70ub",
-      "image": "https://s1.ticketm.net/dam/a/61d/eba5cfb8-4fd8-41df-ae51-5136d75c361d_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": null,
-      "source": "ticketmaster"
-    },
     {
       "id": "sc-43755",
       "title": "2026 Seattle Christmas Market",
@@ -462,6 +30,60 @@
       "image": null,
       "priceFrom": null,
       "source": "seattle-center"
+    },
+    {
+      "id": "e12-120475",
+      "title": "Documentary films",
+      "start": "2026-11-22T08:00:00Z",
+      "end": null,
+      "allDay": true,
+      "venue": {
+        "name": "Waterfront",
+        "address": "Pier 66, 2225 Alaskan Way, Seattle, WA 98101",
+        "lat": null,
+        "lng": null
+      },
+      "category": "Film",
+      "url": "https://waterfrontparkseattle.org/blog/event/the-stories-water-keeps/",
+      "image": null,
+      "priceFrom": 0,
+      "source": "events12"
+    },
+    {
+      "id": "e12-107166",
+      "title": "Gingerbread Village",
+      "start": "2026-11-22T08:00:00Z",
+      "end": null,
+      "allDay": true,
+      "venue": {
+        "name": "Downtown",
+        "address": "Sheraton Grand Seattle, 1400 6th Ave, Seattle, WA 98101",
+        "lat": null,
+        "lng": null
+      },
+      "category": null,
+      "url": "https://www.breakthrought1d.org/greaternorthwest/events/gingerbread-village-november-19-january-1/",
+      "image": null,
+      "priceFrom": 0,
+      "source": "events12"
+    },
+    {
+      "id": "e12-104318",
+      "title": "Italian film festival",
+      "start": "2026-11-22T08:00:00Z",
+      "end": null,
+      "allDay": true,
+      "venue": {
+        "name": "Lower Queen Anne",
+        "address": "SIFF Cinema Uptown, 511 Queen Anne Ave N, Seattle, WA 98109",
+        "lat": null,
+        "lng": null
+      },
+      "category": "Festivals",
+      "url": "https://www.cinemaitalianstyleseattle.org/",
+      "image": null,
+      "priceFrom": null,
+      "source": "events12"
     },
     {
       "id": "tm-vvG1HZ_f1e9dnZ",
@@ -716,6 +338,24 @@
       "source": "events12"
     },
     {
+      "id": "sc-46472",
+      "title": "Seattle Center Sculpture Walk 2026",
+      "start": "2026-11-23T08:00:00Z",
+      "end": null,
+      "allDay": true,
+      "venue": {
+        "name": "Seattle Center",
+        "address": null,
+        "lat": 47.6219473,
+        "lng": -122.3517443
+      },
+      "category": "Museums & galleries",
+      "url": "https://www.seattlecenter.com/events/event-calendar/seattle-center-sculpture-walk-2026-x46472",
+      "image": null,
+      "priceFrom": 0,
+      "source": "seattle-center"
+    },
+    {
       "id": "tm-vvG1HZ_7HoNcKM",
       "title": "Seattle Mariners Ballpark Tour",
       "start": "2026-11-23T08:00:00Z",
@@ -750,6 +390,24 @@
       "image": null,
       "priceFrom": null,
       "source": "seattle-gov"
+    },
+    {
+      "id": "sc-43756",
+      "title": "2026 Seattle Christmas Market",
+      "start": "2026-11-24T00:00:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "Fisher Pavilion",
+        "address": null,
+        "lat": 47.6211235,
+        "lng": -122.352168
+      },
+      "category": "Market",
+      "url": "https://www.seattlecenter.com/events/event-calendar/2026-seattle-christmas-market-x43756",
+      "image": null,
+      "priceFrom": null,
+      "source": "seattle-center"
     },
     {
       "id": "sc-artists-at-the-center-rainier-breakers",
@@ -819,6 +477,24 @@
       },
       "category": null,
       "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D204684394",
+      "image": null,
+      "priceFrom": null,
+      "source": "seattle-gov"
+    },
+    {
+      "id": "sg-179000198",
+      "title": "Open Adoption Hours",
+      "start": "2026-11-24T21:00:00.000Z",
+      "end": "2026-11-25T01:00:00.000Z",
+      "allDay": false,
+      "venue": {
+        "name": "2061 15th Ave. W.",
+        "address": "2061 15th Ave W, Seattle, WA 98119",
+        "lat": null,
+        "lng": null
+      },
+      "category": null,
+      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D179000198",
       "image": null,
       "priceFrom": null,
       "source": "seattle-gov"
@@ -914,6 +590,186 @@
       "source": "ticketmaster"
     },
     {
+      "id": "tm-vvG1HZ_4lK1Bm8",
+      "title": "Women's Basketball vs Weber State",
+      "start": "2026-11-25T20:00:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "Seattle University Redhawk Center",
+        "address": "550 14th Ave",
+        "lat": 47.606668,
+        "lng": -122.314139
+      },
+      "category": "Sports",
+      "url": "https://www.ticketmaster.com/womens-basketball-vs-weber-state-seattle-washington-11-25-2026/event/0F00655AD32BAB90",
+      "image": "https://s1.ticketm.net/dam/e/8aa/2c1ce012-fb76-4e9b-bd1b-2bca69f838aa_RETINA_LANDSCAPE_16_9.jpg",
+      "priceFrom": null,
+      "source": "ticketmaster"
+    },
+    {
+      "id": "sc-51742",
+      "title": "Chicka Chicka Boom Boom: The Holiday Show",
+      "start": "2026-11-26T01:00:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "Seattle Children&#39;s Theatre",
+        "address": null,
+        "lat": 47.6204545,
+        "lng": -122.3523744
+      },
+      "category": "Festivals",
+      "url": "https://www.seattlecenter.com/events/event-calendar/chicka-chicka-boom-boom-the-holiday-show-x51742",
+      "image": null,
+      "priceFrom": null,
+      "source": "seattle-center"
+    },
+    {
+      "id": "tm-vvG1HZ_G3OjQ1c",
+      "title": "Seattle Kraken vs. Chicago Blackhawks",
+      "start": "2026-11-26T02:40:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "Climate Pledge Arena",
+        "address": "334 1st Ave N",
+        "lat": 47.622126,
+        "lng": -122.354016
+      },
+      "category": "Sports",
+      "url": "https://www.ticketmaster.com/seattle-kraken-vs-chicago-blackhawks-seattle-washington-11-25-2026/event/0F0064C4A071A2AD",
+      "image": "https://s1.ticketm.net/dam/a/1da/790764fd-6deb-4208-8138-f64722c0d1da_1791341_RETINA_LANDSCAPE_16_9.jpg",
+      "priceFrom": null,
+      "source": "ticketmaster"
+    },
+    {
+      "id": "tm-vvG1HZ_5K2Rs9k",
+      "title": "Alter Bridge - What Lies Within Tour",
+      "start": "2026-11-26T03:00:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "Moore Theatre",
+        "address": "1932 2nd Ave",
+        "lat": 47.61196,
+        "lng": -122.34142
+      },
+      "category": "Music",
+      "url": "https://www.ticketmaster.com/alter-bridge-what-lies-within-tour-seattle-washington-11-25-2026/event/0F0064B4CFBF15C6",
+      "image": "https://s1.ticketm.net/dam/a/19a/5916bf6f-8c45-479b-9492-388ae74ab19a_RETINA_LANDSCAPE_16_9.jpg",
+      "priceFrom": null,
+      "source": "ticketmaster"
+    },
+    {
+      "id": "tm-Z7r9jZ1AA79GN",
+      "title": "Distant",
+      "start": "2026-11-26T03:00:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "El Corazon",
+        "address": "109 Eastlake Avenue East",
+        "lat": 47.630699,
+        "lng": -122.3461
+      },
+      "category": null,
+      "url": "https://www.ticketmaster.com/event/Z7r9jZ1AA79GN",
+      "image": "https://s1.ticketm.net/dam/c/f51/ee785ed6-f806-4195-98f4-69f67e09df51_106201_RETINA_LANDSCAPE_16_9.jpg",
+      "priceFrom": null,
+      "source": "ticketmaster"
+    },
+    {
+      "id": "tm-Z7r9jZ1A7PdZb",
+      "title": "Boston Manor w/ Ben Quad",
+      "start": "2026-11-26T03:30:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "The Showbox",
+        "address": "1426 1st Ave.",
+        "lat": 47.602402,
+        "lng": -122.325996
+      },
+      "category": "Music",
+      "url": "https://www.ticketmaster.com/event/Z7r9jZ1A7PdZb",
+      "image": "https://s1.ticketm.net/dam/a/55c/feaf81b5-444d-4940-aa80-334c428eb55c_1132191_RETINA_LANDSCAPE_16_9.jpg",
+      "priceFrom": null,
+      "source": "ticketmaster"
+    },
+    {
+      "id": "tm-rZ7HnEZ1Af8807",
+      "title": "Bupp! Gameshow Night!",
+      "start": "2026-11-26T03:30:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "Chop Suey",
+        "address": "1325 E Madison St.",
+        "lat": 47.613485,
+        "lng": -122.314457
+      },
+      "category": "Community",
+      "url": "https://www.ticketweb.com/event/bupp-gameshow-night-chop-suey-tickets/14410904",
+      "image": "https://s1.ticketm.net/dam/c/8cf/a6653880-7899-4f67-8067-1f95f4d158cf_124761_RETINA_LANDSCAPE_16_9.jpg",
+      "priceFrom": 14.99,
+      "source": "ticketmaster"
+    },
+    {
+      "id": "sg-204684395",
+      "title": "Connect and Assist: Utility Bill Assistance",
+      "start": "2026-11-26T18:00:00.000Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "Seattle Municipal Tower",
+        "address": "700 5th Ave, Seattle, WA 98104",
+        "lat": null,
+        "lng": null
+      },
+      "category": null,
+      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D204684395",
+      "image": null,
+      "priceFrom": null,
+      "source": "seattle-gov"
+    },
+    {
+      "id": "sg-207247733",
+      "title": "Daybreak Community & Land Tending",
+      "start": "2026-11-26T19:00:00.000Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "Seattle",
+        "address": null,
+        "lat": null,
+        "lng": null
+      },
+      "category": "Volunteering",
+      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D207247733",
+      "image": null,
+      "priceFrom": null,
+      "source": "seattle-gov"
+    },
+    {
+      "id": "e12-120483",
+      "title": "Glowing art",
+      "start": "2026-11-27T08:00:00Z",
+      "end": null,
+      "allDay": true,
+      "venue": {
+        "name": "Downtown",
+        "address": "Coliseum, 500 Pike St, Seattle, WA 98101",
+        "lat": null,
+        "lng": null
+      },
+      "category": "Museums & galleries",
+      "url": "https://conruartfoundation.org/coliseum-of-art/let-there-be-light",
+      "image": null,
+      "priceFrom": 0,
+      "source": "events12"
+    },
+    {
       "id": "e12-119075",
       "title": "Gourmet cooking class",
       "start": "2026-11-27T08:00:00Z",
@@ -1004,6 +860,78 @@
       "source": "seattle-center"
     },
     {
+      "id": "sc-george-balanchine-s-the-nutcracker-2026",
+      "title": "George Balanchine’s The Nutcracker 2026",
+      "start": "2026-11-27T22:00:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "Marion Oliver McCaw Hall",
+        "address": null,
+        "lat": 47.6239994,
+        "lng": -122.3502714
+      },
+      "category": "Museums & galleries",
+      "url": "https://www.seattlecenter.com/events/event-calendar/george-balanchines-the-nutcracker-2026",
+      "image": null,
+      "priceFrom": null,
+      "source": "seattle-center"
+    },
+    {
+      "id": "sc-winterfest-entertainment-holiday-harmony",
+      "title": "Winterfest Entertainment: Holiday Harmony POP",
+      "start": "2026-11-27T22:00:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "Armory",
+        "address": null,
+        "lat": 47.6215514,
+        "lng": -122.3509426
+      },
+      "category": "Festivals",
+      "url": "https://www.seattlecenter.com/events/event-calendar/winterfest-entertainment-holiday-harmony-pop",
+      "image": null,
+      "priceFrom": 0,
+      "source": "seattle-center"
+    },
+    {
+      "id": "sc-winterfest-entertainment-dj-fishlure",
+      "title": "Winterfest Entertainment: DJ Fishlure",
+      "start": "2026-11-27T23:30:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "Armory",
+        "address": null,
+        "lat": 47.6215514,
+        "lng": -122.3509426
+      },
+      "category": "Festivals",
+      "url": "https://www.seattlecenter.com/events/event-calendar/winterfest-entertainment-dj-fishlure",
+      "image": null,
+      "priceFrom": 0,
+      "source": "seattle-center"
+    },
+    {
+      "id": "sc-symetra-movie-nights-at-winterfest-the-p",
+      "title": "Symetra Movie Nights at Winterfest: The Polar Express",
+      "start": "2026-11-28T02:30:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "Armory",
+        "address": null,
+        "lat": 47.6215514,
+        "lng": -122.3509426
+      },
+      "category": "Festivals",
+      "url": "https://www.seattlecenter.com/events/event-calendar/symetra-movie-nights-at-winterfest-the-polar-express",
+      "image": null,
+      "priceFrom": 0,
+      "source": "seattle-center"
+    },
+    {
       "id": "sc-peter-pan-goes-wrong-preview-performance",
       "title": "Peter Pan Goes Wrong",
       "start": "2026-11-28T03:30:00Z",
@@ -1022,6 +950,24 @@
       "source": "seattle-center"
     },
     {
+      "id": "tm-Z7r9jZ1AAZebe",
+      "title": "The Wizard of Oz - Musical",
+      "start": "2026-11-28T03:30:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "5th Avenue Theatre",
+        "address": "1308 5th Ave",
+        "lat": 47.6115,
+        "lng": -122.334297
+      },
+      "category": null,
+      "url": "https://www.ticketmaster.com/event/Z7r9jZ1AAZebe",
+      "image": "https://s1.ticketm.net/dam/c/8cf/a6653880-7899-4f67-8067-1f95f4d158cf_124761_RETINA_LANDSCAPE_16_9.jpg",
+      "priceFrom": null,
+      "source": "ticketmaster"
+    },
+    {
       "id": "e12-100121",
       "title": "Pike Place holiday",
       "start": "2026-11-28T08:00:00Z",
@@ -1038,6 +984,42 @@
       "image": null,
       "priceFrom": 0,
       "source": "events12"
+    },
+    {
+      "id": "sg-212982704",
+      "title": "Magic in the Market",
+      "start": "2026-11-28T19:00:00.000Z",
+      "end": "2026-11-29T02:00:00.000Z",
+      "allDay": false,
+      "venue": {
+        "name": "Pike Place Market",
+        "address": "85 Pike St, Seattle, WA 98101",
+        "lat": null,
+        "lng": null
+      },
+      "category": "Market",
+      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D212982704",
+      "image": null,
+      "priceFrom": null,
+      "source": "seattle-gov"
+    },
+    {
+      "id": "sg-214104626",
+      "title": "Habitat enhancement (weeding) and planting",
+      "start": "2026-11-28T20:00:00.000Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "3801 W Government Way",
+        "address": null,
+        "lat": null,
+        "lng": null
+      },
+      "category": "Volunteering",
+      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D214104626",
+      "image": null,
+      "priceFrom": null,
+      "source": "seattle-gov"
     },
     {
       "id": "e12-118640",
@@ -1073,6 +1055,24 @@
       "url": "https://www.seattlemarathon.org/marathon-and-half-marathon",
       "image": null,
       "priceFrom": null,
+      "source": "events12"
+    },
+    {
+      "id": "e12-117680",
+      "title": "Family Christmas event",
+      "start": "2026-11-30T08:00:00Z",
+      "end": null,
+      "allDay": true,
+      "venue": {
+        "name": "Downtown",
+        "address": "The Westin Seattle, 1900 5th Ave, Seattle, WA 98101",
+        "lat": null,
+        "lng": null
+      },
+      "category": "Family",
+      "url": "https://providencewa.ejoinme.org/26FP",
+      "image": null,
+      "priceFrom": 0,
       "source": "events12"
     },
     {
