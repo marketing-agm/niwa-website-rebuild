@@ -1,6 +1,6 @@
 {
-  "checked": "2026-11-24T20:40:54.344Z",
-  "updated": "2026-11-24T20:40:54.344Z",
+  "checked": "2026-11-25T19:57:18.339Z",
+  "updated": "2026-11-25T19:57:18.339Z",
   "sources": [
     "Visit Seattle",
     "City of Seattle",
@@ -16,7 +16,7 @@
     {
       "id": "e12-107166",
       "title": "Gingerbread Village",
-      "start": "2026-11-24T08:00:00Z",
+      "start": "2026-11-25T08:00:00Z",
       "end": null,
       "allDay": true,
       "venue": {
@@ -30,150 +30,6 @@
       "image": null,
       "priceFrom": 0,
       "source": "events12"
-    },
-    {
-      "id": "sc-46473",
-      "title": "Seattle Center Sculpture Walk 2026",
-      "start": "2026-11-24T08:00:00Z",
-      "end": null,
-      "allDay": true,
-      "venue": {
-        "name": "Seattle Center",
-        "address": null,
-        "lat": 47.6219473,
-        "lng": -122.3517443
-      },
-      "category": "Museums & galleries",
-      "url": "https://www.seattlecenter.com/events/event-calendar/seattle-center-sculpture-walk-2026-x46473",
-      "image": null,
-      "priceFrom": 0,
-      "source": "seattle-center"
-    },
-    {
-      "id": "sg-214104628",
-      "title": "June's Cathedral Planting and Meadowscaping",
-      "start": "2026-11-24T17:30:00.000Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "3801 W Government Way",
-        "address": null,
-        "lat": null,
-        "lng": null
-      },
-      "category": "Volunteering",
-      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D214104628",
-      "image": null,
-      "priceFrom": null,
-      "source": "seattle-gov"
-    },
-    {
-      "id": "sg-204684394",
-      "title": "Connect and Assist: Utility Bill Assistance",
-      "start": "2026-11-24T18:00:00.000Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "Seattle Municipal Tower",
-        "address": "700 5th Ave, Seattle, WA 98104",
-        "lat": null,
-        "lng": null
-      },
-      "category": null,
-      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D204684394",
-      "image": null,
-      "priceFrom": null,
-      "source": "seattle-gov"
-    },
-    {
-      "id": "sg-179000198",
-      "title": "Open Adoption Hours",
-      "start": "2026-11-24T21:00:00.000Z",
-      "end": "2026-11-25T01:00:00.000Z",
-      "allDay": false,
-      "venue": {
-        "name": "2061 15th Ave. W.",
-        "address": "2061 15th Ave W, Seattle, WA 98119",
-        "lat": null,
-        "lng": null
-      },
-      "category": null,
-      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D179000198",
-      "image": null,
-      "priceFrom": null,
-      "source": "seattle-gov"
-    },
-    {
-      "id": "sc-43757",
-      "title": "2026 Seattle Christmas Market",
-      "start": "2026-11-25T00:00:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "Fisher Pavilion",
-        "address": null,
-        "lat": 47.6211235,
-        "lng": -122.352168
-      },
-      "category": "Market",
-      "url": "https://www.seattlecenter.com/events/event-calendar/2026-seattle-christmas-market-x43757",
-      "image": null,
-      "priceFrom": null,
-      "source": "seattle-center"
-    },
-    {
-      "id": "tm-Z7r9jZ1AAZFZ3",
-      "title": "Emma Ruth Rundle (21 and Over)",
-      "start": "2026-11-25T03:00:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "Neumos",
-        "address": "925 East Pike Street",
-        "lat": 47.610802,
-        "lng": -122.302803
-      },
-      "category": "Music",
-      "url": "https://www.ticketmaster.com/event/Z7r9jZ1AAZFZ3",
-      "image": "https://s1.ticketm.net/dam/a/e81/b3b9d1ce-d9bc-4082-82c6-84b1839c0e81_359031_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": null,
-      "source": "ticketmaster"
-    },
-    {
-      "id": "tm-rZ7HnEZ1Afe6uV",
-      "title": "SCRAMBLER JAM!",
-      "start": "2026-11-25T03:00:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "Chop Suey",
-        "address": "1325 E Madison St.",
-        "lat": 47.613485,
-        "lng": -122.314457
-      },
-      "category": "Music",
-      "url": "https://www.ticketweb.com/event/scrambler-jam-chop-suey-tickets/14087374",
-      "image": "https://s1.ticketm.net/dam/c/060/c5c08e7a-9912-456c-a060-2758be94e060_105881_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": null,
-      "source": "ticketmaster"
-    },
-    {
-      "id": "tm-vvG1HZ_aDKprbj",
-      "title": "Scott Bradlee's Postmodern Jukebox",
-      "start": "2026-11-25T04:00:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "Paramount Theatre",
-        "address": "911 Pine St",
-        "lat": 47.613566,
-        "lng": -122.33191
-      },
-      "category": "Music",
-      "url": "https://www.ticketmaster.com/scott-bradlees-postmodern-jukebox-seattle-washington-11-24-2026/event/0F00649ED359E61C",
-      "image": "https://s1.ticketm.net/dam/a/984/1f04975e-793c-4068-88b5-4b92a3b24984_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": null,
-      "source": "ticketmaster"
     },
     {
       "id": "e12-118516",
@@ -392,6 +248,24 @@
       "source": "ticketmaster"
     },
     {
+      "id": "sc-46475",
+      "title": "Seattle Center Sculpture Walk 2026",
+      "start": "2026-11-26T08:00:00Z",
+      "end": null,
+      "allDay": true,
+      "venue": {
+        "name": "Seattle Center",
+        "address": null,
+        "lat": 47.6219473,
+        "lng": -122.3517443
+      },
+      "category": "Museums & galleries",
+      "url": "https://www.seattlecenter.com/events/event-calendar/seattle-center-sculpture-walk-2026-x46475",
+      "image": null,
+      "priceFrom": 0,
+      "source": "seattle-center"
+    },
+    {
       "id": "sg-204684395",
       "title": "Connect and Assist: Utility Bill Assistance",
       "start": "2026-11-26T18:00:00.000Z",
@@ -426,6 +300,42 @@
       "image": null,
       "priceFrom": null,
       "source": "seattle-gov"
+    },
+    {
+      "id": "sg-178997649",
+      "title": "Open Adoption Hours",
+      "start": "2026-11-26T21:00:00.000Z",
+      "end": "2026-11-27T01:00:00.000Z",
+      "allDay": false,
+      "venue": {
+        "name": "2061 15th Ave. W.",
+        "address": "2061 15th Ave W, Seattle, WA 98119",
+        "lat": null,
+        "lng": null
+      },
+      "category": null,
+      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D178997649",
+      "image": null,
+      "priceFrom": null,
+      "source": "seattle-gov"
+    },
+    {
+      "id": "sc-43759",
+      "title": "2026 Seattle Christmas Market",
+      "start": "2026-11-27T08:00:00Z",
+      "end": null,
+      "allDay": true,
+      "venue": {
+        "name": "Fisher Pavilion",
+        "address": null,
+        "lat": 47.6211235,
+        "lng": -122.352168
+      },
+      "category": "Market",
+      "url": "https://www.seattlecenter.com/events/event-calendar/2026-seattle-christmas-market-x43759",
+      "image": null,
+      "priceFrom": null,
+      "source": "seattle-center"
     },
     {
       "id": "e12-120483",
@@ -968,6 +878,60 @@
       "source": "ticketmaster"
     },
     {
+      "id": "tm-vvG1HZ_G3OqB1B",
+      "title": "Seattle Kraken vs. Edmonton Oilers",
+      "start": "2026-11-29T03:00:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "Climate Pledge Arena",
+        "address": "334 1st Ave N",
+        "lat": 47.622126,
+        "lng": -122.354016
+      },
+      "category": "Sports",
+      "url": "https://www.ticketmaster.com/seattle-kraken-vs-edmonton-oilers-seattle-washington-11-28-2026/event/0F0064C4A077A2BA",
+      "image": "https://s1.ticketm.net/dam/a/1da/790764fd-6deb-4208-8138-f64722c0d1da_1791341_RETINA_LANDSCAPE_16_9.jpg",
+      "priceFrom": null,
+      "source": "ticketmaster"
+    },
+    {
+      "id": "sc-50399",
+      "title": "Peter Pan Goes Wrong: Preview Performance",
+      "start": "2026-11-29T03:30:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "Seattle Repertory Theatre",
+        "address": null,
+        "lat": 47.6239152,
+        "lng": -122.3536861
+      },
+      "category": null,
+      "url": "https://www.seattlecenter.com/events/event-calendar/peter-pan-goes-wrong-preview-performance-x50399",
+      "image": null,
+      "priceFrom": null,
+      "source": "seattle-center"
+    },
+    {
+      "id": "tm-Z7r9jZ1AAZePa",
+      "title": "The Wizard of Oz - Musical",
+      "start": "2026-11-29T03:30:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "5th Avenue Theatre",
+        "address": "1308 5th Ave",
+        "lat": 47.6115,
+        "lng": -122.334297
+      },
+      "category": null,
+      "url": "https://www.ticketmaster.com/event/Z7r9jZ1AAZePa",
+      "image": "https://s1.ticketm.net/dam/c/8cf/a6653880-7899-4f67-8067-1f95f4d158cf_124761_RETINA_LANDSCAPE_16_9.jpg",
+      "priceFrom": null,
+      "source": "ticketmaster"
+    },
+    {
       "id": "e12-118640",
       "title": "Christmas rock",
       "start": "2026-11-29T08:00:00Z",
@@ -1040,6 +1004,24 @@
       "source": "events12"
     },
     {
+      "id": "sg-204684396",
+      "title": "Connect and Assist: Utility Bill Assistance",
+      "start": "2026-12-01T18:00:00.000Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "Seattle Municipal Tower",
+        "address": "700 5th Ave, Seattle, WA 98104",
+        "lat": null,
+        "lng": null
+      },
+      "category": null,
+      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D204684396",
+      "image": null,
+      "priceFrom": null,
+      "source": "seattle-gov"
+    },
+    {
       "id": "sg-194808578",
       "title": "City Council",
       "start": "2026-12-01T22:00:00.000Z",
@@ -1071,6 +1053,24 @@
       },
       "category": "Public meetings",
       "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D195091740",
+      "image": null,
+      "priceFrom": null,
+      "source": "seattle-gov"
+    },
+    {
+      "id": "sg-195091214",
+      "title": "Transportation, Waterfront, & Seattle Center Committee",
+      "start": "2026-12-03T17:30:00.000Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "Council Chambers",
+        "address": "600 4th Ave #2, Seattle, WA 98104",
+        "lat": null,
+        "lng": null
+      },
+      "category": "Public meetings",
+      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D195091214",
       "image": null,
       "priceFrom": null,
       "source": "seattle-gov"
