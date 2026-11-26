@@ -1,6 +1,6 @@
 {
-  "checked": "2026-11-25T19:57:18.339Z",
-  "updated": "2026-11-25T19:57:18.339Z",
+  "checked": "2026-11-26T19:38:16.354Z",
+  "updated": "2026-11-26T19:38:16.354Z",
   "sources": [
     "Visit Seattle",
     "City of Seattle",
@@ -16,7 +16,7 @@
     {
       "id": "e12-107166",
       "title": "Gingerbread Village",
-      "start": "2026-11-25T08:00:00Z",
+      "start": "2026-11-26T08:00:00Z",
       "end": null,
       "allDay": true,
       "venue": {
@@ -30,222 +30,6 @@
       "image": null,
       "priceFrom": 0,
       "source": "events12"
-    },
-    {
-      "id": "e12-118516",
-      "title": "Hockey",
-      "start": "2026-11-25T08:00:00Z",
-      "end": null,
-      "allDay": true,
-      "venue": {
-        "name": "Seattle Center",
-        "address": "Climate Pledge Arena, 334 1st Ave N, Seattle, WA 98109",
-        "lat": null,
-        "lng": null
-      },
-      "category": null,
-      "url": "https://www.nhl.com/kraken/schedule/2026-11-01",
-      "image": null,
-      "priceFrom": null,
-      "source": "events12"
-    },
-    {
-      "id": "tm-vvG1HZ_2SpvqPf",
-      "title": "Pre-Game Tours - Climate Pledge Arena Tours",
-      "start": "2026-11-25T08:00:00Z",
-      "end": null,
-      "allDay": true,
-      "venue": {
-        "name": "Climate Pledge Arena",
-        "address": "334 1st Ave N",
-        "lat": 47.622126,
-        "lng": -122.354016
-      },
-      "category": "Community",
-      "url": "https://www.ticketmaster.com/pregame-tours-climate-pledge-arena-tours-seattle-washington-11-25-2026/event/0F0064FCD605D954",
-      "image": "https://s1.ticketm.net/dam/e/e9f/09535777-8e3a-431a-96d6-e47bc5875e9f_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": null,
-      "source": "ticketmaster"
-    },
-    {
-      "id": "sc-46474",
-      "title": "Seattle Center Sculpture Walk 2026",
-      "start": "2026-11-25T08:00:00Z",
-      "end": null,
-      "allDay": true,
-      "venue": {
-        "name": "Seattle Center",
-        "address": null,
-        "lat": 47.6219473,
-        "lng": -122.3517443
-      },
-      "category": "Museums & galleries",
-      "url": "https://www.seattlecenter.com/events/event-calendar/seattle-center-sculpture-walk-2026-x46474",
-      "image": null,
-      "priceFrom": 0,
-      "source": "seattle-center"
-    },
-    {
-      "id": "tm-vvG1HZ_4lK1Bm8",
-      "title": "Women's Basketball vs Weber State",
-      "start": "2026-11-25T20:00:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "Seattle University Redhawk Center",
-        "address": "550 14th Ave",
-        "lat": 47.606668,
-        "lng": -122.314139
-      },
-      "category": "Sports",
-      "url": "https://www.ticketmaster.com/womens-basketball-vs-weber-state-seattle-washington-11-25-2026/event/0F00655AD32BAB90",
-      "image": "https://s1.ticketm.net/dam/e/8aa/2c1ce012-fb76-4e9b-bd1b-2bca69f838aa_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": null,
-      "source": "ticketmaster"
-    },
-    {
-      "id": "sg-178994001",
-      "title": "Open Adoption Hours",
-      "start": "2026-11-25T21:00:00.000Z",
-      "end": "2026-11-26T01:00:00.000Z",
-      "allDay": false,
-      "venue": {
-        "name": "2061 15th Ave. W.",
-        "address": "2061 15th Ave W, Seattle, WA 98119",
-        "lat": null,
-        "lng": null
-      },
-      "category": null,
-      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D178994001",
-      "image": null,
-      "priceFrom": null,
-      "source": "seattle-gov"
-    },
-    {
-      "id": "sc-43758",
-      "title": "2026 Seattle Christmas Market",
-      "start": "2026-11-26T00:00:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "Fisher Pavilion",
-        "address": null,
-        "lat": 47.6211235,
-        "lng": -122.352168
-      },
-      "category": "Market",
-      "url": "https://www.seattlecenter.com/events/event-calendar/2026-seattle-christmas-market-x43758",
-      "image": null,
-      "priceFrom": null,
-      "source": "seattle-center"
-    },
-    {
-      "id": "sc-51742",
-      "title": "Chicka Chicka Boom Boom: The Holiday Show",
-      "start": "2026-11-26T01:00:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "Seattle Children&#39;s Theatre",
-        "address": null,
-        "lat": 47.6204545,
-        "lng": -122.3523744
-      },
-      "category": "Festivals",
-      "url": "https://www.seattlecenter.com/events/event-calendar/chicka-chicka-boom-boom-the-holiday-show-x51742",
-      "image": null,
-      "priceFrom": null,
-      "source": "seattle-center"
-    },
-    {
-      "id": "tm-vvG1HZ_G3OjQ1c",
-      "title": "Seattle Kraken vs. Chicago Blackhawks",
-      "start": "2026-11-26T02:40:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "Climate Pledge Arena",
-        "address": "334 1st Ave N",
-        "lat": 47.622126,
-        "lng": -122.354016
-      },
-      "category": "Sports",
-      "url": "https://www.ticketmaster.com/seattle-kraken-vs-chicago-blackhawks-seattle-washington-11-25-2026/event/0F0064C4A071A2AD",
-      "image": "https://s1.ticketm.net/dam/a/1da/790764fd-6deb-4208-8138-f64722c0d1da_1791341_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": null,
-      "source": "ticketmaster"
-    },
-    {
-      "id": "tm-vvG1HZ_5K2Rs9k",
-      "title": "Alter Bridge - What Lies Within Tour",
-      "start": "2026-11-26T03:00:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "Moore Theatre",
-        "address": "1932 2nd Ave",
-        "lat": 47.61196,
-        "lng": -122.34142
-      },
-      "category": "Music",
-      "url": "https://www.ticketmaster.com/alter-bridge-what-lies-within-tour-seattle-washington-11-25-2026/event/0F0064B4CFBF15C6",
-      "image": "https://s1.ticketm.net/dam/a/19a/5916bf6f-8c45-479b-9492-388ae74ab19a_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": null,
-      "source": "ticketmaster"
-    },
-    {
-      "id": "tm-Z7r9jZ1AA79GN",
-      "title": "Distant",
-      "start": "2026-11-26T03:00:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "El Corazon",
-        "address": "109 Eastlake Avenue East",
-        "lat": 47.630699,
-        "lng": -122.3461
-      },
-      "category": null,
-      "url": "https://www.ticketmaster.com/event/Z7r9jZ1AA79GN",
-      "image": "https://s1.ticketm.net/dam/c/f51/ee785ed6-f806-4195-98f4-69f67e09df51_106201_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": null,
-      "source": "ticketmaster"
-    },
-    {
-      "id": "tm-Z7r9jZ1A7PdZb",
-      "title": "Boston Manor w/ Ben Quad",
-      "start": "2026-11-26T03:30:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "The Showbox",
-        "address": "1426 1st Ave.",
-        "lat": 47.602402,
-        "lng": -122.325996
-      },
-      "category": "Music",
-      "url": "https://www.ticketmaster.com/event/Z7r9jZ1A7PdZb",
-      "image": "https://s1.ticketm.net/dam/a/55c/feaf81b5-444d-4940-aa80-334c428eb55c_1132191_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": null,
-      "source": "ticketmaster"
-    },
-    {
-      "id": "tm-rZ7HnEZ1Af8807",
-      "title": "Bupp! Gameshow Night!",
-      "start": "2026-11-26T03:30:00Z",
-      "end": null,
-      "allDay": false,
-      "venue": {
-        "name": "Chop Suey",
-        "address": "1325 E Madison St.",
-        "lat": 47.613485,
-        "lng": -122.314457
-      },
-      "category": "Community",
-      "url": "https://www.ticketweb.com/event/bupp-gameshow-night-chop-suey-tickets/14410904",
-      "image": "https://s1.ticketm.net/dam/c/8cf/a6653880-7899-4f67-8067-1f95f4d158cf_124761_RETINA_LANDSCAPE_16_9.jpg",
-      "priceFrom": 14.99,
-      "source": "ticketmaster"
     },
     {
       "id": "sc-46475",
@@ -264,6 +48,24 @@
       "image": null,
       "priceFrom": 0,
       "source": "seattle-center"
+    },
+    {
+      "id": "vs-442255459",
+      "title": "Seattle Christmas Market",
+      "start": "2026-11-26T08:00:00Z",
+      "end": "2026-12-24T08:00:00Z",
+      "allDay": true,
+      "venue": {
+        "name": "Seattle Center",
+        "address": null,
+        "lat": null,
+        "lng": null
+      },
+      "category": "Festivals",
+      "url": "https://seattlechristmasmarket.com/",
+      "image": null,
+      "priceFrom": null,
+      "source": "visit-seattle"
     },
     {
       "id": "sg-204684395",
@@ -374,6 +176,24 @@
       "source": "events12"
     },
     {
+      "id": "sc-46476",
+      "title": "Seattle Center Sculpture Walk 2026",
+      "start": "2026-11-27T08:00:00Z",
+      "end": null,
+      "allDay": true,
+      "venue": {
+        "name": "Seattle Center",
+        "address": null,
+        "lat": 47.6219473,
+        "lng": -122.3517443
+      },
+      "category": "Museums & galleries",
+      "url": "https://www.seattlecenter.com/events/event-calendar/seattle-center-sculpture-walk-2026-x46476",
+      "image": null,
+      "priceFrom": 0,
+      "source": "seattle-center"
+    },
+    {
       "id": "e12-107190",
       "title": "Westlake tree lighting",
       "start": "2026-11-27T08:00:00Z",
@@ -426,6 +246,24 @@
       "image": null,
       "priceFrom": 0,
       "source": "seattle-center"
+    },
+    {
+      "id": "sg-182114592",
+      "title": "Open Adoption Hours",
+      "start": "2026-11-27T21:00:00.000Z",
+      "end": "2026-11-28T01:00:00.000Z",
+      "allDay": false,
+      "venue": {
+        "name": "2061 15th Ave. W.",
+        "address": null,
+        "lat": null,
+        "lng": null
+      },
+      "category": null,
+      "url": "https://www.seattle.gov/event-calendar?trumbaEmbed=view%3Devent%26eventid%3D182114592",
+      "image": null,
+      "priceFrom": null,
+      "source": "seattle-gov"
     },
     {
       "id": "sc-51743",
@@ -626,6 +464,24 @@
       "source": "ticketmaster"
     },
     {
+      "id": "sc-43760",
+      "title": "2026 Seattle Christmas Market",
+      "start": "2026-11-28T08:00:00Z",
+      "end": null,
+      "allDay": true,
+      "venue": {
+        "name": "Fisher Pavilion",
+        "address": null,
+        "lat": 47.6211235,
+        "lng": -122.352168
+      },
+      "category": "Market",
+      "url": "https://www.seattlecenter.com/events/event-calendar/2026-seattle-christmas-market-x43760",
+      "image": null,
+      "priceFrom": null,
+      "source": "seattle-center"
+    },
+    {
       "id": "e12-119075",
       "title": "Gourmet cooking class",
       "start": "2026-11-28T08:00:00Z",
@@ -639,6 +495,24 @@
       },
       "category": null,
       "url": "https://www.hotstovesociety.com/store/events/",
+      "image": null,
+      "priceFrom": null,
+      "source": "events12"
+    },
+    {
+      "id": "e12-118516",
+      "title": "Hockey",
+      "start": "2026-11-28T08:00:00Z",
+      "end": null,
+      "allDay": true,
+      "venue": {
+        "name": "Seattle Center",
+        "address": "Climate Pledge Arena, 334 1st Ave N, Seattle, WA 98109",
+        "lat": null,
+        "lng": null
+      },
+      "category": null,
+      "url": "https://www.nhl.com/kraken/schedule/2026-11-01",
       "image": null,
       "priceFrom": null,
       "source": "events12"
@@ -713,6 +587,24 @@
       "url": "https://www.seattlecenter.com/events/event-calendar/winterfest-train-and-village-x47940",
       "image": null,
       "priceFrom": 0,
+      "source": "seattle-center"
+    },
+    {
+      "id": "sc-51745",
+      "title": "Chicka Chicka Boom Boom: The Holiday Show",
+      "start": "2026-11-28T18:00:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "Seattle Children&#39;s Theatre",
+        "address": null,
+        "lat": 47.6204545,
+        "lng": -122.3523744
+      },
+      "category": "Festivals",
+      "url": "https://www.seattlecenter.com/events/event-calendar/chicka-chicka-boom-boom-the-holiday-show-x51745",
+      "image": null,
+      "priceFrom": null,
       "source": "seattle-center"
     },
     {
@@ -932,6 +824,78 @@
       "source": "ticketmaster"
     },
     {
+      "id": "tm-vvG1HZ_8pK8E2L",
+      "title": "Steve Lacy: Oh yeah? Tour",
+      "start": "2026-11-29T04:00:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "WAMU Theater",
+        "address": "800 Occidental Ave S",
+        "lat": 47.596704,
+        "lng": -122.332085
+      },
+      "category": "Music",
+      "url": "https://www.ticketmaster.com/steve-lacy-oh-yeah-tour-seattle-washington-11-28-2026/event/0F006505934273DF",
+      "image": "https://s1.ticketm.net/dam/a/736/9b65a2e3-c29e-4710-97b1-a60425077736_RETINA_LANDSCAPE_16_9.jpg",
+      "priceFrom": null,
+      "source": "ticketmaster"
+    },
+    {
+      "id": "tm-vvG1HZ_895XK8n",
+      "title": "WAMU Theater Amplified: Steve Lacy (Not an Event Ticket)",
+      "start": "2026-11-29T04:00:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "WAMU Theater",
+        "address": "800 Occidental Ave S",
+        "lat": 47.596704,
+        "lng": -122.332085
+      },
+      "category": "Community",
+      "url": "https://www.ticketmaster.com/wamu-theater-amplified-steve-lacy-not-seattle-washington-11-28-2026/event/0F006505CBF9342A",
+      "image": "https://s1.ticketm.net/dam/e/49b/f3d0e6ea-19dc-4f67-9c4d-89052ff4849b_RETINA_LANDSCAPE_16_9.jpg",
+      "priceFrom": null,
+      "source": "ticketmaster"
+    },
+    {
+      "id": "tm-Z7r9jZ1A7P7Z3",
+      "title": "Valentino Khan - Ages 21+",
+      "start": "2026-11-29T05:00:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "The Showbox",
+        "address": "1426 1st Ave.",
+        "lat": 47.602402,
+        "lng": -122.325996
+      },
+      "category": "Music",
+      "url": "https://www.ticketmaster.com/event/Z7r9jZ1A7P7Z3",
+      "image": "https://s1.ticketm.net/dam/a/e6c/547f780e-5bcc-41c0-8a71-46a96b656e6c_RETINA_LANDSCAPE_16_9.jpg",
+      "priceFrom": null,
+      "source": "ticketmaster"
+    },
+    {
+      "id": "tm-rZ7HnEZ1Af8zZf",
+      "title": "Whose Night Is It Anyways? Kaytranada Night",
+      "start": "2026-11-29T05:00:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "Chop Suey",
+        "address": "1325 E Madison St.",
+        "lat": 47.613485,
+        "lng": -122.314457
+      },
+      "category": "Music",
+      "url": "https://www.ticketweb.com/event/whose-night-is-it-anyways-chop-suey-tickets/14438014",
+      "image": "https://s1.ticketm.net/dam/c/df8/81eadad8-4449-412e-a2b1-3d8bbb78edf8_106181_RETINA_LANDSCAPE_16_9.jpg",
+      "priceFrom": null,
+      "source": "ticketmaster"
+    },
+    {
       "id": "e12-118640",
       "title": "Christmas rock",
       "start": "2026-11-29T08:00:00Z",
@@ -950,6 +914,24 @@
       "source": "events12"
     },
     {
+      "id": "tm-vvG1HZ_f1eQdnG",
+      "title": "Lumen Field Stadium Tours",
+      "start": "2026-11-29T08:00:00Z",
+      "end": null,
+      "allDay": true,
+      "venue": {
+        "name": "Lumen Field Stadium Tours",
+        "address": "800 Occidental Ave S",
+        "lat": 47.596704,
+        "lng": -122.332085
+      },
+      "category": "Community",
+      "url": "https://www.ticketmaster.com/lumen-field-stadium-tours-seattle-washington-11-29-2026/event/0F00654282683A8C",
+      "image": "https://s1.ticketm.net/dam/a/6ba/cca88b1c-9704-49ea-83ff-23d0e4c246ba_1665171_RETINA_LANDSCAPE_16_9.jpg",
+      "priceFrom": null,
+      "source": "ticketmaster"
+    },
+    {
       "id": "e12-100108",
       "title": "Seattle Marathon",
       "start": "2026-11-29T08:00:00Z",
@@ -966,6 +948,24 @@
       "image": null,
       "priceFrom": null,
       "source": "events12"
+    },
+    {
+      "id": "sc-uw-medicine-seattle-marathon-half-marath",
+      "title": "UW Medicine Seattle Marathon & Half Marathon 2026",
+      "start": "2026-11-29T13:00:00Z",
+      "end": null,
+      "allDay": false,
+      "venue": {
+        "name": "Seattle Center",
+        "address": null,
+        "lat": null,
+        "lng": null
+      },
+      "category": "Museums & galleries",
+      "url": "https://www.seattlecenter.com/events/event-calendar/uw-medicine-seattle-marathon-and-half-marathon-2026",
+      "image": null,
+      "priceFrom": null,
+      "source": "seattle-center"
     },
     {
       "id": "sg-211883487",
